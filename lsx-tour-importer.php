@@ -105,6 +105,8 @@ class Lsx_Tour_Importer {
 
 		add_filter( 'lsx_framework_settings_tabs', array( $this, 'settings_page_array') );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ) );
+		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );
+
 	}	
 
 	/**
@@ -138,7 +140,6 @@ class Lsx_Tour_Importer {
 			$this->import_url = 'http://wetu.com/API/Pins/'.$this->options['token'].'/Get?ids=';
 
 			if(isset($this->options['image_scaling'])){
-
 				$this->scale_images = true;
 				$width = '800';
 				if(isset($this->options['width']) && '' !== $this->options['width']){
@@ -191,12 +192,37 @@ class Lsx_Tour_Importer {
         ?>
         <div class="wrap">
             <?php screen_icon(); ?>
-            <form method="post" action="tools.php">
+            <form id="<?php $this->plugin_slug; ?>-import-form" method="post" action="tools.php">
             	<input type="hidden" name="page" value="<?php $this->plugin_slug; ?>" />
 
             	<?php echo $this->image_scaling_url; ?><br />
             	<?php echo $this->list_url; ?><br />
             	<?php echo $this->import_url; ?><br />
+
+            	<h3><?php _e('Settings','lsx-tour-importer'); ?></h3>
+
+            	<p><label for="keyword"><?php _e('Choose what type of content you want to import.','lsx-tour-importer'); ?></label><br />
+
+	            	<select class="content-type" name="content_type">
+	            		<option selected="selected" value="accommodation"><?php _e('Accommodation','lsx-tour-importer'); ?></option>
+	            		<option value="tours"><?php _e('Tours','lsx-tour-importer'); ?></option>
+	            	</select>
+            	</p>
+
+            	<div class="tour-options" style="display:none;">
+            		<h3><?php _e('Tour Options','lsx-tour-importer'); ?></h3>
+            		<p>
+            			<label for="own-itineraries"><?php _e('Search from my itineraries only','lsx-tour-importer'); ?></label><br />
+            			<input type="checkbox" name="own-itineraries" value="true"> 
+            		</p>
+            	</div>
+
+            	<h3><?php _e('Search','lsx-tour-importer'); ?></h3>
+            	<p>
+            		<input placeholder="Enter the title you are searching for" class="keyword" name="keyword" value="">
+            	</p>
+
+            	
             </form>
         </div>
         <?php		
@@ -206,7 +232,9 @@ class Lsx_Tour_Importer {
 	 * Enqueue the JS needed to contact wetu and return your result.
 	 */
 	public function admin_scripts() {
-
+		if(is_admin() && isset($_GET['page']) && $this->plugin_slug === $_GET['page']){
+			wp_enqueue_script( 'wetu-importer-admin-script', LSX_TOUR_IMPORTER_URL.'assets/js/lsx-tour-importer.js');
+		}
 	}	
 
 	/**
