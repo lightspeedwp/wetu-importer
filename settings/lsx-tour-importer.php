@@ -6,10 +6,26 @@
 			</tr> 
 			<tr class="form-field -wrap">
 				<th scope="row">
-					<label for="token"> Token</label>
+					<label for="api_key"> API Key</label>
 				</th>
 				<td>
-					<input type="text"  {{#if token}} value="{{token}}" {{/if}} name="token" />
+					<input type="text"  {{#if api_key}} value="{{api_key}}" {{/if}} name="api_key" />
+				</td>
+			</tr>
+			<tr class="form-field -wrap">
+				<th scope="row">
+					<label for="username"> Username</label>
+				</th>
+				<td>
+					<input type="text"  {{#if username}} value="{{username}}" {{/if}} name="username" />
+				</td>
+			</tr>	
+			<tr class="form-field -wrap">
+				<th scope="row">
+					<label for="password"> Password</label>
+				</th>
+				<td>
+					<input type="text"  {{#if password}} value="{{password}}" {{/if}} name="password" />
 				</td>
 			</tr>				
 			<tr class="form-field banner-wrap">

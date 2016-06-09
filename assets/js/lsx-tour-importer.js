@@ -2,7 +2,7 @@ var LSX_TOUR_IMPORTER = {
 
 	init : function() {
 		if(jQuery('body').hasClass('tools_page_lsx-tour-importer')){
-			this.watchTypeDropdown();
+			//this.watchTypeDropdown();
 			this.watchSearch();
 		}
 	},
@@ -33,7 +33,7 @@ var LSX_TOUR_IMPORTER = {
 	            'keyword' 	: 			keyword
 	        },
 	        function(response) {
-	        	jQuery('#the-list').html(response);
+	        	//jQuery('#the-list').html(response);
 	        });
 			return false;
 		});	
