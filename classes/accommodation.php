@@ -1,13 +1,31 @@
 <?php
 /**
- * @package   Lsx_Tour_Importer_Admin
+ * @package   Lsx_Tour_Importer_Accommodation
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link      
  * @copyright 2015 LightSpeed
  **/
 
-class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
+class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
+
+	/**
+	 * The url to list items from WETU
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $tab_slug = 'accommodation';
+
+	/**
+	 * The url to list items from WETU
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $url = false;	
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -17,39 +35,11 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-		parent::__construct();
+		$this->url = $this->wetu_url.'List';
 
-		add_filter( 'lsx_framework_settings_tabs', array( $this, 'settings_page_array') );
-		add_action( 'admin_menu', array( $this, 'register_importer_page' ) );
-		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );
-
+		add_action( 'lsx_tour_importer_admin_tab_'.$this->tab_slug, array($this,'display_page') );
 		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));	
 		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));		
-	}
-
-	/**
-	 * Authenticates the user with WETU and returns a session ID
-	 */
-	public function authenticate_user() {
-		print_r($this->wetu_url.'AuthenticateUser?username='.$this->options['username'].'&password='.$this->options['password']);
-		$session = file_get_contents($this->wetu_url.'AuthenticateUser?username='.$this->options['username'].'&password='.$this->options['password']);
-		if (!empty($session)) {
-			$this->session = $session;
-		}
-	}	
-
-	/**
-	 * Returns the array of settings to the UIX Class in the lsx framework
-	 */	
-	public function settings_page_array($tabs){
-		$tabs[$this->plugin_slug] = array(
-				'page_title'        => __('Settings','lsx-tour-importer'),				
-				'page_description'  => __('Enter your API key to enable your Wetu importer.','lsx-tour-importer'),                  	
-				'menu_title'        => __('Importer','lsx-tour-importer'),                           						
-				'template'          => LSX_TOUR_IMPORTER_PATH.'settings/'.$this->plugin_slug.'.php',  	
-				'default'	 		=> false  	
-		);
-		return $tabs;
 	}	
 
 	/**
@@ -66,21 +56,9 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	}	
 
 	/**
-	 * Enqueue the JS needed to contact wetu and return your result.
-	 */
-	public function admin_scripts() {
-		if(is_admin() && isset($_GET['page']) && $this->plugin_slug === $_GET['page']){
-			wp_enqueue_script( 'lsx-tour-importers-script', LSX_TOUR_IMPORTER_URL.'assets/js/lsx-tour-importer.js');
-			wp_localize_script( 'lsx-tour-importers-script', 'lsx_tour_importer_params', array(
-			'ajax_url' => admin_url('admin-ajax.php'),
-			) );			
-		}
-	}	
-
-	/**
 	 * Display the importer administration screen
 	 */
-	public function display_importer_page() {
+	public function display_page() {
         ?>
         <div class="wrap">
             <?php screen_icon(); ?>
@@ -88,7 +66,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
             <?php $this->search_form(); ?>
 
 			<form method="get" action="" id="posts-filter">
-				<input type="hidden" name="post_type" class="post_type" value="<?php echo $post_type; ?>" />
+				<input type="hidden" name="post_type" class="post_type" value="<?php echo $this->tab_slug; ?>" />
 				
 				<table class="wp-list-table widefat fixed posts">
 					<thead>
@@ -144,24 +122,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	public function search_form() {
 	?>
         <form id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php">
-        	<input type="text" name="page" value="<?php echo $this->plugin_slug; ?>" />
-
-        	<h3><?php _e('Settings','lsx-tour-importer'); ?></h3>
-
-        	<p><label for="keyword"><?php _e('Choose what type of content you want to import.','lsx-tour-importer'); ?></label><br />
-
-            	<select class="content-type" name="content_type">
-            		<option selected="selected" value="tours"><?php _e('Tours','lsx-tour-importer'); ?></option>
-            	</select>
-        	</p>
-
-        	<div class="tour-options">
-        		<h3><?php _e('Tour Options','lsx-tour-importer'); ?></h3>
-        		<p>
-        			<label for="own-itineraries"><?php _e('Search from my itineraries only','lsx-tour-importer'); ?></label><br />
-        			<input type="checkbox" name="own-itineraries" value="true"> 
-        		</p>
-        	</div>
+        	<input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>" />
 
         	<h3><?php _e('Search','lsx-tour-importer'); ?></h3>
         	<p>
@@ -174,8 +135,19 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
         	
         </form>	
 	<?php 
-	}		
+	}	
 
+	/**
+	 * Save the list of Accommodation into an option
+	 */
+	public function update_options() {
+		$data= file_get_contents($this->url);
+		$accommodation  = json_decode($data, true);
+		if (!empty($data)) {
+			update_option('lsx_tour_operator_accommodation',$data);
+			update_option('lsx_tour_operator_accommodation_timestamp',date("d M Y - h:ia",strtotime("+2 Hours")));
+		}
+	}
 	/**
 	 * Connect to wetu
 	 */
@@ -184,7 +156,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 		if(isset($_POST['action']) && $_POST['action'] == 'lsx_tour_operator'){
 			$data= file_get_contents($this->list_url);
 
-			if ( false === ( $accommodation = get_transient( 'lsx_tour_operator_accommodation' ) ) ) {
+			if ( false === ( $accommodation = get_option( 'lsx_tour_operator_accommodation' ) ) ) {
 				//$data= file_get_contents($this->list_url);
 				set_transient( 'lsx_tour_operator_accommodation', $data, 20000 );
 				$accommodation  = json_decode($data, true);
@@ -206,7 +178,5 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 		echo $return;
 		die();
 	}
-
-
 }
-$lsx_tour_importer_admin = new Lsx_Tour_Importer_Admin();
+$lsx_tour_importer_accommodation = new Lsx_Tour_Importer_Accommodation();

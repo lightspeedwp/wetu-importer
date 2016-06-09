@@ -57,23 +57,28 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
             __('LSX Tour Importer','lsx-tour-importer'),
             'manage_options',
             $this->plugin_slug,
-            array( $this, 'display_importer_page' )
+            array( $this, 'display_page' )
         );		
 	}	
 
 	/**
 	 * Display the importer administration screen
 	 */
-	public function display_importer_page() {
+	public function display_page() {
         ?>
         <div class="wrap">
             <?php screen_icon(); ?>
 
-            <h2><?php _e('Welcome to the LSX Wetu Importer','lsx-tour-importer'); ?></h2>  
-            <ul>
-            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','lsx-tour-importer'); ?></a></li>
-            	<li><?php _e('Tours','lsx-tour-importer'); ?></li>
-            </ul>   
+            <?php if(!isset($_GET['tab'])){ ?>
+	            <h2><?php _e('Welcome to the LSX Wetu Importer','lsx-tour-importer'); ?></h2>  
+	            <p>Please select the type of content you want to import from the list below.</p>
+	            <ul>
+	            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','lsx-tour-importer'); ?></a></li>
+	            	<li><?php _e('Tours','lsx-tour-importer'); ?></li>
+	            </ul>  
+            <?php } else {
+            	do_action('lsx_tour_importer_admin_tab_'.$_GET['tab']);
+            } ?>
         </div>
         <?php
 	}
