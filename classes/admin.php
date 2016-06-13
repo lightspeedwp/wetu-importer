@@ -82,5 +82,44 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
         </div>
         <?php
 	}
+
+	/**
+	 * The header of the item list
+	 */
+	public function table_header() {
+	?>
+		<thead>
+			<tr>
+				<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+					<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+					<input type="checkbox" id="cb-select-all-1">
+				</th>
+				<th style="" class="manage-column column-title sortable desc" id="title" style="width:50%;" scope="col">
+					<span>Title</span><span class="sorting-indicator"></span>
+				</th>
+				<th style="" class="manage-column column-date sortable asc" id="date" scope="col">
+						<span>Date</span><span class="sorting-indicator"></span>
+				</th>
+				<th style="" class="manage-column column-ssid" id="ssid" scope="col">WETU ID</th>
+			</tr>
+		</thead>
+	<?php 
+	}	
+
+	/**
+	 * The footer of the item list
+	 */
+	public function table_footer() {
+	?>
+		<tfoot>
+			<tr>
+				<th style="" class="manage-column column-cb check-column" scope="col"><label for="cb-select-all-2" class="screen-reader-text">Select All</label><input type="checkbox" id="cb-select-all-2"></th>
+				<th style="" class="manage-column column-title sortable desc" scope="col"><a href="http://localhost.localdomain/fmm/asc/wp-admin/edit.php?post_type=tour&amp;orderby=title&amp;order=asc"><span>Title</span><span class="sorting-indicator"></span></a></th>
+				<th style="" class="manage-column column-date sortable asc" scope="col"><a href="http://localhost.localdomain/fmm/asc/wp-admin/edit.php?post_type=tour&amp;orderby=date&amp;order=desc"><span>Date</span><span class="sorting-indicator"></span></a></th>
+				<th style="" class="manage-column column-ssid" scope="col">ID</th>
+			</tr>
+		</tfoot>
+	<?php 
+	}	
 }
 $lsx_tour_importer_admin = new Lsx_Tour_Importer_Admin();
