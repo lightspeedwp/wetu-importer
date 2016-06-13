@@ -25,10 +25,6 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 		add_filter( 'lsx_framework_settings_tabs', array( $this, 'settings_page_array') );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ) );
 		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );
-
-		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));	
-		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));
-
 		return self::$instance;
 	}
 
@@ -159,8 +155,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 			</form>          
         </div>
         <?php
-
-        $this->authenticate_user();
+        //$this->authenticate_user();
 	}		
 
 	/**
@@ -174,38 +169,5 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 			) );			
 		}
 	}	
-
-	/**
-	 * Connect to wetu
-	 */
-	public function process_ajax_search() {
-		$return = false;
-		if(isset($_POST['action']) && $_POST['action'] == 'lsx_tour_operator'){
-			$data= file_get_contents($this->list_url);
-
-			if ( false === ( $accommodation = get_transient( 'lsx_tour_operator_accommodation' ) ) ) {
-				//$data= file_get_contents($this->list_url);
-				set_transient( 'lsx_tour_operator_accommodation', $data, 20000 );
-				$accommodation  = json_decode($data, true);
-			}
-			print_r($accommodation);
-			if(isset($_POST['keyword'])){
-				$searched_items = false;
-				$search_keyword = urldecode($_POST['keyword']);
-				if (!empty($accommodation)) {
-					foreach($accommodation as $row_key => $row){
-						if(stripos($row->name, $search_keyword) !== false){
-							$searched_items[] = $row;
-						}
-					}		
-				}	
-			}
-			print_r($searched_items);
-		}
-		echo $return;
-		die();
-	}
-
-
 }
 $lsx_tour_importer_admin = Lsx_Tour_Importer_Admin::get_instance();

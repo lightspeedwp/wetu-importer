@@ -24,7 +24,7 @@ var LSX_TOUR_IMPORTER = {
 
 			jQuery('#the-list').html(jQuery('#lsx-tour-importer-search-form .ajax-loader').html());
 
-			var type = jQuery('#lsx-tour-importer-search-form select.content-type[selected="selected"]').val();
+			var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
 			var keyword = jQuery('#lsx-tour-importer-search-form input.keyword').val();
 			jQuery.post(lsx_tour_importer_params.ajax_url,
 	        {

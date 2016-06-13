@@ -35,7 +35,11 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * @access private
 	 */
 	public function __construct() {
-		$this->url = $this->wetu_url.'List';
+		$temp_options = get_option('_lsx_lsx-settings',false);
+		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
+			$this->options = $temp_options[$this->plugin_slug];
+		}
+		$this->url = 'http://wetu.com/API/Pins/'.$this->options['api_key'].'/List';
 
 		add_action( 'lsx_tour_importer_admin_tab_'.$this->tab_slug, array($this,'display_page') );
 		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));	
@@ -62,6 +66,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         ?>
         <div class="wrap">
             <?php screen_icon(); ?>
+
+            <?php $this->update_options_form(); ?>
 
             <?php $this->search_form(); ?>
 
@@ -121,7 +127,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 */
 	public function search_form() {
 	?>
-        <form id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php">
+        <form class="ajax-form" id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php" data-type="accommodation">
         	<input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>" />
 
         	<h3><?php _e('Search','lsx-tour-importer'); ?></h3>
@@ -138,14 +144,49 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	}	
 
 	/**
+	 * search_form
+	 */
+	public function update_options_form() {
+
+		echo '<h3>'.__('Wetu Status','lsx-tour-importer').'</h3>';
+		$last_refresh_date = get_option('lsx_tour_operator_accommodation_timestamp',false);
+		
+		if(!isset($_GET['refresh_options'])){
+			if(false === $last_refresh_date){
+				echo '<p>'.__('Please update your accommodation list.','lsx-tour-importer').'</p>';
+			}else{
+				echo '<p>'.__('Last Update - ','lsx-tour-importer').$last_refresh_date.'</p>';
+			}			
+		?>
+	        <form id="<?php echo $this->plugin_slug; ?>-update-form" method="get" action="tools.php">
+	        	<input type="hidden" name="page" value="<?php echo $this->plugin_slug; ?>" />
+	        	<input type="hidden" name="tab" value="<?php echo $this->tab_slug; ?>" />
+	        	<input type="hidden" name="refresh_options" value="true" />
+	        	<p><input class="submit" type="submit" value="<?php _e('Update','lsx-tour-importer'); ?>" /></p>
+	        </form>	
+		<?php 
+		}elseif('true' === $_GET['refresh_options']){
+			$this->update_options();
+			?>
+			<p><?php _e('Your accommodation list has been updated, please use the search form below to find what you want.','lsx-tour-importer'); ?></p>
+			<?php
+		}
+	}
+
+
+	/**
 	 * Save the list of Accommodation into an option
 	 */
 	public function update_options() {
-		$data= file_get_contents($this->url);
-		$accommodation  = json_decode($data, true);
-		if (!empty($data)) {
-			update_option('lsx_tour_operator_accommodation',$data);
-			update_option('lsx_tour_operator_accommodation_timestamp',date("d M Y - h:ia",strtotime("+2 Hours")));
+		if(isset($_GET['page']) && $this->plugin_slug === $_GET['page']
+		 && isset($_GET['refresh_options']) && 'true' === $_GET['refresh_options']
+		 && isset($_GET['tab']) && $this->tab_slug === $_GET['tab']) {
+			$data= file_get_contents($this->url);
+			$accommodation  = json_decode($data, true);
+			if (!empty($data)) {
+				update_option('lsx_tour_operator_accommodation',$data);
+				update_option('lsx_tour_operator_accommodation_timestamp',date("d M Y - h:ia",strtotime("+2 Hours")));
+			}
 		}
 	}
 	/**
@@ -153,29 +194,23 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 */
 	public function process_ajax_search() {
 		$return = false;
-		if(isset($_POST['action']) && $_POST['action'] == 'lsx_tour_operator'){
-			$data= file_get_contents($this->list_url);
-
-			if ( false === ( $accommodation = get_option( 'lsx_tour_operator_accommodation' ) ) ) {
-				//$data= file_get_contents($this->list_url);
-				set_transient( 'lsx_tour_operator_accommodation', $data, 20000 );
-				$accommodation  = json_decode($data, true);
-			}
-			print_r($accommodation);
-			if(isset($_POST['keyword'])){
+		if(isset($_POST['action']) && $_POST['action'] === 'lsx_tour_importer' && isset($_POST['type']) && $_POST['type'] === 'accommodation'){
+			$accommodation = get_option('lsx_tour_operator_accommodation',false);
+			if ( false !== $accommodation && isset($_POST['keyword'] )) {
 				$searched_items = false;
 				$search_keyword = urldecode($_POST['keyword']);
+				$accommodation = json_decode($accommodation);
 				if (!empty($accommodation)) {
 					foreach($accommodation as $row_key => $row){
 						if(stripos($row->name, $search_keyword) !== false){
 							$searched_items[] = $row;
 						}
 					}		
-				}	
+				}
+				$return = json_encode($searched_items);
 			}
-			print_r($searched_items);
 		}
-		echo $return;
+		print_r($return);
 		die();
 	}
 }
