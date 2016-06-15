@@ -151,5 +151,32 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
         }
         return $result;
 	}
+
+	/**
+	 * set_taxonomy with some terms
+	 */
+	public function team_member_checkboxes() {
+		if(post_type_exists('team')) { ?>
+    		<h4><?php _e('Team Members','lsx-tour-importer'); ?></h4>
+        	<p>
+        		<ul>
+        			<?php
+        				$team_args=array(
+        					'post_type'	=>	'team',
+        					'post_status' => 'publish',
+        					'nopagin' => true,
+        					'fields' => 'ids'
+        				);
+        				$team_members = new WP_Query($team_args);
+        					if($team_members->have_posts()){
+        						foreach($team_members->posts as $member){ ?>
+        							<li><input type="checkbox" name="team" value="<?php echo $member; ?>"> <?php echo get_the_title($member); ?></li>
+        						<?php }
+        					}
+        				?>
+        		</ul>
+        	</p>
+    	<?php }		
+	}	
 }
 $lsx_tour_importer_admin = new Lsx_Tour_Importer_Admin();

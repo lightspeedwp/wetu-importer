@@ -107,9 +107,12 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			</form> 
 
 			<div style="display:none;" class="import-list-wrapper">
-				<br />
-				<h2><?php _e('Your List'); ?></h2>         
+				<br />        
 				<form method="get" action="" id="import-list">
+					<h3><?php _e('Options'); ?></h3> 
+					<?php $this->team_member_checkboxes(); ?>
+
+					<h3><?php _e('Your List'); ?></h3> 
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>
 
@@ -163,7 +166,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 */
 	public function update_options_form() {
 
-		echo '<div class="wetu-status"><h3>'.__('Wetu Status','lsx-tour-importer').'</h3>';
+		echo '<div style="display:none;" class="wetu-status"><h3>'.__('Wetu Status','lsx-tour-importer').'</h3>';
 		$last_refresh_date = get_option('lsx_tour_operator_accommodation_timestamp',false);
 		
 		if(!isset($_GET['refresh_options'])){
@@ -375,6 +378,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	        $this->set_location_taxonomy($data,$id);
 
+	        $this->set_room_data($data,$id);
         }
         return $id;
 	}	
@@ -395,7 +399,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			}
 
 			if(isset($data[0]['position']['driving_latitude'])){
-				$latitude = $data[0]['position']['driving_latitude'];
+				$longitude = $data[0]['position']['driving_latitude'];
 			}elseif(isset($data[0]['position']['longitude'])){
 				$longitude = $data[0]['position']['longitude'];
 			}		
@@ -404,8 +408,19 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		if(isset($data[0]['content']) && isset($data[0]['content']['contact_information'])){
 			if(isset($data[0]['content']['contact_information']['address'])){
 				$address = strip_tags($data[0]['content']['contact_information']['address']);
+
+				$address = explode("\n",$address);
+				foreach($address as $bitkey => $bit){
+					$bit = ltrim(rtrim($bit));
+					if(false === $bit || '' === $bit || null === $bit or empty($bit)){
+						unset($address[$bitkey]);
+					}
+				}
+				$address = implode(', ',$address);
+				$address = str_replace(', , ', ', ', $address);
 			}	
 		}
+
 
 		if(false !== $longitude){
 			$location_data = array(
@@ -416,10 +431,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				'elevation'	=>	'',
 			);
 			if(false !== $id && '0' !== $id){
-	        	$prev_date = get_post_meta($id,'location',true);
-	        	update_post_meta($id,'location',$location_data,$prev_date);
+	        	$prev = get_post_meta($id,'location',true);
+	        	update_post_meta($id,'location',$location_data,$prev);
 	        }else{
-	        	add_post_meta($id,'location',$location_data);
+	        	add_post_meta($id,'location',$location_data,true);
 	        }
 		}
 	}
@@ -507,6 +522,43 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		            wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
 		        }				
 			}		
+		}
+	}	
+
+	/**
+	 * Saves the room data
+	 */
+	public function set_room_data($data,$id) {
+		if(!empty($data[0]['rooms']) && is_array($data[0]['rooms'])){
+			$rooms = false;
+			$room_count = count($data[0]['rooms']);
+
+			foreach($data[0]['rooms'] as $room){
+				$temp_room = '';
+				if(isset($room['name'])){
+					$temp_room['title'] = $room['name'];
+				}
+				if(isset($room['description'])){
+					$temp_room['description'] = strip_tags($room['description']);
+				}			
+				$temp_room['price'] = 0;
+				$temp_room['type'] = 'room';
+				$rooms[] = $temp_room;
+			}
+
+			if(false !== $id && '0' !== $id){
+				delete_post_meta($id, 'units');				
+			}
+			foreach($rooms as $room){
+		        add_post_meta($id,'units',$room,false);			
+			}
+
+			if(false !== $id && '0' !== $id){
+	        	$prev_rooms = get_post_meta($id,'number_of_rooms',true);
+	        	update_post_meta($id,'number_of_rooms',$room_count,$prev_rooms);
+	        }else{
+	        	add_post_meta($id,'number_of_rooms',$room_count,true);
+	        }
 		}
 	}		
 }
