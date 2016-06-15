@@ -368,10 +368,55 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	}
 	        }
 
-	        $this->set_map_data();
+	        $this->set_map_data($data,$id);
 
         }
         return $id;
 	}	
+	
+	/**
+	 * Saves the longitude and lattitude, as well as sets the map marker.
+	 */
+	public function set_map_data($data,$id) {
+		$longitude = $latitude = $address = false;
+		$zoom = 15;	
+
+		if(isset($data[0]['position'])){
+
+			if(isset($data[0]['position']['driving_latitude'])){
+				$latitude = $data[0]['position']['driving_latitude'];
+			}elseif(isset($data[0]['position']['latitude'])){
+				$latitude = $data[0]['position']['latitude'];
+			}
+
+			if(isset($data[0]['position']['driving_latitude'])){
+				$latitude = $data[0]['position']['driving_latitude'];
+			}elseif(isset($data[0]['position']['longitude'])){
+				$longitude = $data[0]['position']['longitude'];
+			}		
+
+		}
+		if(isset($data[0]['content']) && isset($data[0]['content']['contact_information'])){
+			if(isset($data[0]['content']['contact_information']['address'])){
+				$address = strip_tags($data[0]['content']['contact_information']['address']);
+			}	
+		}
+
+		if(false !== $longitude){
+			$location_data = array(
+				'address'	=>	$address,
+				'lat'		=>	$latitude,
+				'long'		=>	$longitude,
+				'zoom'		=>	$zoom,
+				'elevation'	=>	'',
+			);
+			if(false !== $id && '0' !== $id){
+	        	$prev_date = get_post_meta($id,'location',true);
+	        	update_post_meta($id,'location',$location_data,$prev_date);
+	        }else{
+	        	add_post_meta($id,'location',$location_data);
+	        }
+		}
+	}
 }
 $lsx_tour_importer_accommodation = new Lsx_Tour_Importer_Accommodation();
