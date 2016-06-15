@@ -33,7 +33,7 @@ var LSX_TOUR_IMPORTER = {
 		jQuery('#lsx-tour-importer-search-form .advanced-search-toggle').on( 'click', function(event) {
 			event.preventDefault();
 
-			jQuery('#lsx-tour-importer-search-form .advanced-search').fadeIn('fast');
+			//jQuery('#lsx-tour-importer-search-form .advanced-search').fadeIn('fast');
 
 		});	
 	},	
@@ -51,11 +51,15 @@ var LSX_TOUR_IMPORTER = {
 			jQuery('.import-list-wrapper').fadeIn('fast');	
 
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
-				jQuery(this).fadeOut('fast', 
+				jQuery(this).parent().parent().fadeOut('fast', 
 		        	function(here){ 
-		            jQuery('#import-list tbody').append(jQuery(this).parent().parent());                    
+		            jQuery('#import-list tbody').append(jQuery(this));                    
 		        });
 			});	
+
+			jQuery('#import-list tbody tr input:checked').each(function(){
+				jQuery(this).parent().parent().fadeIn('fast');
+			});
 		});
 	},	
 

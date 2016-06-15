@@ -370,6 +370,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	        $this->set_map_data($data,$id);
 
+	        $this->set_location_taxonomy($data,$id);
+
         }
         return $id;
 	}	
@@ -379,7 +381,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 */
 	public function set_map_data($data,$id) {
 		$longitude = $latitude = $address = false;
-		$zoom = 15;	
+		$zoom = '15';	
 
 		if(isset($data[0]['position'])){
 
@@ -418,5 +420,48 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        }
 		}
 	}
+	/**
+	 * Saves the longitude and lattitude, as well as sets the map marker.
+	 */
+	public function set_location_taxonomy($data,$id) {
+		$taxonomy = 'location';
+		$terms = false;
+		if(isset($data[0]['position'])){
+			$country_id = 0;
+			if(isset($data[0]['position']['country'])){
+
+				if(!$term = term_exists(trim($data[0]['position']['country']), 'location'))
+		        {
+		            $term = wp_insert_term(trim($data[0]['position']['country']), 'location');
+		            if ( is_wp_error($term) ){
+		            	echo $term->get_error_message();
+		            }
+		            else {
+		            	wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
+		            }
+		        }
+		        else
+		        {
+		            wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
+		        }
+		        $country_id = intval($term['term_id']);
+		    }
+
+			if(isset($data[0]['position']['destination'])){
+
+				$tax_args = array('parent'=>$country_id);
+				if(!$term = term_exists(trim($data[0]['position']['destination']), 'location'))
+		        {
+		            $term = wp_insert_term(trim($data[0]['position']['destination']), 'location', $tax_args);
+		            if ( is_wp_error($term) ){echo $term->get_error_message();}
+		            else { wp_set_object_terms( $id, intval($term['term_id']), 'location',true); }
+		        }
+		        else
+		        {
+		            wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
+		        }				
+			}		
+		}
+	}	
 }
 $lsx_tour_importer_accommodation = new Lsx_Tour_Importer_Accommodation();

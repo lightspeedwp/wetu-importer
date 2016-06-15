@@ -53,8 +53,8 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 */
 	public function register_importer_page() {
         add_management_page(
-            __('LSX Tour Importer','lsx-tour-importer'),
-            __('LSX Tour Importer','lsx-tour-importer'),
+            __('LSX Importer','lsx-tour-importer'),
+            __('LSX Importer','lsx-tour-importer'),
             'manage_options',
             $this->plugin_slug,
             array( $this, 'display_page' )
@@ -120,6 +120,43 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 			</tr>
 		</tfoot>
 	<?php 
-	}	
+	}
+
+	/**
+	 * set_taxonomy with some terms
+	 */
+	public function set_taxonomy($taxonomy,$terms,$id) {
+        $result=array();
+        if(!empty($data))
+        {
+            foreach($data as $k)
+            {
+                if($id)
+                {
+                    if(!$term = term_exists(trim($k), $tax))
+                    {
+                        $term = wp_insert_term(trim($k), $tax);
+                        if ( is_wp_error($term) )
+                        {
+                            echo $term->get_error_message();
+                        }
+                        else
+                        {
+                            wp_set_object_terms( $id, intval($term['term_id']), $taxonomy,true);
+                        }
+                    }
+                    else
+                    {
+                        wp_set_object_terms( $id, intval($term['term_id']), $taxonomy,true);
+                    }
+                }
+                else
+                {
+                    $result[]=trim($k);
+                }
+            }
+        }
+        return $result;
+	}
 }
 $lsx_tour_importer_admin = new Lsx_Tour_Importer_Admin();
