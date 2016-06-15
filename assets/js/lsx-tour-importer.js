@@ -83,14 +83,13 @@ var LSX_TOUR_IMPORTER = {
 		        function(response) {
 		        	current_row.parents('tr').fadeOut('fast', 
 		        	function(here){ 
-			            jQuery(this).remove();
+			            jQuery(this).fadeOut('fast').remove();
 			        });
 		        });
 			});
 		});		
 	}
 }
-
 jQuery(document).ready( function() {
 	LSX_TOUR_IMPORTER.init();
 });
