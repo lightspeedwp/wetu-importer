@@ -386,8 +386,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	        $this->set_checkin_checkout($data,$id);
 
-
-	        
+	        $this->set_video_data($data,$id);
         }
         return $id;
 	}	
@@ -615,13 +614,44 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 		if(!empty($data[0]['features']) && isset($data[0]['features']['check_in_time'])){
 			$time = str_replace('h',':',$data[0]['features']['check_in_time']);
-			$time = date('h:ia',strtotime());
+			$time = date('h:ia',strtotime($time));
 			$this->save_custom_field($time,'checkin_time',$id);
 		}
 		if(!empty($data[0]['features']) && isset($data[0]['features']['check_out_time'])){
 			$time = str_replace('h',':',$data[0]['features']['check_out_time']);
 			$time = date('h:ia',strtotime($time));
 			$this->save_custom_field($time,'checkout_time',$id);
+		}
+	}	
+
+	/**
+	 * Saves the room data
+	 */
+	public function set_video_data($data,$id) {
+		if(!empty($data[0]['content']['youtube_videos']) && is_array($data[0]['content']['youtube_videos'])){
+			$videos = false;
+
+			foreach($data[0]['content']['youtube_videos'] as $video){
+				$temp_video = '';
+				if(isset($video['label'])){
+					$temp_video['title'] = $video['label'];
+				}
+				if(isset($video['description'])){
+					$temp_video['description'] = strip_tags($video['description']);
+				}	
+				if(isset($video['url'])){
+					$temp_video['url'] = $video['url'];
+				}						
+				$temp_video['thumbnail'] = '';
+				$videos[] = $temp_video;
+			}
+
+			if(false !== $id && '0' !== $id){
+				delete_post_meta($id, 'videos');				
+			}
+			foreach($videos as $video){
+		        add_post_meta($id,'videos',$video,false);			
+			}
 		}
 	}			
 }
