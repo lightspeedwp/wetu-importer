@@ -150,7 +150,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
             	<img style="width:64px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
             </div>
-        	
+
+            <div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
+            	<img style="width:32px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
+            </div>            
         </form>	
 	<?php 
 	}	

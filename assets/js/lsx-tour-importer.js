@@ -51,10 +51,7 @@ var LSX_TOUR_IMPORTER = {
 			jQuery('.import-list-wrapper').fadeIn('fast');	
 
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
-				jQuery(this).parent().parent().fadeOut('fast', 
-		        	function(here){ 
-		            jQuery('#import-list tbody').append(jQuery(this));                    
-		        });
+		        jQuery('#import-list tbody').append(jQuery(this).parent().parent());
 			});	
 
 			jQuery('#import-list tbody tr input:checked').each(function(){
