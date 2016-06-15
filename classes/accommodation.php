@@ -379,6 +379,11 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        $this->set_location_taxonomy($data,$id);
 
 	        $this->set_room_data($data,$id);
+
+	        $this->set_rating($data,$id);
+
+	        $this->set_checkin_checkout($data,$id);
+	        
         }
         return $id;
 	}	
@@ -481,13 +486,58 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			}		
 		}
 	}
+
 	/**
-	 * Saves the category as the travel style
+	 * Saves the location
 	 */
 	public function set_taxonomy_style($data,$id) {
 		$taxonomy = 'location';
 		$terms = false;
 		if(isset($data[0]['position'])){
+			$country_id = 0;
+			if(isset($data[0]['position']['country'])){
+
+				if(!$term = term_exists(trim($data[0]['position']['country']), 'location'))
+		        {
+		            $term = wp_insert_term(trim($data[0]['position']['country']), 'location');
+		            if ( is_wp_error($term) ){
+		            	echo $term->get_error_message();
+		            }
+		            else {
+		            	wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
+		            }
+		        }
+		        else
+		        {
+		            wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
+		        }
+		        $country_id = intval($term['term_id']);
+		    }
+
+			if(isset($data[0]['position']['destination'])){
+
+				$tax_args = array('parent'=>$country_id);
+				if(!$term = term_exists(trim($data[0]['position']['destination']), 'location'))
+		        {
+		            $term = wp_insert_term(trim($data[0]['position']['destination']), 'location', $tax_args);
+		            if ( is_wp_error($term) ){echo $term->get_error_message();}
+		            else { wp_set_object_terms( $id, intval($term['term_id']), 'location',true); }
+		        }
+		        else
+		        {
+		            wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
+		        }				
+			}		
+		}
+	}	
+
+	/**
+	 * Saves the category as the travel style
+	 */
+	public function set_travel_style($data,$id) {
+		$taxonomy = 'travel-style';
+		$terms = false;
+		if(isset($data[0]['category'])){
 			$country_id = 0;
 			if(isset($data[0]['position']['country'])){
 
@@ -560,6 +610,38 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	add_post_meta($id,'number_of_rooms',$room_count,true);
 	        }
 		}
-	}		
+	}
+
+	/**
+	 * Saves the room data
+	 */
+	public function set_rating($data,$id) {
+
+		if(!empty($data[0]['features']) && isset($data[0]['features']['star_authority'])){
+			$rating_type = $data[0]['features']['star_authority'];	
+		}else{
+			$rating_type = 'Unspecified2';
+		}
+		$this->save_custom_field($rating_type,'rating_type',$id);
+
+		if(!empty($data[0]['features']) && isset($data[0]['features']['stars'])){
+			$this->save_custom_field($data[0]['features']['stars'],'rating',$id,true);	
+		}
+	}	
+
+	/**
+	 * Saves the room data
+	 */
+	public function set_checkin_checkout($data,$id) {
+
+		if(!empty($data[0]['features']) && isset($data[0]['features']['check_in_time'])){
+			$time = date('h:ia',strtotime($data[0]['features']['check_in_time']));
+			$this->save_custom_field($time,'checkin_time',$id);
+		}
+		if(!empty($data[0]['features']) && isset($data[0]['features']['check_out_time'])){
+			$time = date('h:ia',strtotime($data[0]['features']['check_out_time']));
+			$this->save_custom_field($time,'checkout_time',$id);
+		}
+	}			
 }
 $lsx_tour_importer_accommodation = new Lsx_Tour_Importer_Accommodation();

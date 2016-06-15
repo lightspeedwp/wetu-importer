@@ -177,6 +177,24 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
         		</ul>
         	</p>
     	<?php }		
-	}	
+	}
+
+	/**
+	 * Saves the room data
+	 */
+	public function save_custom_field($value=false,$meta_key,$id,$decrease=false) {
+		if(false !== $value){
+			if(false !== $decrease){
+				$value = intval($value);
+				$value--;
+			}
+			if(false !== $id && '0' !== $id){
+	        	$prev = get_post_meta($id,$meta_key,true);
+	        	update_post_meta($id,$meta_key,$value,$prev);
+	        }else{
+	        	add_post_meta($id,$meta_key,$value,true);
+	        }	
+		}
+	}		
 }
 $lsx_tour_importer_admin = new Lsx_Tour_Importer_Admin();
