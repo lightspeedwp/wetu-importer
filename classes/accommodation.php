@@ -121,7 +121,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 					</table>
 
-					<p><input disabled="disabled" class="button button-primary" type="submit" value="<?php _e('Import','lsx-tour-importer'); ?>" /></p>
+					<p><input class="button button-primary" type="submit" value="<?php _e('Sync','lsx-tour-importer'); ?>" /></p>
 				</form>
 			</div>
         </div>
@@ -140,6 +140,12 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         	<p>
         		<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
         	</p>
+
+        	<p><a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a></p>
+        	<div class="advanced-search" style="display:none;">
+        		<p><?php _e('Enter several keywords, each on a new line.','lsx-tour-importer'); ?></p>
+        		<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
+        	</div>
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
             	<img style="width:64px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
@@ -196,8 +202,34 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			}
 		}
 	}
+
 	/**
-	 * Connect to wetu
+	 * Grab all the current accommodation posts via the lsx_wetu_id field.
+	 */
+	public function find_current_accommodation() {
+		global $wpdb;
+		$return = array();
+
+		$current_accommodation = $wpdb->get_results("
+					SELECT key1.post_id,key1.meta_value
+					FROM {$wpdb->postmeta} key1
+
+					INNER JOIN  {$wpdb->posts} key2 
+    				ON key1.post_id = key2.ID
+					
+					WHERE key1.meta_key = 'lsx_wetu_id'
+					AND key2.post_type = 'accommodation'
+		");
+		if(null !== $current_accommodation && !empty($current_accommodation)){
+			foreach($current_accommodation as $accom){
+				$return[$accom->meta_value] = $accom;
+			}
+		}
+		return $return;
+	}	
+
+	/**
+	 * Run through the accommodation grabbed from the DB.
 	 */
 	public function process_ajax_search() {
 		$return = false;
@@ -208,13 +240,20 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				$search_keyword = urldecode($_POST['keyword']);
 				$accommodation = json_decode($accommodation);
 				if (!empty($accommodation)) {
+					$current_accommodation = $this->find_current_accommodation();
+
 					foreach($accommodation as $row_key => $row){
 						if(stripos($row->name, $search_keyword) !== false){
-							print_r($row);
-							$searched_items[] = $this->format_row($row);
+
+							$row->post_id = 0;
+							if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
+								$row->post_id = $current_accommodation[$row->id]->post_id;
+							}
+							$searched_items[sanitize_title($row->name)] = $this->format_row($row);
 						}
 					}		
 				}
+				ksort($searched_items);
 				$return = implode($searched_items);
 			}
 		}
@@ -224,14 +263,20 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	public function format_row($row = false){
 		if(false !== $row){
+
+			$status = 'import';
+			if(0 !== $row->post_id){
+				$status = '<a href="'.admin_url('/post.php?post='.$row->post_id.'&action=edit').'" target="_blank">'.get_post_status($row->post_id).'</a>';
+			}
+
 			$row_html = '
-			<tr class="post-'.$row->id.' type-tour" id="post-'.$row->id.'">
+			<tr class="post-'.$row->post_id.' type-tour" id="post-'.$row->post_id.'">
 				<th class="check-column" scope="row">
 					<label for="cb-select-'.$row->id.'" class="screen-reader-text">'.$row->name.'</label>
-					<input type="checkbox" data-identifier="'.$row->id.'" value="'.$row->id.'" name="post[]" id="cb-select-'.$row->id.'">
+					<input type="checkbox" data-identifier="'.$row->id.'" value="'.$row->post_id.'" name="post[]" id="cb-select-'.$row->id.'">
 				</th>
 				<td class="post-title page-title column-title">
-					<strong>'.$row->name.'</strong>
+					<strong>'.$row->name.'</strong> - '.$status.'
 				</td>
 				<td class="date column-date">
 					<abbr title="'.date('Y/m/d',strtotime($row->last_modified)).'">'.date('Y/m/d',strtotime($row->last_modified)).'</abbr><br>Last Modified
@@ -251,7 +296,13 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		$return = false;
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_import_items' && isset($_POST['type']) && $_POST['type'] === 'accommodation' && isset($_POST['wetu_id'])){
 			
-			$wetu_id = $_POST['wetu_id'];	
+			$wetu_id = $_POST['wetu_id'];
+			if(isset($_POST['post_id'])){
+				$post_id = $_POST['post_id'];	
+			}else{
+				$post_id = 0;
+			}
+
             $jdata=file_get_contents("http://wetu.com/API/Pins/".$this->options['api_key']."/Get?ids=".$wetu_id);
 
             if($jdata)
@@ -259,7 +310,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
                 $adata=json_decode($jdata,true);
                 if(!empty($adata))
                 {
-                	$return = $this->import_row($adata);
+                	$return = $this->import_row($adata,$wetu_id,$post_id);
                 }
             }
 		}
@@ -270,37 +321,55 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	/**
 	 * Connect to wetu
 	 */
-	public function import_row($data) {
-		$id = false;
+	public function import_row($data,$wetu_id,$id=0) {
 
         if(trim($data[0]['type'])=='Accommodation')
         {
-	        $post_name = '';
-	        if(!empty($data[0]['name'])){
-	            $post_name = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'accommodation', 0);
-	        }
-
-	        $data_post_content = '';
-	        if(!empty($data[0]['content']['general_description']))
-	        {
-	            $data_post_content = $data[0]['content']['general_description'];
-	        }
-	        $data_post_excerpt = '';       	                	
-
+	        $post_name = $data_post_content = $data_post_excerpt = '';
 	        $post = array(
-	          'post_content'   => wp_strip_all_tags($data_post_content),// The full text of the post.
-	          'post_name'      => $post_name,// The name (slug) for your post
-	          'post_excerpt'   => $data_post_excerpt, // For all your post excerpt needs.
 	          'post_type'		=> 'accommodation',
 	        );
+
 	        if(false !== $id && '0' !== $id){
 	        	$post['ID'] = $id;
 	        	$id = wp_update_post($post);
+	        	$prev_date = get_post_meta($id,'lsx_wetu_modified_date',true);
+	        	update_post_meta($id,'lsx_wetu_modified_date',strtotime($data[0]['last_modified']),$prev_date);
 	        }else{
+
+		        //Set the name
+		        if(!empty($data[0]['name'])){
+		            $post_name = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'accommodation', 0);
+		        }
+		        //Set the content
+		        if(!empty($data[0]['content']['general_description']))
+		        {
+		            $data_post_content = $data[0]['content']['general_description'];
+		        }
+	    	 	//Set the excerpt
+		        if(!empty($data[0]['content']['extended_description'])){
+		            $data_post_excerpt = $data[0]['content']['extended_description'];
+		        }elseif(!empty($data[0]['content']['teaser_description'])){
+		        	$data_post_excerpt = $data[0]['content']['teaser_description'];
+		        }
+
+	        	$post['post_content'] = wp_strip_all_tags($data_post_content);
+	        	$post['post_excerpt'] = $data_post_excerpt;
+	        	$post['post_name'] = $post_name;
+
 	        	$post['post_title'] = $data[0]['name'];
 	        	$post['post_status'] = 'pending';
 	        	$id = wp_insert_post($post);
+
+	        	//Save the WETU ID and the Last date it was modified.
+	        	if(false !== $id){
+	        		add_post_meta($id,'lsx_wetu_id',$wetu_id);
+	        		add_post_meta($id,'lsx_wetu_modified_date',strtotime($data[0]['last_modified']));
+	        	}
 	        }
+
+	        $this->set_map_data();
+
         }
         return $id;
 	}	
