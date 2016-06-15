@@ -635,11 +635,13 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	public function set_checkin_checkout($data,$id) {
 
 		if(!empty($data[0]['features']) && isset($data[0]['features']['check_in_time'])){
-			$time = date('h:ia',strtotime($data[0]['features']['check_in_time']));
+			$time = str_replace('h',':',$data[0]['features']['check_in_time']);
+			$time = date('h:ia',strtotime());
 			$this->save_custom_field($time,'checkin_time',$id);
 		}
 		if(!empty($data[0]['features']) && isset($data[0]['features']['check_out_time'])){
-			$time = date('h:ia',strtotime($data[0]['features']['check_out_time']));
+			$time = str_replace('h',':',$data[0]['features']['check_out_time']);
+			$time = date('h:ia',strtotime($time));
 			$this->save_custom_field($time,'checkout_time',$id);
 		}
 	}			
