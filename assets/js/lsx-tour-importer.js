@@ -71,6 +71,16 @@ var LSX_TOUR_IMPORTER = {
 				var wetu_id = jQuery(this).attr('data-identifier');
 				var post_id = jQuery(this).val();
 				var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
+
+				var team_members = [];
+				if('undefined' != jQuery('#import-list input.team').length){
+					jQuery('#import-list input.team').each(function(){
+						if(jQuery(this).attr('checked')){
+							team_members.push(jQuery(this).val());
+						}
+					});
+				}
+
 				var current_row = jQuery(this);
 
 				jQuery.post(lsx_tour_importer_params.ajax_url,
@@ -79,12 +89,13 @@ var LSX_TOUR_IMPORTER = {
 		            'type'		: 			type,
 		            'wetu_id' 	: 			wetu_id,
 		            'post_id'	:			post_id,
+		            'team_members' : 		team_members
 		        },
 		        function(response) {
-		        	current_row.parents('tr').fadeOut('fast', 
+		        	/*current_row.parents('tr').fadeOut('fast', 
 		        	function(here){ 
 			            jQuery(this).fadeOut('fast').remove();
-			        });
+			        });*/
 		        });
 			});
 		});		

@@ -309,14 +309,19 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				$post_id = 0;
 			}
 
-            $jdata=file_get_contents("http://wetu.com/API/Pins/".$this->options['api_key']."/Get?ids=".$wetu_id);
+			if(isset($_POST['team_members'])){
+				$team_members = $_POST['team_members'];	
+			}else{
+				$team_members = false;
+			}
 
+            $jdata=file_get_contents("http://wetu.com/API/Pins/".$this->options['api_key']."/Get?ids=".$wetu_id);
             if($jdata)
             {
                 $adata=json_decode($jdata,true);
                 if(!empty($adata))
                 {
-                	$return = $this->import_row($adata,$wetu_id,$post_id);
+                	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members);
                 }
             }
 		}
@@ -327,7 +332,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	/**
 	 * Connect to wetu
 	 */
-	public function import_row($data,$wetu_id,$id=0) {
+	public function import_row($data,$wetu_id,$id=0,$team_members=false) {
 
         if(trim($data[0]['type'])=='Accommodation')
         {
@@ -374,6 +379,12 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	}
 	        }
 
+
+	        if(post_type_exists('team') && false !== $team_members && '' !== $team_members){
+	        	$this->set_team_member($id,$team_members);
+
+	    	}
+
 	        $this->set_map_data($data,$id);
 
 	        $this->set_location_taxonomy($data,$id);
@@ -389,7 +400,18 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        $this->set_video_data($data,$id);
         }
         return $id;
-	}	
+	}
+
+	/**
+	 * Set the team memberon each item.
+	 */
+	public function set_team_member($id,$team_members) {
+
+		delete_post_meta($id, 'team_to_'.$this->tab_slug);
+		foreach($team_members as $team){
+        	add_post_meta($id,'team_to_'.$this->tab_slug,$team);			
+		}
+	}
 	
 	/**
 	 * Saves the longitude and lattitude, as well as sets the map marker.

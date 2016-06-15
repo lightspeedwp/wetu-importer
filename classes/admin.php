@@ -170,9 +170,11 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
         				$team_members = new WP_Query($team_args);
         					if($team_members->have_posts()){
         						foreach($team_members->posts as $member){ ?>
-        							<li><input type="checkbox" name="team" value="<?php echo $member; ?>"> <?php echo get_the_title($member); ?></li>
+        							<li><input class="team" type="checkbox" value="<?php echo $member; ?>"> <?php echo get_the_title($member); ?></li>
         						<?php }
-        					}
+        					}else{ ?>
+        							<li><input class="team" type="checkbox" value="0"> <?php _e('None','lsx-tour-importer'); ?></li>
+        					<?php }
         				?>
         		</ul>
         	</p>
