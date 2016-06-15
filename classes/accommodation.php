@@ -398,8 +398,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				$latitude = $data[0]['position']['latitude'];
 			}
 
-			if(isset($data[0]['position']['driving_latitude'])){
-				$longitude = $data[0]['position']['driving_latitude'];
+			if(isset($data[0]['position']['driving_longitude'])){
+				$longitude = $data[0]['position']['driving_longitude'];
 			}elseif(isset($data[0]['position']['longitude'])){
 				$longitude = $data[0]['position']['longitude'];
 			}		
