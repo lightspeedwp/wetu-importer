@@ -46,7 +46,28 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));		
 
 		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));	
-		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));			
+		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));	
+
+		$temp_options = get_option('_lsx_lsx-settings',false);
+		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
+			$this->options = $temp_options[$this->plugin_slug];
+			if(isset($this->options['image_scaling'])){
+				$this->scale_images = true;
+				$width = '800';
+				if(isset($this->options['width']) && '' !== $this->options['width']){
+					$width = $this->options['width'];
+				}
+				$height = '600';
+				if(isset($this->options['height']) && '' !== $this->options['height']){
+					$height = $this->options['height'];
+				}
+				$cropping = 'c';
+				if(isset($this->options['cropping']) && '' !== $this->options['cropping']){
+					$cropping = $this->options['cropping'];
+				}				
+				$this->image_scaling_url = 'https://wetu.com/ImageHandler/'.$cropping.$width.'x'.$height.'/';
+			}
+		}			
 	}	
 
 	/**
@@ -385,6 +406,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	    	}
 
+	    	$this->create_main_gallery($data,$id);
+
 	        $this->set_map_data($data,$id);
 
 	        $this->set_location_taxonomy($data,$id);
@@ -675,6 +698,163 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		        add_post_meta($id,'videos',$video,false);			
 			}
 		}
+	}	
+
+	/**
+	 * Creates the main gallery data
+	 */
+	public function create_main_gallery($data,$id) {
+
+		if(!empty($data[0]['content']['images']) && is_array($data[0]['content']['images'])){
+
+			//Finds any previous attachments with the same name and skips over them.
+	    	$attachments_args = array(
+	    			'post_parent' => $id,
+	    			'post_status' => 'inherit',
+	    			'post_type' => 'attachment',
+	    			'order' => 'ASC',
+	    	);   	
+	    	 
+	    	$attachments = new WP_Query($attachments_args);
+	    	$found_attachments = array();
+	    	if($attachments->have_posts()){
+	    		foreach($attachments->posts as $attachment){
+	    			$found_attachments[] = str_replace(array('.jpg','.png','.jpeg'),'',$attachment->post_title);
+	    		}
+	    	}
+
+	    	$counter = 0;
+	    	foreach($data[0]['content']['images'] as $image_data){
+	    		//if($counter > 8){continue;}
+	    		$found_attachments = $this->attach_image($image_data,$id,$found_attachments);
+	    		$counter++;
+	    	}
+    	}
+	}
+
+	/**
+	 * Attaches 1 image
+	 */
+	public function attach_image($v=false,$parent_id,$found_attachments = array()){
+		if(false !== $v){
+	   		$temp_fragment = explode('/',$v['url_fragment']);
+	    	$url_filename = $temp_fragment[count($temp_fragment)-1];
+	    	$url_filename = str_replace(array('.jpg','.png','.jpeg'),'',$url_filename);
+	
+	    	if(in_array($url_filename,$found_attachments)){
+	    		return $found_attachments;
+	    	}
+	    	               
+	        $postdata=array();
+	        if(empty($v['label']))
+	        {
+	            $v['label']='';
+	        }
+	        if(!empty($v['description']))
+	        {
+	            $desc=wp_strip_all_tags($v['description']);
+	            $posdata=array('post_excerpt'=>$desc);
+	        }
+	        if(!empty($v['section']))
+	        {
+	            $desc=wp_strip_all_tags($v['section']);
+	            $posdata=array('post_excerpt'=>$desc);
+	        }
+
+	        $attachID=NULL;  
+	        //Resizor - add option to setting if required
+	        $fragment = str_replace(' ','%20',$v['url_fragment']);
+	        $url = $this->image_scaling_url.$fragment;
+	
+	        $attachID = $this->attach_external_image2($url,$parent_id,'',$v['label'],$postdata);
+	        //echo($attachID.' add image');
+	        if($attachID!=NULL)
+	        {
+	            $found_attachments[] = $v['url_fragment'];
+	        }
+        }	
+        return 	$found_attachments;
+	}
+	public function attach_external_image2( $url = null, $post_id = null, $thumb = null, $filename = null, $post_data = array() ) {
+	
+		if ( !$url || !$post_id ) { return new WP_Error('missing', "Need a valid URL and post ID..."); }
+
+		require_once(ABSPATH . 'wp-admin/includes/file.php');
+		require_once(ABSPATH . 'wp-admin/includes/media.php');
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+		// Download file to temp location, returns full server path to temp file
+		//$tmp = download_url( $url );
+
+		//var_dump($tmp);
+		$tmp = tempnam("/tmp", "FOO");
+
+		$image = file_get_contents($url);
+		file_put_contents($tmp, $image);
+		chmod($tmp,'777');
+
+		preg_match('/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches);    // fix file filename for query strings
+		$url_filename = basename($matches[0]);
+		$url_filename=str_replace('%20','_',$url_filename);
+		// extract filename from url for title
+		$url_type = wp_check_filetype($url_filename);                                           // determine file type (ext and mime/type)
+		 
+		// override filename if given, reconstruct server path
+		if ( !empty( $filename ) && " " != $filename )
+		{
+			$filename = sanitize_file_name($filename);
+			$tmppath = pathinfo( $tmp );      
+
+			$extension = '';  
+			if(isset($tmppath['extension'])){
+				$extension = $tmppath['extension'];
+			}   
+
+			$new = $tmppath['dirname'] . "/". $filename . "." . $extension;
+			rename($tmp, $new);                                                                 // renames temp file on server
+			$tmp = $new;                                                                        // push new filename (in path) to be used in file array later
+		}
+
+		// assemble file data (should be built like $_FILES since wp_handle_sideload() will be using)
+		$file_array['tmp_name'] = $tmp;                                                         // full server path to temp file
+
+		if ( !empty( $filename) && " " != $filename )
+		{
+			$file_array['name'] = $filename . "." . $url_type['ext'];                           // user given filename for title, add original URL extension
+		}
+		else
+		{
+			$file_array['name'] = $url_filename;                                                // just use original URL filename
+		}
+
+		// set additional wp_posts columns
+		if ( empty( $post_data['post_title'] ) )
+		{
+
+			$url_filename=str_replace('%20',' ',$url_filename);
+
+			$post_data['post_title'] = basename($url_filename, "." . $url_type['ext']);         // just use the original filename (no extension)
+		}
+
+		// make sure gets tied to parent
+		if ( empty( $post_data['post_parent'] ) )
+		{
+			$post_data['post_parent'] = $post_id;
+		}
+
+		// required libraries for media_handle_sideload
+
+		// do the validation and storage stuff
+		$att_id = media_handle_sideload( $file_array, $post_id, null, $post_data );             // $post_data can override the items saved to wp_posts table, like post_mime_type, guid, post_parent, post_title, post_content, post_status
+		 
+		// If error storing permanently, unlink
+		if ( is_wp_error($att_id) )
+		{
+			unlink($file_array['tmp_name']);   // clean up
+			return false; // output wp_error
+			//return $att_id; // output wp_error
+		}
+
+		return $att_id;
 	}			
 }
 $lsx_tour_importer_accommodation = new Lsx_Tour_Importer_Accommodation();

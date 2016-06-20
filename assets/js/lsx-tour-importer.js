@@ -92,10 +92,10 @@ var LSX_TOUR_IMPORTER = {
 		            'team_members' : 		team_members
 		        },
 		        function(response) {
-		        	current_row.parents('tr').fadeOut('fast', 
+		        	/*current_row.parents('tr').fadeOut('fast', 
 		        	function(here){ 
 			            jQuery(this).fadeOut('fast').remove();
-			        });
+			        });*/
 		        });
 			});
 		});		
