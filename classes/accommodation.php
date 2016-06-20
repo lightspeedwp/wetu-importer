@@ -138,6 +138,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 							<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','lsx-tour-importer'); ?></li>
 							<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','lsx-tour-importer'); ?></li>
 							<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','lsx-tour-importer'); ?></li>
 							<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','lsx-tour-importer'); ?></li>
 							<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','lsx-tour-importer'); ?></li>
 							<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','lsx-tour-importer'); ?></li>
@@ -439,7 +440,9 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	$this->set_location_taxonomy($data,$id);
 	        }
 
-	        //$this->set_taxonomy_style($data,$id);
+	        if(false !== $importable_content && in_array('category',$importable_content)){
+	        	$this->set_taxonomy_style($data,$id);
+	        }
 
 	        //Set the Room Data
 	        if(false !== $importable_content && in_array('rooms',$importable_content)){
@@ -575,7 +578,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	}
 
 	/**
-	 * Saves the location
+	 * Set the Travel Style
 	 */
 	public function set_taxonomy_style($data,$id) {
 		$terms = false;
@@ -705,7 +708,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	}
 
 	/**
-	 * Saves the room data
+	 * Set the ratings
 	 */
 	public function set_rating($data,$id) {
 
@@ -722,7 +725,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	}	
 
 	/**
-	 * Saves the room data
+	 * Set the Check in and Check out Date
 	 */
 	public function set_checkin_checkout($data,$id) {
 
@@ -739,7 +742,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	}	
 
 	/**
-	 * Saves the room data
+	 * Set the Video date
 	 */
 	public function set_video_data($data,$id) {
 		if(!empty($data[0]['content']['youtube_videos']) && is_array($data[0]['content']['youtube_videos'])){
