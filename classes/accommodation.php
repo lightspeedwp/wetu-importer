@@ -647,10 +647,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		if(!empty($data[0]['rooms']) && is_array($data[0]['rooms'])){
 			$rooms = false;
 
-			$counter = 0;
 			foreach($data[0]['rooms'] as $room){
-				if($counter > 0){ continue; }
-				$counter++;
 
 				$temp_room = '';
 				if(isset($room['name'])){
@@ -800,7 +797,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	    	$counter = 0;
 	    	foreach($data[0]['content']['images'] as $image_data){
-	    		if($counter > 8){continue;}
+	    		//if($counter > 8){continue;}
 	    		$gallery_meta[] = $this->attach_image($image_data,$id,$found_attachments);
 	    		$counter++;
 	    	}
