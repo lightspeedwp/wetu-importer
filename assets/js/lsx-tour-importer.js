@@ -16,12 +16,27 @@ var LSX_TOUR_IMPORTER = {
 			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#lsx-tour-importer-search-form .ajax-loader').html()+'</td></tr>');
 
 			var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
-			var keyword = jQuery('#lsx-tour-importer-search-form input.keyword').val();
+			var keywords = [];
+
+			if('' != jQuery('#lsx-tour-importer-search-form input.keyword').val()){
+				keywords.push(jQuery('#lsx-tour-importer-search-form input.keyword').val());
+			}
+
+			if('' != jQuery('#lsx-tour-importer-search-form .advanced-search textarea').val()){
+				var bulk_keywords = jQuery('#lsx-tour-importer-search-form .advanced-search textarea').val().split('\n');
+				var arrayLength = bulk_keywords.length;
+				for (var i = 0; i < arrayLength; i++) {
+				    keywords.push(bulk_keywords[i]);
+				}				
+			}		
+
+			console.log(keywords);	
+
 			jQuery.post(lsx_tour_importer_params.ajax_url,
 	        {
 	            'action' 	: 			'lsx_tour_importer',
 	            'type'		: 			type,
-	            'keyword' 	: 			keyword
+	            'keyword' 	: 			keywords
 	        },
 	        function(response) {
 	        	jQuery('#posts-filter tbody').html(response);
@@ -32,9 +47,7 @@ var LSX_TOUR_IMPORTER = {
 	watchAdvancedSearch: function() {
 		jQuery('#lsx-tour-importer-search-form .advanced-search-toggle').on( 'click', function(event) {
 			event.preventDefault();
-
-			//jQuery('#lsx-tour-importer-search-form .advanced-search').fadeIn('fast');
-
+			jQuery('#lsx-tour-importer-search-form .advanced-search').fadeIn('fast');
 		});	
 	},	
 	watchClearButton: function() {

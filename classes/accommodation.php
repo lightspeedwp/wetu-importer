@@ -278,19 +278,36 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			$accommodation = get_option('lsx_tour_operator_accommodation',false);
 			if ( false !== $accommodation && isset($_POST['keyword'] )) {
 				$searched_items = false;
-				$search_keyword = urldecode($_POST['keyword']);
+
+				$search_keywords = $_POST['keyword'];
+				if(!is_array($search_keywords)){
+					$search_keywords = array($search_keywords);
+				}
+				$search_keywords[] = '';
+
+				foreach($search_keywords as &$keyword){
+					$keyword = ltrim(rtrim($keyword));
+				}
+
+				print_r($search_keywords);
+
 				$accommodation = json_decode($accommodation);
 				if (!empty($accommodation)) {
 					$current_accommodation = $this->find_current_accommodation();
 
 					foreach($accommodation as $row_key => $row){
-						if(stripos($row->name, $search_keyword) !== false){
 
-							$row->post_id = 0;
-							if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
-								$row->post_id = $current_accommodation[$row->id]->post_id;
+						//Search through each keyword.
+						foreach($search_keywords as $keyword){
+							if(stripos(ltrim(rtrim($row->name)), $keyword) !== false){
+
+								$row->post_id = 0;
+								if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
+									$row->post_id = $current_accommodation[$row->id]->post_id;
+								}
+								$searched_items[sanitize_title($row->name)] = $this->format_row($row);
+
 							}
-							$searched_items[sanitize_title($row->name)] = $this->format_row($row);
 						}
 					}		
 				}
