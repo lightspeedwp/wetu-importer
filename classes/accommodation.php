@@ -130,8 +130,21 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			<div style="display:none;" class="import-list-wrapper">
 				<br />        
 				<form method="get" action="" id="import-list">
-					<h3><?php _e('Options'); ?></h3> 
+					<h3><?php _e('Team Member'); ?></h3> 
 					<?php $this->team_member_checkboxes(); ?>
+
+					<h3><?php _e('What to Import'); ?></h3>
+						<ul>
+							<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','lsx-tour-importer'); ?></li>
+							<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','lsx-tour-importer'); ?></li>
+						</ul>
+					</p>
 
 					<h3><?php _e('Your List'); ?></h3> 
 					<table class="wp-list-table widefat fixed posts">
@@ -336,13 +349,19 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				$team_members = false;
 			}
 
+			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
+				$content = $_POST['content'];	
+			}else{
+				$content = false;
+			}
+
             $jdata=file_get_contents("http://wetu.com/API/Pins/".$this->options['api_key']."/Get?ids=".$wetu_id);
             if($jdata)
             {
                 $adata=json_decode($jdata,true);
                 if(!empty($adata))
                 {
-                	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members);
+                	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members,$content);
                 }
             }
 		}
@@ -353,7 +372,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	/**
 	 * Connect to wetu
 	 */
-	public function import_row($data,$wetu_id,$id=0,$team_members=false) {
+	public function import_row($data,$wetu_id,$id=0,$team_members=false,$importable_content=false) {
 
         if(trim($data[0]['type'])=='Accommodation')
         {
@@ -361,6 +380,25 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        $post = array(
 	          'post_type'		=> 'accommodation',
 	        );
+
+	        //Set the post_content
+	        if(false !== $importable_content && in_array('description',$importable_content)){
+		        if(!empty($data[0]['content']['extended_description']))
+		        {
+		            $data_post_content = $data[0]['content']['extended_description'];
+		        }
+	        	$post['post_content'] = wp_strip_all_tags($data_post_content);
+	        }
+
+	        //set the post_excerpt
+	        if(false !== $importable_content && in_array('excerpt',$importable_content)){
+		        if(!empty($data[0]['content']['teaser_description'])){
+		        	$data_post_excerpt = $data[0]['content']['teaser_description'];
+		        }elseif(!empty($data[0]['content']['general_description'])){
+		            $data_post_excerpt = $data[0]['content']['general_description'];
+		        }	   
+		        $post['post_excerpt'] = $data_post_excerpt;     	
+	        }
 
 	        if(false !== $id && '0' !== $id){
 	        	$post['ID'] = $id;
@@ -373,22 +411,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		        if(!empty($data[0]['name'])){
 		            $post_name = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'accommodation', 0);
 		        }
-		        //Set the content
-		        if(!empty($data[0]['content']['general_description']))
-		        {
-		            $data_post_content = $data[0]['content']['general_description'];
-		        }
-	    	 	//Set the excerpt
-		        if(!empty($data[0]['content']['extended_description'])){
-		            $data_post_excerpt = $data[0]['content']['extended_description'];
-		        }elseif(!empty($data[0]['content']['teaser_description'])){
-		        	$data_post_excerpt = $data[0]['content']['teaser_description'];
-		        }
-
-	        	$post['post_content'] = wp_strip_all_tags($data_post_content);
-	        	$post['post_excerpt'] = $data_post_excerpt;
 	        	$post['post_name'] = $post_name;
-
 	        	$post['post_title'] = $data[0]['name'];
 	        	$post['post_status'] = 'pending';
 	        	$id = wp_insert_post($post);
@@ -400,27 +423,43 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	}
 	        }
 
-
+	        //Set the team member if it is there
 	        if(post_type_exists('team') && false !== $team_members && '' !== $team_members){
 	        	$this->set_team_member($id,$team_members);
 
 	    	}
 
-	    	$this->create_main_gallery($data,$id);
+	        //Import the main gallery
+	        if(false !== $importable_content && in_array('gallery',$importable_content)){	    	
+	    		$this->create_main_gallery($data,$id);
+	        }
 
-	        $this->set_map_data($data,$id);
+	        if(false !== $importable_content && in_array('location',$importable_content)){
+	        	$this->set_map_data($data,$id);
+	        	$this->set_location_taxonomy($data,$id);
+	        }
 
-	        $this->set_location_taxonomy($data,$id);
+	        //$this->set_taxonomy_style($data,$id);
 
-	        $this->set_taxonomy_style($data,$id);
+	        //Set the Room Data
+	        if(false !== $importable_content && in_array('rooms',$importable_content)){
+	        	$this->set_room_data($data,$id);
+	    	}
 
-	        $this->set_room_data($data,$id);
+	    	//Set the rating
+	    	if(false !== $importable_content && in_array('rating',$importable_content)){
+	       		$this->set_rating($data,$id);
+	    	}
 
-	        $this->set_rating($data,$id);
+	    	//Set the checkin checkout data
+	    	if(false !== $importable_content && in_array('checkin',$importable_content)){
+	        	$this->set_checkin_checkout($data,$id);
+	        }
 
-	        $this->set_checkin_checkout($data,$id);
-
-	        $this->set_video_data($data,$id);
+	        //Import the videos
+	        if(false !== $importable_content && in_array('videos',$importable_content)){
+	        	$this->set_video_data($data,$id);
+	        }
         }
         return $id;
 	}
@@ -606,7 +645,11 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			$rooms = false;
 			$room_count = count($data[0]['rooms']);
 
+			$counter = 0;
 			foreach($data[0]['rooms'] as $room){
+				if($counter > 0){ continue; }
+				$counter++;
+
 				$temp_room = '';
 				if(isset($room['name'])){
 					$temp_room['title'] = $room['name'];
@@ -616,6 +659,27 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				}			
 				$temp_room['price'] = 0;
 				$temp_room['type'] = 'room';
+
+				if(!empty($room['images']) && is_array($room['images'])){
+			    	$attachments_args = array(
+			    			'post_parent' => $id,
+			    			'post_status' => 'inherit',
+			    			'post_type' => 'attachment',
+			    			'order' => 'ASC',
+			    	);   	
+			    	$attachments = new WP_Query($attachments_args);
+			    	$found_attachments = array();
+
+			    	if($attachments->have_posts()){
+			    		foreach($attachments->posts as $attachment){
+			    			$found_attachments[] = str_replace(array('.jpg','.png','.jpeg'),'',$attachment->post_title);
+			    		}
+			    	}
+
+					foreach($room['images'] as $image_data){
+			    		$temp_room['gallery'][] = $this->attach_image($image_data,$id,$found_attachments);
+			    	}
+				}
 				$rooms[] = $temp_room;
 			}
 
