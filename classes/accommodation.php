@@ -643,7 +643,6 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	public function set_room_data($data,$id) {
 		if(!empty($data[0]['rooms']) && is_array($data[0]['rooms'])){
 			$rooms = false;
-			$room_count = count($data[0]['rooms']);
 
 			$counter = 0;
 			foreach($data[0]['rooms'] as $room){
@@ -688,6 +687,12 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			}
 			foreach($rooms as $room){
 		        add_post_meta($id,'units',$room,false);			
+			}
+
+			if(isset($data[0]['features']) && isset($data[0]['features']['rooms'])){
+				$room_count = $data[0]['features']['rooms'];
+			}else{
+				$room_count = count($data[0]['rooms']);
 			}
 
 			if(false !== $id && '0' !== $id){
