@@ -68,6 +68,7 @@ var LSX_TOUR_IMPORTER = {
 			
 			counter = 0;
 			jQuery('#import-list tr input:checked').each(function(){
+
 				var wetu_id = jQuery(this).attr('data-identifier');
 				var post_id = jQuery(this).val();
 				var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
@@ -80,7 +81,6 @@ var LSX_TOUR_IMPORTER = {
 						}
 					});
 				}
-
 				var content = [];
 				if('undefined' != jQuery('#import-list input.content').length){
 					jQuery('#import-list input.content').each(function(){
@@ -90,6 +90,8 @@ var LSX_TOUR_IMPORTER = {
 					});
 				}				
 
+				jQuery(this).hide();
+				jQuery(this).parents('tr').find('.check-column').append(jQuery('#lsx-tour-importer-search-form .ajax-loader-small').html());
 				var current_row = jQuery(this);
 
 				jQuery.post(lsx_tour_importer_params.ajax_url,
@@ -102,10 +104,10 @@ var LSX_TOUR_IMPORTER = {
 		            'content'	: 			content
 		        },
 		        function(response) {
-		        	/*current_row.parents('tr').fadeOut('fast', 
+		        	current_row.parents('tr').fadeOut('fast', 
 		        	function(here){ 
 			            jQuery(this).fadeOut('fast').remove();
-			        });*/
+			        });
 		        });
 			});
 		});		
