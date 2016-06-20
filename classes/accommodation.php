@@ -717,17 +717,29 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	    	 
 	    	$attachments = new WP_Query($attachments_args);
 	    	$found_attachments = array();
+	    	$gallery_meta = array();
+
 	    	if($attachments->have_posts()){
 	    		foreach($attachments->posts as $attachment){
 	    			$found_attachments[] = str_replace(array('.jpg','.png','.jpeg'),'',$attachment->post_title);
+	    			$gallery_meta[] = $attachment->ID;
 	    		}
 	    	}
 
 	    	$counter = 0;
 	    	foreach($data[0]['content']['images'] as $image_data){
-	    		//if($counter > 8){continue;}
-	    		$found_attachments = $this->attach_image($image_data,$id,$found_attachments);
+	    		if($counter > 8){continue;}
+	    		$gallery_meta[] = $this->attach_image($image_data,$id,$found_attachments);
 	    		$counter++;
+	    	}
+
+	    	if(!empty($gallery_meta)){
+	    		delete_post_meta($id,'gallery');
+	    		foreach($gallery_meta as $gallery_id){
+	    			if(false !== $gallery_id && '' !== $gallery_id && !is_array($gallery_id)){
+	    				add_post_meta($id,'gallery',$gallery_id,false);
+	    			}
+	    		}
 	    	}
     	}
 	}
@@ -742,7 +754,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	    	$url_filename = str_replace(array('.jpg','.png','.jpeg'),'',$url_filename);
 	
 	    	if(in_array($url_filename,$found_attachments)){
-	    		return $found_attachments;
+	    		return false;
 	    	}
 	    	               
 	        $postdata=array();
@@ -767,13 +779,14 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        $url = $this->image_scaling_url.$fragment;
 	
 	        $attachID = $this->attach_external_image2($url,$parent_id,'',$v['label'],$postdata);
+
 	        //echo($attachID.' add image');
 	        if($attachID!=NULL)
 	        {
-	            $found_attachments[] = $v['url_fragment'];
+	            return $attachID;
 	        }
         }	
-        return 	$found_attachments;
+        return 	false;
 	}
 	public function attach_external_image2( $url = null, $post_id = null, $thumb = null, $filename = null, $post_data = array() ) {
 	
