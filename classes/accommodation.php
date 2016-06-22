@@ -145,7 +145,6 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 							<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','lsx-tour-importer'); ?></li>
 							<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','lsx-tour-importer'); ?></li>
 						</ul>
-					</p>
 
 					<h3><?php _e('Your List'); ?></h3> 
 					<table class="wp-list-table widefat fixed posts">
@@ -455,6 +454,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        if(false !== $importable_content && in_array('location',$importable_content)){
 	        	$this->set_map_data($data,$id);
 	        	$this->set_location_taxonomy($data,$id);
+
+	        	if(post_type_exists('destination')){
+	        		$this->connect_destinations($data,$id);
+	        	}
 	        }
 
 	        if(false !== $importable_content && in_array('category',$importable_content)){
@@ -593,6 +596,37 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			}		
 		}
 	}
+
+	/**
+	 * Connects the destinations post type
+	 */
+	public function connect_destinations($data,$id) {
+		if(isset($data[0]['position'])){
+		    $destinations = false;
+		    if(isset($data[0]['position']['country'])){
+		    	$destinations['country'] = $data[0]['position']['country'];
+		    }
+		    if(isset($data[0]['position']['destination'])){
+		    	$destinations['destination'] = $data[0]['position']['destination'];
+		    }
+		    
+		    if(false !== $destinations){	
+		    	$prev_values = get_post_meta($id,'destination_to_accommodation',false);
+		    	if(false === $prev_values || !is_array($prev_values)){
+		    		$prev_values = array();
+		    	}
+			    foreach($destinations as $key => $value){
+				    $destination = get_page_by_title(ltrim(rtrim($value)), 'OBJECT', 'destination');
+	                if (null !== $destination) {
+	                	if(!in_array($destination->ID,$prev_values)){
+	                   		add_post_meta($id,'destination_to_accommodation',$destination->ID,false);
+	                   		add_post_meta($destination->ID,'accommodation_to_destination',$id,false);
+	                	}
+	                } 		    	
+			    }	
+			}
+		}
+	}	
 
 	/**
 	 * Set the Travel Style
