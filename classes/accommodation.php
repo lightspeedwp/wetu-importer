@@ -174,15 +174,17 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         	<input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>" />
 
         	<h3><?php _e('Search','lsx-tour-importer'); ?></h3>
-        	<p>
+        	<div class="normal-search">
         		<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
-        	</p>
-
-        	<p><a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a></p>
-        	<div class="advanced-search" style="display:none;">
+        	</div>
+        	<div class="advanced-search hidden" style="display:none;">
         		<p><?php _e('Enter several keywords, each on a new line.','lsx-tour-importer'); ?></p>
         		<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
-        	</div>
+        		<input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
+        	</div>    
+
+        	<p><a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a> | <a class="my-accommodation-search-toggle" href="#"><?php _e('My Accommodation','lsx-tour-importer'); ?></a></p>
+
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
             	<img style="width:64px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
@@ -277,18 +279,20 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			$accommodation = get_option('lsx_tour_operator_accommodation',false);
 			if ( false !== $accommodation && isset($_POST['keyword'] )) {
 				$searched_items = false;
-
 				$search_keywords = $_POST['keyword'];
+				$my_accommodation = false;
+
 				if(!is_array($search_keywords)){
 					$search_keywords = array($search_keywords);
 				}
-				$search_keywords[] = '';
-
 				foreach($search_keywords as &$keyword){
 					$keyword = ltrim(rtrim($keyword));
 				}
 
-				print_r($search_keywords);
+				
+				if(in_array('my-posts',$search_keywords)){
+					$my_accommodation = true;
+				}
 
 				$accommodation = json_decode($accommodation);
 				if (!empty($accommodation)) {
@@ -298,18 +302,23 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 						//Search through each keyword.
 						foreach($search_keywords as $keyword){
-							if(stripos(ltrim(rtrim($row->name)), $keyword) !== false){
-
+							if(stripos(ltrim(rtrim($row->name)), $keyword) !== false || true === $my_accommodation){
 								$row->post_id = 0;
 								if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
 									$row->post_id = $current_accommodation[$row->id]->post_id;
 								}
-								$searched_items[sanitize_title($row->name)] = $this->format_row($row);
 
+								//print_r($my_accommodation);
+								//print_r($row->post_id);
+
+								if(false === $my_accommodation || (true === $my_accommodation && 0 !== $row->post_id)){
+									$searched_items[sanitize_title($row->name)] = $this->format_row($row);
+								}
 							}
 						}
 					}		
 				}
+
 				ksort($searched_items);
 				$return = implode($searched_items);
 			}
@@ -318,6 +327,9 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		die();
 	}
 
+	/**
+	 * Formats the row for output on the screen.
+	 */	
 	public function format_row($row = false){
 		if(false !== $row){
 

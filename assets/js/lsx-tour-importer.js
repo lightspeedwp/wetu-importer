@@ -2,13 +2,22 @@ var LSX_TOUR_IMPORTER = {
 
 	init : function() {
 		if(jQuery('body').hasClass('tools_page_lsx-tour-importer')){
+			this.myAccommodationSearch();
 			this.watchSearch();
 			this.watchAdvancedSearch();
 			this.watchImportButton();
 			this.watchAddToListButton();
 			this.watchClearButton();
 		}
-	},	
+	},
+	myAccommodationSearch: function() {
+		jQuery('#lsx-tour-importer-search-form .my-accommodation-search-toggle').on( 'click', function(event) {
+			event.preventDefault();
+			jQuery('#lsx-tour-importer-search-form input.keyword').val('my-posts');
+			jQuery('#lsx-tour-importer-search-form').submit();
+			jQuery('#lsx-tour-importer-search-form input.keyword').val('');
+		});
+	},		
 	watchSearch: function() {
 		jQuery('#lsx-tour-importer-search-form').on( 'submit', function(event) {
 			event.preventDefault();
@@ -47,7 +56,17 @@ var LSX_TOUR_IMPORTER = {
 	watchAdvancedSearch: function() {
 		jQuery('#lsx-tour-importer-search-form .advanced-search-toggle').on( 'click', function(event) {
 			event.preventDefault();
-			jQuery('#lsx-tour-importer-search-form .advanced-search').fadeIn('fast');
+			if(jQuery('#lsx-tour-importer-search-form .advanced-search').hasClass('hidden')){
+				jQuery('#lsx-tour-importer-search-form .advanced-search').fadeIn('fast').removeClass('hidden');
+				jQuery('#lsx-tour-importer-search-form .normal-search').hide('fast');
+				jQuery('#lsx-tour-importer-search-form .normal-search input.keyword').val('');
+
+			}else{
+				jQuery('#lsx-tour-importer-search-form .advanced-search').fadeOut('fast').addClass('hidden');
+				jQuery('#lsx-tour-importer-search-form .advanced-search textarea').val('');
+				jQuery('#lsx-tour-importer-search-form .normal-search').fadeIn('fast');
+
+			}
 		});	
 	},	
 	watchClearButton: function() {
