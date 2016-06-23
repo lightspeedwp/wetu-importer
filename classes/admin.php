@@ -162,29 +162,46 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 */
 	public function team_member_checkboxes() {
 		if(post_type_exists('team')) { ?>
-    		<h4><?php _e('Team Members','lsx-tour-importer'); ?></h4>
-        	<p>
-        		<ul>
-        			<?php
-        				$team_args=array(
-        					'post_type'	=>	'team',
-        					'post_status' => 'publish',
-        					'nopagin' => true,
-        					'fields' => 'ids'
-        				);
-        				$team_members = new WP_Query($team_args);
-        					if($team_members->have_posts()){
-        						foreach($team_members->posts as $member){ ?>
-        							<li><input class="team" type="checkbox" value="<?php echo $member; ?>"> <?php echo get_the_title($member); ?></li>
-        						<?php }
-        					}else{ ?>
-        							<li><input class="team" type="checkbox" value="0"> <?php _e('None','lsx-tour-importer'); ?></li>
-        					<?php }
-        				?>
-        		</ul>
-        	</p>
+    		<ul>
+    			<?php
+    				$team_args=array(
+    					'post_type'	=>	'team',
+    					'post_status' => 'publish',
+    					'nopagin' => true,
+    					'fields' => 'ids'
+    				);
+    				$team_members = new WP_Query($team_args);
+    					if($team_members->have_posts()){
+    						foreach($team_members->posts as $member){ ?>
+    							<li><input class="team" type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title($member); ?></li>
+    						<?php }
+    					}else{ ?>
+    							<li><input class="team" type="checkbox" value="0" /> <?php _e('None','lsx-tour-importer'); ?></li>
+    					<?php }
+    				?>
+    		</ul>
     	<?php }		
 	}
+
+	/**
+	 * set_taxonomy with some terms
+	 */
+	public function taxonomy_checkboxes($taxonomy=false) {
+		$return = '';
+		if(false !== $taxonomy){
+			$return .= '<ul>';
+			$terms = get_terms($taxonomy,array('empty'=>true));
+			if(!is_wp_error($terms)){
+				foreach($terms as $term){
+					$return .= '<li><input class="'.$taxonomy.'" type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
+				}
+			}else{
+				$return .= '<li><input type="checkbox" value="" /> '.__('None','lsx-tour-importer').'</li>';
+			}
+			$return .= '</ul>';
+		}
+		return $return;		
+	}	
 
 	/**
 	 * Saves the room data

@@ -120,7 +120,15 @@ var LSX_TOUR_IMPORTER = {
 							content.push(jQuery(this).val());
 						}
 					});
-				}				
+				}	
+				var safari_brands = [];
+				if('undefined' != jQuery('#import-list input.accommodation-brand').length){
+					jQuery('#import-list input.accommodation-brand').each(function(){
+						if(jQuery(this).attr('checked')){
+							safari_brands.push(jQuery(this).val());
+						}
+					});
+				}
 
 				jQuery(this).hide();
 				jQuery(this).parents('tr').find('.check-column').append(jQuery('#lsx-tour-importer-search-form .ajax-loader-small').html());
@@ -133,6 +141,7 @@ var LSX_TOUR_IMPORTER = {
 		            'wetu_id' 	: 			wetu_id,
 		            'post_id'	:			post_id,
 		            'team_members' : 		team_members,
+		            'safari_brands' : 		safari_brands,
 		            'content'	: 			content
 		        },
 		        function(response) {

@@ -130,21 +130,36 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			<div style="display:none;" class="import-list-wrapper">
 				<br />        
 				<form method="get" action="" id="import-list">
-					<h3><?php _e('Team Member'); ?></h3> 
-					<?php $this->team_member_checkboxes(); ?>
 
-					<h3><?php _e('What to Import'); ?></h3>
-						<ul>
-							<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','lsx-tour-importer'); ?></li>
-							<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','lsx-tour-importer'); ?></li>
-						</ul>
+					<div class="row">
+						<div style="width:30%;display:block;float:left;">
+							<h3><?php _e('What content to Sync from WETU'); ?></h3>
+							<ul>
+								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','lsx-tour-importer'); ?></li>
+							</ul>
+						</div>
+						<div style="width:30%;display:block;float:left;">
+							<h3><?php _e('Assign a Team Member'); ?></h3> 
+							<?php $this->team_member_checkboxes(); ?>
+						</div>
+
+						<div style="width:30%;display:block;float:left;">
+							<h3><?php _e('Assign a Safari Brand'); ?></h3> 
+							<?php echo $this->taxonomy_checkboxes('accommodation-brand'); ?>	
+						</div>	
+
+						<br clear="both" />			
+					</div>
+
 
 					<h3><?php _e('Your List'); ?></h3> 
 					<table class="wp-list-table widefat fixed posts">
@@ -308,9 +323,6 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 									$row->post_id = $current_accommodation[$row->id]->post_id;
 								}
 
-								//print_r($my_accommodation);
-								//print_r($row->post_id);
-
 								if(false === $my_accommodation || (true === $my_accommodation && 0 !== $row->post_id)){
 									$searched_items[sanitize_title($row->name)] = $this->format_row($row);
 								}
@@ -378,6 +390,12 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				$team_members = false;
 			}
 
+			if(isset($_POST['safari_brands'])){
+				$safari_brands = $_POST['safari_brands'];	
+			}else{
+				$safari_brands = false;
+			}			
+
 			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
 				$content = $_POST['content'];	
 			}else{
@@ -390,7 +408,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
                 $adata=json_decode($jdata,true);
                 if(!empty($adata))
                 {
-                	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members,$content);
+                	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members,$content,$safari_brands);
                 }
             }
 		}
@@ -401,7 +419,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	/**
 	 * Connect to wetu
 	 */
-	public function import_row($data,$wetu_id,$id=0,$team_members=false,$importable_content=false) {
+	public function import_row($data,$wetu_id,$id=0,$team_members=false,$importable_content=false,$safari_brands=false) {
 
         if(trim($data[0]['type'])=='Accommodation')
         {
@@ -458,6 +476,12 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	    	}
 
+	        //Set the safari brand
+	        if(false !== $safari_brands && '' !== $safari_brands){
+	        	$this->set_safari_brands($id,$safari_brands);
+
+	    	}	    	
+
 	        //Import the main gallery
 	        if(false !== $importable_content && in_array('gallery',$importable_content)){	    	
 	    		$this->create_main_gallery($data,$id);
@@ -466,10 +490,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        if(false !== $importable_content && in_array('location',$importable_content)){
 	        	$this->set_map_data($data,$id);
 	        	$this->set_location_taxonomy($data,$id);
+	        }
 
-	        	if(post_type_exists('destination')){
-	        		$this->connect_destinations($data,$id);
-	        	}
+	        if(post_type_exists('destination') && false !== $importable_content && in_array('destination',$importable_content)){
+	        	$this->connect_destinations($data,$id);
 	        }
 
 	        if(false !== $importable_content && in_array('category',$importable_content)){
@@ -509,6 +533,15 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         	add_post_meta($id,'team_to_'.$this->tab_slug,$team);			
 		}
 	}
+
+	/**
+	 * Set the safari brand
+	 */
+	public function set_safari_brands($id,$safari_brands) {
+		foreach($safari_brands as $safari_brand){
+        	wp_set_object_terms( $id, intval($safari_brand), 'accommodation-brand',true);			
+		}
+	}	
 	
 	/**
 	 * Saves the longitude and lattitude, as well as sets the map marker.
@@ -657,51 +690,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	            wp_set_object_terms( $id, intval($term['term_id']), 'travel-style',true);
 	        }				
 		}
-	}	
-
-	/**
-	 * Saves the category as the travel style
-	 */
-	public function set_travel_style($data,$id) {
-		$taxonomy = 'travel-style';
-		$terms = false;
-		if(isset($data[0]['category'])){
-			$country_id = 0;
-			if(isset($data[0]['position']['country'])){
-
-				if(!$term = term_exists(trim($data[0]['position']['country']), 'location'))
-		        {
-		            $term = wp_insert_term(trim($data[0]['position']['country']), 'location');
-		            if ( is_wp_error($term) ){
-		            	echo $term->get_error_message();
-		            }
-		            else {
-		            	wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
-		            }
-		        }
-		        else
-		        {
-		            wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
-		        }
-		        $country_id = intval($term['term_id']);
-		    }
-
-			if(isset($data[0]['position']['destination'])){
-
-				$tax_args = array('parent'=>$country_id);
-				if(!$term = term_exists(trim($data[0]['position']['destination']), 'location'))
-		        {
-		            $term = wp_insert_term(trim($data[0]['position']['destination']), 'location', $tax_args);
-		            if ( is_wp_error($term) ){echo $term->get_error_message();}
-		            else { wp_set_object_terms( $id, intval($term['term_id']), 'location',true); }
-		        }
-		        else
-		        {
-		            wp_set_object_terms( $id, intval($term['term_id']), 'location',true);
-		        }				
-			}		
-		}
-	}	
+	}		
 
 	/**
 	 * Saves the room data
