@@ -8,6 +8,7 @@ var LSX_TOUR_IMPORTER = {
 			this.watchImportButton();
 			this.watchAddToListButton();
 			this.watchClearButton();
+			this.watchBannerButton();
 		}
 	},
 	myAccommodationSearch: function() {
@@ -151,8 +152,33 @@ var LSX_TOUR_IMPORTER = {
 			        });
 		        });
 			});
-		});		
-	}
+		});
+	},
+	watchBannerButton: function() {
+		jQuery('#banners-filter input.button.download').on('click',function(event){
+
+			event.preventDefault();
+			jQuery('#banners-filter tbody tr input:checked').each(function(){
+				var post_id = jQuery(this).val();
+				var current_row = jQuery(this);
+
+				jQuery(this).hide();
+				jQuery(this).parents('tr').find('.check-column').append(jQuery('#banners-filter .ajax-loader-small').html());
+
+				jQuery.post(lsx_tour_importer_params.ajax_url,
+		        {
+		            'action' 	: 			'lsx_import_sync_banners',
+		            'post_id'	:			post_id,
+		        },
+		        function(response) {
+		        	current_row.parents('tr').fadeOut('fast', 
+		        	function(here){ 
+			            jQuery(this).fadeOut('fast').remove();
+			        });
+		        });				
+			});	
+		});
+	},
 }
 jQuery(document).ready( function() {
 	LSX_TOUR_IMPORTER.init();
