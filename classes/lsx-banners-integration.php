@@ -26,7 +26,7 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 	 * @access private
 	 */
 	public function __construct() {
-
+		
 		add_action( 'lsx_tour_importer_admin_tab_'.$this->tab_slug, array($this,'display_page') );
 
 		add_action('wp_ajax_lsx_import_sync_banners',array($this,'sync_new_banner'));	
@@ -39,8 +39,7 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 	public function display_page() {
         ?>
         <div class="wrap">
-            <?php screen_icon(); ?>
-
+			
             <h2><?php _e('Download new banners straight from WETU','lsx-tour-importer'); ?></h2>  
 
 			<form method="get" action="" id="banners-filter">
@@ -66,7 +65,8 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 						$accommodation_args = array(
 							'post_type' => 'accommodation',
 							'post_status' => array('publish','pending','draft','future','private'),
-							'nopagin' => true,
+							'nopagin' => 'true',
+							'posts_per_page' => '1000',
 							'meta_query' => array(
 								'relation' => 'AND',
 								array(
@@ -128,7 +128,7 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 										<input type="checkbox" data-identifier="<?php the_ID(); ?>" value="<?php the_ID(); ?>" name="post[]" id="cb-select-<?php the_ID(); ?>">
 									</th>
 
-									<td class="post-title page-title column-title"><?php the_title(); ?></td>
+									<td class="post-title page-title column-title"><?php echo '<a href="'.admin_url('/post.php?post='.get_the_ID().'&action=edit').'" target="_blank">';the_title(); echo '</a>'; ?></td>
 
 									<td colspan="2" class="thumbnails column-thumbnails">
 										<?php if(false !== $thumbnails_html){ echo implode('',$thumbnails_html); } else { echo '<p>There was an error retrieving your images.</p>'; } ?>
@@ -207,7 +207,8 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 	 * formats the filename
 	 */
 	public function format_filename($post_id) {
-		$base = get_the_title($post_id);
+		$base = str_replace('_',' ',get_the_title($post_id));
+		$base = rawurlencode($base);
 	  $type = get_post_mime_type($post_id);
 	  switch ($type) {
 	    case 'image/jpeg':
@@ -231,8 +232,9 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 
 		//var_dump($tmp);
 		$tmp = tempnam("/tmp", "FOO");
-
+		print_r($url);
 		$image = file_get_contents($url);
+		print_r($image);
 		file_put_contents($tmp, $image);
 		chmod($tmp,'777');
 
