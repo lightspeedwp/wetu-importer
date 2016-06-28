@@ -666,15 +666,15 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	public function set_taxonomy_style($data,$id) {
 		$terms = false;
 		if(isset($data[0]['category'])){
-			if(!$term = term_exists(trim($data[0]['category']), 'travel-style'))
+			if(!$term = term_exists(trim($data[0]['category']), 'accommodation-type'))
 	        {
-	            $term = wp_insert_term(trim($data[0]['category']), 'travel-style');
+	            $term = wp_insert_term(trim($data[0]['category']), 'accommodation-type');
 	            if ( is_wp_error($term) ){echo $term->get_error_message();}
-	            else { wp_set_object_terms( $id, intval($term['term_id']), 'travel-style',true); }
+	            else { wp_set_object_terms( $id, intval($term['term_id']), 'accommodation-type',true); }
 	        }
 	        else
 	        {
-	            wp_set_object_terms( $id, intval($term['term_id']), 'travel-style',true);
+	            wp_set_object_terms( $id, intval($term['term_id']), 'accommodation-type',true);
 	        }				
 		}
 	}		

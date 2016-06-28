@@ -65,11 +65,22 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
         <div class="wrap">
             <?php screen_icon(); ?>
 
+            <h2><?php _e('Download new banners straight from WETU','lsx-tour-importer'); ?></h2>  
+
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo $this->tab_slug; ?>" />
 				
 				<table class="wp-list-table widefat fixed posts">
-					<?php $this->table_header(); ?>
+					<thead>
+						<tr>
+							<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+								<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+								<input type="checkbox" id="cb-select-all-1">
+							</th>
+							<th style="width:15%" class="manage-column column-title " id="title" scope="col">Title</th>
+							<th style="" class="manage-column column-date" id="date" scope="col">Images</th>
+						</tr>
+					</thead>
 				
 					<?php 
 						$accommodation_args = array(
@@ -102,15 +113,45 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 								while($accommodation->have_posts()) {
 									$accommodation->the_post();
 								?>
-								<tr class="post-<?php the_ID(); ?> type-tour status-none" id="post-<?php the_ID(); ?>">
+								<tr class="post-<?php the_ID(); ?> type-tour status-none" id="post-<?php the_ID(); ?>">	
+									<?php
+									$banner_size_appropriate = false;
+									$min_width = '1920';
+									$min_height = '500';
+
+									$img_group = get_post_meta(get_the_ID(),'image_group',true);
+
+									$thumbnails_html = false;
+
+									if(false !== $img_group){
+										foreach($img_group['banner_image'] as $banner_image){
+											$large = wp_get_attachment_image_src($banner_image,'full');
+											$real_width = $large[1];
+											$real_height = $large[2];
+
+											$status = 'optimized';
+											if($real_width < intval($real_width)){
+												$status = 'width not enough.';
+											}
+
+											$thumbnail = wp_get_attachment_image_src($banner_image,'thumbnail');
+											$thumbnails_html[] = '
+												<div style="display:block;float:left;">
+													<img src="'.$thumbnail[0].'" />
+													<p style="text-align:center;">'.$real_width.'px by '.$real_height.'px</p>
+												</div>';
+										}
+									}
+									?>
 									<th class="check-column" scope="row">
 										<label for="cb-select-<?php the_ID(); ?>" class="screen-reader-text"></label>
 										<input type="checkbox" data-identifier="<?php the_ID(); ?>" value="<?php the_ID(); ?>" name="post[]" id="cb-select-<?php the_ID(); ?>">
 									</th>
+
 									<td class="post-title page-title column-title"><?php the_title(); ?></td>
-									<td class="date column-date">							
-									</td>
-									<td class="ssid column-ssid">
+
+									<td colspan="2" class="thumbnails column-thumbnails">
+										<?php if(false !== $thumbnails_html){ echo implode('',$thumbnails_html); } else { echo '<p>There was an error retrieving your images.</p>'; } ?>
 									</td>
 								</tr>
 						<?php 	}
@@ -118,7 +159,16 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 						?>
 					</tbody>
 
-					<?php $this->table_footer(); ?>
+					<tfoot>
+						<tr>
+							<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+								<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+								<input type="checkbox" id="cb-select-all-1">
+							</th>
+							<th style="width:15%;" class="manage-column column-title " id="title" scope="col">Title</th>
+							<th style="" class="manage-column column-date" id="date" scope="col">Images</th>
+						</tr>
+					</tfoot>
 
 				</table>
 
