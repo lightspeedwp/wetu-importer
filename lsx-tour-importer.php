@@ -19,3 +19,7 @@ define('LSX_TOUR_IMPORTER_VER',  '1.0.0' );
 require_once(LSX_TOUR_IMPORTER_PATH.'classes/importer.php');
 require_once(LSX_TOUR_IMPORTER_PATH.'classes/admin.php');
 require_once(LSX_TOUR_IMPORTER_PATH.'classes/accommodation.php');
+
+if(class_exists('Lsx_Banners')){
+	require_once(LSX_TOUR_IMPORTER_PATH.'classes/lsx-banners-integration.php');
+}

@@ -75,6 +75,12 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	            <ul>
 	            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','lsx-tour-importer'); ?></a></li>
 	            </ul>  
+
+	            <h3><?php _e('Additional Tools','lsx-tour-importer'); ?></h3>
+	            <p>I see the LSX Banners Plugin is active. You can sync high res sizes from WETU.</p>
+	            <ul>
+	            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync Banner Images','lsx-tour-importer'); ?></a></li>
+	            </ul>  	            
             <?php } else {
             	do_action('lsx_tour_importer_admin_tab_'.$_GET['tab']);
             } ?>
