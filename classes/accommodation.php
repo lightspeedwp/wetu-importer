@@ -281,18 +281,18 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			$accommodation = get_option('lsx_tour_operator_accommodation',false);
 			if ( false !== $accommodation && isset($_POST['keyword'] )) {
 				$searched_items = false;
-				$search_keywords = $_POST['keyword'];
+				$keyphrases = $_POST['keyword'];
 				$my_accommodation = false;
 
-				if(!is_array($search_keywords)){
-					$search_keywords = array($search_keywords);
+				if(!is_array($keyphrases)){
+					$keyphrases = array($keyphrases);
 				}
-				foreach($search_keywords as &$keyword){
+				foreach($keyphrases as &$keyword){
 					$keyword = ltrim(rtrim($keyword));
 				}
 
 				
-				if(in_array('my-posts',$search_keywords)){
+				if(in_array('my-posts',$keyphrases)){
 					$my_accommodation = true;
 				}
 
@@ -303,8 +303,15 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 					foreach($accommodation as $row_key => $row){
 
 						//Search through each keyword.
-						foreach($search_keywords as $keyword){
-							if(stripos(ltrim(rtrim($row->name)), $keyword) !== false || true === $my_accommodation){
+						foreach($keyphrases as $keyphrase){
+
+							//Make sure the keyphrase is tured into an array
+							$keywords = explode(" ",$keyphrase);
+							if(!is_array($keywords)){
+								$keywords = array($keywords);
+							}
+
+							if(true === $my_accommodation || $this->multineedle_stripos(ltrim(rtrim($row->name)), $keywords) !== false){
 								$row->post_id = 0;
 								if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
 									$row->post_id = $current_accommodation[$row->id]->post_id;
@@ -313,17 +320,40 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 								if(false === $my_accommodation || (true === $my_accommodation && 0 !== $row->post_id)){
 									$searched_items[sanitize_title($row->name)] = $this->format_row($row);
 								}
+
+								//print_r($row->name);
+								//die();
 							}
-						}
+						}	
 					}		
 				}
 
-				ksort($searched_items);
-				$return = implode($searched_items);
+				if(false !== $searched_items){
+					ksort($searched_items);
+					$return = implode($searched_items);
+				}
 			}
 		}
 		print_r($return);
 		die();
+	}
+
+	/**
+	 * Does a multine search
+	 */	
+	public function multineedle_stripos($haystack, $needles, $offset=0) {
+		$found = false;
+		$needle_count = count($needles);
+	    foreach($needles as $needle) {
+	    	if(false !== stripos($haystack, $needle, $offset)){
+	        	$found[] = true;
+	    	}
+	    }
+	    if(false !== $found && $needle_count === count($found)){ 
+	    	return true;
+		}else{
+			return false;
+		}
 	}
 
 	/**
