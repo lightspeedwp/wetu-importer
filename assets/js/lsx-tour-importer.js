@@ -133,8 +133,8 @@ var LSX_TOUR_IMPORTER = {
 
 				jQuery(this).hide();
 				jQuery(this).parents('tr').find('.check-column').append(jQuery('#lsx-tour-importer-search-form .ajax-loader-small').html());
-				var current_row = jQuery(this);
-
+				var current_row = jQuery(this).parents('tr');
+				jQuery(this).remove();
 				jQuery.post(lsx_tour_importer_params.ajax_url,
 		        {
 		            'action' 	: 			'lsx_import_items',
@@ -146,7 +146,7 @@ var LSX_TOUR_IMPORTER = {
 		            'content'	: 			content
 		        },
 		        function(response) {
-		        	current_row.parents('tr').fadeOut('fast', 
+		        	current_row.fadeOut('fast', 
 		        	function(here){ 
 			            jQuery(this).fadeOut('fast').remove();
 			        });
