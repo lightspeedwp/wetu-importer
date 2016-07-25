@@ -85,6 +85,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo $this->tab_slug; ?>" />
 				
+				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','lsx-tour-importer'); ?>" /> 
+					<input class="button button-primary clear" type="button" value="<?php _e('Clear','lsx-tour-importer'); ?>" />
+				</p>				
+
 				<table class="wp-list-table widefat fixed posts">
 					<?php $this->table_header(); ?>
 				
