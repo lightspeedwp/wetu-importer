@@ -146,6 +146,10 @@ var LSX_TOUR_IMPORTER = {
 		            'content'	: 			content
 		        },
 		        function(response) {
+					if('none' == jQuery('.completed-list-wrapper').css('display')){
+						jQuery('.completed-list-wrapper').fadeIn('fast');
+					}
+					jQuery('.completed-list-wrapper ul').append(response);
 		        	current_row.fadeOut('fast', 
 		        	function(here){ 
 			            jQuery(this).fadeOut('fast').remove();
@@ -160,7 +164,7 @@ var LSX_TOUR_IMPORTER = {
 			event.preventDefault();
 			jQuery('#banners-filter tbody tr input:checked').each(function(){
 				var post_id = jQuery(this).val();
-				var current_row = jQuery(this);
+				var current_row = jQuery(this).parents('tr');
 
 				jQuery(this).hide();
 				jQuery(this).parents('tr').find('.check-column').append(jQuery('#banners-filter .ajax-loader-small').html());
@@ -171,7 +175,7 @@ var LSX_TOUR_IMPORTER = {
 		            'post_id'	:			post_id,
 		        },
 		        function(response) {
-		        	current_row.parents('tr').fadeOut('fast', 
+		        	current_row.fadeOut('fast', 
 		        	function(here){ 
 			            jQuery(this).fadeOut('fast').remove();
 			        });
@@ -179,6 +183,7 @@ var LSX_TOUR_IMPORTER = {
 			});	
 		});
 	},
+
 }
 jQuery(document).ready( function() {
 	LSX_TOUR_IMPORTER.init();

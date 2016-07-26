@@ -167,6 +167,12 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 					<p><input class="button button-primary" type="submit" value="<?php _e('Sync','lsx-tour-importer'); ?>" /></p>
 				</form>
 			</div>
+
+			<div style="display:none;" class="completed-list-wrapper">
+				<h3><?php _e('Completed'); ?></h3>
+				<ul>
+				</ul>
+			</div>
         </div>
         <?php
 	}
@@ -179,7 +185,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         <form class="ajax-form" id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php" data-type="accommodation">
         	<input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>" />
 
-        	<h3><?php _e('Search','lsx-tour-importer'); ?></h3>
+        	<h3><span class="dashicons dashicons-search"></span> <?php _e('Search','lsx-tour-importer'); ?></h3>
         	<div class="normal-search">
         		<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
         	</div>
@@ -433,10 +439,15 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
                 }
             }
 		}
-		print_r($return);
+		$this->format_completed_row($return);
 		die();
 	}	
-
+	/**
+	 * Formats the row for the completed list.
+	 */
+	public function format_completed_row($response){
+		echo '<li class="post-'.$response.'"><span class="dashicons dashicons-yes"></span> <a href="'.get_permalink($response).'">'.get_the_title($response).'</a></li>';
+	}
 	/**
 	 * Connect to wetu
 	 */
