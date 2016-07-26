@@ -15,6 +15,15 @@ define('LSX_TOUR_IMPORTER_PATH',  plugin_dir_path( __FILE__ ) );
 define('LSX_TOUR_IMPORTER_URL',  plugin_dir_url( __FILE__ ) );
 define('LSX_TOUR_IMPORTER_VER',  '1.0.0' );
 
+require_once(LSX_TOUR_IMPORTER_PATH.'classes/importer.php');
+require_once(LSX_TOUR_IMPORTER_PATH.'classes/admin.php');
+require_once(LSX_TOUR_IMPORTER_PATH.'classes/accommodation.php');
+require_once(LSX_TOUR_IMPORTER_PATH.'classes/connect_accommodation.php');
+
+if(class_exists('Lsx_Banners')){
+	require_once(LSX_TOUR_IMPORTER_PATH.'classes/lsx-banners-integration.php');
+}
+
 //PLugin Upgrades
 
 if(!class_exists('LSX_API_Manager')){
@@ -62,13 +71,3 @@ function lsx_importer_activate_plugin() {
     }
 }
 register_activation_hook( __FILE__, 'lsx_importer_activate_plugin' );
-
-
-require_once(LSX_TOUR_IMPORTER_PATH.'classes/importer.php');
-require_once(LSX_TOUR_IMPORTER_PATH.'classes/admin.php');
-require_once(LSX_TOUR_IMPORTER_PATH.'classes/accommodation.php');
-require_once(LSX_TOUR_IMPORTER_PATH.'classes/connect_accommodation.php');
-
-if(class_exists('Lsx_Banners')){
-	require_once(LSX_TOUR_IMPORTER_PATH.'classes/lsx-banners-integration.php');
-}

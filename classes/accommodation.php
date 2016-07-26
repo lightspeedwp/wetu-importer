@@ -213,29 +213,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * search_form
 	 */
 	public function update_options_form() {
-
 		echo '<div style="display:none;" class="wetu-status"><h3>'.__('Wetu Status','lsx-tour-importer').'</h3>';
-		$last_refresh_date = get_option('lsx_tour_operator_accommodation_timestamp',false);
-		
-		if(!isset($_GET['refresh_options'])){
-			if(false === $last_refresh_date){
-				echo __('Please update your accommodation list.','lsx-tour-importer');
-			}else{
-				echo __('Last Update - ','lsx-tour-importer').$last_refresh_date;
-			}			
-		?>
-	        <form id="<?php echo $this->plugin_slug; ?>-update-form" method="get" action="tools.php">
-	        	<input type="hidden" name="page" value="<?php echo $this->plugin_slug; ?>" />
-	        	<input type="hidden" name="tab" value="<?php echo $this->tab_slug; ?>" />
-	        	<input type="hidden" name="refresh_options" value="true" />
-	        	<input class="submit button button-primary" type="submit" value="<?php _e('Update','lsx-tour-importer'); ?>" />
-	        </form>	
-		<?php 
-		}elseif('true' === $_GET['refresh_options']){
+		$accommodation = get_option('lsx_tour_operator_accommodation',false);
+		if(false === $accommodation){
 			$this->update_options();
-			?>
-			<p><?php _e('Your accommodation list has been updated, please use the search form below to find what you want.','lsx-tour-importer'); ?></p>
-			<?php
 		}
 		echo '</div>';
 	}
@@ -245,15 +226,11 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * Save the list of Accommodation into an option
 	 */
 	public function update_options() {
-		if(isset($_GET['page']) && $this->plugin_slug === $_GET['page']
-		 && isset($_GET['refresh_options']) && 'true' === $_GET['refresh_options']
-		 && isset($_GET['tab']) && $this->tab_slug === $_GET['tab']) {
-			$data= file_get_contents($this->url);
-			$accommodation  = json_decode($data, true);
-			if (!empty($data)) {
-				update_option('lsx_tour_operator_accommodation',$data);
-				update_option('lsx_tour_operator_accommodation_timestamp',date("d M Y - h:ia",strtotime("+2 Hours")));
-			}
+		$data= file_get_contents($this->url);
+		$accommodation  = json_decode($data, true);
+		if (!empty($data)) {
+			update_option('lsx_tour_operator_accommodation',$data);
+			update_option('lsx_tour_operator_accommodation_timestamp',date("d M Y - h:ia",strtotime("+2 Hours")));
 		}
 	}
 
