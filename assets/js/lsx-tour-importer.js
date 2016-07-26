@@ -9,6 +9,7 @@ var LSX_TOUR_IMPORTER = {
 			this.watchAddToListButton();
 			this.watchClearButton();
 			this.watchBannerButton();
+			this.watchConnectButton();
 		}
 	},
 	myAccommodationSearch: function() {
@@ -183,6 +184,40 @@ var LSX_TOUR_IMPORTER = {
 			});	
 		});
 	},
+	watchConnectButton: function() {
+		jQuery('#connect-accommodation-filter input.button.connect').on('click',function(event){
+
+			event.preventDefault();
+			jQuery('#connect-accommodation-filter tbody tr input:checked').each(function(){
+				var post_id = jQuery(this).val();
+				var type = 'connect_accommodation';
+				var wetu_id = jQuery(this).attr('data-identifier');
+
+				var current_row = jQuery(this).parents('tr');
+
+				jQuery(this).hide();
+				jQuery(this).parents('tr').find('.check-column').append(jQuery('#connect-accommodation-filter .ajax-loader-small').html());
+
+				jQuery.post(lsx_tour_importer_params.ajax_url,
+		        {
+		            'action' 	: 			'lsx_import_connect_accommodation',
+		            'post_id'	:			post_id,
+		            'type'		:			type,
+		            'wetu_id'	:			wetu_id,
+		        },
+		        function(response) {
+					if('none' == jQuery('.completed-list-wrapper').css('display')){
+						jQuery('.completed-list-wrapper').fadeIn('fast');
+					}
+					jQuery('.completed-list-wrapper ul').append(response);		        	
+		        	current_row.fadeOut('fast', 
+		        	function(here){ 
+			            jQuery(this).fadeOut('fast').remove();
+			        });
+		        });				
+			});	
+		});
+	},	
 
 }
 jQuery(document).ready( function() {

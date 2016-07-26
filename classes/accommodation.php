@@ -446,7 +446,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * Formats the row for the completed list.
 	 */
 	public function format_completed_row($response){
-		echo '<li class="post-'.$response.'"><span class="dashicons dashicons-yes"></span> <a href="'.get_permalink($response).'">'.get_the_title($response).'</a></li>';
+		echo '<li class="post-'.$response.'"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="'.get_permalink($response).'">'.get_the_title($response).'</a></li>';
 	}
 	/**
 	 * Connect to wetu

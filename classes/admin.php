@@ -76,11 +76,15 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','lsx-tour-importer'); ?></a></li>
 	            </ul>  
 
-	            <h3><?php _e('Additional Tools','lsx-tour-importer'); ?></h3>
-	            <p>I see the LSX Banners Plugin is active. You can sync high res sizes from WETU.</p>
-	            <ul>
-	            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync Banner Images','lsx-tour-importer'); ?></a></li>
-	            </ul>  	            
+	            
+		            <h3><?php _e('Additional Tools','lsx-tour-importer'); ?></h3>
+		            <ul>
+		            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','lsx-tour-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','lsx-tour-importer'); ?></small></li>
+		            	<?php if(class_exists('Lsx_Banners')){ ?>
+		            		<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync High Res Banner Images','lsx-tour-importer'); ?></a></li>
+		            	<?php } ?>
+		            </ul> 
+	             	            
             <?php } else {
             	do_action('lsx_tour_importer_admin_tab_'.$_GET['tab']);
             } ?>
