@@ -141,12 +141,6 @@ class LSX_API_Manager {
 	 * @return    object|Module_Template    A single instance of this class.
 	 */
 	public static function dashboard_tabs() { ?>
-
-		<tr class="form-field">
-			<tr class="api_table_heading" style="padding-bottom:0px;" scope="row" colspan="2">
-				<label><h3 style="margin-bottom:0px;margin-top: -5px;"> API Settings</h3></label>			
-			</tr>
-		</tr>
 		<tr class="form-field <?php echo $this->product_slug; ?>-wrap">
 			<th class="<?php echo $this->product_slug; ?>_table_heading" style="padding-bottom:0px;" scope="row" colspan="2">
 
