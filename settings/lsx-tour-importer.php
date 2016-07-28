@@ -25,7 +25,7 @@
 					<label for="password"> Password</label>
 				</th>
 				<td>
-					<input type="text"  {{#if password}} value="{{password}}" {{/if}} name="password" />
+					<input type="password"  {{#if password}} value="{{password}}" {{/if}} name="password" />
 				</td>
 			</tr>				
 			<tr class="form-field banner-wrap">
