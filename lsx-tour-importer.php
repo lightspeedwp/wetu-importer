@@ -29,6 +29,22 @@ if(class_exists('Lsx_Banners')){
 if(!class_exists('LSX_API_Manager')){
 	require_once(LSX_TOUR_IMPORTER_PATH.'vendor/lsx-api-class/lsx-api-manager-class.php');
 }
+
+function lsx_importer_api_admin_init(){
+	$data = lsx_importer_get_api_details();
+
+	$api_array = array(
+		'product_id'	=>		'Wetu Importer',
+		'version'		=>		'1.0',
+		'instance'		=>		get_option('lsx_to_api_instance',false),
+		'email'			=>		$data['email'],
+		'api_key'		=>		$data['api_key'],
+		'file'			=>		'lsx-tour-importer.php'
+	);
+	$lsx_to_api_manager = new LSX_API_Manager($api_array);
+}
+add_action('admin_head','lsx_importer_api_admin_init');
+
 /** 
  *	Grabs the email and api key from the LSX TO Settings.
  */
@@ -46,17 +62,7 @@ function lsx_importer_get_api_details(){
 	}
 	return $data;
 }
-$data = lsx_importer_get_api_details();
 
-$api_array = array(
-	'product_id'	=>		'Wetu Importer',
-	'version'		=>		'1.0',
-	'instance'		=>		get_option('lsx_to_api_instance',false),
-	'email'			=>		$data['email'],
-	'api_key'		=>		$data['api_key'],
-	'file'			=>		'lsx-tour-importer.php'
-);
-$lsx_to_api_manager = new LSX_API_Manager($api_array);
 
 /**
  * Run when the plugin is active, and generate a unique password for the site instance.

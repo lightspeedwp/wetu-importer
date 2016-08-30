@@ -102,7 +102,7 @@ class LSX_API_Manager {
 		$this->license_check_url = 'https://www.lsdev.biz/wc-api/license-status-check';			
 
 
-		if(isset($_GET['page']) && $_GET['page'] === 'lsx-lsx-settings'){
+		if(isset($_GET['page']) && in_array($_GET['page'],apply_filters('lsx_api_manager_options_pages',array(false)))){
 			$this->query('activation');
 			$this->status = $this->check_status();
 		}
