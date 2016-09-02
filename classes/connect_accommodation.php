@@ -196,6 +196,8 @@ class Lsx_Tour_Importer_Connect_Accommodation extends Lsx_Tour_Importer_Admin {
 			//remove the extra accommodation
 			if(null !== $current_accommodation && !empty($current_accommodation)){
 				$all_accommodation = array_diff($this->format_array($all_accommodation,'ID'), $this->format_array($current_accommodation,'post_id'));
+			}elseif(null !== $current_accommodation && empty($current_accommodation)){
+				$all_accommodation = $this->format_array($current_accommodation,'post_id');
 			}
 
 			$return = $all_accommodation;
