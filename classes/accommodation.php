@@ -228,8 +228,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	public function update_options() {
 		$data= file_get_contents($this->url);
 		$accommodation  = json_decode($data, true);
-		if (!empty($data)) {
-			update_option('lsx_tour_operator_accommodation',$data);
+		if (!empty($accommodation)) {
+			update_option('lsx_tour_operator_accommodation',json_encode($accommodation));
 			update_option('lsx_tour_operator_accommodation_timestamp',date("d M Y - h:ia",strtotime("+2 Hours")));
 		}
 	}
