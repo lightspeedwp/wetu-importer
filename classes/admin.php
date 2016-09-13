@@ -10,6 +10,20 @@
 class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 
 	/**
+	 * The previously attached images
+	 *
+	 * @var      array()
+	 */
+	public $found_attachments = array();	
+
+	/**
+	 * The gallery ids for the found attachements
+	 *
+	 * @var      array()
+	 */
+	public $gallery_meta = array();		
+
+	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since 1.0.0
@@ -228,6 +242,31 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	        }else{
 	        	add_post_meta($id,$meta_key,$value,true);
 	        }	
+		}
+	}	
+
+	/**
+	 * grabs any attachments for the current item
+	 */
+	public function find_attachments($id=false) {
+		if(false !== $id){
+			if(false === $this->found_attachments){
+		    	$attachments_args = array(
+		    			'post_parent' => $id,
+		    			'post_status' => 'inherit',
+		    			'post_type' => 'attachment',
+		    			'order' => 'ASC',
+		    	);   	
+		    	 
+		    	$attachments = new WP_Query($attachments_args);
+
+		    	if($attachments->have_posts()){
+		    		foreach($attachments->posts as $attachment){
+		    			$this->found_attachments[] = str_replace(array('.jpg','.png','.jpeg'),'',$attachment->post_title);
+		    			$this->gallery_meta[] = $attachment->ID;
+		    		}
+		    	}
+			}
 		}
 	}		
 }

@@ -25,7 +25,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 *
 	 * @var      string
 	 */
-	public $url = false;	
+	public $url = false;		
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -143,6 +143,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 							<h4><?php _e('Additional Content'); ?></h4>
 							<ul>
 								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','lsx-tour-importer'); ?></li>
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
@@ -485,11 +486,14 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        		add_post_meta($id,'lsx_wetu_modified_date',strtotime($data[0]['last_modified']));
 	        	}
 	        }
+	        //Setup some default for use in the import
+	        if(false !== $importable_content && (in_array('gallery',$importable_content) || in_array('banner_image',$importable_content) || in_array('featured_image',$importable_content))){
+				$this->find_attachments($id);
+			}
 
 	        //Set the team member if it is there
 	        if(post_type_exists('team') && false !== $team_members && '' !== $team_members){
 	        	$this->set_team_member($id,$team_members);
-
 	    	}
 
 	        //Set the safari brand
@@ -497,11 +501,6 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	$this->set_safari_brands($id,$safari_brands);
 
 	    	}	    	
-
-	        //Import the main gallery
-	        if(false !== $importable_content && in_array('gallery',$importable_content)){	    	
-	    		$this->create_main_gallery($data,$id);
-	        }
 
 	        if(false !== $importable_content && in_array('location',$importable_content)){
 	        	$this->set_map_data($data,$id);
@@ -550,6 +549,15 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        if(false !== $importable_content && in_array('videos',$importable_content)){
 	        	$this->set_video_data($data,$id);
 	        }
+
+	        //Set the featured image
+	        if(false !== $importable_content && in_array('featured_image',$importable_content)){
+	        	$this->set_featured_image($data,$id);
+	        }
+	        //Import the main gallery
+	        if(false !== $importable_content && in_array('gallery',$importable_content)){	    	
+	    		$this->create_main_gallery($data,$id);
+	        }	        	        	        
         }
         return $id;
 	}
@@ -900,57 +908,46 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	/**
 	 * Creates the main gallery data
 	 */
+	public function set_featured_image($data,$id) {
+		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){	
+		}	
+	}	
+
+	/**
+	 * Creates the main gallery data
+	 */
 	public function create_main_gallery($data,$id) {
 
-		if(!empty($data[0]['content']['images']) && is_array($data[0]['content']['images'])){
-
-			//Finds any previous attachments with the same name and skips over them.
-	    	$attachments_args = array(
-	    			'post_parent' => $id,
-	    			'post_status' => 'inherit',
-	    			'post_type' => 'attachment',
-	    			'order' => 'ASC',
-	    	);   	
-	    	 
-	    	$attachments = new WP_Query($attachments_args);
-	    	$found_attachments = array();
-	    	$gallery_meta = array();
-
-	    	if($attachments->have_posts()){
-	    		foreach($attachments->posts as $attachment){
-	    			$found_attachments[] = str_replace(array('.jpg','.png','.jpeg'),'',$attachment->post_title);
-	    			$gallery_meta[] = $attachment->ID;
-	    		}
-	    	}
+		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
 
 	    	$counter = 0;
 	    	foreach($data[0]['content']['images'] as $image_data){
 	    		//if($counter > 8){continue;}
-	    		$gallery_meta[] = $temp_id = $this->attach_image($image_data,$id,$found_attachments);
+	    		$this->gallery_meta[] = $temp_id = $this->attach_image($image_data,$id);
 	    		$counter++;
 	    	}
 
-	    	if(!empty($gallery_meta)){
+	    	if(!empty($this->gallery_meta)){
 	    		delete_post_meta($id,'gallery');
-	    		foreach($gallery_meta as $gallery_id){
+	    		foreach($this->gallery_meta as $gallery_id){
 	    			if(false !== $gallery_id && '' !== $gallery_id && !is_array($gallery_id)){
 	    				add_post_meta($id,'gallery',$gallery_id,false);
 	    			}
 	    		}
 	    	}
     	}
-	}
+	}	
 
 	/**
 	 * Attaches 1 image
 	 */
-	public function attach_image($v=false,$parent_id,$found_attachments = array()){
+	public function attach_image($v=false,$parent_id){
 		if(false !== $v){
 	   		$temp_fragment = explode('/',$v['url_fragment']);
 	    	$url_filename = $temp_fragment[count($temp_fragment)-1];
 	    	$url_filename = str_replace(array('.jpg','.png','.jpeg'),'',$url_filename);
 	
-	    	if(in_array($url_filename,$found_attachments)){
+	    	if(in_array($url_filename,$this->found_attachments)){
 	    		return false;
 	    	}
 	    	               
