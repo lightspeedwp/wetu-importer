@@ -909,7 +909,17 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * Creates the main gallery data
 	 */
 	public function set_featured_image($data,$id) {
-		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){	
+		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
+	    	$this->featured_image = $this->attach_image($data[0]['content']['images'][0],$id);
+
+	    	if(false !== $this->featured_image){
+	    		delete_post_meta($id,'_thumbnail_id');
+	    		add_post_meta($id,'_thumbnail_id',$this->featured_image,true);
+
+	    		if(!empty($this->gallery_meta) && !in_array($this->featured_image,$this->gallery_meta)){
+	    			add_post_meta($id,'gallery',$this->featured_image,false);
+	    		}
+	    	}			
 		}	
 	}	
 
@@ -922,7 +932,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	    	$counter = 0;
 	    	foreach($data[0]['content']['images'] as $image_data){
-	    		//if($counter > 8){continue;}
+	    		if($counter === 0 && false !== $this->featured_image){continue;}
 	    		$this->gallery_meta[] = $temp_id = $this->attach_image($image_data,$id);
 	    		$counter++;
 	    	}
