@@ -133,9 +133,16 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 								<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="friendly" /> <?php _e('Friendly','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','lsx-tour-importer'); ?></li>
+							</ul>
+							<h4><?php _e('Additional Content'); ?></h4>
+							<ul>
+								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','lsx-tour-importer'); ?></li>
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
@@ -524,6 +531,21 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	$this->set_checkin_checkout($data,$id);
 	        }
 
+	    	//Set the Spoken Languages
+	    	if(false !== $importable_content && in_array('spoken_languages',$importable_content)){
+	       		$this->set_spoken_languages($data,$id);
+	    	}
+
+	    	//Set the friendly options
+	    	if(false !== $importable_content && in_array('friendly',$importable_content)){
+	       		$this->set_friendly($data,$id);
+	    	}
+
+	    	//Set the special_interests
+	    	if(false !== $importable_content && in_array('special_interests',$importable_content)){
+	       		$this->set_special_interests($data,$id);
+	    	}	    		    		        
+
 	        //Import the videos
 	        if(false !== $importable_content && in_array('videos',$importable_content)){
 	        	$this->set_video_data($data,$id);
@@ -780,7 +802,52 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		if(!empty($data[0]['features']) && isset($data[0]['features']['stars'])){
 			$this->save_custom_field($data[0]['features']['stars'],'rating',$id,true);	
 		}
-	}	
+	}
+
+	/**
+	 * Set the spoken_languages
+	 */
+	public function set_spoken_languages($data,$id) {
+		if(!empty($data[0]['features']) && isset($data[0]['features']['spoken_languages']) && !empty($data[0]['features']['spoken_languages'])){
+			$languages = false;
+			foreach($data[0]['features']['spoken_languages'] as $spoken_language){
+				$languages[] = sanitize_title($spoken_language);
+			}
+			if(false !== $languages){
+				$this->save_custom_field($languages,'spoken_languages',$id);
+			}
+		}
+	}
+
+	/**
+	 * Set the friendly
+	 */
+	public function set_friendly($data,$id) {
+		if(!empty($data[0]['features']) && isset($data[0]['features']['suggested_visitor_types']) && !empty($data[0]['features']['suggested_visitor_types'])){
+			$friendly_options = false;
+			foreach($data[0]['features']['suggested_visitor_types'] as $visitor_type){
+				$friendly_options[] = sanitize_title($visitor_type);
+			}
+			if(false !== $friendly_options){
+				$this->save_custom_field($friendly_options,'suggested_visitor_types',$id);
+			}
+		}		
+	}
+
+	/**
+	 * Set the special interests
+	 */
+	public function set_special_interests($data,$id) {
+		if(!empty($data[0]['features']) && isset($data[0]['features']['special_interests']) && !empty($data[0]['features']['special_interests'])){
+			$interests = false;
+			foreach($data[0]['features']['special_interests'] as $special_interest){
+				$interests[] = sanitize_title($special_interest);
+			}
+			if(false !== $interests){
+				$this->save_custom_field($interests,'special_interests',$id);
+			}
+		}		
+	}				
 
 	/**
 	 * Set the Check in and Check out Date
@@ -859,7 +926,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	    	$counter = 0;
 	    	foreach($data[0]['content']['images'] as $image_data){
 	    		//if($counter > 8){continue;}
-	    		$gallery_meta[] = $this->attach_image($image_data,$id,$found_attachments);
+	    		$gallery_meta[] = $temp_id = $this->attach_image($image_data,$id,$found_attachments);
 	    		$counter++;
 	    	}
 
