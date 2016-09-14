@@ -103,69 +103,76 @@ var LSX_TOUR_IMPORTER = {
 	        data : args,
 	        method : 'POST'
 	    } )
-        .done( function( data ) {
+        .always( function( data, textStatus, response ) {
 			if('none' == jQuery('.completed-list-wrapper').css('display')){
 				jQuery('.completed-list-wrapper').fadeIn('fast');
 			}
-			jQuery('.completed-list-wrapper ul').append(data);
+			jQuery('.completed-list-wrapper ul').append(response);
+
+			console.log($row);
         	$row.fadeOut('fast', 
-        	function(here){ 
-	            jQuery(this).fadeOut('fast').remove();
-	        });
+	    		function(here){ 
+	            	jQuery(this).fadeOut('fast').remove();
+	        	});
+        } )	    
+        .done( function( data ) {
+        	$this.importNext();
         } )
         .fail( function( reason ) {
             // Handles errors only
             console.debug( reason );
-        } )
-        .always( function( data, textStatus, response ) {
-            // If you want to manually separate stuff
-            // response becomes errorThrown/reason OR jqXHR in case of success
         } );
 	},	
 
 	importNext: function() {
-		var post_type = jQuery('.post_type').val();
-		var array_import = [];
-		var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
+		var checkbox = 	jQuery('#import-list tr input.queued:checked:not(.importing):first');
+		
+		if(1 == checkbox.length){
+			checkbox.addClass('importing');
 
-		var team_members = [];
-		if('undefined' != jQuery('#import-list input.team').length){
-			jQuery('#import-list input.team').each(function(){
-				if(jQuery(this).attr('checked')){
-					team_members.push(jQuery(this).val());
-				}
-			});
+			var post_type = jQuery('.post_type').val();
+			var array_import = [];
+			var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
+
+			var team_members = [];
+			if('undefined' != jQuery('#import-list input.team').length){
+				jQuery('#import-list input.team').each(function(){
+					if(jQuery(this).attr('checked')){
+						team_members.push(jQuery(this).val());
+					}
+				});
+			}
+			var content = [];
+			if('undefined' != jQuery('#import-list input.content').length){
+				jQuery('#import-list input.content').each(function(){
+					if(jQuery(this).attr('checked')){
+						content.push(jQuery(this).val());
+					}
+				});
+			}	
+			var safari_brands = [];
+			if('undefined' != jQuery('#import-list input.accommodation-brand').length){
+				jQuery('#import-list input.accommodation-brand').each(function(){
+					if(jQuery(this).attr('checked')){
+						safari_brands.push(jQuery(this).val());
+					}
+				});
+			}	
+			
+			var wetu_id = checkbox.attr('data-identifier');
+			var post_id = checkbox.val();
+			var row = checkbox.parents('tr');
+			var data = {
+	            'action' 	: 			'lsx_import_items',
+	            'type'		: 			type,
+	            'wetu_id' 	: 			wetu_id,
+	            'post_id'	:			post_id,
+	            'team_members' : 		team_members,
+	            'safari_brands' : 		safari_brands,
+	            'content'	: 			content
+	        };	
+			this.importRow(data,row);
 		}
-		var content = [];
-		if('undefined' != jQuery('#import-list input.content').length){
-			jQuery('#import-list input.content').each(function(){
-				if(jQuery(this).attr('checked')){
-					content.push(jQuery(this).val());
-				}
-			});
-		}	
-		var safari_brands = [];
-		if('undefined' != jQuery('#import-list input.accommodation-brand').length){
-			jQuery('#import-list input.accommodation-brand').each(function(){
-				if(jQuery(this).attr('checked')){
-					safari_brands.push(jQuery(this).val());
-				}
-			});
-		}	
-		var checkbox = 	jQuery('#import-list tr input.queued:checked');
-		var wetu_id = checkbox.attr('data-identifier');
-		var post_id = checkbox.val();
-		var row = checkbox.parents('tr');
-		var data = {
-            'action' 	: 			'lsx_import_items',
-            'type'		: 			type,
-            'wetu_id' 	: 			wetu_id,
-            'post_id'	:			post_id,
-            'team_members' : 		team_members,
-            'safari_brands' : 		safari_brands,
-            'content'	: 			content
-        };		
-		this.importRow(data,row);
 	},
 	watchImportButton: function() {
 		var $this = this;
@@ -174,7 +181,7 @@ var LSX_TOUR_IMPORTER = {
 			event.preventDefault();
 			counter = 0;
 			var false_click = true;
-			jQuery('#import-list tr input:checked').each(function(){
+			jQuery('#import-list tr input:checked:not(.queued)').each(function(){
 				jQuery(this).hide().addClass('queued');
 				jQuery(this).parents('tr').find('.check-column').append(jQuery('#lsx-tour-importer-search-form .ajax-loader-small').html());
 				false_click = false;
