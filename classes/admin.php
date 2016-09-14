@@ -264,7 +264,8 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 */
 	public function find_attachments($id=false) {
 		if(false !== $id){
-			if(false === $this->found_attachments){
+			if(empty($this->found_attachments)){
+
 		    	$attachments_args = array(
 		    			'post_parent' => $id,
 		    			'post_status' => 'inherit',
@@ -273,10 +274,9 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 		    	);   	
 		    	 
 		    	$attachments = new WP_Query($attachments_args);
-
 		    	if($attachments->have_posts()){
 		    		foreach($attachments->posts as $attachment){
-		    			$this->found_attachments[] = str_replace(array('.jpg','.png','.jpeg'),'',$attachment->post_title);
+		    			$this->found_attachments[$attachment->ID] = str_replace(array('.jpg','.png','.jpeg'),'',$attachment->post_title);
 		    			$this->gallery_meta[] = $attachment->ID;
 		    		}
 		    	}

@@ -921,6 +921,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	    		if(!empty($this->gallery_meta) && !in_array($this->featured_image,$this->gallery_meta)){
 	    			add_post_meta($id,'gallery',$this->featured_image,false);
+	    			$this->gallery_meta[] = $this->featured_image;
 	    		}
 	    	}			
 		}	
@@ -940,6 +941,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	    		if(!empty($this->gallery_meta) && !in_array($this->banner_image,$this->gallery_meta)){
 	    			add_post_meta($id,'gallery',$this->banner_image,false);
+	    			$this->gallery_meta[] = $this->banner_image;
 	    		}
 	    	}			
 		}	
@@ -955,6 +957,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	    	$counter = 0;
 	    	foreach($data[0]['content']['images'] as $image_data){
 	    		if($counter === 0 && false !== $this->featured_image){continue;}
+	    		if($counter === 1 && false !== $this->banner_image){continue;}
+
 	    		$this->gallery_meta[] = $temp_id = $this->attach_image($image_data,$id);
 	    		$counter++;
 	    	}
@@ -980,7 +984,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	    	$url_filename = str_replace(array('.jpg','.png','.jpeg'),'',$url_filename);
 	
 	    	if(in_array($url_filename,$this->found_attachments)){
-	    		return false;
+	    		return array_search($url_filename,$this->found_attachments);
 	    	}
 	    	               
 	        $postdata=array();
