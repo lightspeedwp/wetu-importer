@@ -107,9 +107,7 @@ var LSX_TOUR_IMPORTER = {
 			if('none' == jQuery('.completed-list-wrapper').css('display')){
 				jQuery('.completed-list-wrapper').fadeIn('fast');
 			}
-			jQuery('.completed-list-wrapper ul').append(response);
-
-			console.log($row);
+			jQuery('.completed-list-wrapper ul').append(data);
         	$row.fadeOut('fast', 
 	    		function(here){ 
 	            	jQuery(this).fadeOut('fast').remove();
@@ -126,7 +124,7 @@ var LSX_TOUR_IMPORTER = {
 
 	importNext: function() {
 		var checkbox = 	jQuery('#import-list tr input.queued:checked:not(.importing):first');
-		
+
 		if(1 == checkbox.length){
 			checkbox.addClass('importing');
 

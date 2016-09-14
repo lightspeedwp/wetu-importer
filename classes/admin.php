@@ -31,6 +31,13 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	public $featured_image = false;
 
 	/**
+	 * the banner image
+	 *
+	 * @var      int
+	 */
+	public $banner_image = false;	
+
+	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since 1.0.0

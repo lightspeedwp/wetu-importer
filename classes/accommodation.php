@@ -554,6 +554,9 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        if(false !== $importable_content && in_array('featured_image',$importable_content)){
 	        	$this->set_featured_image($data,$id);
 	        }
+	        if(false !== $importable_content && in_array('banner_image',$importable_content)){
+	        	$this->set_banner_image($data,$id);
+	        }	        
 	        //Import the main gallery
 	        if(false !== $importable_content && in_array('gallery',$importable_content)){	    	
 	    		$this->create_main_gallery($data,$id);
@@ -922,6 +925,25 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	    	}			
 		}	
 	}	
+
+	/**
+	 * Sets a banner image
+	 */
+	public function set_banner_image($data,$id) {
+		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
+	    	$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id);
+
+	    	if(false !== $this->banner_image){
+	    		delete_post_meta($id,'image_group');
+	    		$new_banner = array('banner_image'=>array('cmb-field-0'=>$this->banner_image));
+	    		add_post_meta($id,'image_group',$new_banner,true);
+
+	    		if(!empty($this->gallery_meta) && !in_array($this->banner_image,$this->gallery_meta)){
+	    			add_post_meta($id,'gallery',$this->banner_image,false);
+	    		}
+	    	}			
+		}	
+	}		
 
 	/**
 	 * Creates the main gallery data
