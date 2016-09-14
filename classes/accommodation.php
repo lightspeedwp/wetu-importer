@@ -25,7 +25,16 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 *
 	 * @var      string
 	 */
-	public $url = false;		
+	public $url = false;
+
+	/**
+	 * Options
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $options = false;			
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -48,27 +57,44 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));	
 		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));	
 
-		$temp_options = get_option('_lsx_lsx-settings',false);
+		$temp_options = get_option('_lsx_lsx-settings',false);	
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
 			$this->options = $temp_options[$this->plugin_slug];
-			if(isset($this->options['image_scaling'])){
-				$this->scale_images = true;
-				$width = '800';
-				if(isset($this->options['width']) && '' !== $this->options['width']){
-					$width = $this->options['width'];
-				}
-				$height = '600';
-				if(isset($this->options['height']) && '' !== $this->options['height']){
-					$height = $this->options['height'];
-				}
-				$cropping = 'c';
-				if(isset($this->options['cropping']) && '' !== $this->options['cropping']){
-					$cropping = $this->options['cropping'];
-				}				
-				$this->image_scaling_url = 'https://wetu.com/ImageHandler/'.$cropping.$width.'x'.$height.'/';
+		}				
+	}
+
+	/**
+	 * search_form
+	 */
+	public function get_scaling_url($args=array()) {
+
+		$defaults = array(
+			'width' => '640',
+			'height' => '480',
+			'cropping' => 'c'
+		);
+		if(false !== $this->options){
+			if(isset($this->options['width']) && '' !== $this->options['width']){
+				$defaults['width'] = $this->options['width'];
 			}
-		}			
-	}	
+
+			if(isset($this->options['height']) && '' !== $this->options['height']){
+				$defaults['height'] = $this->options['height'];
+			}
+
+			if(isset($this->options['cropping']) && '' !== $this->options['cropping']){
+				$defaults['cropping'] = $this->options['cropping'];
+			}	
+		}	
+		$args = wp_parse_args($args,$defaults);
+
+		$cropping = $args['cropping'];
+		$width = $args['width'];
+		$height = $args['height'];
+
+		return 'https://wetu.com/ImageHandler/'.$cropping.$width.'x'.$height.'/';
+
+	}
 
 	/**
 	 * Display the importer administration screen
@@ -932,7 +958,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 */
 	public function set_banner_image($data,$id) {
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
-	    	$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id);
+	    	$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id,array('width'=>'1920','height'=>'800','cropping'=>'c'));
 
 	    	if(false !== $this->banner_image){
 	    		delete_post_meta($id,'image_group');
@@ -977,7 +1003,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	/**
 	 * Attaches 1 image
 	 */
-	public function attach_image($v=false,$parent_id){
+	public function attach_image($v=false,$parent_id,$image_sizes=false){
 		if(false !== $v){
 	   		$temp_fragment = explode('/',$v['url_fragment']);
 	    	$url_filename = $temp_fragment[count($temp_fragment)-1];
@@ -1006,8 +1032,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        $attachID=NULL;  
 	        //Resizor - add option to setting if required
 	        $fragment = str_replace(' ','%20',$v['url_fragment']);
-	        $url = $this->image_scaling_url.$fragment;
-	
+	        $url = $this->get_scaling_url($image_sizes).$fragment;
 	        $attachID = $this->attach_external_image2($url,$parent_id,'',$v['label'],$postdata);
 
 	        //echo($attachID.' add image');
