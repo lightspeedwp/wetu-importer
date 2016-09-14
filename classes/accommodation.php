@@ -471,20 +471,27 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	          'post_type'		=> 'accommodation',
 	        );
 
+	        $content_used_general_description = false;
+
 	        //Set the post_content
 	        if(false !== $importable_content && in_array('description',$importable_content)){
-		        if(!empty($data[0]['content']['extended_description']))
+		        if(isset($data[0]['content']['extended_description']))
 		        {
 		            $data_post_content = $data[0]['content']['extended_description'];
+		        }elseif(isset($data[0]['content']['general_description'])){
+		            $data_post_content = $data[0]['content']['general_description'];
+		            $content_used_general_description = true;
+		        }elseif(isset($data[0]['content']['teaser_description'])){
+		        	$data_post_content = $data[0]['content']['teaser_description'];
 		        }
 	        	$post['post_content'] = wp_strip_all_tags($data_post_content);
 	        }
 
 	        //set the post_excerpt
 	        if(false !== $importable_content && in_array('excerpt',$importable_content)){
-		        if(!empty($data[0]['content']['teaser_description'])){
+		        if(isset($data[0]['content']['teaser_description'])){
 		        	$data_post_excerpt = $data[0]['content']['teaser_description'];
-		        }elseif(!empty($data[0]['content']['general_description'])){
+		        }elseif(isset($data[0]['content']['general_description']) && false === $content_used_general_description){
 		            $data_post_excerpt = $data[0]['content']['general_description'];
 		        }	   
 		        $post['post_excerpt'] = $data_post_excerpt;     	
@@ -498,7 +505,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        }else{
 
 		        //Set the name
-		        if(!empty($data[0]['name'])){
+		        if(isset($data[0]['name'])){
 		            $post_name = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'accommodation', 0);
 		        }
 	        	$post['post_name'] = $post_name;
