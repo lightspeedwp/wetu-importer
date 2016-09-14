@@ -94,13 +94,14 @@ var LSX_TOUR_IMPORTER = {
 		});
 	},	
 
-	newImport: function(args,row) {
+	importRow: function(args,row) {
 		var $this = this;
 		var $row = row;
 
 	    jQuery.ajax( {
 	        url : lsx_tour_importer_params.ajax_url,
 	        data : args,
+	        method : 'POST'
 	    } )
         .done( function( data ) {
 			if('none' == jQuery('.completed-list-wrapper').css('display')){
@@ -120,77 +121,70 @@ var LSX_TOUR_IMPORTER = {
             // If you want to manually separate stuff
             // response becomes errorThrown/reason OR jqXHR in case of success
         } );
-	},
-	importDone: function() {
-	},
-	importFail: function() {
-	},
-	importAlways: function() {
-	},
-	importThen: function() {
-	},			
+	},	
 
+	importNext: function() {
+		var post_type = jQuery('.post_type').val();
+		var array_import = [];
+		var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
+
+		var team_members = [];
+		if('undefined' != jQuery('#import-list input.team').length){
+			jQuery('#import-list input.team').each(function(){
+				if(jQuery(this).attr('checked')){
+					team_members.push(jQuery(this).val());
+				}
+			});
+		}
+		var content = [];
+		if('undefined' != jQuery('#import-list input.content').length){
+			jQuery('#import-list input.content').each(function(){
+				if(jQuery(this).attr('checked')){
+					content.push(jQuery(this).val());
+				}
+			});
+		}	
+		var safari_brands = [];
+		if('undefined' != jQuery('#import-list input.accommodation-brand').length){
+			jQuery('#import-list input.accommodation-brand').each(function(){
+				if(jQuery(this).attr('checked')){
+					safari_brands.push(jQuery(this).val());
+				}
+			});
+		}	
+		var checkbox = 	jQuery('#import-list tr input.queued:checked');
+		var wetu_id = checkbox.attr('data-identifier');
+		var post_id = checkbox.val();
+		var row = checkbox.parents('tr');
+		var data = {
+            'action' 	: 			'lsx_import_items',
+            'type'		: 			type,
+            'wetu_id' 	: 			wetu_id,
+            'post_id'	:			post_id,
+            'team_members' : 		team_members,
+            'safari_brands' : 		safari_brands,
+            'content'	: 			content
+        };		
+		this.importRow(data,row);
+	},
 	watchImportButton: function() {
 		var $this = this;
 
 		jQuery('#import-list input[type="submit"]').on('click',function(event){
-
 			event.preventDefault();
-			var post_type = jQuery('.post_type').val();
-			var array_import = [];
-			var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
-
-			var team_members = [];
-			if('undefined' != jQuery('#import-list input.team').length){
-				jQuery('#import-list input.team').each(function(){
-					if(jQuery(this).attr('checked')){
-						team_members.push(jQuery(this).val());
-					}
-				});
-			}
-			var content = [];
-			if('undefined' != jQuery('#import-list input.content').length){
-				jQuery('#import-list input.content').each(function(){
-					if(jQuery(this).attr('checked')){
-						content.push(jQuery(this).val());
-					}
-				});
-			}	
-			var safari_brands = [];
-			if('undefined' != jQuery('#import-list input.accommodation-brand').length){
-				jQuery('#import-list input.accommodation-brand').each(function(){
-					if(jQuery(this).attr('checked')){
-						safari_brands.push(jQuery(this).val());
-					}
-				});
-			}	
-
 			counter = 0;
+			var false_click = true;
 			jQuery('#import-list tr input:checked').each(function(){
-
-				var wetu_id = jQuery(this).attr('data-identifier');
-				var post_id = jQuery(this).val();
-
-
-				jQuery(this).hide();
+				jQuery(this).hide().addClass('queued');
 				jQuery(this).parents('tr').find('.check-column').append(jQuery('#lsx-tour-importer-search-form .ajax-loader-small').html());
-				var current_row = jQuery(this).parents('tr');
-
-				//Removes the checkbox
-				jQuery(this).remove();
-
-				var data = {
-		            'action' 	: 			'lsx_import_items',
-		            'type'		: 			type,
-		            'wetu_id' 	: 			wetu_id,
-		            'post_id'	:			post_id,
-		            'team_members' : 		team_members,
-		            'safari_brands' : 		safari_brands,
-		            'content'	: 			content
-		        };
-
-		        $this.newImport(data,current_row);
+				false_click = false;
 			});
+
+			if(true != false_click){
+				$this.importNext();
+			}else{
+				alert('Make sure you have some accommodation selected.');
+			}
 		});
 	},
 	watchBannerButton: function() {

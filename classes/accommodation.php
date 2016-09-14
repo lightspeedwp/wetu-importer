@@ -421,10 +421,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
                 if(!empty($adata))
                 {
                 	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members,$content,$safari_brands);
+                	$this->format_completed_row($return);
                 }
             }
 		}
-		$this->format_completed_row($return);
 		die();
 	}	
 	/**
