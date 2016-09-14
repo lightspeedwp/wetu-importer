@@ -159,6 +159,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 								<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="facilities" /> <?php _e('Facilities','lsx-tour-importer'); ?></li>	
 								<li><input class="content" type="checkbox" name="content[]" value="friendly" /> <?php _e('Friendly','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','lsx-tour-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','lsx-tour-importer'); ?></li>
@@ -583,6 +584,11 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	        	$this->set_video_data($data,$id);
 	        }
 
+	        //Import the facilities
+	        if(false !== $importable_content && in_array('facilities',$importable_content)){
+	        	$this->set_facilities($data,$id);
+	        }	        
+
 	        //Set the featured image
 	        if(false !== $importable_content && in_array('featured_image',$importable_content)){
 	        	$this->set_featured_image($data,$id);
@@ -939,6 +945,43 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		        add_post_meta($id,'videos',$video,false);			
 			}
 		}
+	}	
+
+	/**
+	 * Set the Facilities
+	 */
+	public function set_facilities($data,$id) {
+
+		$parent_facilities = array(
+			'available_services' => 'Available Services',
+			'property_facilities' => 'Property Facilities',
+			'room_facilities' => 'Room Facilities',
+			'activities_on_site' => 'Activities on Site'
+		);
+		foreach($parent_facilities as $key => $label){
+			$terms = false;
+			if(isset($data[0]['features']) && isset($data[0]['features'][$key])){
+				$parent_id = $this->set_term($id,$label,'facility');	
+			}
+			foreach($data[0]['features'][$key] as $child_facility){
+				$this->set_term($id,$child_facility,'facility',$parent_id);
+			}
+		}
+	}
+
+	function set_term($id=false,$name=false,$taxonomy=false,$parent=false){
+		if(!$term = term_exists($name, $taxonomy))
+        {
+        	if(false !== $parent){ $parent = array('parent'=>$parent); }
+            $term = wp_insert_term(trim($name), $taxonomy,$parent);
+            if ( is_wp_error($term) ){echo $term->get_error_message();}
+            else { wp_set_object_terms( $id, intval($term['term_id']), $taxonomy,true); }
+        }
+        else
+        {
+            wp_set_object_terms( $id, intval($term['term_id']), $taxonomy,true);
+        }
+        return $term['term_id'];
 	}	
 
 	/**
