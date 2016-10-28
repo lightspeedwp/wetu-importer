@@ -1,7 +1,7 @@
 <?php
 /*
- * Plugin Name: LSX Tour Importer 
- * Plugin URI: https://www.lsdev.biz/product/lsx-tour-operators-plugin/
+ * Plugin Name: Wetu Importer 
+ * Plugin URI: https://www.lsdev.biz/product/wetu-importer/
  * Description: By integrating with the Wetu Tour Operator system, you are able to import your content into the LSX Tour Operators plugin format
  * Author: LightSpeed
  * Version: 1.0.0
