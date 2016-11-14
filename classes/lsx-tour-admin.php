@@ -58,8 +58,8 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 */
 	public function register_importer_page() {
         add_management_page(
-            __('LSX Tour Importer','lsx-tour-importer'),
-            __('LSX Tour Importer','lsx-tour-importer'),
+            __('Wetu Importer','lsx-tour-importer'),
+            __('Wetu Importer','lsx-tour-importer'),
             'manage_options',
             $this->plugin_slug,
             array( $this, 'display_importer_page' )
