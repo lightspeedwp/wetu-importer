@@ -100,7 +100,7 @@ class LSX_API_Manager {
 		$this->api_url = 'https://www.lsdev.biz/wc-api/product-key-api';
 		$this->products_api_url = 'https://www.lsdev.biz/';
 		$this->license_check_url = 'https://www.lsdev.biz/wc-api/license-status-check';			
-
+		add_filter( 'plugin_action_links_' . plugin_basename(LSX_TOUR_OPERATORS_CORE), array($this,'add_action_links'));
 
 		if(isset($_GET['page']) && in_array($_GET['page'],apply_filters('lsx_api_manager_options_pages',array(false)))){
 			$this->query('activation');
@@ -112,7 +112,7 @@ class LSX_API_Manager {
 
 		add_action('init',array($this,'set_update_status'));
 
-		add_action('lsx_framework_dashboard_tab_content_api',array($this,'dashboard_tabs'),1);
+		add_action('to_framework_api_tab_content',array($this,'dashboard_tabs'),1);
 		
 		add_action('wp_ajax_wc_api_'.$this->product_slug,array($this,'activate_deactivate'));	
 		add_action('wp_ajax_nopriv_wc_api_'.$this->product_slug,array($this,'activate_deactivate'));
@@ -376,5 +376,17 @@ class LSX_API_Manager {
 			$updates->response[$this->product_slug.'/'.$this->file] = $this->upgrade_response;		
 		}
 		return $updates;
-	}	
+	}
+
+	/**
+	 * Adds in the "settings" link for the plugins.php page
+	 */
+	public function add_action_links ( $links ) {
+		 $mylinks = array(
+		 	'<a href="' . admin_url( 'options-general.php?page=lsx-lsx-settings' ) . '">'.__('Settings',$this->plugin_slug).'</a>',
+		 	'<a href="https://www.lsdev.biz/documentation/lsx-tour-operator-plugin/" target="_blank">'.__('Documentation',$this->plugin_slug).'</a>',
+		 	'<a href="https://feedmysupport.zendesk.com/home" target="_blank">'.__('Support',$this->plugin_slug).'</a>',
+		 );
+		return array_merge( $links, $mylinks );
+	}		
 }

@@ -250,9 +250,9 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	public function update_options_form() {
 		echo '<div style="display:none;" class="wetu-status"><h3>'.__('Wetu Status','lsx-tour-importer').'</h3>';
 		$accommodation = get_option('lsx_tour_operator_accommodation',false);
-		if(false === $accommodation){
+		//if(false === $accommodation){
 			$this->update_options();
-		}
+		//}
 		echo '</div>';
 	}
 
@@ -340,7 +340,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 								}
 
 								if(false === $my_accommodation || (true === $my_accommodation && 0 !== $row->post_id)){
-									$searched_items[sanitize_title($row->name)] = $this->format_row($row);
+									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
 								}
 
 								//print_r($row->name);
