@@ -445,7 +445,7 @@ class LSX_API_Manager {
 		$mylinks = array(
 			'<a href="' . admin_url( $admin_url_base ) . '">'.esc_html__('Settings',$this->product_slug).'</a>',
 			'<a href="https://www.lsdev.biz/documentation/'.$this->product_slug.'/" target="_blank">'.esc_html__('Documentation',$this->product_slug).'</a>',
-			'<a href="https://feedmysupport.zendesk.com/home" target="_blank">'.esc_html__('Support',$this->product_slug).'</a>',
+			'<a href="https://www.lsdev.biz/contact-us/" target="_blank">'.esc_html__('Support',$this->product_slug).'</a>',
 		);
 		return array_merge( $links, $mylinks );
 	}
