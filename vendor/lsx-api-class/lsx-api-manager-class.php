@@ -454,7 +454,7 @@ class LSX_API_Manager {
 	public function add_action_links ( $links ) {
 		$admin_url_base = class_exists( 'Tour_Operator' ) ? 'admin.php?page=to-settings' : 'themes.php?page=lsx-settings';
 		$documentation = $this->product_slug;
-		if(isset($this->documentation)){$documentation = $this->documentation; }
+		if(false !== $this->documentation){$documentation = $this->documentation; }
 		$mylinks = array(
 			'<a href="' . admin_url( $admin_url_base ) . '">'.esc_html__('Settings',$this->product_slug).'</a>',
 			'<a href="https://www.lsdev.biz/documentation/'.$documentation.'/" target="_blank">'.esc_html__('Documentation',$this->product_slug).'</a>',
