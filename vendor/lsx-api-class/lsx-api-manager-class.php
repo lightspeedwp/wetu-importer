@@ -73,6 +73,13 @@ class LSX_API_Manager {
 	public $button = false;
 
 	/**
+	 * Holds the documentation slug button.
+	 *
+	 * @var      string
+	 */
+	public $documentation = false;
+
+	/**
 	 * Holds class instance
 	 *
 	 * @var      string
@@ -102,6 +109,10 @@ class LSX_API_Manager {
 		}
 		if(isset($api_array['file'])){
 			$this->file = $api_array['file'];
+		}
+
+		if(isset($api_array['documentation'])){
+			$this->documentation = $api_array['documentation'];
 		}
 
 		$this->api_url = 'https://dev.lsdev.biz/wc-api/product-key-api';
@@ -442,9 +453,11 @@ class LSX_API_Manager {
 	 */
 	public function add_action_links ( $links ) {
 		$admin_url_base = class_exists( 'Tour_Operator' ) ? 'admin.php?page=to-settings' : 'themes.php?page=lsx-settings';
+		$documentation = $this->product_slug;
+		if(isset($this->documentation)){$documentation = $this->documentation; }
 		$mylinks = array(
 			'<a href="' . admin_url( $admin_url_base ) . '">'.esc_html__('Settings',$this->product_slug).'</a>',
-			'<a href="https://www.lsdev.biz/documentation/'.$this->product_slug.'/" target="_blank">'.esc_html__('Documentation',$this->product_slug).'</a>',
+			'<a href="https://www.lsdev.biz/documentation/'.$documentation.'/" target="_blank">'.esc_html__('Documentation',$this->product_slug).'</a>',
 			'<a href="https://www.lsdev.biz/contact-us/" target="_blank">'.esc_html__('Support',$this->product_slug).'</a>',
 		);
 		return array_merge( $links, $mylinks );
