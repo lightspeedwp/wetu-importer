@@ -54,15 +54,15 @@ add_action('admin_head','lsx_importer_api_admin_init');
  *	Grabs the email and api key from the LSX TO Settings.
  */
 function lsx_importer_get_api_details(){
-	$options = get_option('_lsx_lsx-settings',false);
+	$options = get_option('_to_settings',false);
 	$data = array('api_key'=>'','email'=>'');
 
-	if(false !== $options && isset($options['general'])){
-		if(isset($options['general']['wetu-importer_api_key']) && '' !== $options['general']['wetu-importer_api_key']){
-			$data['api_key'] = $options['general']['wetu-importer_api_key'];
+	if(false !== $options && isset($options['api'])){
+		if(isset($options['api']['wetu-importer_api_key']) && '' !== $options['api']['wetu-importer_api_key']){
+			$data['api_key'] = $options['api']['wetu-importer_api_key'];
 		}
-		if(isset($options['general']['wetu-importer_email']) && '' !== $options['general']['wetu-importer_email']){
-			$data['email'] = $options['general']['wetu-importer_email'];
+		if(isset($options['api']['wetu-importer_email']) && '' !== $options['api']['wetu-importer_email']){
+			$data['email'] = $options['api']['wetu-importer_email'];
 		}		
 	}
 	return $data;

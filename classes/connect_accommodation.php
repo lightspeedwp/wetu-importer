@@ -35,7 +35,7 @@ class Lsx_Tour_Importer_Connect_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * @access private
 	 */
 	public function __construct() {
-		$temp_options = get_option('_lsx_lsx-settings',false);
+		$temp_options = get_option('_to_settings',false);
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
 			$this->options = $temp_options[$this->plugin_slug];
 		}

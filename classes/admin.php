@@ -45,7 +45,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-		add_filter( 'lsx_framework_settings_tabs', array( $this, 'settings_page_array') );
+		add_filter( 'to_framework_settings_tabs', array( $this, 'settings_page_array') );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ) );
 		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );	
 	}
