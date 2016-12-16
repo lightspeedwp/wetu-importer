@@ -4,7 +4,7 @@
  * Plugin URI: https://www.lsdev.biz/product/wetu-importer/
  * Description: By integrating with the Wetu Tour Operator system, you are able to import your content into the LSX Tour Operators plugin format
  * Author: LightSpeed
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author URI: https://www.lsdev.biz/products/
  * License: GPL2+
  * Text Domain: lsx-tour-importer
@@ -13,7 +13,7 @@
 
 define('LSX_TOUR_IMPORTER_PATH',  plugin_dir_path( __FILE__ ) );
 define('LSX_TOUR_IMPORTER_URL',  plugin_dir_url( __FILE__ ) );
-define('LSX_TOUR_IMPORTER_VER',  '1.0.0' );
+define('LSX_TOUR_IMPORTER_VER',  '1.0.1' );
 
 require_once(LSX_TOUR_IMPORTER_PATH.'classes/importer.php');
 require_once(LSX_TOUR_IMPORTER_PATH.'classes/admin.php');
@@ -40,7 +40,7 @@ function lsx_importer_api_admin_init(){
 
 	$api_array = array(
 		'product_id'	=>		'Wetu Importer',
-		'version'		=>		'1.0',
+		'version'		=>		'1.0.1',
 		'instance'		=>		$instance,
 		'email'			=>		$data['email'],
 		'api_key'		=>		$data['api_key'],
@@ -54,7 +54,7 @@ add_action('admin_head','lsx_importer_api_admin_init');
  *	Grabs the email and api key from the LSX TO Settings.
  */
 function lsx_importer_get_api_details(){
-	$options = get_option('_to_settings',false);
+	$options = get_option('_lsx-to_settings',false);
 	$data = array('api_key'=>'','email'=>'');
 
 	if(false !== $options && isset($options['api'])){

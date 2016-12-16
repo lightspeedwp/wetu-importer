@@ -71,7 +71,7 @@ class Lsx_Tour_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-		$temp_options = get_option('_to_settings',false);
+		$temp_options = get_option('_lsx-to_settings',false);
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
 			$this->options = $temp_options[$this->plugin_slug];
 			$this->set_variables();

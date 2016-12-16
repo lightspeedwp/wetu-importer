@@ -44,7 +44,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * @access private
 	 */
 	public function __construct() {
-		$temp_options = get_option('_to_settings',false);
+		$temp_options = get_option('_lsx-to_settings',false);
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
 			$this->options = $temp_options[$this->plugin_slug];
 		}
@@ -57,7 +57,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));	
 		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));	
 
-		$temp_options = get_option('_to_settings',false);
+		$temp_options = get_option('_lsx-to_settings',false);
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
 			$this->options = $temp_options[$this->plugin_slug];
 		}				
