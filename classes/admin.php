@@ -102,9 +102,11 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	            <p>Please select the type of content you want to import from the list below.</p>
 	            <ul>
 	            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','lsx-tour-importer'); ?></a></li>
-	            </ul>  
+                    <?php if(class_exists('TI_Tours')) { ?>
+                        <li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','lsx-tour-importer'); ?></a></li>
+                    <?php } ?>
+	            </ul>
 
-	            
 		            <h3><?php _e('Additional Tools','lsx-tour-importer'); ?></h3>
 		            <ul>
 		            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','lsx-tour-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','lsx-tour-importer'); ?></small></li>
@@ -239,25 +241,26 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 			$return .= '</ul>';
 		}
 		return $return;		
-	}	
+	}
 
 	/**
 	 * Saves the room data
 	 */
-	public function save_custom_field($value=false,$meta_key,$id,$decrease=false) {
+	public function save_custom_field($value=false,$meta_key,$id,$decrease=false,$unique=true) {
 		if(false !== $value){
 			if(false !== $decrease){
 				$value = intval($value);
 				$value--;
 			}
-			if(false !== $id && '0' !== $id){
-	        	$prev = get_post_meta($id,$meta_key,true);
-	        	update_post_meta($id,$meta_key,$value,$prev);
-	        }else{
-	        	add_post_meta($id,$meta_key,$value,true);
-	        }	
+			$prev = get_post_meta($id,$meta_key,true);
+
+			if(false !== $id && '0' !== $id && false !== $prev && true === $unique){
+				update_post_meta($id,$meta_key,$value,$prev);
+			}else{
+				add_post_meta($id,$meta_key,$value,$unique);
+			}
 		}
-	}	
+	}
 
 	/**
 	 * grabs any attachments for the current item

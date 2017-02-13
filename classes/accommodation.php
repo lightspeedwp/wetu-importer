@@ -217,7 +217,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 */
 	public function search_form() {
 	?>
-        <form class="ajax-form" id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php" data-type="accommodation">
+        <form class="ajax-form" id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php" data-type="<?php echo $this->tab_slug; ?>">
         	<input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>" />
 
         	<h3><span class="dashicons dashicons-search"></span> <?php _e('Search','lsx-tour-importer'); ?></h3>
@@ -230,7 +230,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         		<input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
         	</div>    
 
-        	<p><a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a> | <a class="my-accommodation-search-toggle" href="#"><?php _e('My Accommodation','lsx-tour-importer'); ?></a></p>
+        	<p><a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a> | <a class="my-<?php echo $this->tab_slug; ?>-search-toggle" href="#"><?php _e('My','lsx-tour-importer'); ?> <?php echo ucfirst($this->tab_slug); ?></a></p>
 
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
@@ -250,9 +250,9 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	public function update_options_form() {
 		echo '<div style="display:none;" class="wetu-status"><h3>'.__('Wetu Status','lsx-tour-importer').'</h3>';
 		$accommodation = get_option('lsx_tour_operator_accommodation',false);
-		//if(false === $accommodation){
+		if(false === $accommodation || isset($_GET['refresh_accommodation'])){
 			$this->update_options();
-		//}
+		}
 		echo '</div>';
 	}
 
@@ -355,9 +355,9 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 					$return = implode($searched_items);
 				}
 			}
+			print_r($return);
+			die();
 		}
-		print_r($return);
-		die();
 	}
 
 	/**
@@ -451,8 +451,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
                 	$this->format_completed_row($return);
                 }
             }
+
+			die();
 		}
-		die();
+
 	}	
 	/**
 	 * Formats the row for the completed list.
@@ -500,6 +502,10 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 	        if(false !== $id && '0' !== $id){
 	        	$post['ID'] = $id;
+				if(isset($data[0]['name'])){
+					$post['post_title'] = $data[0]['name'];
+					$post['post_name'] = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'accommodation', 0);
+				}
 	        	$id = wp_update_post($post);
 	        	$prev_date = get_post_meta($id,'lsx_wetu_modified_date',true);
 	        	update_post_meta($id,'lsx_wetu_modified_date',strtotime($data[0]['last_modified']),$prev_date);
