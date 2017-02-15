@@ -13,11 +13,22 @@ var LSX_TOUR_IMPORTER = {
 		}
 	},
 	myAccommodationSearch: function() {
-		jQuery('#lsx-tour-importer-search-form .my-accommodation-search-toggle').on( 'click', function(event) {
+		jQuery('#lsx-tour-importer-search-form').on( 'click', '.search-toggle', function(event) {
 			event.preventDefault();
-			jQuery('#lsx-tour-importer-search-form input.keyword').val('my-posts');
+
+			var keyword = '';
+			if(jQuery(this).hasClass('published')){
+                keyword = 'publish';
+			}else if(jQuery(this).hasClass('pending')){
+                keyword = 'pending';
+            }else if(jQuery(this).hasClass('draft')){
+                keyword = 'draft';
+            }else if(jQuery(this).hasClass('import')){
+                keyword = 'import';
+            }
+            jQuery(this).parents('#lsx-tour-importer-search-form').find('input.keyword').val(keyword);
 			jQuery('#lsx-tour-importer-search-form').submit();
-			jQuery('#lsx-tour-importer-search-form input.keyword').val('');
+            jQuery(this).parents('#lsx-tour-importer-search-form').find('input.keyword').val('');
 		});
 	},		
 	watchSearch: function() {
@@ -176,9 +187,11 @@ var LSX_TOUR_IMPORTER = {
 		var $this = this;
 
 		jQuery('#import-list input[type="submit"]').on('click',function(event){
+
 			event.preventDefault();
 			counter = 0;
 			var false_click = true;
+
 			jQuery('#import-list tr input:checked:not(.queued)').each(function(){
 				jQuery(this).hide().addClass('queued');
 				jQuery(this).parents('tr').find('.check-column').append(jQuery('#lsx-tour-importer-search-form .ajax-loader-small').html());
@@ -188,7 +201,7 @@ var LSX_TOUR_IMPORTER = {
 			if(true != false_click){
 				$this.importNext();
 			}else{
-				alert('Make sure you have some accommodation selected.');
+				alert('Make sure you have some items selected.');
 			}
 		});
 	},

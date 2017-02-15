@@ -4,7 +4,7 @@
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link      
- * @copyright 2015 LightSpeed
+ * @copyright 2016 LightSpeed
  **/
 
 class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
@@ -44,23 +44,26 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * @access private
 	 */
 	public function __construct() {
-		$temp_options = get_option('_lsx-to_settings',false);
-		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
-			$this->options = $temp_options[$this->plugin_slug];
-		}
-		$this->url = 'http://wetu.com/API/Pins/'.$this->options['api_key'].'/List';
+		$this->set_variables();
 
 		add_action( 'lsx_tour_importer_admin_tab_'.$this->tab_slug, array($this,'display_page') );
 		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));	
 		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));		
 
 		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));	
-		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));	
+		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));
+	}
 
-		$temp_options = get_option('_lsx-to_settings',false);
-		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
-			$this->options = $temp_options[$this->plugin_slug];
-		}				
+	/**
+	 * Sets the variables used throughout the plugin.
+	 */
+	public function set_variables()
+	{
+		parent::set_variables();
+
+		if(false !== $this->api_key){
+		    $this->url = 'https://wetu.com/API/Pins/'.$this->api_key;
+        }
 	}
 
 	/**
@@ -230,8 +233,13 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         		<input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
         	</div>    
 
-        	<p><a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a> | <a class="my-<?php echo $this->tab_slug; ?>-search-toggle" href="#"><?php _e('My','lsx-tour-importer'); ?> <?php echo ucfirst($this->tab_slug); ?></a></p>
-
+        	<p>
+                <a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a> |
+                <a class="published search-toggle" href="#publish"><?php esc_attr_e('Published','lsx-tour-importer'); ?></a> |
+                <a class="pending search-toggle"  href="#pending"><?php esc_attr_e('Pending','lsx-tour-importer'); ?></a> |
+                <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','lsx-tour-importer'); ?></a> |
+                <a class="import search-toggle"  href="#import"><?php esc_attr_e('Import','lsx-tour-importer'); ?></a>
+            </p>
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
             	<img style="width:64px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
@@ -261,7 +269,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * Save the list of Accommodation into an option
 	 */
 	public function update_options() {
-		$data= file_get_contents($this->url);
+		$data= file_get_contents($this->url.'/List');
 		$accommodation  = json_decode($data, true);
 		if (!empty($accommodation)) {
 			update_option('lsx_tour_operator_accommodation',json_encode($accommodation));
@@ -313,9 +321,19 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 					$keyword = ltrim(rtrim($keyword));
 				}
 
-				
-				if(in_array('my-posts',$keyphrases)){
-					$my_accommodation = true;
+
+				$post_status = false;
+				if(in_array('publish',$keyphrases)){
+					$post_status = 'publish';
+				}
+				if(in_array('pending',$keyphrases)){
+					$post_status = 'pending';
+				}
+				if(in_array('draft',$keyphrases)){
+					$post_status = 'draft';
+				}
+				if(in_array('import',$keyphrases)){
+					$post_status = 'import';
 				}
 
 				$accommodation = json_decode($accommodation);
@@ -324,29 +342,49 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 					foreach($accommodation as $row_key => $row){
 
-						//Search through each keyword.
-						foreach($keyphrases as $keyphrase){
 
-							//Make sure the keyphrase is tured into an array
-							$keywords = explode(" ",$keyphrase);
-							if(!is_array($keywords)){
-								$keywords = array($keywords);
-							}
+						//If we are searching for
+						if(false !== $post_status){
 
-							if(true === $my_accommodation || $this->multineedle_stripos(ltrim(rtrim($row->name)), $keywords) !== false){
-								$row->post_id = 0;
-								if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
-									$row->post_id = $current_accommodation[$row->id]->post_id;
-								}
+							if('import' === $post_status){
 
-								if(false === $my_accommodation || (true === $my_accommodation && 0 !== $row->post_id)){
+								if(0 !== $row['post_id']){
+									continue;
+								}else{
 									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
 								}
 
-								//print_r($row->name);
-								//die();
+
+							}else{
+
+								if(0 === $row['post_id']){
+									continue;
+								}else{
+									$current_status = get_post_status($row['post_id']);
+									if($current_status !== $post_status){
+										continue;
+									}
+
+								}
+								$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
+
 							}
-						}	
+
+						}else{
+							//Search through each keyword.
+							foreach($keyphrases as $keyphrase){
+
+								//Make sure the keyphrase is turned into an array
+								$keywords = explode(" ",$keyphrase);
+								if(!is_array($keywords)){
+									$keywords = array($keywords);
+								}
+
+								if($this->multineedle_stripos(ltrim(rtrim($row['name'])), $keywords) !== false){
+									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
+								}
+							}
+						}
 					}		
 				}
 
@@ -441,7 +479,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 				$content = false;
 			}
 
-            $jdata=file_get_contents("http://wetu.com/API/Pins/".$this->options['api_key']."/Get?ids=".$wetu_id);
+            $jdata=file_get_contents($this->url."/Get?ids=".$wetu_id);
             if($jdata)
             {
                 $adata=json_decode($jdata,true);

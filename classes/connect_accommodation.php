@@ -4,7 +4,7 @@
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link      
- * @copyright 2015 LightSpeed
+ * @copyright 2016 LightSpeed
  **/
 
 class Lsx_Tour_Importer_Connect_Accommodation extends Lsx_Tour_Importer_Admin {
