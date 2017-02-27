@@ -80,10 +80,9 @@ class WETU_Importer_Admin extends WETU_Importer {
 	            <h2><?php _e('Welcome to the LSX Wetu Importer','wetu-importer'); ?></h2>
 	            <p>Please select the type of content you want to import from the list below.</p>
 	            <ul>
+                    <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
 	            	<li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','wetu-importer'); ?></a></li>
-                    <?php if(class_exists('TI_Tours')) { ?>
-                        <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
-                    <?php } ?>
+                    <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('Destinations','wetu-importer'); ?></a></li>
 	            </ul>
 
 		            <h3><?php _e('Additional Tools','wetu-importer'); ?></h3>

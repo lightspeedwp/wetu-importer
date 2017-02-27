@@ -280,7 +280,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	/**
 	 * Grab all the current accommodation posts via the lsx_wetu_id field.
 	 */
-	public function find_current_accommodation() {
+	public function find_current_accommodation($post_type='accommodation') {
 		global $wpdb;
 		$return = array();
 
@@ -292,7 +292,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
     				ON key1.post_id = key2.ID
 					
 					WHERE key1.meta_key = 'lsx_wetu_id'
-					AND key2.post_type = 'accommodation'
+					AND key2.post_type = '{$post_type}'
 		");
 		if(null !== $current_accommodation && !empty($current_accommodation)){
 			foreach($current_accommodation as $accom){

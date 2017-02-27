@@ -15,10 +15,11 @@ define('WETU_IMPORTER_PATH',  plugin_dir_path( __FILE__ ) );
 define('WETU_IMPORTER_URL',  plugin_dir_url( __FILE__ ) );
 define('WETU_IMPORTER_VER',  '1.0.0' );
 
-require_once(WETU_IMPORTER_PATH.'classes/importer.php');
-require_once(WETU_IMPORTER_PATH.'classes/admin.php');
-require_once(WETU_IMPORTER_PATH.'classes/accommodation.php');
-require_once(WETU_IMPORTER_PATH.'classes/connect_accommodation.php');
+require_once(WETU_IMPORTER_PATH.'classes/class-importer.php');
+require_once(WETU_IMPORTER_PATH.'classes/class-admin.php');
+require_once(WETU_IMPORTER_PATH.'classes/class-accommodation.php');
+require_once(WETU_IMPORTER_PATH.'classes/class-tours.php');
+require_once(WETU_IMPORTER_PATH.'classes/class-connect-accommodation.php');
 require_once(WETU_IMPORTER_PATH.'classes/class-settings.php');
 
 if(class_exists('Lsx_Banners')){
