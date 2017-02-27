@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   Lsx_Tour_Importer_Banner_Integration
+ * @package   WETU_Importer_Banner_Integration
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link      
  * @copyright 2016 LightSpeed
  **/
 
-class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
+class WETU_Importer_Banner_Integration extends WETU_Importer_Admin {
 	
 	/**
 	 * The url to list items from WETU
@@ -40,13 +40,13 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
         ?>
         <div class="wrap">
 			
-            <h2><?php _e('Download new banners straight from WETU','lsx-tour-importer'); ?></h2>  
+            <h2><?php _e('Download new banners straight from WETU','wetu-importer'); ?></h2>
 
 			<form method="get" action="" id="banners-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo $this->tab_slug; ?>" />
 
 	           <div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
-	            	<img style="width:32px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
+	            	<img style="width:32px;" src="<?php echo WETU_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
 	            </div>  				
 				
 				<table class="wp-list-table widefat fixed posts">
@@ -152,7 +152,7 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 
 				</table>
 
-				<p><input class="button button-primary download" type="button" value="<?php _e('Download new Banners','lsx-tour-importer'); ?>" /> 
+				<p><input class="button button-primary download" type="button" value="<?php _e('Download new Banners','wetu-importer'); ?>" />
 				</p>
 			</form>
         </div>
@@ -288,4 +288,4 @@ class Lsx_Tour_Importer_Banner_Integration extends Lsx_Tour_Importer_Admin {
 	}
 
 }
-$lsx_tour_importer_lsx_banners_integration = new Lsx_Tour_Importer_Banner_Integration();
+$wetu_importer_lsx_banners_integration = new WETU_Importer_Banner_Integration();

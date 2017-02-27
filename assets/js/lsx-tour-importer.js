@@ -1,4 +1,4 @@
-var LSX_TOUR_IMPORTER = {
+var WETU_IMPORTER = {
 
 	init : function() {
 		if(jQuery('body').hasClass('tools_page_lsx-tour-importer')){
@@ -267,5 +267,5 @@ var LSX_TOUR_IMPORTER = {
 
 }
 jQuery(document).ready( function() {
-	LSX_TOUR_IMPORTER.init();
+	WETU_IMPORTER.init();
 });

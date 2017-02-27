@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   Lsx_Tour_Importer_Admin
+ * @package   WETU_Importer_Admin
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link      
  * @copyright 2016 LightSpeed
  **/
 
-class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
+class WETU_Importer_Admin extends WETU_Importer {
 
 	/**
 	 * The previously attached images
@@ -45,7 +45,15 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );	
+		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );
+		add_action( 'admin_menu', array( $this, 'register_importer_page' ),20 );
+	}
+
+	/**
+	 * Registers the admin page which will house the importer form.
+	 */
+	public function register_importer_page() {
+		add_submenu_page( 'tour-operator',esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'wetu-importer', array( $this, 'display_page' ) );
 	}
 
 	/**
@@ -53,7 +61,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 	 */
 	public function admin_scripts() {
 		if(is_admin() && isset($_GET['page']) && $this->plugin_slug === $_GET['page']){
-			wp_enqueue_script( 'lsx-tour-importers-script', LSX_TOUR_IMPORTER_URL.'assets/js/lsx-tour-importer.js');
+			wp_enqueue_script( 'lsx-tour-importers-script', WETU_IMPORTER_URL.'assets/js/lsx-tour-importer.js');
 			wp_localize_script( 'lsx-tour-importers-script', 'lsx_tour_importer_params', array(
 			'ajax_url' => admin_url('admin-ajax.php'),
 			) );			
@@ -69,20 +77,20 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
             <?php screen_icon(); ?>
 
             <?php if(!isset($_GET['tab'])){ ?>
-	            <h2><?php _e('Welcome to the LSX Wetu Importer','lsx-tour-importer'); ?></h2>  
+	            <h2><?php _e('Welcome to the LSX Wetu Importer','wetu-importer'); ?></h2>
 	            <p>Please select the type of content you want to import from the list below.</p>
 	            <ul>
-	            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','lsx-tour-importer'); ?></a></li>
+	            	<li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','wetu-importer'); ?></a></li>
                     <?php if(class_exists('TI_Tours')) { ?>
-                        <li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','lsx-tour-importer'); ?></a></li>
+                        <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
                     <?php } ?>
 	            </ul>
 
-		            <h3><?php _e('Additional Tools','lsx-tour-importer'); ?></h3>
+		            <h3><?php _e('Additional Tools','wetu-importer'); ?></h3>
 		            <ul>
-		            	<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','lsx-tour-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','lsx-tour-importer'); ?></small></li>
+		            	<li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','wetu-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','wetu-importer'); ?></small></li>
 		            	<?php if(class_exists('Lsx_Banners')){ ?>
-		            		<li><a href="<?php echo admin_url('tools.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync High Res Banner Images','lsx-tour-importer'); ?></a></li>
+		            		<li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync High Res Banner Images','wetu-importer'); ?></a></li>
 		            	<?php } ?>
 		            </ul> 
 	             	            
@@ -187,7 +195,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
     							<li><input class="team" type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title($member); ?></li>
     						<?php }
     					}else{ ?>
-    							<li><input class="team" type="checkbox" value="0" /> <?php _e('None','lsx-tour-importer'); ?></li>
+    							<li><input class="team" type="checkbox" value="0" /> <?php _e('None','wetu-importer'); ?></li>
     					<?php }
     				?>
     		</ul>
@@ -207,7 +215,7 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 					$return .= '<li><input class="'.$taxonomy.'" type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
 				}
 			}else{
-				$return .= '<li><input type="checkbox" value="" /> '.__('None','lsx-tour-importer').'</li>';
+				$return .= '<li><input type="checkbox" value="" /> '.__('None','wetu-importer').'</li>';
 			}
 			$return .= '</ul>';
 		}
@@ -258,4 +266,4 @@ class Lsx_Tour_Importer_Admin extends Lsx_Tour_Importer {
 		}
 	}		
 }
-$lsx_tour_importer_admin = new Lsx_Tour_Importer_Admin();
+$wetu_importer_admin = new WETU_Importer_Admin();

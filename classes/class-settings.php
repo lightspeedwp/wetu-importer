@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   Lsx_Tour_Importer
+ * @package   WETU_Importer
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link      
  * @copyright 2016 LightSpeed
  **/
 
-class Lsx_Tour_Importer_Settings extends Lsx_Tour_Importer {
+class WETU_Importer_Settings extends WETU_Importer {
 	
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -22,23 +22,9 @@ class Lsx_Tour_Importer_Settings extends Lsx_Tour_Importer {
 			$this->options = $temp_options[$this->plugin_slug];
 			$this->set_variables();
 		}
-		add_action( 'admin_menu', array( $this, 'register_importer_page' ) );
+
 		add_filter( 'lsx_to_framework_settings_tabs', array( $this, 'settings_page_array') );
-
 		add_action('lsx_to_framework_api_tab_content',array( $this, 'api_settings'),10,1);
-	}
-
-	/**
-	 * Registers the admin page which will house the importer form.
-	 */
-	public function register_importer_page() {
-		add_management_page(
-			__('LSX Importer','lsx-tour-importer'),
-			__('LSX Importer','lsx-tour-importer'),
-			'manage_options',
-			$this->plugin_slug,
-			array( $this, 'display_page' )
-		);
 	}
 
 	/**
@@ -46,10 +32,10 @@ class Lsx_Tour_Importer_Settings extends Lsx_Tour_Importer {
 	 */
 	public function settings_page_array($tabs){
 		$tabs[$this->plugin_slug] = array(
-			'page_title'        => __('Image Scaling','lsx-tour-importer'),
-			'page_description'  => __('','lsx-tour-importer'),
-			'menu_title'        => __('Importer','lsx-tour-importer'),
-			'template'          => LSX_TOUR_IMPORTER_PATH.'settings/'.$this->plugin_slug.'.php',
+			'page_title'        => __('Image Scaling','wetu-importer'),
+			'page_description'  => __('','wetu-importer'),
+			'menu_title'        => __('Importer','wetu-importer'),
+			'template'          => WETU_IMPORTER_PATH.'settings/wetu.php',
 			'default'	 		=> false
 		);
 		return $tabs;
@@ -71,4 +57,4 @@ class Lsx_Tour_Importer_Settings extends Lsx_Tour_Importer {
 		<?php }
 	}
 }
-$lsx_tour_importer_settings = new Lsx_Tour_Importer_Settings();
+$wetu_importer_settings = new WETU_Importer_Settings();

@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   Lsx_Tour_Importer_Accommodation
+ * @package   WETU_Importer_Accommodation
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link      
  * @copyright 2016 LightSpeed
  **/
 
-class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
+class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 	/**
 	 * The url to list items from WETU
@@ -114,8 +114,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo $this->tab_slug; ?>" />
 				
-				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','lsx-tour-importer'); ?>" /> 
-					<input class="button button-primary clear" type="button" value="<?php _e('Clear','lsx-tour-importer'); ?>" />
+				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','wetu-importer'); ?>" />
+					<input class="button button-primary clear" type="button" value="<?php _e('Clear','wetu-importer'); ?>" />
 				</p>				
 
 				<table class="wp-list-table widefat fixed posts">
@@ -124,11 +124,11 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 					<tbody id="the-list">
 						<tr class="post-0 type-tour status-none" id="post-0">
 							<th class="check-column" scope="row">
-								<label for="cb-select-0" class="screen-reader-text"><?php _e('Enter a title to search for and press enter','lsx-tour-importer'); ?></label>
+								<label for="cb-select-0" class="screen-reader-text"><?php _e('Enter a title to search for and press enter','wetu-importer'); ?></label>
 							</th>
 							<td class="post-title page-title column-title">
 								<strong>
-									<?php _e('Enter a title to search for','lsx-tour-importer'); ?>
+									<?php _e('Enter a title to search for','wetu-importer'); ?>
 								</strong>
 							</td>
 							<td class="date column-date">							
@@ -142,8 +142,8 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 				</table>
 
-				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','lsx-tour-importer'); ?>" /> 
-					<input class="button button-primary clear" type="button" value="<?php _e('Clear','lsx-tour-importer'); ?>" />
+				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','wetu-importer'); ?>" />
+					<input class="button button-primary clear" type="button" value="<?php _e('Clear','wetu-importer'); ?>" />
 				</p>
 			</form> 
 
@@ -155,25 +155,25 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 						<div style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="facilities" /> <?php _e('Facilities','lsx-tour-importer'); ?></li>	
-								<li><input class="content" type="checkbox" name="content[]" value="friendly" /> <?php _e('Friendly','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="facilities" /> <?php _e('Facilities','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="friendly" /> <?php _e('Friendly','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
 							</ul>
 							<h4><?php _e('Additional Content'); ?></h4>
 							<ul>
-								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','lsx-tour-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','lsx-tour-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','wetu-importer'); ?></li>
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
@@ -202,7 +202,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 
 					</table>
 
-					<p><input class="button button-primary" type="submit" value="<?php _e('Sync','lsx-tour-importer'); ?>" /></p>
+					<p><input class="button button-primary" type="submit" value="<?php _e('Sync','wetu-importer'); ?>" /></p>
 				</form>
 			</div>
 
@@ -223,30 +223,30 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
         <form class="ajax-form" id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php" data-type="<?php echo $this->tab_slug; ?>">
         	<input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>" />
 
-        	<h3><span class="dashicons dashicons-search"></span> <?php _e('Search','lsx-tour-importer'); ?></h3>
+        	<h3><span class="dashicons dashicons-search"></span> <?php _e('Search','wetu-importer'); ?></h3>
         	<div class="normal-search">
-        		<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
+        		<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php _e('Search','wetu-importer'); ?>" />
         	</div>
         	<div class="advanced-search hidden" style="display:none;">
-        		<p><?php _e('Enter several keywords, each on a new line.','lsx-tour-importer'); ?></p>
+        		<p><?php _e('Enter several keywords, each on a new line.','wetu-importer'); ?></p>
         		<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
-        		<input class="button button-primary submit" type="submit" value="<?php _e('Search','lsx-tour-importer'); ?>" />
+        		<input class="button button-primary submit" type="submit" value="<?php _e('Search','wetu-importer'); ?>" />
         	</div>    
 
         	<p>
-                <a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','lsx-tour-importer'); ?></a> |
-                <a class="published search-toggle" href="#publish"><?php esc_attr_e('Published','lsx-tour-importer'); ?></a> |
-                <a class="pending search-toggle"  href="#pending"><?php esc_attr_e('Pending','lsx-tour-importer'); ?></a> |
-                <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','lsx-tour-importer'); ?></a> |
-                <a class="import search-toggle"  href="#import"><?php esc_attr_e('Import','lsx-tour-importer'); ?></a>
+                <a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','wetu-importer'); ?></a> |
+                <a class="published search-toggle" href="#publish"><?php esc_attr_e('Published','wetu-importer'); ?></a> |
+                <a class="pending search-toggle"  href="#pending"><?php esc_attr_e('Pending','wetu-importer'); ?></a> |
+                <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','wetu-importer'); ?></a> |
+                <a class="import search-toggle"  href="#import"><?php esc_attr_e('Import','wetu-importer'); ?></a>
             </p>
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
-            	<img style="width:64px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
+            	<img style="width:64px;" src="<?php echo WETU_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
             </div>
 
             <div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
-            	<img style="width:32px;" src="<?php echo LSX_TOUR_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
+            	<img style="width:32px;" src="<?php echo WETU_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
             </div>            
         </form>	
 	<?php 
@@ -256,7 +256,7 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 	 * search_form
 	 */
 	public function update_options_form() {
-		echo '<div style="display:none;" class="wetu-status"><h3>'.__('Wetu Status','lsx-tour-importer').'</h3>';
+		echo '<div style="display:none;" class="wetu-status"><h3>'.__('Wetu Status','wetu-importer').'</h3>';
 		$accommodation = get_option('lsx_tour_operator_accommodation',false);
 		if(false === $accommodation || isset($_GET['refresh_accommodation'])){
 			$this->update_options();
@@ -1219,4 +1219,4 @@ class Lsx_Tour_Importer_Accommodation extends Lsx_Tour_Importer_Admin {
 		return $att_id;
 	}			
 }
-$lsx_tour_importer_accommodation = new Lsx_Tour_Importer_Accommodation();
+$wetu_importer_accommodation = new WETU_Importer_Accommodation();
