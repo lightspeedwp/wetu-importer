@@ -178,7 +178,7 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
                 <input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php _e('Search','wetu-importer'); ?>" />
             </div>
 
-            
+
             <div class="advanced-search hidden" style="display:none;">
                 <p><?php _e('Enter several keywords, each on a new line.','wetu-importer'); ?></p>
                 <textarea rows="10" cols="40" name="bulk-keywords"></textarea>
@@ -203,8 +203,6 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 	<?php
 	}
 
-
-
 	/**
 	 * Grab all the current destination posts via the lsx_wetu_id field.
 	 */
@@ -228,7 +226,30 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 			}
 		}
 		return $return;
-	}	
+	}
+
+	/**
+	 * Grab all the current destination posts via the lsx_wetu_id field.
+	 */
+	public function find_searchable_destinations($post_type='destination') {
+		global $wpdb;
+		$return = array();
+
+		$current_destination = $wpdb->get_results("
+					SELECT key1.post_id,key1.meta_value,key2.post_title as name,key2.post_date as last_modified
+					FROM {$wpdb->postmeta} key1
+
+					INNER JOIN  {$wpdb->posts} key2 
+    				ON key1.post_id = key2.ID
+					
+					WHERE key1.meta_key = 'lsx_wetu_id'
+					AND key2.post_type = '{$post_type}'
+		");
+		if(null !== $current_destination && !empty($current_destination)){
+			$return = $current_destination;
+		}
+		return $return;
+	}
 
 	/**
 	 * Run through the destination grabbed from the DB.
@@ -236,8 +257,8 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 	public function process_ajax_search() {
 		$return = false;
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_tour_importer' && isset($_POST['type']) && $_POST['type'] === 'destination'){
-			$destination = get_option('lsx_tour_operator_destination',false);
-			if ( false !== $destination && isset($_POST['keyword'] )) {
+
+			if ( isset($_POST['keyword'] )) {
 				$searched_items = false;
 				$keyphrases = $_POST['keyword'];
 				$my_destination = false;
@@ -260,43 +281,22 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 				if(in_array('draft',$keyphrases)){
 					$post_status = 'draft';
 				}
-				if(in_array('import',$keyphrases)){
-					$post_status = 'import';
-				}
 
-				$destination = json_decode($destination);
+				$destination = $this->find_searchable_destinations();
+
 				if (!empty($destination)) {
-					$current_destination = $this->find_current_destination();
 
-					foreach($destination as $row_key => $row){
-
+					foreach($destination as $row){
 
 						//If we are searching for
 						if(false !== $post_status){
 
-							if('import' === $post_status){
+                            $current_status = get_post_status($row->post_id);
+                            if($current_status !== $post_status){
+                                continue;
+                            }
+                            $searched_items[sanitize_title($row->name).'-'.$row->meta_value] = $this->format_row($row);
 
-								if(0 !== $row['post_id']){
-									continue;
-								}else{
-									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
-								}
-
-
-							}else{
-
-								if(0 === $row['post_id']){
-									continue;
-								}else{
-									$current_status = get_post_status($row['post_id']);
-									if($current_status !== $post_status){
-										continue;
-									}
-
-								}
-								$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
-
-							}
 
 						}else{
 							//Search through each keyword.
@@ -308,8 +308,8 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 									$keywords = array($keywords);
 								}
 
-								if($this->multineedle_stripos(ltrim(rtrim($row['name'])), $keywords) !== false){
-									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
+								if($this->multineedle_stripos(ltrim(rtrim($row->name)), $keywords) !== false){
+									$searched_items[sanitize_title($row->name).'-'.$row->meta_value] = $this->format_row($row);
 								}
 							}
 						}
@@ -358,8 +358,8 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 			$row_html = '
 			<tr class="post-'.$row->post_id.' type-tour" id="post-'.$row->post_id.'">
 				<th class="check-column" scope="row">
-					<label for="cb-select-'.$row->id.'" class="screen-reader-text">'.$row->name.'</label>
-					<input type="checkbox" data-identifier="'.$row->id.'" value="'.$row->post_id.'" name="post[]" id="cb-select-'.$row->id.'">
+					<label for="cb-select-'.$row->meta_value.'" class="screen-reader-text">'.$row->name.'</label>
+					<input type="checkbox" data-identifier="'.$row->id.'" value="'.$row->post_id.'" name="post[]" id="cb-select-'.$row->meta_value.'">
 				</th>
 				<td class="post-title page-title column-title">
 					<strong>'.$row->name.'</strong> - '.$status.'
@@ -368,7 +368,7 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 					<abbr title="'.date('Y/m/d',strtotime($row->last_modified)).'">'.date('Y/m/d',strtotime($row->last_modified)).'</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
-					'.$row->id.'
+					'.$row->meta_value.'
 				</td>
 			</tr>';		
 			return $row_html;

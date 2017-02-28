@@ -78,11 +78,11 @@ class WETU_Importer_Admin extends WETU_Importer {
 
             <?php if(!isset($_GET['tab'])){ ?>
 	            <h2><?php _e('Welcome to the LSX Wetu Importer','wetu-importer'); ?></h2>
-	            <p>Please select the type of content you want to import from the list below.</p>
+	            <p>If this is the first time you are running the import, then follow the steps below.</p>
 	            <ul>
-                    <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
-	            	<li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('Accommodation','wetu-importer'); ?></a></li>
-                    <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('Destinations','wetu-importer'); ?></a></li>
+                    <li>Step 1 - Import your <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
+	            	<li>Step 2 - The tour import will have created draft <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('accommodation','wetu-importer'); ?></a> that will need to be imported.</li>
+                    <li>Step 3 - Lastly import the <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('destinations','wetu-importer'); ?></a> draft posts created during the previous two steps.</li>
 	            </ul>
 
 		            <h3><?php _e('Additional Tools','wetu-importer'); ?></h3>

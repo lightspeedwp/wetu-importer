@@ -382,9 +382,9 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 					$return = implode($searched_items);
 				}
 			}
+			print_r($return);
+			die();
 		}
-		print_r($return);
-		die();
 	}
 
 	/**
@@ -774,24 +774,32 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 			if(false !== $this->current_destinations && !empty($this->current_destinations) && array_key_exists($day['destination_content_entity_id'],$this->current_destinations)){
 				$dest_id = $this->current_destinations[$day['destination_content_entity_id']];
+
+				$potential_id = wp_get_post_parent_id($dest_id);
+				$country_wetu_id = get_post_meta($potential_id,'lsx_wetu_id',true);
+				if(false !== $country_wetu_id){
+					$this->set_country($country_wetu_id, $id);
+                }
+
 			}else {
 
-				$destination_json = file_get_contents("http://wetu.com/API/Itinerary/V7/Get?id=" . $day['destination_content_entity_id']);
+				$destination_json = file_get_contents("http://wetu.com/API/Pins/".$this->api_key."/Get?ids=" . $day['destination_content_entity_id']);
 
 				if ($destination_json) {
 					$destination_data = json_decode($destination_json, true);
 
-					if (!empty($destination_data)) {
+					if (!empty($destination_data) && !isset($destination_data['error'])) {
 
 					    $destination_title = $day['destination_content_entity_id'];
-					    if(isset($destination_data['name'])){
-							$destination_title = $destination_data['name'];
+
+					    if(isset($destination_data[0]['name'])){
+							$destination_title = $destination_data[0]['name'];
                         }
 
-					    if(isset($destination_data['map_object_id']) && isset($destination_data['position']['country_content_entity_id'])
-                            && $destination_data['map_object_id'] !== $destination_data['position']['country_content_entity_id']){
+					    if(isset($destination_data[0]['map_object_id']) && isset($destination_data[0]['position']['country_content_entity_id'])
+                            && $destination_data[0]['map_object_id'] !== $destination_data[0]['position']['country_content_entity_id']){
 
-							$country_id = $this->set_country($dest_id, $destination_data['position']['country_content_entity_id'], $id);
+							$country_id = $this->set_country($destination_data[0]['position']['country_content_entity_id'], $id);
                         }
 
                         $dest_post = array(
@@ -824,7 +832,9 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
      * @param $country_id array
 	 * @param $id string
 	 */
-	public function set_country($dest_id, $country_wetu_id, $id) {
+	public function set_country($country_wetu_id, $id) {
+	    $country_id = false;
+
 		if(false === $this->current_destinations) {
 			$this->current_destinations = $this->find_current_destinations();
 		}
@@ -833,16 +843,16 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
             $country_id = $this->current_destinations[$country_wetu_id];
         } else {
 
-            $country_json = file_get_contents("http://wetu.com/API/Itinerary/V7/Get?id=" . $country_wetu_id);
+            $country_json = file_get_contents("http://wetu.com/API/Pins/".$this->api_key."/Get?ids=" . $country_wetu_id);
 
             if ($country_json) {
                 $country_data = json_decode($country_json, true);
 
-                if (!empty($country_data)) {
+                if (!empty($country_data) && !isset($country_data['error'])) {
 
                     $country_title = $country_wetu_id;
-                    if (isset($country_data['name'])) {
-						$country_title = $country_data['name'];
+                    if (isset($country_data[0]['name'])) {
+						$country_title = $country_data[0]['name'];
                     }
 
 					$country_id = wp_insert_post(array(
@@ -858,6 +868,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
         if ('' !== $country_id && false !== $country_id) {
             $this->save_custom_field($country_id, 'destination_to_tour', $id, false, false);
             $this->save_custom_field($id, 'tour_to_destination', $country_id, false, false);
+
+            return $country_id;
         }
 	}
 }
