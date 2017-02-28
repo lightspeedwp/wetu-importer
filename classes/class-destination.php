@@ -412,11 +412,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 				$team_members = false;
 			}
 
-			if(isset($_POST['safari_brands'])){
-				$safari_brands = $_POST['safari_brands'];	
-			}else{
-				$safari_brands = false;
-			}			
+            $safari_brands = false;
 
 			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
 				$content = $_POST['content'];	
@@ -484,6 +480,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	        	$post['ID'] = $id;
 				if(isset($data[0]['name'])){
 					$post['post_title'] = $data[0]['name'];
+					$post['post_status'] = 'pending';
 					$post['post_name'] = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'destination', 0);
 				}
 	        	$id = wp_update_post($post);
@@ -524,6 +521,26 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 			//Set the Electricity
 			if(false !== $importable_content && in_array('electricity',$importable_content)){
 				$this->set_travel_info($data,$id,'electricity');
+			}
+			//Set the cuisine
+			if(false !== $importable_content && in_array('cuisine',$importable_content)){
+				$this->set_travel_info($data,$id,'cuisine');
+			}
+			//Set the banking
+			if(false !== $importable_content && in_array('banking',$importable_content)){
+				$this->set_travel_info($data,$id,'banking');
+			}
+			//Set the transport
+			if(false !== $importable_content && in_array('transport',$importable_content)){
+				$this->set_travel_info($data,$id,'transport');
+			}
+			//Set the dress
+			if(false !== $importable_content && in_array('dress',$importable_content)){
+				$this->set_travel_info($data,$id,'dress');
+			}
+			//Set the climate
+			if(false !== $importable_content && in_array('climate',$importable_content)){
+				$this->set_travel_info($data,$id,'climate');
 			}
 
         }
@@ -601,8 +618,9 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	 * Saves the room data
 	 */
 	public function set_travel_info($data,$id,$meta_key) {
+
 		if(!empty($data[0]['travel_information']) && isset($data[0]['travel_information'][$meta_key])){
-			$content = $data[0]['travel_information'][$meta_key];
+			$content = strip_tags($data[0]['travel_information'][$meta_key]);
 			$this->save_custom_field($content,$meta_key,$id);
 		}
 	}
