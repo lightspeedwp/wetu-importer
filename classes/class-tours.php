@@ -153,11 +153,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','ti-tours'); ?></li>
 
                                 <li><input class="content" type="checkbox" name="content[]" value="itineraries" /> <?php _e('Itinerary Days','ti-tours'); ?></li>
-							</ul>
-							<h4><?php _e('Additional Content'); ?></h4>
-							<ul>
-								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','ti-tours'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','ti-tours'); ?></li>
+
 								<?php if(class_exists('TO_Maps')){ ?>
                                     <li><input class="content" type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','ti-tours'); ?></li>
 								<?php } ?>
@@ -168,13 +164,12 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
                             <ul>
                                 <li><input class="content" type="checkbox" name="content[]" value="itinerary_description" /> <?php _e('Description','ti-tours'); ?></li>
                                 <li><input class="content" type="checkbox" name="content[]" value="itinerary_gallery" /> <?php _e('Gallery','ti-tours'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="itinerary_location" /> <?php _e('Location','ti-tours'); ?></li>
                             </ul>
 
                             <h4><?php _e('Additional Content'); ?></h4>
                             <ul>
-                                <li><input class="content" type="checkbox" name="content[]" value="accommodation" /> <?php _e('Connect Accommodation','ti-tours'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','ti-tours'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="accommodation" /> <?php _e('Sync Accommodation','ti-tours'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Sync Destinations','ti-tours'); ?></li>
                             </ul>
                         </div>
                         <?php if(class_exists('TO_Team')){ ?>

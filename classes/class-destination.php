@@ -7,7 +7,7 @@
  * @copyright 2016 LightSpeed
  **/
 
-class WETU_Importer_Destination extends WETU_Importer_Admin {
+class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 
 	/**
 	 * The url to list items from WETU
@@ -123,12 +123,29 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 							<ul>
 								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
+
+		                        <?php if(class_exists('TO_Maps')){ ?>
+                                    <li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
+		                        <?php } ?>
+
+		                        <?php if(class_exists('TO_Videos')){ ?>
+								    <li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
+		                        <?php } ?>
+
 							</ul>
 						</div>
+                        <div style="width:30%;display:block;float:left;">
+                            <h3><?php _e('Travel Information'); ?></h3>
+                            <ul>
+                                <li><input class="content" type="checkbox" name="content[]" value="electricity" /> <?php _e('Electricity','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="banking" /> <?php _e('Banking','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="cuisine" /> <?php _e('Cuisine','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="climate" /> <?php _e('Climate','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="transport" /> <?php _e('Transport','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="dress" /> <?php _e('Dress','wetu-importer'); ?></li>
+                            </ul>
+                        </div>
+
 		                <?php if(class_exists('TO_Team')){ ?>
                             <div style="width:30%;display:block;float:left;">
                                 <h3><?php _e('Assign a Team Member'); ?></h3>
@@ -359,7 +376,7 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 			<tr class="post-'.$row->post_id.' type-tour" id="post-'.$row->post_id.'">
 				<th class="check-column" scope="row">
 					<label for="cb-select-'.$row->meta_value.'" class="screen-reader-text">'.$row->name.'</label>
-					<input type="checkbox" data-identifier="'.$row->id.'" value="'.$row->post_id.'" name="post[]" id="cb-select-'.$row->meta_value.'">
+					<input type="checkbox" data-identifier="'.$row->meta_value.'" value="'.$row->post_id.'" name="post[]" id="cb-select-'.$row->meta_value.'">
 				</th>
 				<td class="post-title page-title column-title">
 					<strong>'.$row->name.'</strong> - '.$status.'
@@ -422,12 +439,7 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 		}
 
 	}	
-	/**
-	 * Formats the row for the completed list.
-	 */
-	public function format_completed_row($response){
-		echo '<li class="post-'.$response.'"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="'.get_permalink($response).'">'.get_the_title($response).'</a></li>';
-	}
+
 	/**
 	 * Connect to wetu
 	 */
@@ -460,7 +472,9 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 	        if(false !== $importable_content && in_array('excerpt',$importable_content)){
 		        if(isset($data[0]['content']['teaser_description'])){
 		        	$data_post_excerpt = $data[0]['content']['teaser_description'];
-		        }elseif(isset($data[0]['content']['general_description']) && false === $content_used_general_description){
+		        }elseif(isset($data[0]['content']['extended_description'])){
+					$data_post_excerpt = $data[0]['content']['extended_description'];
+				}elseif(isset($data[0]['content']['general_description']) && false === $content_used_general_description){
 		            $data_post_excerpt = $data[0]['content']['general_description'];
 		        }	   
 		        $post['post_excerpt'] = $data_post_excerpt;     	
@@ -503,9 +517,14 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 	        }
 
 	        //Set the Room Data
-	        if(false !== $importable_content && in_array('rooms',$importable_content)){
-	        	$this->set_room_data($data,$id);
+	        if(false !== $importable_content && in_array('videos',$importable_content)){
+	        	$this->set_video_data($data,$id);
 	    	}
+
+			//Set the Electricity
+			if(false !== $importable_content && in_array('electricity',$importable_content)){
+				$this->set_travel_info($data,$id,'electricity');
+			}
 
         }
         return $id;
@@ -581,49 +600,12 @@ class WETU_Importer_Destination extends WETU_Importer_Admin {
 	/**
 	 * Saves the room data
 	 */
-	public function set_room_data($data,$id) {
-
-		if(!empty($data[0]['features']) && isset($data[0]['features']['star_authority'])){
-			$rating_type = $data[0]['features']['star_authority'];	
-		}else{
-			$rating_type = 'Unspecified2';
-		}
-		$this->save_custom_field($rating_type,'rating_type',$id);
-
-		if(!empty($data[0]['features']) && isset($data[0]['features']['stars'])){
-			$this->save_custom_field($data[0]['features']['stars'],'rating',$id,true);	
+	public function set_travel_info($data,$id,$meta_key) {
+		if(!empty($data[0]['travel_information']) && isset($data[0]['travel_information'][$meta_key])){
+			$content = $data[0]['travel_information'][$meta_key];
+			$this->save_custom_field($content,$meta_key,$id);
 		}
 	}
 
-	/**
-	 * Set the Video date
-	 */
-	public function set_video_data($data,$id) {
-		if(!empty($data[0]['content']['youtube_videos']) && is_array($data[0]['content']['youtube_videos'])){
-			$videos = false;
-
-			foreach($data[0]['content']['youtube_videos'] as $video){
-				$temp_video = '';
-				if(isset($video['label'])){
-					$temp_video['title'] = $video['label'];
-				}
-				if(isset($video['description'])){
-					$temp_video['description'] = strip_tags($video['description']);
-				}	
-				if(isset($video['url'])){
-					$temp_video['url'] = $video['url'];
-				}						
-				$temp_video['thumbnail'] = '';
-				$videos[] = $temp_video;
-			}
-
-			if(false !== $id && '0' !== $id){
-				delete_post_meta($id, 'videos');				
-			}
-			foreach($videos as $video){
-		        add_post_meta($id,'videos',$video,false);			
-			}
-		}
-	}
 }
 $wetu_importer_destination = new WETU_Importer_Destination();

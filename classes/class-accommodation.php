@@ -159,7 +159,9 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
+		                        <?php if(class_exists('TO_Maps')){ ?>
+								    <li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
+		                        <?php } ?>
 								<li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','wetu-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','wetu-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="facilities" /> <?php _e('Facilities','wetu-importer'); ?></li>
@@ -168,12 +170,17 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 								<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','wetu-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','wetu-importer'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
+
+		                        <?php if(class_exists('TO_Videos')){ ?>
+								    <li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
+		                        <?php } ?>
 							</ul>
 							<h4><?php _e('Additional Content'); ?></h4>
 							<ul>
 								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','wetu-importer'); ?></li>
+		                        <?php if(class_exists('LSX_Banners')){ ?>
+								    <li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','wetu-importer'); ?></li>
+		                        <?php } ?>
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
