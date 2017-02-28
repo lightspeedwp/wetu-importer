@@ -238,7 +238,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
                 <a class="published search-toggle" href="#publish"><?php esc_attr_e('Published','wetu-importer'); ?></a> |
                 <a class="pending search-toggle"  href="#pending"><?php esc_attr_e('Pending','wetu-importer'); ?></a> |
                 <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','wetu-importer'); ?></a> |
-                <a class="import search-toggle"  href="#import"><?php esc_attr_e('Import','wetu-importer'); ?></a>
+                <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU','wetu-importer'); ?></a>
             </p>
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
@@ -309,6 +309,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 		$return = false;
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_tour_importer' && isset($_POST['type']) && $_POST['type'] === 'accommodation'){
 			$accommodation = get_option('lsx_tour_operator_accommodation',false);
+
 			if ( false !== $accommodation && isset($_POST['keyword'] )) {
 				$searched_items = false;
 				$keyphrases = $_POST['keyword'];
@@ -338,17 +339,23 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 				$accommodation = json_decode($accommodation);
 				if (!empty($accommodation)) {
+
 					$current_accommodation = $this->find_current_accommodation();
 
 					foreach($accommodation as $row_key => $row){
 
+						//If this is a current tour, add its ID to the row.
+						$row->post_id = 0;
+						if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
+							$row->post_id = $current_accommodation[$row->id]->post_id;
+						}
 
 						//If we are searching for
 						if(false !== $post_status){
 
 							if('import' === $post_status){
 
-								if(0 !== $row['post_id']){
+								if(0 !== $row->post_id){
 									continue;
 								}else{
 									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
@@ -357,17 +364,16 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 							}else{
 
-								if(0 === $row['post_id']){
+								if(0 === $row->post_id){
 									continue;
 								}else{
-									$current_status = get_post_status($row['post_id']);
+									$current_status = get_post_status($row->post_id);
 									if($current_status !== $post_status){
 										continue;
 									}
 
 								}
 								$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
-
 							}
 
 						}else{
@@ -380,13 +386,14 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 									$keywords = array($keywords);
 								}
 
-								if($this->multineedle_stripos(ltrim(rtrim($row['name'])), $keywords) !== false){
+								if($this->multineedle_stripos(ltrim(rtrim($row->name)), $keywords) !== false){
 									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
 								}
 							}
 						}
 					}		
 				}
+
 
 				if(false !== $searched_items){
 					ksort($searched_items);

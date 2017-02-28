@@ -1,7 +1,7 @@
 var WETU_IMPORTER = {
 
 	init : function() {
-		if(jQuery('body').hasClass('tools_page_lsx-tour-importer')){
+		if(jQuery('body').hasClass('tour-operator_page_wetu-importer')){
 			this.myAccommodationSearch();
 			this.watchSearch();
 			this.watchAdvancedSearch();
@@ -13,7 +13,7 @@ var WETU_IMPORTER = {
 		}
 	},
 	myAccommodationSearch: function() {
-		jQuery('#lsx-tour-importer-search-form').on( 'click', '.search-toggle', function(event) {
+		jQuery('#wetu-importer-search-form').on( 'click', '.search-toggle', function(event) {
 			event.preventDefault();
 
 			var keyword = '';
@@ -26,26 +26,26 @@ var WETU_IMPORTER = {
             }else if(jQuery(this).hasClass('import')){
                 keyword = 'import';
             }
-            jQuery(this).parents('#lsx-tour-importer-search-form').find('input.keyword').val(keyword);
-			jQuery('#lsx-tour-importer-search-form').submit();
-            jQuery(this).parents('#lsx-tour-importer-search-form').find('input.keyword').val('');
+            jQuery(this).parents('#wetu-importer-search-form').find('input.keyword').val(keyword);
+			jQuery('#wetu-importer-search-form').submit();
+            jQuery(this).parents('#wetu-importer-search-form').find('input.keyword').val('');
 		});
 	},		
 	watchSearch: function() {
-		jQuery('#lsx-tour-importer-search-form').on( 'submit', function(event) {
+		jQuery('#wetu-importer-search-form').on( 'submit', function(event) {
 			event.preventDefault();
 
-			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#lsx-tour-importer-search-form .ajax-loader').html()+'</td></tr>');
+			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
 
-			var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
+			var type = jQuery('#wetu-importer-search-form').attr('data-type');
 			var keywords = [];
 
-			if('' != jQuery('#lsx-tour-importer-search-form input.keyword').val()){
-				keywords.push(jQuery('#lsx-tour-importer-search-form input.keyword').val());
+			if('' != jQuery('#wetu-importer-search-form input.keyword').val()){
+				keywords.push(jQuery('#wetu-importer-search-form input.keyword').val());
 			}
 
-			if('' != jQuery('#lsx-tour-importer-search-form .advanced-search textarea').val()){
-				var bulk_keywords = jQuery('#lsx-tour-importer-search-form .advanced-search textarea').val().split('\n');
+			if(undefined != jQuery('#wetu-importer-search-form .advanced-search textarea').val()){
+				var bulk_keywords = jQuery('#wetu-importer-search-form .advanced-search textarea').val().split('\n');
 				var arrayLength = bulk_keywords.length;
 				for (var i = 0; i < arrayLength; i++) {
 				    keywords.push(bulk_keywords[i]);
@@ -67,17 +67,17 @@ var WETU_IMPORTER = {
 		});	
 	},
 	watchAdvancedSearch: function() {
-		jQuery('#lsx-tour-importer-search-form .advanced-search-toggle').on( 'click', function(event) {
+		jQuery('#wetu-importer-search-form .advanced-search-toggle').on( 'click', function(event) {
 			event.preventDefault();
-			if(jQuery('#lsx-tour-importer-search-form .advanced-search').hasClass('hidden')){
-				jQuery('#lsx-tour-importer-search-form .advanced-search').fadeIn('fast').removeClass('hidden');
-				jQuery('#lsx-tour-importer-search-form .normal-search').hide('fast');
-				jQuery('#lsx-tour-importer-search-form .normal-search input.keyword').val('');
+			if(jQuery('#wetu-importer-search-form .advanced-search').hasClass('hidden')){
+				jQuery('#wetu-importer-search-form .advanced-search').fadeIn('fast').removeClass('hidden');
+				jQuery('#wetu-importer-search-form .normal-search').hide('fast');
+				jQuery('#wetu-importer-search-form .normal-search input.keyword').val('');
 
 			}else{
-				jQuery('#lsx-tour-importer-search-form .advanced-search').fadeOut('fast').addClass('hidden');
-				jQuery('#lsx-tour-importer-search-form .advanced-search textarea').val('');
-				jQuery('#lsx-tour-importer-search-form .normal-search').fadeIn('fast');
+				jQuery('#wetu-importer-search-form .advanced-search').fadeOut('fast').addClass('hidden');
+				jQuery('#wetu-importer-search-form .advanced-search textarea').val('');
+				jQuery('#wetu-importer-search-form .normal-search').fadeIn('fast');
 
 			}
 		});	
@@ -86,7 +86,7 @@ var WETU_IMPORTER = {
 		jQuery('#posts-filter input.button.clear').on('click',function(event){
 			event.preventDefault();
 			jQuery('#posts-filter tbody').html('');	
-			jQuery('#lsx-tour-importer-search-form input[type="text"]').val('');	
+			jQuery('#wetu-importer-search-form input[type="text"]').val('');
 		});
 	},	
 	watchAddToListButton: function() {
@@ -141,7 +141,7 @@ var WETU_IMPORTER = {
 
 			var post_type = jQuery('.post_type').val();
 			var array_import = [];
-			var type = jQuery('#lsx-tour-importer-search-form').attr('data-type');
+			var type = jQuery('#wetu-importer-search-form').attr('data-type');
 
 			var team_members = [];
 			if('undefined' != jQuery('#import-list input.team').length){
@@ -194,7 +194,7 @@ var WETU_IMPORTER = {
 
 			jQuery('#import-list tr input:checked:not(.queued)').each(function(){
 				jQuery(this).hide().addClass('queued');
-				jQuery(this).parents('tr').find('.check-column').append(jQuery('#lsx-tour-importer-search-form .ajax-loader-small').html());
+				jQuery(this).parents('tr').find('.check-column').append(jQuery('#wetu-importer-search-form .ajax-loader-small').html());
 				false_click = false;
 			});
 

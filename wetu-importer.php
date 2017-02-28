@@ -19,6 +19,7 @@ require_once(WETU_IMPORTER_PATH.'classes/class-importer.php');
 require_once(WETU_IMPORTER_PATH.'classes/class-admin.php');
 require_once(WETU_IMPORTER_PATH.'classes/class-accommodation.php');
 require_once(WETU_IMPORTER_PATH.'classes/class-tours.php');
+require_once(WETU_IMPORTER_PATH.'classes/class-destination.php');
 require_once(WETU_IMPORTER_PATH.'classes/class-connect-accommodation.php');
 require_once(WETU_IMPORTER_PATH.'classes/class-settings.php');
 

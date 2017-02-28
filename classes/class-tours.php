@@ -84,7 +84,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	{
 		parent::set_variables();
 		if(false !== $this->api_key){
-			$this->url = 'https://wetu.com/API/Pins/'.$this->api_key;
+			$this->url = 'https://wetu.com/API/Itinerary/'.$this->api_key.'/V7/List';
 		}
 	}
 
@@ -158,6 +158,9 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 							<ul>
 								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','ti-tours'); ?></li>
 								<li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','ti-tours'); ?></li>
+								<?php if(class_exists('TO_Maps')){ ?>
+                                    <li><input class="content" type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','ti-tours'); ?></li>
+								<?php } ?>
 							</ul>
 						</div>
                         <div style="width:30%;display:block;float:left;">
@@ -519,104 +522,150 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 			$this->set_duration($data,$id);
 		}
 
-        //Setup some default for use in the import
-        if(false !== $importable_content && (in_array('itinerary_gallery',$importable_content) || in_array('gallery',$importable_content) || in_array('banner_image',$importable_content) || in_array('featured_image',$importable_content))){
-            $this->find_attachments($id);
-        }
-
-
         if(in_array('itineraries',$importable_content) && isset($data['legs']) && !empty($data['legs'])){
-
-            $day_counter = 1;
-
-            delete_post_meta($id,'itinerary');
-
-			if(false !== $importable_content && in_array('accommodation',$importable_content)){
-				delete_post_meta($id,'accommodation_to_tour');
-			}
-			if(false !== $importable_content && in_array('destination',$importable_content)){
-				delete_post_meta($id,'destination_to_tour');
-			}
-
-			foreach($data['legs'] as $leg){
-
-                if(isset($leg['days']) && !empty($leg['days'])){
-
-					//Itinerary Accommodation
-                    $current_accommodation = false;
-					if(false !== $importable_content && in_array('accommodation',$importable_content)){
-						$current_accommodation = $this->set_accommodation($leg,$id);
-					}
-
-					//Itinerary Destination
-					$current_destination = false;
-					if(false !== $importable_content && in_array('destination',$importable_content)){
-						$current_destination = $this->set_destination($leg,$id);;
-					}
-
-                    //If the Nights are the same mount of days in the array,  then it isnt "By Destination"
-                    if($leg['nights'] === count($leg['days']) || 0 === $leg['itinerary_leg_id']){
-
-                        foreach($leg['days'] as $day){
-
-                            $current_day = array();
-
-							$current_day['title'] =  esc_attr('Day ','ti-tours').$day_counter;
-
-                            //Description
-							if(false !== $importable_content && in_array('itinerary_description',$importable_content) && isset($day['notes']) && '' !== $day['notes']){
-								$current_day['description'] = strip_tags($day['notes']);
-							}else{
-								$current_day['description'] = '';
-                            }
-
-							//Itinerary Gallery
-							if(false !== $importable_content && in_array('itinerary_gallery',$importable_content) && isset($day['images'])){
-								$current_day['featured_image'] = '';
-							}else{
-								$current_day['featured_image'] = '';
-							}
-
-							//Accommodation
-                            if(false !== $current_accommodation){
-								$current_day['accommodation_to_tour'] = array($current_accommodation);
-                            }else{
-								$current_day['accommodation_to_tour'] = array();
-                            }
-
-                            //Destination
-							if(false !== $current_destination){
-								$current_day['destination_to_tour'] = array($current_destination);
-							}else{
-								$current_day['destination_to_tour'] = array();
-							}
-
-                            $this->set_itinerary_day($current_day,$id);
-							$day_counter++;
-                        }
-
-                    }else{
-						$day_counter = $day_counter + (int)$leg['nights'];
-                    }
-
-                }
-            }
+            $this->process_itineraries($data,$id,$importable_content);
         }
 
+		if(in_array('map',$importable_content) && isset($data['routes']) && !empty($data['routes'])){
+			$this->process_map_points($data,$id);
+		}
+
+		//TODO Test These
+		//Setup some default for use in the import
+		if(false !== $importable_content && (in_array('itinerary_gallery',$importable_content) || in_array('gallery',$importable_content) || in_array('banner_image',$importable_content) || in_array('featured_image',$importable_content))){
+			$this->find_attachments($id);
+		}
         //Set the featured image
+        //TODO Test These
         if(false !== $importable_content && in_array('featured_image',$importable_content)){
             $this->set_featured_image($data,$id);
         }
 
+		//TODO Test These
         if(false !== $importable_content && in_array('banner_image',$importable_content)){
             $this->set_banner_image($data,$id);
         }
+
+		//TODO Test These
         //Import the main gallery
         if(false !== $importable_content && in_array('gallery',$importable_content)){
             $this->create_main_gallery($data,$id);
         }
 
         return $id;
+	}
+
+	/**
+	 * A loop which runs through each leg on the tour.
+	 */
+	public function process_itineraries($data,$id,$importable_content) {
+		$day_counter = 1;
+
+		delete_post_meta($id,'itinerary');
+
+		if(false !== $importable_content && in_array('accommodation',$importable_content)){
+			delete_post_meta($id,'accommodation_to_tour');
+		}
+		if(false !== $importable_content && in_array('destination',$importable_content)){
+			delete_post_meta($id,'destination_to_tour');
+		}
+
+		foreach($data['legs'] as $leg){
+
+			if(isset($leg['days']) && !empty($leg['days'])){
+
+				//Itinerary Accommodation
+				$current_accommodation = false;
+				if(false !== $importable_content && in_array('accommodation',$importable_content)){
+					$current_accommodation = $this->set_accommodation($leg,$id);
+				}
+
+				//Itinerary Destination
+				$current_destination = false;
+				if(false !== $importable_content && in_array('destination',$importable_content)){
+					$current_destination = $this->set_destination($leg,$id);;
+				}
+
+				//If the Nights are the same mount of days in the array,  then it isnt "By Destination"
+				if($leg['nights'] === count($leg['days']) || 0 === $leg['itinerary_leg_id']){
+
+					foreach($leg['days'] as $day){
+
+						$current_day = array();
+
+						$current_day['title'] =  esc_attr('Day ','ti-tours').$day_counter;
+
+						//Description
+						if(false !== $importable_content && in_array('itinerary_description',$importable_content) && isset($day['notes']) && '' !== $day['notes']){
+							$current_day['description'] = strip_tags($day['notes']);
+						}else{
+							$current_day['description'] = '';
+						}
+
+						//Itinerary Gallery
+						if(false !== $importable_content && in_array('itinerary_gallery',$importable_content) && isset($day['images'])){
+							$current_day['featured_image'] = '';
+						}else{
+							$current_day['featured_image'] = '';
+						}
+
+						//Accommodation
+						if(false !== $current_accommodation){
+							$current_day['accommodation_to_tour'] = array($current_accommodation);
+						}else{
+							$current_day['accommodation_to_tour'] = array();
+						}
+
+						//Destination
+						if(false !== $current_destination){
+							$current_day['destination_to_tour'] = array($current_destination);
+						}else{
+							$current_day['destination_to_tour'] = array();
+						}
+
+						$this->set_itinerary_day($current_day,$id);
+						$day_counter++;
+					}
+
+				}else{
+					$day_counter = $day_counter + (int)$leg['nights'];
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * Run through your routes and save the points as a KML file.
+	 */
+	public function process_map_points($data,$id) {
+
+	    if(!empty($data['routes'])){
+
+	        delete_post_meta($id,'wetu_map_points');
+
+	        $points = array();
+
+	        foreach($data['routes'] as $route){
+
+
+	            if(isset($route['points']) && '' !== $route['points']){
+
+	                $temp_points = explode(';',$route['points']);
+	                $point_counter = count($temp_points);
+
+					for ($x = 0; $x <= $point_counter; $x++) {
+					    $y = $x+1;
+						$points[] = $temp_points[$x].','.$temp_points[$y];
+						$x++;
+					}
+				}
+            }
+            if(!empty($points)){
+				$this->save_custom_field(implode(' ',$points),'wetu_map_points',$id,false,true);
+            }
+        }
+
 	}
 
 	/**
@@ -681,10 +730,13 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 	/**
 	 * Grab all the current accommodation posts via the lsx_wetu_id field.
+     *
+     * @param $post_type string
+     * @return boolean / array
 	 */
-	public function find_current_accommodation() {
+	public function find_current_accommodation($post_type='accommodation') {
 		global $wpdb;
-		$accommodation = parent::find_current_accommodation();
+		$accommodation = parent::find_current_accommodation($post_type);
 
 		$return = false;
 		if(!empty($accommodation)){
@@ -697,25 +749,23 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 	/**
 	 * Grab all the current accommodation posts via the lsx_wetu_id field.
+     * @return boolean / array
 	 */
 	public function find_current_destinations() {
-		global $wpdb;
-		$destination = parent::find_current_accommodation('destination');
-
-		$return = false;
-		if(!empty($destination)){
-			foreach($destination as $key => $dest){
-				$return[$dest->meta_value] = $dest->post_id;
-			}
-		}
-		return $return;
+		return $this->find_current_accommodation('destination');
 	}
 
 	/**
 	 * Connects the destinations post type
+	 *
+	 * @param $day array
+	 * @param $id string
+	 * @return boolean / string
 	 */
 	public function set_destination($day,$id) {
 		$dest_id = false;
+		$country_id = false;
+
 		if(false === $this->current_destinations) {
 			$this->current_destinations = $this->find_current_destinations();
 		}
@@ -724,21 +774,91 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 			if(false !== $this->current_destinations && !empty($this->current_destinations) && array_key_exists($day['destination_content_entity_id'],$this->current_destinations)){
 				$dest_id = $this->current_destinations[$day['destination_content_entity_id']];
-			}else{
-				$dest_id = wp_insert_post(array(
-					'post_type' => 'destination',
-					'post_status' => 'draft',
-					'post_title' => $day['destination_content_entity_id']
-				));
-				$this->save_custom_field($day['destination_content_entity_id'],'lsx_wetu_id',$dest_id);
+			}else {
+
+				$destination_json = file_get_contents("http://wetu.com/API/Itinerary/V7/Get?id=" . $day['destination_content_entity_id']);
+
+				if ($destination_json) {
+					$destination_data = json_decode($destination_json, true);
+
+					if (!empty($destination_data)) {
+
+					    $destination_title = $day['destination_content_entity_id'];
+					    if(isset($destination_data['name'])){
+							$destination_title = $destination_data['name'];
+                        }
+
+					    if(isset($destination_data['map_object_id']) && isset($destination_data['position']['country_content_entity_id'])
+                            && $destination_data['map_object_id'] !== $destination_data['position']['country_content_entity_id']){
+
+							$country_id = $this->set_country($dest_id, $destination_data['position']['country_content_entity_id'], $id);
+                        }
+
+                        $dest_post = array(
+							'post_type' => 'destination',
+							'post_status' => 'draft',
+							'post_title' => $destination_title
+						);
+
+					    if(false !== $country_id){
+							$dest_post['post_parent'] = $country_id;
+                        }
+						$dest_id = wp_insert_post($dest_post);
+
+						$this->save_custom_field($day['destination_content_entity_id'], 'lsx_wetu_id', $dest_id);
+					}
+				}
 			}
 
-			if('' !== $dest_id && false !== $dest_id){
-				$this->save_custom_field($dest_id,'destination_to_tour',$id,false,false);
-				$this->save_custom_field($id,'tour_to_destination',$dest_id,false,false);
+			if ('' !== $dest_id && false !== $dest_id) {
+				$this->save_custom_field($dest_id, 'destination_to_tour', $id, false, false);
+				$this->save_custom_field($id, 'tour_to_destination', $dest_id, false, false);
 			}
 		}
 		return $dest_id;
+	}
+	/**
+	 * Connects the destinations post type
+	 *
+	 * @param $dest_id string
+     * @param $country_id array
+	 * @param $id string
+	 */
+	public function set_country($dest_id, $country_wetu_id, $id) {
+		if(false === $this->current_destinations) {
+			$this->current_destinations = $this->find_current_destinations();
+		}
+
+        if (false !== $this->current_destinations && !empty($this->current_destinations) && array_key_exists($country_wetu_id, $this->current_destinations)) {
+            $country_id = $this->current_destinations[$country_wetu_id];
+        } else {
+
+            $country_json = file_get_contents("http://wetu.com/API/Itinerary/V7/Get?id=" . $country_wetu_id);
+
+            if ($country_json) {
+                $country_data = json_decode($country_json, true);
+
+                if (!empty($country_data)) {
+
+                    $country_title = $country_wetu_id;
+                    if (isset($country_data['name'])) {
+						$country_title = $country_data['name'];
+                    }
+
+					$country_id = wp_insert_post(array(
+                        'post_type' => 'destination',
+                        'post_status' => 'draft',
+                        'post_title' => $country_title
+                    ));
+                    $this->save_custom_field($country_wetu_id, 'lsx_wetu_id', $country_id);
+                }
+            }
+        }
+
+        if ('' !== $country_id && false !== $country_id) {
+            $this->save_custom_field($country_id, 'destination_to_tour', $id, false, false);
+            $this->save_custom_field($id, 'tour_to_destination', $country_id, false, false);
+        }
 	}
 }
 $wetu_importer_tours = new WETU_Importer_Tours();

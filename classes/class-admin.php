@@ -61,8 +61,8 @@ class WETU_Importer_Admin extends WETU_Importer {
 	 */
 	public function admin_scripts() {
 		if(is_admin() && isset($_GET['page']) && $this->plugin_slug === $_GET['page']){
-			wp_enqueue_script( 'lsx-tour-importers-script', WETU_IMPORTER_URL.'assets/js/lsx-tour-importer.js');
-			wp_localize_script( 'lsx-tour-importers-script', 'lsx_tour_importer_params', array(
+			wp_enqueue_script( 'wetu-importers-script', WETU_IMPORTER_URL.'assets/js/wetu-importer.js');
+			wp_localize_script( 'wetu-importers-script', 'lsx_tour_importer_params', array(
 			'ajax_url' => admin_url('admin-ajax.php'),
 			) );			
 		}
