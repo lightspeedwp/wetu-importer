@@ -840,7 +840,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 			foreach($data[0]['rooms'] as $room){
 
-				$temp_room = '';
+				$temp_room = array();
 				if(isset($room['name'])){
 					$temp_room['title'] = $room['name'];
 				}
@@ -866,6 +866,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 			    		}
 			    	}
 
+					$temp_room['gallery'] = array();
 					foreach($room['images'] as $image_data){
 			    		$temp_room['gallery'][] = $this->attach_image($image_data,$id,$found_attachments);
 			    	}
