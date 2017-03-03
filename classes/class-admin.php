@@ -60,8 +60,14 @@ class WETU_Importer_Admin extends WETU_Importer {
 	 * Enqueue the JS needed to contact wetu and return your result.
 	 */
 	public function admin_scripts() {
+		if ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) {
+			$min = '';
+		} else {
+			$min = '.min';
+		}
+
 		if(is_admin() && isset($_GET['page']) && $this->plugin_slug === $_GET['page']){
-			wp_enqueue_script( 'wetu-importers-script', WETU_IMPORTER_URL.'assets/js/wetu-importer.js');
+			wp_enqueue_script( 'wetu-importers-script', WETU_IMPORTER_URL . 'assets/js/wetu-importer' . $min . '.js', array( 'jquery' ), WETU_IMPORTER_VER, true );
 			wp_localize_script( 'wetu-importers-script', 'lsx_tour_importer_params', array(
 			'ajax_url' => admin_url('admin-ajax.php'),
 			) );			

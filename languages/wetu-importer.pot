@@ -1,0 +1,225 @@
+# Copyright (C) 2017 wetu-importer
+# This file is distributed under the same license as the wetu-importer package.
+msgid ""
+msgstr ""
+"Project-Id-Version: wetu-importer\n"
+"Report-Msgid-Bugs-To: https://www.lsdev.biz/product/wetu-importer/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Language-Team: LightSpeed <webmaster@lsdev.biz>\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: classes/class-accommodation.php:117, classes/class-accommodation.php:145, classes/class-destination.php:83, classes/class-destination.php:111
+msgid "Add to List"
+msgstr ""
+
+#: classes/class-accommodation.php:118, classes/class-accommodation.php:146, classes/class-destination.php:84, classes/class-destination.php:112
+msgid "Clear"
+msgstr ""
+
+#: classes/class-accommodation.php:127, classes/class-destination.php:93
+msgid "Enter a title to search for and press enter"
+msgstr ""
+
+#: classes/class-accommodation.php:131, classes/class-destination.php:97
+msgid "Enter a title to search for"
+msgstr ""
+
+#: classes/class-accommodation.php:158, classes/class-destination.php:124
+msgid "Description"
+msgstr ""
+
+#: classes/class-accommodation.php:159, classes/class-destination.php:125
+msgid "Excerpt"
+msgstr ""
+
+#: classes/class-accommodation.php:160
+msgid "Main Gallery"
+msgstr ""
+
+#: classes/class-accommodation.php:161
+msgid "Category"
+msgstr ""
+
+#: classes/class-accommodation.php:163, classes/class-destination.php:128
+msgid "Location"
+msgstr ""
+
+#: classes/class-accommodation.php:165
+msgid "Connect Destinations"
+msgstr ""
+
+#: classes/class-accommodation.php:166
+msgid "Check In / Check Out"
+msgstr ""
+
+#: classes/class-accommodation.php:167
+msgid "Facilities"
+msgstr ""
+
+#: classes/class-accommodation.php:168
+msgid "Friendly"
+msgstr ""
+
+#: classes/class-accommodation.php:169
+msgid "Rating"
+msgstr ""
+
+#: classes/class-accommodation.php:170
+msgid "Rooms"
+msgstr ""
+
+#: classes/class-accommodation.php:171
+msgid "Special Interests"
+msgstr ""
+
+#: classes/class-accommodation.php:172
+msgid "Spoken Languages"
+msgstr ""
+
+#: classes/class-accommodation.php:175, classes/class-destination.php:132
+msgid "Videos"
+msgstr ""
+
+#: classes/class-accommodation.php:180
+msgid "Set Featured Image"
+msgstr ""
+
+#: classes/class-accommodation.php:182
+msgid "Set Banner Image"
+msgstr ""
+
+#: classes/class-accommodation.php:212, classes/class-destination.php:172
+msgid "Sync"
+msgstr ""
+
+#: classes/class-accommodation.php:233, classes/class-accommodation.php:235, classes/class-accommodation.php:240, classes/class-destination.php:193, classes/class-destination.php:195, classes/class-destination.php:202
+msgid "Search"
+msgstr ""
+
+#: classes/class-accommodation.php:238, classes/class-destination.php:200
+msgid "Enter several keywords, each on a new line."
+msgstr ""
+
+#: classes/class-accommodation.php:244, classes/class-destination.php:206
+msgid "Bulk Search"
+msgstr ""
+
+#: classes/class-accommodation.php:245, classes/class-destination.php:207
+msgid "Published"
+msgstr ""
+
+#: classes/class-accommodation.php:246, classes/class-destination.php:208
+msgid "Pending"
+msgstr ""
+
+#: classes/class-accommodation.php:247, classes/class-destination.php:209
+msgid "Draft"
+msgstr ""
+
+#: classes/class-accommodation.php:248
+msgid "WETU"
+msgstr ""
+
+#: classes/class-accommodation.php:266
+msgid "Wetu Status"
+msgstr ""
+
+#: classes/class-admin.php:80
+msgid "Welcome to the LSX Wetu Importer"
+msgstr ""
+
+#: classes/class-admin.php:83
+msgid "Tours"
+msgstr ""
+
+#: classes/class-admin.php:84
+msgid "accommodation"
+msgstr ""
+
+#: classes/class-admin.php:85
+msgid "destinations"
+msgstr ""
+
+#: classes/class-admin.php:88
+msgid "Additional Tools"
+msgstr ""
+
+#: classes/class-admin.php:90
+msgid "Connect Accommodation"
+msgstr ""
+
+#: classes/class-admin.php:90
+msgid "If you already have accommodation, you can \"connect\" it with its WETU counter part, so it works with the importer."
+msgstr ""
+
+#: classes/class-admin.php:92
+msgid "Sync High Res Banner Images"
+msgstr ""
+
+#: classes/class-admin.php:197, classes/class-admin.php:217
+msgid "None"
+msgstr ""
+
+#: classes/class-connect-accommodation.php:57
+msgid "Connect your Accommodation"
+msgstr ""
+
+#: classes/class-connect-accommodation.php:62
+msgid "Below is a list of your accommodation that does not contain a WETU ID, but its Title matches a name in the WETU DB. Connecting it will all you to pull through information from WETU."
+msgstr ""
+
+#: classes/class-connect-accommodation.php:71, classes/class-connect-accommodation.php:122
+msgid "Connect"
+msgstr ""
+
+#: classes/class-destination.php:140
+msgid "Electricity"
+msgstr ""
+
+#: classes/class-destination.php:141
+msgid "Banking"
+msgstr ""
+
+#: classes/class-destination.php:142
+msgid "Cuisine"
+msgstr ""
+
+#: classes/class-destination.php:143
+msgid "Climate"
+msgstr ""
+
+#: classes/class-destination.php:144
+msgid "Transport"
+msgstr ""
+
+#: classes/class-destination.php:145
+msgid "Dress"
+msgstr ""
+
+#: classes/class-settings.php:35
+msgid "Image Scaling"
+msgstr ""
+
+#: classes/class-settings.php:36
+msgid ""
+msgstr ""
+
+#: classes/class-settings.php:37
+msgid "Importer"
+msgstr ""
+
+#: classes/lsx-banners-integration.php:43
+msgid "Download new banners straight from WETU"
+msgstr ""
+
+#: classes/lsx-banners-integration.php:155
+msgid "Download new Banners"
+msgstr ""

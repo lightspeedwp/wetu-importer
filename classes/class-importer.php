@@ -68,6 +68,7 @@ class WETU_Importer {
 	 */
 	public function __construct() {
 		$this->set_variables();
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 	}	
 
 	/**
@@ -103,6 +104,15 @@ class WETU_Importer {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Load the plugin text domain for translation.
+	 *
+	 * @since 1.0.0
+	 */
+	public function load_plugin_textdomain() {
+		load_plugin_textdomain( 'wetu-importer', FALSE, basename( WETU_IMPORTER_PATH ) . '/languages');
 	}
 }
 $wetu_importer = new WETU_Importer();
