@@ -132,39 +132,39 @@ msgstr ""
 msgid "Wetu Status"
 msgstr ""
 
-#: classes/class-admin.php:80
+#: classes/class-admin.php:86
 msgid "Welcome to the LSX Wetu Importer"
 msgstr ""
 
-#: classes/class-admin.php:83
+#: classes/class-admin.php:89
 msgid "Tours"
 msgstr ""
 
-#: classes/class-admin.php:84
+#: classes/class-admin.php:90
 msgid "accommodation"
 msgstr ""
 
-#: classes/class-admin.php:85
+#: classes/class-admin.php:91
 msgid "destinations"
 msgstr ""
 
-#: classes/class-admin.php:88
+#: classes/class-admin.php:94
 msgid "Additional Tools"
 msgstr ""
 
-#: classes/class-admin.php:90
+#: classes/class-admin.php:96
 msgid "Connect Accommodation"
 msgstr ""
 
-#: classes/class-admin.php:90
+#: classes/class-admin.php:96
 msgid "If you already have accommodation, you can \"connect\" it with its WETU counter part, so it works with the importer."
 msgstr ""
 
-#: classes/class-admin.php:92
+#: classes/class-admin.php:98
 msgid "Sync High Res Banner Images"
 msgstr ""
 
-#: classes/class-admin.php:197, classes/class-admin.php:217
+#: classes/class-admin.php:203, classes/class-admin.php:223
 msgid "None"
 msgstr ""
 
@@ -202,6 +202,10 @@ msgstr ""
 
 #: classes/class-destination.php:145
 msgid "Dress"
+msgstr ""
+
+#: classes/class-importer.php:131, classes/class-importer.php:144
+msgid "Wetu Importer Plugin requires PHP 5.6 or higher."
 msgstr ""
 
 #: classes/class-settings.php:35
