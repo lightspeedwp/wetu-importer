@@ -53,6 +53,11 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 
 		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));	
 		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));
+
+		$temp_options = get_option('_lsx-to_settings',false);
+		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
+			$this->options = $temp_options[$this->plugin_slug];
+		}
 	}
 
 	/**
@@ -223,7 +228,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	/**
 	 * Grab all the current destination posts via the lsx_wetu_id field.
 	 */
-	public function find_current_destination($post_type='destination') {
+	/*public function find_current_destination($post_type='destination') {
 		global $wpdb;
 		$return = array();
 
@@ -236,6 +241,8 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 					
 					WHERE key1.meta_key = 'lsx_wetu_id'
 					AND key2.post_type = '{$post_type}'
+
+					LIMIT 0,500
 		");
 		if(null !== $current_destination && !empty($current_destination)){
 			foreach($current_destination as $accom){
@@ -243,12 +250,12 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 			}
 		}
 		return $return;
-	}
+	}*/
 
 	/**
 	 * Grab all the current destination posts via the lsx_wetu_id field.
 	 */
-	public function find_searchable_destinations($post_type='destination') {
+	public function find_current_destination($post_type='destination') {
 		global $wpdb;
 		$return = array();
 
@@ -261,9 +268,13 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 					
 					WHERE key1.meta_key = 'lsx_wetu_id'
 					AND key2.post_type = '{$post_type}'
+
+					LIMIT 0,500
 		");
 		if(null !== $current_destination && !empty($current_destination)){
-			$return = $current_destination;
+			foreach($current_destination as $accom){
+				$return[$accom->meta_value] = $accom;
+			}
 		}
 		return $return;
 	}
@@ -277,8 +288,12 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 
 			if ( isset($_POST['keyword'] )) {
 				$searched_items = false;
-				$keyphrases = $_POST['keyword'];
-				$my_destination = false;
+
+				if(isset($_POST['keyword'] )) {
+					$keyphrases = $_POST['keyword'];
+				}else{
+					$keyphrases = array(0);
+                }
 
 				if(!is_array($keyphrases)){
 					$keyphrases = array($keyphrases);
@@ -286,7 +301,6 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 				foreach($keyphrases as &$keyword){
 					$keyword = ltrim(rtrim($keyword));
 				}
-
 
 				$post_status = false;
 				if(in_array('publish',$keyphrases)){
@@ -299,7 +313,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 					$post_status = 'draft';
 				}
 
-				$destination = $this->find_searchable_destinations();
+				$destination = $this->find_current_destination();
 
 				if (!empty($destination)) {
 
@@ -340,24 +354,6 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 			}
 			print_r($return);
 			die();
-		}
-	}
-
-	/**
-	 * Does a multine search
-	 */	
-	public function multineedle_stripos($haystack, $needles, $offset=0) {
-		$found = false;
-		$needle_count = count($needles);
-	    foreach($needles as $needle) {
-	    	if(false !== stripos($haystack, $needle, $offset)){
-	        	$found[] = true;
-	    	}
-	    }
-	    if(false !== $found && $needle_count === count($found)){ 
-	    	return true;
-		}else{
-			return false;
 		}
 	}
 

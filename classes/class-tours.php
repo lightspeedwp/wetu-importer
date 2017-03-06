@@ -103,8 +103,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo $this->tab_slug; ?>" />
 				
-				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','ti-tours'); ?>" />
-					<input class="button button-primary clear" type="button" value="<?php _e('Clear','ti-tours'); ?>" />
+				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','wetu-importer'); ?>" />
+					<input class="button button-primary clear" type="button" value="<?php _e('Clear','wetu-importer'); ?>" />
 				</p>				
 
 				<table class="wp-list-table widefat fixed posts">
@@ -113,11 +113,11 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 					<tbody id="the-list">
 						<tr class="post-0 type-tour status-none" id="post-0">
 							<th class="check-column" scope="row">
-								<label for="cb-select-0" class="screen-reader-text"><?php _e('Enter a title to search for and press enter','ti-tours'); ?></label>
+								<label for="cb-select-0" class="screen-reader-text"><?php _e('Enter a title to search for and press enter','wetu-importer'); ?></label>
 							</th>
 							<td class="post-title page-title column-title">
 								<strong>
-									<?php _e('Enter a title to search for','ti-tours'); ?>
+									<?php _e('Enter a title to search for','wetu-importer'); ?>
 								</strong>
 							</td>
 							<td class="date column-date">							
@@ -131,8 +131,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 				</table>
 
-				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','ti-tours'); ?>" />
-					<input class="button button-primary clear" type="button" value="<?php _e('Clear','ti-tours'); ?>" />
+				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','wetu-importer'); ?>" />
+					<input class="button button-primary clear" type="button" value="<?php _e('Clear','wetu-importer'); ?>" />
 				</p>
 			</form> 
 
@@ -142,34 +142,34 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 					<div class="row">
 						<div style="width:30%;display:block;float:left;">
-							<h3><?php _e('Tour Info'); ?></h3>
+							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','ti-tours'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','ti-tours'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 
-                                <li><input class="content" type="checkbox" name="content[]" value="price" /> <?php _e('Price','ti-tours'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="duration" /> <?php _e('Duration','ti-tours'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="price" /> <?php _e('Price','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="duration" /> <?php _e('Duration','wetu-importer'); ?></li>
 
-								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','ti-tours'); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
 
-                                <li><input class="content" type="checkbox" name="content[]" value="itineraries" /> <?php _e('Itinerary Days','ti-tours'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="itineraries" /> <?php _e('Itinerary Days','wetu-importer'); ?></li>
 
 								<?php if(class_exists('TO_Maps')){ ?>
-                                    <li><input class="content" type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','ti-tours'); ?></li>
+                                    <li><input class="content" type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
 								<?php } ?>
 							</ul>
 						</div>
                         <div style="width:30%;display:block;float:left;">
                             <h3><?php _e('Itinerary Info'); ?></h3>
                             <ul>
-                                <li><input class="content" type="checkbox" name="content[]" value="itinerary_description" /> <?php _e('Description','ti-tours'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="itinerary_gallery" /> <?php _e('Gallery','ti-tours'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="itinerary_description" /> <?php _e('Description','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="itinerary_gallery" /> <?php _e('Gallery','wetu-importer'); ?></li>
                             </ul>
 
                             <h4><?php _e('Additional Content'); ?></h4>
                             <ul>
-                                <li><input class="content" type="checkbox" name="content[]" value="accommodation" /> <?php _e('Sync Accommodation','ti-tours'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Sync Destinations','ti-tours'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="accommodation" /> <?php _e('Sync Accommodation','wetu-importer'); ?></li>
+                                <li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Sync Destinations','wetu-importer'); ?></li>
                             </ul>
                         </div>
                         <?php if(class_exists('TO_Team')){ ?>
@@ -195,7 +195,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 					</table>
 
-					<p><input class="button button-primary" type="submit" value="<?php _e('Sync','ti-tours'); ?>" /></p>
+					<p><input class="button button-primary" type="submit" value="<?php _e('Sync','wetu-importer'); ?>" /></p>
 				</form>
 			</div>
 
@@ -213,17 +213,17 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 */
 	public function update_options_form() {
 		$tours = get_transient('lsx_ti_tours');
-		echo '<div class="wetu-status"><h3>'.__('Wetu Status','ti-tours').' - ';
+		echo '<div class="wetu-status"><h3>'.__('Wetu Status','wetu-importer').' - ';
 		if('' === $tours || false === $tours || isset($_GET['refresh_tours'])){
 			$result = $this->update_options();
 
 			if(true === $result){
-			    echo '<span style="color:green;">'.esc_attr('Connected','ti-tours').'</span>';
+			    echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span>';
             }else{
 			    echo '<span style="color:red;">'.wp_kses_post($result).'</span>';
             }
 		}else{
-			echo '<span style="color:green;">'.esc_attr('Connected','ti-tours').'</span>';
+			echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span>';
         }
 		echo '</h3></div>';
 	}
@@ -259,6 +259,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 					
 					WHERE key1.meta_key = 'lsx_wetu_id'
 					AND key2.post_type = 'tour'
+
+					LIMIT 0,500
 		");
 		if(null !== $current_tours && !empty($current_tours)){
 			foreach($current_tours as $tour){
@@ -485,6 +487,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
         //Create or update the post
         if(false !== $id && '0' !== $id){
             $post['ID'] = $id;
+	        $post['post_status'] = 'pending';
             $id = wp_update_post($post);
             $prev_date = get_post_meta($id,'lsx_wetu_modified_date',true);
             update_post_meta($id,'lsx_wetu_modified_date',strtotime($data['last_modified']),$prev_date);
@@ -588,7 +591,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 						$current_day = array();
 
-						$current_day['title'] =  esc_attr('Day ','ti-tours').$day_counter;
+						$current_day['title'] =  esc_attr('Day ','wetu-importer').$day_counter;
 
 						//Description
 						if(false !== $importable_content && in_array('itinerary_description',$importable_content) && isset($day['notes']) && '' !== $day['notes']){
@@ -698,10 +701,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	public function set_accommodation($day,$id) {
 
 	    $ac_id = false;
-		if(false === $this->current_accommodation) {
-			$this->current_accommodation = $this->find_current_accommodation();
-		}
-
+		$this->current_accommodation = $this->find_current_accommodation();
+		
 		if(isset($day['content_entity_id']) && !empty($day['content_entity_id'])){
 
 			if(false !== $this->current_accommodation && !empty($this->current_accommodation) && array_key_exists($day['content_entity_id'],$this->current_accommodation)){
@@ -760,10 +761,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	public function set_destination($day,$id) {
 		$dest_id = false;
 		$country_id = false;
-
-		if(false === $this->current_destinations) {
-			$this->current_destinations = $this->find_current_destinations();
-		}
+		$this->current_destinations = $this->find_current_destinations();
 
 		if(isset($day['destination_content_entity_id']) && !empty($day['destination_content_entity_id'])){
 
@@ -829,10 +827,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 */
 	public function set_country($country_wetu_id, $id) {
 	    $country_id = false;
-
-		if(false === $this->current_destinations) {
-			$this->current_destinations = $this->find_current_destinations();
-		}
+		$this->current_destinations = $this->find_current_destinations();
 
         if (false !== $this->current_destinations && !empty($this->current_destinations) && array_key_exists($country_wetu_id, $this->current_destinations)) {
             $country_id = $this->current_destinations[$country_wetu_id];

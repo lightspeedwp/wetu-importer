@@ -52,6 +52,11 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));	
 		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));
+
+		$temp_options = get_option('_lsx-to_settings',false);
+		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
+			$this->options = $temp_options[$this->plugin_slug];
+		}
 	}
 
 	/**
@@ -264,8 +269,8 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	 */
 	public function update_options_form() {
 		echo '<div style="display:none;" class="wetu-status"><h3>'.__('Wetu Status','wetu-importer').'</h3>';
-		$accommodation = get_option('lsx_tour_operator_accommodation',false);
-		if(false === $accommodation || isset($_GET['refresh_accommodation'])){
+		$accommodation = get_transient('lsx_ti_accommodation');
+		if('' === $accommodation || false === $accommodation || isset($_GET['refresh_accommodation'])){
 			$this->update_options();
 		}
 		echo '</div>';
@@ -278,9 +283,12 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	public function update_options() {
 		$data= file_get_contents($this->url.'/List');
 		$accommodation  = json_decode($data, true);
-		if (!empty($accommodation)) {
-			update_option('lsx_tour_operator_accommodation',json_encode($accommodation));
-			update_option('lsx_tour_operator_accommodation_timestamp',date("d M Y - h:ia",strtotime("+2 Hours")));
+
+		if(isset($accommodation['error'])){
+		    return $accommodation['error'];
+        }elseif (isset($accommodation) && !empty($accommodation)) {
+			set_transient('lsx_ti_accommodation',$accommodation,60*60*2);
+			return true;
 		}
 	}
 
@@ -300,6 +308,8 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 					
 					WHERE key1.meta_key = 'lsx_wetu_id'
 					AND key2.post_type = '{$post_type}'
+
+					LIMIT 0,500
 		");
 		if(null !== $current_accommodation && !empty($current_accommodation)){
 			foreach($current_accommodation as $accom){
@@ -315,12 +325,16 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	public function process_ajax_search() {
 		$return = false;
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_tour_importer' && isset($_POST['type']) && $_POST['type'] === 'accommodation'){
-			$accommodation = get_option('lsx_tour_operator_accommodation',false);
+			$accommodation = get_transient('lsx_ti_accommodation');
 
-			if ( false !== $accommodation && isset($_POST['keyword'] )) {
+			if ( false !== $accommodation ) {
 				$searched_items = false;
-				$keyphrases = $_POST['keyword'];
-				$my_accommodation = false;
+
+				if(isset($_POST['keyword'] )) {
+					$keyphrases = $_POST['keyword'];
+				}else{
+					$keyphrases = array(0);
+                }
 
 				if(!is_array($keyphrases)){
 					$keyphrases = array($keyphrases);
@@ -344,7 +358,6 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 					$post_status = 'import';
 				}
 
-				$accommodation = json_decode($accommodation);
 				if (!empty($accommodation)) {
 
 					$current_accommodation = $this->find_current_accommodation();
@@ -352,9 +365,9 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 					foreach($accommodation as $row_key => $row){
 
 						//If this is a current tour, add its ID to the row.
-						$row->post_id = 0;
-						if(false !== $current_accommodation && array_key_exists($row->id, $current_accommodation)){
-							$row->post_id = $current_accommodation[$row->id]->post_id;
+						$row['post_id'] = 0;
+						if(false !== $current_accommodation && array_key_exists($row['id'], $current_accommodation)){
+							$row['post_id'] = $current_accommodation[$row['id']]->post_id;
 						}
 
 						//If we are searching for
@@ -362,25 +375,25 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 							if('import' === $post_status){
 
-								if(0 !== $row->post_id){
+								if(0 !== $row['post_id']){
 									continue;
 								}else{
-									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
+									$searched_items[sanitize_title($row['name']).'-'.$row['id']] = $this->format_row($row);
 								}
 
 
 							}else{
 
-								if(0 === $row->post_id){
+								if(0 === $row['post_id']){
 									continue;
 								}else{
-									$current_status = get_post_status($row->post_id);
+									$current_status = get_post_status($row['post_id']);
 									if($current_status !== $post_status){
 										continue;
 									}
 
 								}
-								$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
+								$searched_items[sanitize_title($row['name']).'-'.$row['id']] = $this->format_row($row);
 							}
 
 						}else{
@@ -393,8 +406,8 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 									$keywords = array($keywords);
 								}
 
-								if($this->multineedle_stripos(ltrim(rtrim($row->name)), $keywords) !== false){
-									$searched_items[sanitize_title($row->name).'-'.$row->id] = $this->format_row($row);
+								if($this->multineedle_stripos(ltrim(rtrim($row['name'])), $keywords) !== false){
+									$searched_items[sanitize_title($row['name']).'-'.$row['id']] = $this->format_row($row);
 								}
 							}
 						}
@@ -437,24 +450,24 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 		if(false !== $row){
 
 			$status = 'import';
-			if(0 !== $row->post_id){
-				$status = '<a href="'.admin_url('/post.php?post='.$row->post_id.'&action=edit').'" target="_blank">'.get_post_status($row->post_id).'</a>';
+			if(0 !== $row['post_id']){
+				$status = '<a href="'.admin_url('/post.php?post='.$row['post_id'].'&action=edit').'" target="_blank">'.get_post_status($row['post_id']).'</a>';
 			}
 
 			$row_html = '
-			<tr class="post-'.$row->post_id.' type-tour" id="post-'.$row->post_id.'">
+			<tr class="post-'.$row['post_id'].' type-tour" id="post-'.$row['post_id'].'">
 				<th class="check-column" scope="row">
-					<label for="cb-select-'.$row->id.'" class="screen-reader-text">'.$row->name.'</label>
-					<input type="checkbox" data-identifier="'.$row->id.'" value="'.$row->post_id.'" name="post[]" id="cb-select-'.$row->id.'">
+					<label for="cb-select-'.$row['id'].'" class="screen-reader-text">'.$row['name'].'</label>
+					<input type="checkbox" data-identifier="'.$row['id'].'" value="'.$row['post_id'].'" name="post[]" id="cb-select-'.$row['id'].'">
 				</th>
 				<td class="post-title page-title column-title">
-					<strong>'.$row->name.'</strong> - '.$status.'
+					<strong>'.$row['name'].'</strong> - '.$status.'
 				</td>
 				<td class="date column-date">
-					<abbr title="'.date('Y/m/d',strtotime($row->last_modified)).'">'.date('Y/m/d',strtotime($row->last_modified)).'</abbr><br>Last Modified
+					<abbr title="'.date('Y/m/d',strtotime($row['last_modified'])).'">'.date('Y/m/d',strtotime($row['last_modified'])).'</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
-					'.$row->id.'
+					'.$row['id'].'
 				</td>
 			</tr>';		
 			return $row_html;
@@ -556,6 +569,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	        	$post['ID'] = $id;
 				if(isset($data[0]['name'])){
 					$post['post_title'] = $data[0]['name'];
+	        		$post['post_status'] = 'pending';
 					$post['post_name'] = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'accommodation', 0);
 				}
 	        	$id = wp_update_post($post);

@@ -82,8 +82,7 @@ class WETU_Importer_Connect_Accommodation extends WETU_Importer_Admin {
 								'post__in' => $loose_accommodation
 							);
 							$loose_accommodation_query = new WP_Query($loose_args);
-							$accommodation = get_option('lsx_tour_operator_accommodation',false);
-							$accommodation = json_decode($accommodation);
+							$accommodation = get_transient('lsx_ti_accommodation');
 							$identifier = '';
 
 							if($loose_accommodation_query->have_posts() && false !== $accommodation){
@@ -179,6 +178,7 @@ class WETU_Importer_Connect_Accommodation extends WETU_Importer_Admin {
 					SELECT ID
 					FROM {$wpdb->posts}	
 					WHERE post_type = 'accommodation'
+					LIMIT 0,500
 		",ARRAY_A);
 
 		$current_accommodation = $wpdb->get_results("
@@ -190,6 +190,8 @@ class WETU_Importer_Connect_Accommodation extends WETU_Importer_Admin {
 					
 					WHERE key1.meta_key = 'lsx_wetu_id'
 					AND key2.post_type = 'accommodation'
+
+					LIMIT 0,500
 		",ARRAY_A);
 
 		if(null !== $all_accommodation && !empty($all_accommodation)){
