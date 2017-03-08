@@ -28,6 +28,15 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	public $url = false;
 
 	/**
+	 * The query string url to list items from WETU
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $url_qs = false;
+
+	/**
 	 * Options
 	 *
 	 * @since 0.0.1
@@ -67,9 +76,14 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	{
 		parent::set_variables();
 
-		if(false !== $this->api_key){
-		    $this->url = 'https://wetu.com/API/Pins/'.$this->api_key;
-        }
+		// ** This request only works with API KEY **
+		//if ( false !== $this->api_username && false !== $this->api_password ) {
+		//	$this->url    = 'https://wetu.com/API/Pins/';
+		//	$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
+		//} elseif ( false !== $this->api_key ) {
+			$this->url    = 'https://wetu.com/API/Pins/' . $this->api_key;
+			$this->url_qs = '';
+		//}
 	}
 
 	/**
@@ -416,7 +430,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 				$content = false;
 			}
 
-            $jdata=file_get_contents($this->url."/Get?ids=".$wetu_id);
+            $jdata = file_get_contents( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
             if($jdata)
             {
                 $adata=json_decode($jdata,true);

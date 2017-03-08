@@ -16,119 +16,119 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: classes/class-accommodation.php:122, classes/class-accommodation.php:150, classes/class-destination.php:88, classes/class-destination.php:116, classes/class-tours.php:106, classes/class-tours.php:134
+#: classes/class-accommodation.php:136, classes/class-accommodation.php:164, classes/class-destination.php:102, classes/class-destination.php:130, classes/class-tours.php:120, classes/class-tours.php:148
 msgid "Add to List"
 msgstr ""
 
-#: classes/class-accommodation.php:123, classes/class-accommodation.php:151, classes/class-destination.php:89, classes/class-destination.php:117, classes/class-tours.php:107, classes/class-tours.php:135
+#: classes/class-accommodation.php:137, classes/class-accommodation.php:165, classes/class-destination.php:103, classes/class-destination.php:131, classes/class-tours.php:121, classes/class-tours.php:149
 msgid "Clear"
 msgstr ""
 
-#: classes/class-accommodation.php:132, classes/class-destination.php:98, classes/class-tours.php:116
+#: classes/class-accommodation.php:146, classes/class-destination.php:112, classes/class-tours.php:130
 msgid "Enter a title to search for and press enter"
 msgstr ""
 
-#: classes/class-accommodation.php:136, classes/class-destination.php:102, classes/class-tours.php:120
+#: classes/class-accommodation.php:150, classes/class-destination.php:116, classes/class-tours.php:134
 msgid "Enter a title to search for"
 msgstr ""
 
-#: classes/class-accommodation.php:163, classes/class-destination.php:129, classes/class-tours.php:147, classes/class-tours.php:165
+#: classes/class-accommodation.php:177, classes/class-destination.php:143, classes/class-tours.php:161, classes/class-tours.php:179
 msgid "Description"
 msgstr ""
 
-#: classes/class-accommodation.php:164, classes/class-destination.php:130, classes/class-tours.php:148
+#: classes/class-accommodation.php:178, classes/class-destination.php:144, classes/class-tours.php:162
 msgid "Excerpt"
 msgstr ""
 
-#: classes/class-accommodation.php:165
+#: classes/class-accommodation.php:179
 msgid "Main Gallery"
 msgstr ""
 
-#: classes/class-accommodation.php:166, classes/class-tours.php:153
+#: classes/class-accommodation.php:180, classes/class-tours.php:167
 msgid "Category"
 msgstr ""
 
-#: classes/class-accommodation.php:168, classes/class-destination.php:133
+#: classes/class-accommodation.php:182, classes/class-destination.php:147
 msgid "Location"
 msgstr ""
 
-#: classes/class-accommodation.php:170
+#: classes/class-accommodation.php:184
 msgid "Connect Destinations"
 msgstr ""
 
-#: classes/class-accommodation.php:171
+#: classes/class-accommodation.php:185
 msgid "Check In / Check Out"
 msgstr ""
 
-#: classes/class-accommodation.php:172
+#: classes/class-accommodation.php:186
 msgid "Facilities"
 msgstr ""
 
-#: classes/class-accommodation.php:173
+#: classes/class-accommodation.php:187
 msgid "Friendly"
 msgstr ""
 
-#: classes/class-accommodation.php:174
+#: classes/class-accommodation.php:188
 msgid "Rating"
 msgstr ""
 
-#: classes/class-accommodation.php:175
+#: classes/class-accommodation.php:189
 msgid "Rooms"
 msgstr ""
 
-#: classes/class-accommodation.php:176
+#: classes/class-accommodation.php:190
 msgid "Special Interests"
 msgstr ""
 
-#: classes/class-accommodation.php:177
+#: classes/class-accommodation.php:191
 msgid "Spoken Languages"
 msgstr ""
 
-#: classes/class-accommodation.php:180, classes/class-destination.php:137
+#: classes/class-accommodation.php:194, classes/class-destination.php:151
 msgid "Videos"
 msgstr ""
 
-#: classes/class-accommodation.php:185
+#: classes/class-accommodation.php:199
 msgid "Set Featured Image"
 msgstr ""
 
-#: classes/class-accommodation.php:187
+#: classes/class-accommodation.php:201
 msgid "Set Banner Image"
 msgstr ""
 
-#: classes/class-accommodation.php:217, classes/class-destination.php:177, classes/class-tours.php:198
+#: classes/class-accommodation.php:231, classes/class-destination.php:191, classes/class-tours.php:212
 msgid "Sync"
 msgstr ""
 
-#: classes/class-accommodation.php:238, classes/class-accommodation.php:240, classes/class-accommodation.php:245, classes/class-destination.php:198, classes/class-destination.php:200, classes/class-destination.php:207
+#: classes/class-accommodation.php:252, classes/class-accommodation.php:254, classes/class-accommodation.php:259, classes/class-destination.php:212, classes/class-destination.php:214, classes/class-destination.php:221
 msgid "Search"
 msgstr ""
 
-#: classes/class-accommodation.php:243, classes/class-destination.php:205
+#: classes/class-accommodation.php:257, classes/class-destination.php:219
 msgid "Enter several keywords, each on a new line."
 msgstr ""
 
-#: classes/class-accommodation.php:249, classes/class-destination.php:211
+#: classes/class-accommodation.php:263, classes/class-destination.php:225
 msgid "Bulk Search"
 msgstr ""
 
-#: classes/class-accommodation.php:250, classes/class-destination.php:212
+#: classes/class-accommodation.php:264, classes/class-destination.php:226
 msgid "Published"
 msgstr ""
 
-#: classes/class-accommodation.php:251, classes/class-destination.php:213
+#: classes/class-accommodation.php:265, classes/class-destination.php:227
 msgid "Pending"
 msgstr ""
 
-#: classes/class-accommodation.php:252, classes/class-destination.php:214
+#: classes/class-accommodation.php:266, classes/class-destination.php:228
 msgid "Draft"
 msgstr ""
 
-#: classes/class-accommodation.php:253
+#: classes/class-accommodation.php:267
 msgid "WETU"
 msgstr ""
 
-#: classes/class-accommodation.php:271, classes/class-tours.php:216
+#: classes/class-accommodation.php:285, classes/class-tours.php:230
 msgid "Wetu Status"
 msgstr ""
 
@@ -180,31 +180,31 @@ msgstr ""
 msgid "Connect"
 msgstr ""
 
-#: classes/class-destination.php:145
+#: classes/class-destination.php:159
 msgid "Electricity"
 msgstr ""
 
-#: classes/class-destination.php:146
+#: classes/class-destination.php:160
 msgid "Banking"
 msgstr ""
 
-#: classes/class-destination.php:147
+#: classes/class-destination.php:161
 msgid "Cuisine"
 msgstr ""
 
-#: classes/class-destination.php:148
+#: classes/class-destination.php:162
 msgid "Climate"
 msgstr ""
 
-#: classes/class-destination.php:149
+#: classes/class-destination.php:163
 msgid "Transport"
 msgstr ""
 
-#: classes/class-destination.php:150
+#: classes/class-destination.php:164
 msgid "Dress"
 msgstr ""
 
-#: classes/class-importer.php:131, classes/class-importer.php:144
+#: classes/class-importer.php:141, classes/class-importer.php:154
 msgid "Wetu Importer Plugin requires PHP 5.6 or higher."
 msgstr ""
 
@@ -220,31 +220,47 @@ msgstr ""
 msgid "Importer"
 msgstr ""
 
-#: classes/class-tours.php:150
+#: classes/class-settings.php:51
+msgid "WETU API"
+msgstr ""
+
+#: classes/class-settings.php:56
+msgid "Key"
+msgstr ""
+
+#: classes/class-settings.php:64
+msgid "Username"
+msgstr ""
+
+#: classes/class-settings.php:72
+msgid "Password"
+msgstr ""
+
+#: classes/class-tours.php:164
 msgid "Price"
 msgstr ""
 
-#: classes/class-tours.php:151
+#: classes/class-tours.php:165
 msgid "Duration"
 msgstr ""
 
-#: classes/class-tours.php:155
+#: classes/class-tours.php:169
 msgid "Itinerary Days"
 msgstr ""
 
-#: classes/class-tours.php:158
+#: classes/class-tours.php:172
 msgid "Map Coordinates (generates a KML file)"
 msgstr ""
 
-#: classes/class-tours.php:166
+#: classes/class-tours.php:180
 msgid "Gallery"
 msgstr ""
 
-#: classes/class-tours.php:171
+#: classes/class-tours.php:185
 msgid "Sync Accommodation"
 msgstr ""
 
-#: classes/class-tours.php:172
+#: classes/class-tours.php:186
 msgid "Sync Destinations"
 msgstr ""
 

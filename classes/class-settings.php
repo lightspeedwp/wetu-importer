@@ -46,12 +46,33 @@ class WETU_Importer_Settings extends WETU_Importer {
 	 */
 	public function api_settings($tab='general') {
 		if('settings' === $tab){ ?>
-			<tr class="form-field -wrap">
+			<tr class="form-field-wrap">
+				<th class="tour-operator_table_heading" style="padding-bottom:0px;" scope="row" colspan="2">
+					<h4 style="margin-bottom:0px;"><span><?php _e( 'WETU API', 'wetu-importer' ); ?></span></h4>
+				</th>
+			</tr>
+			<tr class="form-field">
 				<th scope="row">
-                    <i class="dashicons-before dashicons-admin-network"></i> <label for="wetu_api_key"> WETU API Key</label>
+                    <i class="dashicons-before dashicons-admin-network"></i> <label for="wetu_api_key"> <?php _e( 'Key', 'wetu-importer' ); ?></label>
 				</th>
 				<td>
-                    <input type="text"  {{#if wetu_api_key}} value="{{wetu_api_key}}" {{/if}} name="wetu_api_key" />
+                    <input type="text" {{#if wetu_api_key}} value="{{wetu_api_key}}" {{/if}} name="wetu_api_key" />
+				</td>
+			</tr>
+			<tr class="form-field">
+				<th scope="row">
+                    <i class="dashicons-before dashicons-admin-users"></i> <label for="wetu_api_username"> <?php _e( 'Username', 'wetu-importer' ); ?></label>
+				</th>
+				<td>
+                    <input type="text" {{#if wetu_api_username}} value="{{wetu_api_username}}" {{/if}} name="wetu_api_username" />
+				</td>
+			</tr>
+			<tr class="form-field">
+				<th scope="row">
+                    <i class="dashicons-before dashicons-lock"></i> <label for="wetu_api_password"> <?php _e( 'Password', 'wetu-importer' ); ?></label>
+				</th>
+				<td>
+                    <input type="text" {{#if wetu_api_password}} value="{{wetu_api_password}}" {{/if}} name="wetu_api_password" />
 				</td>
 			</tr>
 		<?php }

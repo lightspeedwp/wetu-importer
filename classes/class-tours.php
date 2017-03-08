@@ -28,6 +28,15 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	public $url = false;
 
 	/**
+	 * The query string url to list items from WETU
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $url_qs = false;
+
+	/**
 	 * Holds a list of any current accommodation
 	 *
 	 * @since 0.0.1
@@ -83,8 +92,13 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	public function set_variables()
 	{
 		parent::set_variables();
-		if(false !== $this->api_key){
-			$this->url = 'https://wetu.com/API/Itinerary/'.$this->api_key.'/V7/List';
+
+		if ( false !== $this->api_username && false !== $this->api_password ) {
+			$this->url    = 'https://wetu.com/API/Itinerary/';
+			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
+		} elseif ( false !== $this->api_key ) {
+			$this->url    = 'https://wetu.com/API/Itinerary/' . $this->api_key;
+			$this->url_qs = '';
 		}
 	}
 
@@ -232,8 +246,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 * Save the list of Tours into an option
 	 */
 	public function update_options() {
-		$data= file_get_contents($this->url);
-		$tours  = json_decode($data, true);
+		$data = file_get_contents( $this->url . '/V7/List?' . $this->url_qs . '&own=true&type=All' );
+		$tours = json_decode($data, true);
 
 		if(isset($tours['error'])){
 		    return $tours['error'];

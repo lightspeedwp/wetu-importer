@@ -58,6 +58,16 @@ class WETU_Importer {
 	 * The WETU API Key
 	 */
 	public $api_key = false;
+
+	/**
+	 * The WETU API Username
+	 */
+	public $api_username = false;
+
+	/**
+	 * The WETU API Password
+	 */
+	public $api_password = false;
 	
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -155,9 +165,17 @@ class WETU_Importer {
 			$this->options = $temp_options[$this->plugin_slug];
 
 			$this->api_key = false;
+			$this->api_username = false;
+			$this->api_password = false;
 			if (false !== $temp_options) {
 				if (isset($temp_options['api']['wetu_api_key']) && '' !== $temp_options['api']['wetu_api_key']) {
 					$this->api_key = $temp_options['api']['wetu_api_key'];
+				}
+				if (isset($temp_options['api']['wetu_api_username']) && '' !== $temp_options['api']['wetu_api_username']) {
+					$this->api_username = $temp_options['api']['wetu_api_username'];
+				}
+				if (isset($temp_options['api']['wetu_api_password']) && '' !== $temp_options['api']['wetu_api_password']) {
+					$this->api_password = $temp_options['api']['wetu_api_password'];
 				}
 
 				if (isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug]) && isset($this->options['image_scaling'])) {
