@@ -601,7 +601,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 				//Itinerary Destination
 				$current_destination = false;
 				if(false !== $importable_content && in_array('destination',$importable_content)){
-					$current_destination = $this->set_destination($leg,$id);;
+					$current_destination = $this->set_destination($leg,$id);
 				}
 
 				//If the Nights are the same mount of days in the array,  then it isnt "By Destination"
@@ -800,6 +800,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 		$dest_id = false;
 		$country_id = false;
 		$this->current_destinations = $this->find_current_destinations();
+
+		print_r($this->current_destinations);
 
 		if(isset($day['destination_content_entity_id']) && !empty($day['destination_content_entity_id'])){
 
