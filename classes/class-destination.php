@@ -176,7 +176,8 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 					</div>
 
 
-					<h3><?php _e('Your List'); ?></h3> 
+					<h3><?php _e('Your List'); ?></h3>
+                    <p><input class="button button-primary" type="submit" value="<?php _e('Sync','wetu-importer'); ?>" /></p>
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>
 

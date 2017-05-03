@@ -197,7 +197,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 					</div>
 
 
-					<h3><?php _e('Your List'); ?></h3> 
+					<h3><?php _e('Your List'); ?></h3>
+                    <p><input class="button button-primary" type="submit" value="<?php _e('Sync','wetu-importer'); ?>" /></p>
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>
 
@@ -501,7 +502,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
         //Create or update the post
         if(false !== $id && '0' !== $id){
             $post['ID'] = $id;
-	        $post['post_status'] = 'pending';
+	        $post['post_status'] = 'publish';
             $id = wp_update_post($post);
             $prev_date = get_post_meta($id,'lsx_wetu_modified_date',true);
             update_post_meta($id,'lsx_wetu_modified_date',strtotime($data['last_modified']),$prev_date);
@@ -513,7 +514,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
             }
             $post['post_name'] = $post_name;
             $post['post_title'] = $data['name'];
-            $post['post_status'] = 'pending';
+            $post['post_status'] = 'publish';
             $id = wp_insert_post($post);
 
             //Save the WETU ID and the Last date it was modified.
