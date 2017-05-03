@@ -333,9 +333,9 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
                             continue;
                         }
 
-                        if('Sample' === $row['type']){
+                        /*if('Sample' === $row['type']){
                             continue;
-                        }
+                        }*/
 
                         //If this is a current tour, add its ID to the row.
 						$row['post_id'] = 0;
