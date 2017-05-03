@@ -801,8 +801,6 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 		$country_id = false;
 		$this->current_destinations = $this->find_current_destinations();
 
-		print_r($this->current_destinations);
-
 		if(isset($day['destination_content_entity_id']) && !empty($day['destination_content_entity_id'])){
 
 			if(false !== $this->current_destinations && !empty($this->current_destinations) && array_key_exists($day['destination_content_entity_id'],$this->current_destinations)){
