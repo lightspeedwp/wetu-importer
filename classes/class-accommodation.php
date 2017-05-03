@@ -623,7 +623,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 	    	}	    	
 
-	        if(false !== $importable_content && in_array('location',$importable_content)){
+	        if(class_exists('LSX_TO_Maps')){
 	        	$this->set_map_data($data,$id);
 	        	$this->set_location_taxonomy($data,$id);
 	        }
