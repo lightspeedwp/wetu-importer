@@ -490,7 +490,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	        	$post['ID'] = $id;
 				if(isset($data[0]['name'])){
 					$post['post_title'] = $data[0]['name'];
-					$post['post_status'] = 'pending';
+					$post['post_status'] = 'publish';
 					$post['post_name'] = wp_unique_post_slug(sanitize_title($data[0]['name']),$id, 'draft', 'destination', 0);
 				}
 	        	$id = wp_update_post($post);
@@ -504,7 +504,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 		        }
 	        	$post['post_name'] = $post_name;
 	        	$post['post_title'] = $data[0]['name'];
-	        	$post['post_status'] = 'pending';
+	        	$post['post_status'] = 'publish';
 	        	$id = wp_insert_post($post);
 
 	        	//Save the WETU ID and the Last date it was modified.

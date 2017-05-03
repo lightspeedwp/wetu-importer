@@ -572,6 +572,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 */
 	public function process_itineraries($data,$id,$importable_content) {
 		$day_counter = 1;
+		$leg_counter = 0;
 
 		delete_post_meta($id,'itinerary');
 
@@ -580,7 +581,12 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 		}
 		if(false !== $importable_content && in_array('destination',$importable_content)){
 			delete_post_meta($id,'destination_to_tour');
+			delete_post_meta($id,'departs_from');
+			delete_post_meta($id,'ends_in');
 		}
+
+		$departs_from = false;
+		$ends_in = false;
 
 		foreach($data['legs'] as $leg){
 
@@ -644,6 +650,24 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 				}
 
 			}
+
+			//If we are in the first leg,  and the destination was attached then save it as the departure field.
+			if( 0 === $leg_counter && false !== $current_destination){
+				$departs_from = $current_destination;
+			}
+
+			//If its the last leg then save it as the ends in.
+			if( $leg_counter === (count($data['legs'])-2) && false !== $current_destination){
+				$ends_in = $current_destination;
+			}
+			$leg_counter++;
+		}
+
+		if(false !== $departs_from){
+			add_post_meta($id,'departs_from',$departs_from,true);
+		}
+		if(false !== $ends_in){
+			add_post_meta($id,'ends_in',$ends_in,true);
 		}
 	}
 
@@ -820,6 +844,9 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
                         }
 						$dest_id = wp_insert_post($dest_post);
 
+						//Make sure we register the
+						$this->current_destinations[$day['destination_content_entity_id']] = $dest_id;
+
 						$this->save_custom_field($day['destination_content_entity_id'], 'lsx_wetu_id', $dest_id);
 					}
 				}
@@ -854,6 +881,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
                 if (!empty($country_data) && !isset($country_data['error'])) {
 
+					//Format the title of the destination if its available,  otherwise default to the WETU ID.
                     $country_title = $country_wetu_id;
                     if (isset($country_data[0]['name'])) {
 						$country_title = $country_data[0]['name'];
@@ -864,6 +892,10 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
                         'post_status' => 'draft',
                         'post_title' => $country_title
                     ));
+					//add the country to the current destination stack
+					$this->current_destinations[$country_wetu_id] = $country_id;
+
+					//Save the wetu field
                     $this->save_custom_field($country_wetu_id, 'lsx_wetu_id', $country_id);
                 }
             }
