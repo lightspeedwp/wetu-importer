@@ -739,10 +739,23 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 * Set the price
 	 */
 	public function set_price($data,$id) {
+	    //Price
 		if(isset($data['price']) && ''!== $data['price']){
             $price = preg_replace("/[^0-9,.]/", "", $data['price']);
             $this->save_custom_field($price,'price',$id);
 		}
+
+		//Price includes
+
+		if(isset($data['price_includes']) && ''!== $data['price_includes']){
+			$this->save_custom_field($data['price_includes'],'included',$id);
+		}
+
+        //Price Excludes
+		if(isset($data['price_excludes']) && ''!== $data['price_excludes']){
+			$this->save_custom_field($data['price_excludes'],'not_included',$id);
+		}
+
 	}
 
 	/**
