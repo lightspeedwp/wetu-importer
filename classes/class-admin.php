@@ -184,7 +184,7 @@ class WETU_Importer_Admin extends WETU_Importer {
 	/**
 	 * set_taxonomy with some terms
 	 */
-	public function team_member_checkboxes() {
+	public function team_member_checkboxes($selected=array()) {
 		if(post_type_exists('team')) { ?>
     		<ul>
     			<?php
@@ -197,7 +197,7 @@ class WETU_Importer_Admin extends WETU_Importer {
     				$team_members = new WP_Query($team_args);
     					if($team_members->have_posts()){
     						foreach($team_members->posts as $member){ ?>
-    							<li><input class="team" type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title($member); ?></li>
+    							<li><input class="team" checked="<?php $this->checked($selected,$member); ?>" type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title($member); ?></li>
     						<?php }
     					}else{ ?>
     							<li><input class="team" type="checkbox" value="0" /> <?php _e('None','wetu-importer'); ?></li>
@@ -269,6 +269,24 @@ class WETU_Importer_Admin extends WETU_Importer {
 		    	}
 			}
 		}
-	}		
+	}
+
+	/**
+	 * Checks to see if an item is selected.
+     *
+     * @param $haystack array|string
+     * @param $needle string
+     * @return string
+	 */
+	public function checked($haystack=false,$needle='') {
+	    $return = '';
+	    if(!is_array($haystack)){
+			$haystack = array($haystack);
+        }
+        if(in_array($needle,$haystack)){
+			$return = 'checked';
+        }
+	    return $return;
+	}
 }
 $wetu_importer_admin = new WETU_Importer_Admin();

@@ -61,7 +61,16 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 *
 	 * @var      string
 	 */
-	public $options = false;			
+	public $options = false;
+
+	/**
+	 * The fields you wish to import
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $tour_options = false;
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -83,7 +92,12 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 		$temp_options = get_option('_lsx-to_settings',false);
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
 			$this->options = $temp_options[$this->plugin_slug];
-		}				
+		}
+
+		$tour_options = get_option('wetu_importer_tour_settings',false);
+		if(false !== $tour_options){
+			$this->tour_options = $tour_options;
+        }
 	}
 
 	/**
@@ -158,38 +172,39 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 						<div style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->tour_options,'description'); ?>" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->tour_options,'excerpt'); ?>" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 
-                                <li><input class="content" type="checkbox" name="content[]" value="price" /> <?php _e('Price','wetu-importer'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="duration" /> <?php _e('Duration','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'price'); ?>" type="checkbox" name="content[]" value="price" /> <?php _e('Price','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'duration'); ?>" type="checkbox" name="content[]" value="duration" /> <?php _e('Duration','wetu-importer'); ?></li>
 
-								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->tour_options,'category'); ?>" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
 
-                                <li><input class="content" type="checkbox" name="content[]" value="itineraries" /> <?php _e('Itinerary Days','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'itineraries'); ?>" type="checkbox" name="content[]" value="itineraries" /> <?php _e('Itinerary Days','wetu-importer'); ?></li>
 
 								<?php if(class_exists('TO_Maps')){ ?>
-                                    <li><input class="content" type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
+                                    <li><input class="content" checked="<?php $this->checked($this->tour_options,'map'); ?>" type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
 								<?php } ?>
 							</ul>
 						</div>
                         <div style="width:30%;display:block;float:left;">
                             <h3><?php _e('Itinerary Info'); ?></h3>
                             <ul>
-                                <li><input class="content" type="checkbox" name="content[]" value="itinerary_description" /> <?php _e('Description','wetu-importer'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="itinerary_gallery" /> <?php _e('Gallery','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'itinerary_description'); ?>" type="checkbox" name="content[]" value="itinerary_description" /> <?php _e('Description','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'itinerary_included'); ?>" type="checkbox" name="content[]" value="itinerary_included" /> <?php _e('Included','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'itinerary_excluded'); ?>" type="checkbox" name="content[]" value="itinerary_excluded" /> <?php _e('Excluded','wetu-importer'); ?></li>
                             </ul>
 
                             <h4><?php _e('Additional Content'); ?></h4>
                             <ul>
-                                <li><input class="content" type="checkbox" name="content[]" value="accommodation" /> <?php _e('Sync Accommodation','wetu-importer'); ?></li>
-                                <li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Sync Destinations','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'accommodation'); ?>" type="checkbox" name="content[]" value="accommodation" /> <?php _e('Sync Accommodation','wetu-importer'); ?></li>
+                                <li><input class="content" checked="<?php $this->checked($this->tour_options,'destination'); ?>" type="checkbox" name="content[]" value="destination" /> <?php _e('Sync Destinations','wetu-importer'); ?></li>
                             </ul>
                         </div>
                         <?php if(class_exists('TO_Team')){ ?>
                             <div style="width:30%;display:block;float:left;">
                                 <h3><?php _e('Assign a Team Member'); ?></h3>
-                                <?php $this->team_member_checkboxes(); ?>
+                                <?php $this->team_member_checkboxes($this->tour_options); ?>
                             </div>
                         <?php } ?>
 
@@ -215,7 +230,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php _e('Completed'); ?></h3>
+				<h3><?php _e('Completed','wetu-importer'); ?> - <small><?php _e('Import your','wetu-importer'); ?> <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('accommodation'); ?></a> <?php _e('next','wetu-importer'); ?></small></h3>
 				<ul>
 				</ul>
 			</div>
@@ -445,8 +460,10 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 			}
 
 			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
-				$content = $_POST['content'];	
+				$content = $_POST['content'];
+				add_option('wetu_importer_tour_settings',$content);
 			}else{
+				delete_option('wetu_importer_tour_settings');
 				$content = false;
 			}
 
@@ -487,16 +504,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
                 $data_post_content = $data['description'];
             }elseif(isset($data['summary'])){
                 $data_post_content = $data['summary'];
-                $content_used_general_description = true;
             }
-            $post['post_content'] = wp_strip_all_tags($data_post_content);
-        }
-
-        //set the post_excerpt
-        if(false !== $importable_content && in_array('excerpt',$importable_content)){
-            if(isset($data['summary']) && false === $content_used_general_description){
-                $post['post_excerpt'] = $data['summary'];
-            }
+            $post['post_content'] = $data_post_content;
         }
 
         //Create or update the post
@@ -640,6 +649,20 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 							$current_day['destination_to_tour'] = array($current_destination);
 						}else{
 							$current_day['destination_to_tour'] = array();
+						}
+
+						//Included
+						if(false !== $importable_content && in_array('itinerary_included',$importable_content) && isset($day['included']) && '' !== $day['included']){
+							$current_day['included'] = strip_tags($day['included']);
+						}else{
+							$current_day['description'] = '';
+						}
+
+						//Excluded
+						if(false !== $importable_content && in_array('itinerary_excluded',$importable_content) && isset($day['excluded']) && '' !== $day['excluded']){
+							$current_day['excluded'] = strip_tags($day['excluded']);
+						}else{
+							$current_day['excluded'] = '';
 						}
 
 						$this->set_itinerary_day($current_day,$id);

@@ -234,7 +234,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php _e('Completed'); ?></h3>
+				<h3><?php _e('Completed'); ?> - <small><?php _e('Import your','wetu-importer'); ?> <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('destinations'); ?></a> <?php _e('next','wetu-importer'); ?></small></h3>
 				<ul>
 				</ul>
 			</div>
