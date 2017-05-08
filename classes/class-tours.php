@@ -746,7 +746,6 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 		}
 
 		//Price includes
-
 		if(isset($data['price_includes']) && ''!== $data['price_includes']){
 			$this->save_custom_field($data['price_includes'],'included',$id);
 		}
