@@ -43,7 +43,16 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	 *
 	 * @var      string
 	 */
-	public $options = false;			
+	public $options = false;
+
+	/**
+	 * The fields you wish to import
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $accommodation_options = false;
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -65,6 +74,11 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 		$temp_options = get_option('_lsx-to_settings',false);
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
 			$this->options = $temp_options[$this->plugin_slug];
+		}
+
+		$accommodation_options = get_option('wetu_importer_accommodation_settings',false);
+		if(false !== $accommodation_options){
+			$this->accommodation_options = $accommodation_options;
 		}
 	}
 
@@ -174,42 +188,42 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 						<div style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-								<li><input class="content" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'description'); ?>" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'excerpt'); ?>" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'gallery'); ?>" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'category'); ?>" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
 		                        <?php if(class_exists('TO_Maps')){ ?>
-								    <li><input class="content" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
+								    <li><input class="content" checked="<?php $this->checked($this->accommodation_options,'location'); ?>" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
 		                        <?php } ?>
-								<li><input class="content" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="facilities" /> <?php _e('Facilities','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="friendly" /> <?php _e('Friendly','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','wetu-importer'); ?></li>
-								<li><input class="content" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'destination'); ?>" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'checkin'); ?>" type="checkbox" name="content[]" value="checkin" /> <?php _e('Check In / Check Out','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'facilities'); ?>" type="checkbox" name="content[]" value="facilities" /> <?php _e('Facilities','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'friendly'); ?>" type="checkbox" name="content[]" value="friendly" /> <?php _e('Friendly','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'rating'); ?>" type="checkbox" name="content[]" value="rating" /> <?php _e('Rating','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'rooms'); ?>" type="checkbox" name="content[]" value="rooms" /> <?php _e('Rooms','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'special_interests'); ?>" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'spoken_languages'); ?>" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','wetu-importer'); ?></li>
 
 		                        <?php if(class_exists('TO_Videos')){ ?>
-								    <li><input class="content" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
+								    <li><input class="content" checked="<?php $this->checked($this->accommodation_options,'videos'); ?>" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
 		                        <?php } ?>
 							</ul>
 							<h4><?php _e('Additional Content'); ?></h4>
 							<ul>
-								<li><input class="content" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','wetu-importer'); ?></li>
+								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'featured_image'); ?>" type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','wetu-importer'); ?></li>
 		                        <?php if(class_exists('LSX_Banners')){ ?>
-								    <li><input class="content" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','wetu-importer'); ?></li>
+								    <li><input class="content" checked="<?php $this->checked($this->accommodation_options,'banner_image'); ?>" type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','wetu-importer'); ?></li>
 		                        <?php } ?>
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
 							<h3><?php _e('Assign a Team Member'); ?></h3> 
-							<?php $this->team_member_checkboxes(); ?>
+							<?php $this->team_member_checkboxes($this->accommodation_options); ?>
 						</div>
 
 						<div style="width:30%;display:block;float:left;">
 							<h3><?php _e('Assign a Safari Brand'); ?></h3> 
-							<?php echo $this->taxonomy_checkboxes('accommodation-brand'); ?>	
+							<?php echo $this->taxonomy_checkboxes('accommodation-brand',$this->accommodation_options); ?>
 						</div>	
 
 						<br clear="both" />			
@@ -516,8 +530,10 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 			}			
 
 			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
-				$content = $_POST['content'];	
+				$content = $_POST['content'];
+				add_option('wetu_importer_accommodation_settings',$content);
 			}else{
+				delete_option('wetu_importer_accommodation_settings');
 				$content = false;
 			}
 

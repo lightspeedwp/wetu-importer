@@ -210,14 +210,14 @@ class WETU_Importer_Admin extends WETU_Importer {
 	/**
 	 * set_taxonomy with some terms
 	 */
-	public function taxonomy_checkboxes($taxonomy=false) {
+	public function taxonomy_checkboxes($taxonomy=false,$selected=array()) {
 		$return = '';
 		if(false !== $taxonomy){
 			$return .= '<ul>';
 			$terms = get_terms($taxonomy,array('empty'=>true));
 			if(!is_wp_error($terms)){
 				foreach($terms as $term){
-					$return .= '<li><input class="'.$taxonomy.'" type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
+					$return .= '<li><input class="'.$taxonomy.'" checked="'.$this->checked($selected,$term->term_id).'" type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
 				}
 			}else{
 				$return .= '<li><input type="checkbox" value="" /> '.__('None','wetu-importer').'</li>';
