@@ -197,7 +197,7 @@ class WETU_Importer_Admin extends WETU_Importer {
     				$team_members = new WP_Query($team_args);
     					if($team_members->have_posts()){
     						foreach($team_members->posts as $member){ ?>
-    							<li><input class="team" checked="<?php $this->checked($selected,$member); ?>" type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title($member); ?></li>
+    							<li><input class="team" <?php $this->checked($selected,$member); ?> type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title($member); ?></li>
     						<?php }
     					}else{ ?>
     							<li><input class="team" type="checkbox" value="0" /> <?php _e('None','wetu-importer'); ?></li>
@@ -214,10 +214,11 @@ class WETU_Importer_Admin extends WETU_Importer {
 		$return = '';
 		if(false !== $taxonomy){
 			$return .= '<ul>';
-			$terms = get_terms($taxonomy,array('empty'=>true));
+			$terms = get_terms(array('taxonomy'=>$taxonomy,'hide_empty'=>false));
+
 			if(!is_wp_error($terms)){
 				foreach($terms as $term){
-					$return .= '<li><input class="'.$taxonomy.'" checked="'.$this->checked($selected,$term->term_id).'" type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
+					$return .= '<li><input class="'.$taxonomy.'" '.$this->checked($selected,$term->term_id).' type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
 				}
 			}else{
 				$return .= '<li><input type="checkbox" value="" /> '.__('None','wetu-importer').'</li>';
@@ -284,7 +285,7 @@ class WETU_Importer_Admin extends WETU_Importer {
 			$haystack = array($haystack);
         }
         if(in_array($needle,$haystack)){
-			$return = 'checked';
+			$return = 'checked="checked"';
         }
 	    return $return;
 	}
