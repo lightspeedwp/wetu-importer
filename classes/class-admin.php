@@ -271,8 +271,6 @@ class WETU_Importer_Admin extends WETU_Importer {
 		    		}
 		    	}
 			}
-
-			print_r($this->found_attachments);
 		}
 	}
 

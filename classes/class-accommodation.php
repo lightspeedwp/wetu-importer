@@ -1134,7 +1134,6 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
 	    	$counter = 0;
-			print_r($data[0]['content']['images']);
 	    	foreach($data[0]['content']['images'] as $image_data){
 	    		if($counter === 0 && false !== $this->featured_image){$counter++;continue;}
 	    		if($counter === 1 && false !== $this->banner_image){$counter++;continue;}
@@ -1163,9 +1162,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	    	$url_filename = $temp_fragment[count($temp_fragment)-1];
 	    	$url_filename = str_replace(array('.jpg','.png','.jpeg'),'',$url_filename);
 
-	    	print_r($url_filename);
 	    	if(in_array($url_filename,$this->found_attachments)){
-				print_r(' - found <br/>');
 	    		return array_search($url_filename,$this->found_attachments);
 	    	}
 	    	               
