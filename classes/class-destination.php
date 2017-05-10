@@ -154,28 +154,35 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 						<div style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-								<li><input class="content" checked="<?php $this->checked($this->destination_options,'description'); ?>" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
-								<li><input class="content" checked="<?php $this->checked($this->destination_options,'excerpt'); ?>" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
-
+								<li><input class="content" <?php $this->checked($this->destination_options,'description'); ?> type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
+								<li><input class="content" <?php $this->checked($this->destination_options,'excerpt'); ?> type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'gallery'); ?> type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
 		                        <?php if(class_exists('TO_Maps')){ ?>
-                                    <li><input class="content" checked="<?php $this->checked($this->destination_options,'location'); ?>" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
+                                    <li><input class="content" <?php $this->checked($this->destination_options,'location'); ?> type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
 		                        <?php } ?>
 
 		                        <?php if(class_exists('TO_Videos')){ ?>
-								    <li><input class="content" checked="<?php $this->checked($this->destination_options,'videos'); ?>" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
+								    <li><input class="content" <?php $this->checked($this->destination_options,'videos'); ?> type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
 		                        <?php } ?>
 
 							</ul>
+                            <h4><?php _e('Additional Content'); ?></h4>
+                            <ul>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'featured_image'); ?> type="checkbox" name="content[]" value="featured_image" /> <?php _e('Set Featured Image','wetu-importer'); ?></li>
+								<?php if(class_exists('LSX_Banners')){ ?>
+                                    <li><input class="content" <?php $this->checked($this->destination_options,'banner_image'); ?> type="checkbox" name="content[]" value="banner_image" /> <?php _e('Set Banner Image','wetu-importer'); ?></li>
+								<?php } ?>
+                            </ul>
 						</div>
                         <div style="width:30%;display:block;float:left;">
                             <h3><?php _e('Travel Information'); ?></h3>
                             <ul>
-                                <li><input class="content" checked="<?php $this->checked($this->destination_options,'electricity'); ?>" type="checkbox" name="content[]" value="electricity" /> <?php _e('Electricity','wetu-importer'); ?></li>
-                                <li><input class="content" checked="<?php $this->checked($this->destination_options,'banking'); ?>" type="checkbox" name="content[]" value="banking" /> <?php _e('Banking','wetu-importer'); ?></li>
-                                <li><input class="content" checked="<?php $this->checked($this->destination_options,'cuisine'); ?>" type="checkbox" name="content[]" value="cuisine" /> <?php _e('Cuisine','wetu-importer'); ?></li>
-                                <li><input class="content" checked="<?php $this->checked($this->destination_options,'climate'); ?>" type="checkbox" name="content[]" value="climate" /> <?php _e('Climate','wetu-importer'); ?></li>
-                                <li><input class="content" checked="<?php $this->checked($this->destination_options,'transport'); ?>" type="checkbox" name="content[]" value="transport" /> <?php _e('Transport','wetu-importer'); ?></li>
-                                <li><input class="content" checked="<?php $this->checked($this->destination_options,'dress'); ?>" type="checkbox" name="content[]" value="dress" /> <?php _e('Dress','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'electricity'); ?> type="checkbox" name="content[]" value="electricity" /> <?php _e('Electricity','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'banking'); ?> type="checkbox" name="content[]" value="banking" /> <?php _e('Banking','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'cuisine'); ?> type="checkbox" name="content[]" value="cuisine" /> <?php _e('Cuisine','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'climate'); ?> type="checkbox" name="content[]" value="climate" /> <?php _e('Climate','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'transport'); ?> type="checkbox" name="content[]" value="transport" /> <?php _e('Transport','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options,'dress'); ?> type="checkbox" name="content[]" value="dress" /> <?php _e('Dress','wetu-importer'); ?></li>
                             </ul>
                         </div>
 
@@ -570,7 +577,18 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 				$this->set_travel_info($data,$id,'climate');
 			}
 
-        }
+			//Set the featured image
+			if(false !== $importable_content && in_array('featured_image',$importable_content)){
+				$this->set_featured_image($data,$id);
+			}
+			if(false !== $importable_content && in_array('banner_image',$importable_content)){
+				$this->set_banner_image($data,$id);
+			}
+			//Import the main gallery
+			if(false !== $importable_content && in_array('gallery',$importable_content)){
+				$this->create_main_gallery($data,$id);
+			}
+		}
         return $id;
 	}
 
