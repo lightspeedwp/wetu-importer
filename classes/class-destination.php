@@ -448,6 +448,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 
 			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
 				$content = $_POST['content'];
+				delete_option('wetu_importer_destination_settings');
 				add_option('wetu_importer_destination_settings',$content);
 			}else{
 				delete_option('wetu_importer_destination_settings');
@@ -577,17 +578,23 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 				$this->set_travel_info($data,$id,'climate');
 			}
 
-			//Set the featured image
-			if(false !== $importable_content && in_array('featured_image',$importable_content)){
-				$this->set_featured_image($data,$id);
+			//Setup some default for use in the import
+			if(false !== $importable_content && (in_array('gallery',$importable_content) || in_array('banner_image',$importable_content) || in_array('featured_image',$importable_content))){
+				$this->find_attachments($id);
+
+				//Set the featured image
+				if(false !== $importable_content && in_array('featured_image',$importable_content)){
+					$this->set_featured_image($data,$id);
+				}
+				if(false !== $importable_content && in_array('banner_image',$importable_content)){
+					$this->set_banner_image($data,$id);
+				}
+				//Import the main gallery
+				if(false !== $importable_content && in_array('gallery',$importable_content)){
+					$this->create_main_gallery($data,$id);
+				}
 			}
-			if(false !== $importable_content && in_array('banner_image',$importable_content)){
-				$this->set_banner_image($data,$id);
-			}
-			//Import the main gallery
-			if(false !== $importable_content && in_array('gallery',$importable_content)){
-				$this->create_main_gallery($data,$id);
-			}
+
 		}
         return $id;
 	}

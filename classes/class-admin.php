@@ -259,6 +259,8 @@ class WETU_Importer_Admin extends WETU_Importer {
 		    			'post_status' => 'inherit',
 		    			'post_type' => 'attachment',
 		    			'order' => 'ASC',
+                        'nopagin' => 'true',
+                        'posts_per_page' => '-1'
 		    	);   	
 		    	 
 		    	$attachments = new WP_Query($attachments_args);
@@ -269,6 +271,8 @@ class WETU_Importer_Admin extends WETU_Importer {
 		    		}
 		    	}
 			}
+
+			print_r($this->found_attachments);
 		}
 	}
 
@@ -287,7 +291,7 @@ class WETU_Importer_Admin extends WETU_Importer {
         if(in_array($needle,$haystack)){
 			$return = 'checked="checked"';
         }
-	    return $return;
+	    echo $return;
 	}
 }
 $wetu_importer_admin = new WETU_Importer_Admin();
