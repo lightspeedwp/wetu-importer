@@ -623,9 +623,11 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 						$current_day['title'] =  esc_attr('Day ','wetu-importer').$day_counter;
 
+						//print_r('<pre>');print_r($day['notes']);print_r('</pre>');
+
 						//Description
-						if(false !== $importable_content && in_array('itinerary_description',$importable_content) && isset($day['notes']) && '' !== $day['notes']){
-							$current_day['description'] = strip_tags($day['notes']);
+						if(false !== $importable_content && in_array('itinerary_description',$importable_content) && isset($day['notes'])){
+							$current_day['description'] = $day['notes'];
 						}else{
 							$current_day['description'] = '';
 						}
@@ -653,14 +655,14 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 						//Included
 						if(false !== $importable_content && in_array('itinerary_included',$importable_content) && isset($day['included']) && '' !== $day['included']){
-							$current_day['included'] = strip_tags($day['included']);
+							$current_day['included'] = $day['included'];
 						}else{
-							$current_day['description'] = '';
+							$current_day['included'] = '';
 						}
 
 						//Excluded
 						if(false !== $importable_content && in_array('itinerary_excluded',$importable_content) && isset($day['excluded']) && '' !== $day['excluded']){
-							$current_day['excluded'] = strip_tags($day['excluded']);
+							$current_day['excluded'] = $day['excluded'];
 						}else{
 							$current_day['excluded'] = '';
 						}
