@@ -1030,10 +1030,10 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 		if(!empty($data[0]['content']['youtube_videos']) && is_array($data[0]['content']['youtube_videos'])){
 			$videos = false;
 
-			print_r($videos);
+			print_r($data[0]['content']['youtube_videos']);
 
 			foreach($data[0]['content']['youtube_videos'] as $video){
-				$temp_video = '';
+				$temp_video = array();
 
 				if(isset($video['label'])){
 					$temp_video['title'] = $video['label'];
