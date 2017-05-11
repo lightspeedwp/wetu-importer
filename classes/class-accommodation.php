@@ -844,6 +844,9 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 		    	if(false === $prev_values || !is_array($prev_values)){
 		    		$prev_values = array();
 		    	}
+		    	//print_r($destinations);
+				$destinations = array_unique($destinations);
+				//print_r($destinations);
 			    foreach($destinations as $key => $value){
 				    $destination = get_page_by_title(ltrim(rtrim($value)), 'OBJECT', 'destination');
 	                if (null !== $destination) {
@@ -1144,6 +1147,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 
 	    	if(!empty($this->gallery_meta)){
 	    		delete_post_meta($id,'gallery');
+				$this->gallery_meta = array_unique($this->gallery_meta);
 	    		foreach($this->gallery_meta as $gallery_id){
 	    			if(false !== $gallery_id && '' !== $gallery_id && !is_array($gallery_id)){
 	    				add_post_meta($id,'gallery',$gallery_id,false);
