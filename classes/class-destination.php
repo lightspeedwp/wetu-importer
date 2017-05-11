@@ -545,7 +545,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	    	}
 
 	        if(class_exists('LSX_TO_Maps')){
-	        	$this->set_map_data($data,$id);
+	        	$this->set_map_data($data,$id,4);
 	        }
 
 	        //Set the Room Data
@@ -613,9 +613,8 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	/**
 	 * Saves the longitude and lattitude, as well as sets the map marker.
 	 */
-	public function set_map_data($data,$id) {
+	public function set_map_data($data,$id,$zoom=15) {
 		$longitude = $latitude = $address = false;
-		$zoom = '15';	
 
 		if(isset($data[0]['position'])){
 
@@ -651,10 +650,10 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 
 		if(false !== $longitude){
 			$location_data = array(
-				'address'	=>	$address,
-				'lat'		=>	$latitude,
-				'long'		=>	$longitude,
-				'zoom'		=>	$zoom,
+				'address'	=>	(string)$address,
+				'lat'		=>	(string)$latitude,
+				'long'		=>	(string)$longitude,
+				'zoom'		=>	(string)$zoom,
 				'elevation'	=>	'',
 			);
 			if(false !== $id && '0' !== $id){
