@@ -182,7 +182,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
                                 <li><input class="content" <?php $this->checked($this->tour_options,'itineraries'); ?> type="checkbox" name="content[]" value="itineraries" /> <?php _e('Itinerary Days','wetu-importer'); ?></li>
 
-								<?php if(class_exists('TO_Maps')){ ?>
+								<?php if(class_exists('LSX_TO_Maps')){ ?>
                                     <li><input class="content" <?php $this->checked($this->tour_options,'map'); ?> type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
 								<?php } ?>
 							</ul>
@@ -201,7 +201,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
                                 <li><input class="content" <?php $this->checked($this->tour_options,'destination'); ?> type="checkbox" name="content[]" value="destination" /> <?php _e('Sync Destinations','wetu-importer'); ?></li>
                             </ul>
                         </div>
-                        <?php if(class_exists('TO_Team')){ ?>
+                        <?php if(class_exists('LSX_TO_Team')){ ?>
                             <div style="width:30%;display:block;float:left;">
                                 <h3><?php _e('Assign a Team Member'); ?></h3>
                                 <?php $this->team_member_checkboxes($this->tour_options); ?>

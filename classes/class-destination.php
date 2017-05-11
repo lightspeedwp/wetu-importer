@@ -157,11 +157,11 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 								<li><input class="content" <?php $this->checked($this->destination_options,'description'); ?> type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->destination_options,'excerpt'); ?> type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
                                 <li><input class="content" <?php $this->checked($this->destination_options,'gallery'); ?> type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
-		                        <?php if(class_exists('TO_Maps')){ ?>
+		                        <?php if(class_exists('LSX_TO_Maps')){ ?>
                                     <li><input class="content" <?php $this->checked($this->destination_options,'location'); ?> type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
 		                        <?php } ?>
 
-		                        <?php if(class_exists('TO_Videos')){ ?>
+		                        <?php if(class_exists('LSX_TO_Videos')){ ?>
 								    <li><input class="content" <?php $this->checked($this->destination_options,'videos'); ?> type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
 		                        <?php } ?>
 
@@ -186,7 +186,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
                             </ul>
                         </div>
 
-		                <?php if(class_exists('TO_Team')){ ?>
+		                <?php if(class_exists('LSX_TO_Team')){ ?>
                             <div style="width:30%;display:block;float:left;">
                                 <h3><?php _e('Assign a Team Member'); ?></h3>
                                 <?php $this->team_member_checkboxes($this->destination_options); ?>

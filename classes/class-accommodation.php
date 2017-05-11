@@ -192,7 +192,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'excerpt'); ?>" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'gallery'); ?>" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'category'); ?>" type="checkbox" name="content[]" value="category" /> <?php _e('Category','wetu-importer'); ?></li>
-		                        <?php if(class_exists('TO_Maps')){ ?>
+		                        <?php if(class_exists('LSX_TO_Maps')){ ?>
 								    <li><input class="content" checked="<?php $this->checked($this->accommodation_options,'location'); ?>" type="checkbox" name="content[]" value="location" /> <?php _e('Location','wetu-importer'); ?></li>
 		                        <?php } ?>
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'destination'); ?>" type="checkbox" name="content[]" value="destination" /> <?php _e('Connect Destinations','wetu-importer'); ?></li>
@@ -204,7 +204,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'special_interests'); ?>" type="checkbox" name="content[]" value="special_interests" /> <?php _e('Special Interests','wetu-importer'); ?></li>
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'spoken_languages'); ?>" type="checkbox" name="content[]" value="spoken_languages" /> <?php _e('Spoken Languages','wetu-importer'); ?></li>
 
-		                        <?php if(class_exists('TO_Videos')){ ?>
+		                        <?php if(class_exists('LSX_TO_Videos')){ ?>
 								    <li><input class="content" checked="<?php $this->checked($this->accommodation_options,'videos'); ?>" type="checkbox" name="content[]" value="videos" /> <?php _e('Videos','wetu-importer'); ?></li>
 		                        <?php } ?>
 							</ul>
