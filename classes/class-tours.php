@@ -480,6 +480,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
                 {
                 	$return = $this->import_row($jdata,$wetu_id,$post_id,$content);
                 	$this->format_completed_row($return);
+                	$this->cleanup_posts();
                 }
             }
 			die();
@@ -774,7 +775,6 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 		}
 	}
 
-
 	/**
 	 * Connects the Accommodation if its available
 	 */
@@ -897,10 +897,12 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 			if ('' !== $dest_id && false !== $dest_id) {
 				$this->save_custom_field($dest_id, 'destination_to_tour', $id, false, false);
 				$this->save_custom_field($id, 'tour_to_destination', $dest_id, false, false);
+				$this->cleanup_posts[$dest_id] = 'tour_to_destination';
 			}
 		}
 		return $dest_id;
 	}
+
 	/**
 	 * Connects the destinations post type
 	 *
@@ -946,6 +948,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
         if ('' !== $country_id && false !== $country_id) {
             $this->save_custom_field($country_id, 'destination_to_tour', $id, false, false);
             $this->save_custom_field($id, 'tour_to_destination', $country_id, false, false);
+			$this->cleanup_posts[$country_id] = 'tour_to_destination';
 
             return $country_id;
         }

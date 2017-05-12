@@ -546,6 +546,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
                 {
                 	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members,$content,$safari_brands);
                 	$this->format_completed_row($return);
+					$this->cleanup_posts();
                 }
             }
 
@@ -852,6 +853,7 @@ class WETU_Importer_Accommodation extends WETU_Importer_Admin {
 	                	if(!in_array($destination->ID,$prev_values)){
 	                   		add_post_meta($id,'destination_to_accommodation',$destination->ID,false);
 	                   		add_post_meta($destination->ID,'accommodation_to_destination',$id,false);
+							$this->cleanup_posts[$destination->ID] = 'accommodation_to_destination';
 	                	}
 	                } 		    	
 			    }	

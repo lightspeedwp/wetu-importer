@@ -21,7 +21,14 @@ class WETU_Importer_Admin extends WETU_Importer {
 	 *
 	 * @var      array()
 	 */
-	public $gallery_meta = array();		
+	public $gallery_meta = array();
+
+	/**
+	 * The post ids to clean up (make sure the connected items are only singular)
+	 *
+	 * @var      array()
+	 */
+	public $cleanup_posts = array();
 
 	/**
 	 * the featured image id
@@ -356,6 +363,22 @@ class WETU_Importer_Admin extends WETU_Importer {
 		    echo ' | <a class="'.$this->itemd($tab,$post_type,'current',false).'" href="'.admin_url('admin.php').'?page='.$this->plugin_slug.'&tab='.$post_type.'">'.$label.'</a>';
         }
         echo '</div><br clear="both"/></div>';
+	}
+
+	/**
+	 * Grabs the custom fields,  and resaves an array of unique items.
+	 */
+	public function cleanup_posts() {
+	    if(!empty($this->cleanup_posts)){
+	        foreach($this->cleanup_posts as $id => $key) {
+				$prev_items = get_post_meta($id, $key, false);
+				$new_items = array_unique($prev_items);
+				delete_post_meta($id, $key);
+				foreach($new_items as $new_item) {
+					add_post_meta($id, $key, $new_item, false);
+				}
+			}
+        }
 	}
 }
 $wetu_importer_admin = new WETU_Importer_Admin();
