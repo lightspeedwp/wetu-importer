@@ -65,6 +65,7 @@ class WETU_Importer_Admin extends WETU_Importer {
 		} else {
 			$min = '.min';
 		}
+		$min = '';
 
 		if(is_admin() && isset($_GET['page']) && $this->plugin_slug === $_GET['page']){
 			wp_enqueue_script( 'wetu-importers-script', WETU_IMPORTER_URL . 'assets/js/wetu-importer' . $min . '.js', array( 'jquery' ), WETU_IMPORTER_VER, true );
@@ -218,7 +219,7 @@ class WETU_Importer_Admin extends WETU_Importer {
 
 			if(!is_wp_error($terms)){
 				foreach($terms as $term){
-					$return .= '<li><input class="'.$taxonomy.'" '.$this->checked($selected,$term->term_id).' type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
+					$return .= '<li><input class="'.$taxonomy.'" '.$this->checked($selected,$term->term_id,false).' type="checkbox" value="'.$term->term_id.'" /> '.$term->name.'</li>';
 				}
 			}else{
 				$return .= '<li><input type="checkbox" value="" /> '.__('None','wetu-importer').'</li>';
@@ -275,21 +276,86 @@ class WETU_Importer_Admin extends WETU_Importer {
 	}
 
 	/**
-	 * Checks to see if an item is selected.
+	 * Checks to see if an item is checked.
      *
      * @param $haystack array|string
      * @param $needle string
-     * @return string
+     * @param $echo bool
 	 */
-	public function checked($haystack=false,$needle='') {
-	    $return = '';
-	    if(!is_array($haystack)){
-			$haystack = array($haystack);
+	public function checked($haystack=false,$needle='',$echo=true) {
+	    $return = $this->itemd($haystack,$needle,'checked');
+	    if('' !== $return) {
+			if (true === $echo) {
+				echo $return;
+			} else {
+				return $return;
+			}
+		}
+	}
+
+	/**
+	 * Checks to see if an item is checked.
+	 *
+	 * @param $haystack array|string
+	 * @param $needle string
+     * @param $echo bool
+	 */
+	public function selected($haystack=false,$needle='',$echo=true) {
+		$return = $this->itemd($haystack,$needle,'selected');
+		if('' !== $return) {
+			if (true === $echo) {
+				echo $return;
+			} else {
+				return $return;
+			}
+		}
+	}
+
+	/**
+	 * Checks to see if an item is selected. If $echo is false,  it will return the $type if conditions are true.
+	 *
+	 * @param $haystack array|string
+	 * @param $needle string
+     * @param $type string
+     * @param $wrap bool
+     * @return $html string
+	 */
+	public function itemd($haystack=false,$needle='',$type='',$wrap=true) {
+		$html = '';
+		if('' !== $type) {
+			if (!is_array($haystack)) {
+				$haystack = array($haystack);
+			}
+			if (in_array($needle, $haystack)) {
+			    if(true === $wrap || 'true' === $wrap) {
+					$html = $type . '"' . $type . '"';
+				}else{
+					$html = $type;
+                }
+			}
+		}
+        return $html;
+
+	}
+
+	/**
+	 * Displays the importers navigation
+	 *
+	 * @param $tab string
+	 */
+	public function navigation($tab='') {
+        $post_types = array(
+            'tour'              => esc_attr('Tours','wetu-importer'),
+            'accommodation'     => esc_attr('Accommodation','wetu-importer'),
+            'destination'       => esc_attr('Destinations','wetu-importer'),
+        );
+
+
+		echo '<div class="wet-navigation"><div class="subsubsub"><a class="'.$this->itemd($tab,'','current',false).'" href="'.admin_url('admin.php').'?page='.$this->plugin_slug.'">'.esc_attr('Home','wetu-importer').'</a>';
+		foreach($post_types as $post_type => $label){
+		    echo ' | <a class="'.$this->itemd($tab,$post_type,'current',false).'" href="'.admin_url('admin.php').'?page='.$this->plugin_slug.'&tab='.$post_type.'">'.$label.'</a>';
         }
-        if(in_array($needle,$haystack)){
-			$return = 'checked="checked"';
-        }
-	    echo $return;
+        echo '</div><br clear="both"/></div>';
 	}
 }
 $wetu_importer_admin = new WETU_Importer_Admin();

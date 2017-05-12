@@ -106,7 +106,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 	public function display_page() {
         ?>
         <div class="wrap">
-            <?php screen_icon(); ?>
+			<?php $this->navigation('destination'); ?>
 
             <?php $this->search_form(); ?>
 
@@ -151,9 +151,10 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 				<form method="get" action="" id="import-list">
 
 					<div class="row">
-						<div style="width:30%;display:block;float:left;">
+						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
+                                <li><input class="content select-all" <?php $this->checked($this->destination_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->destination_options,'description'); ?> type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->destination_options,'excerpt'); ?> type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
                                 <li><input class="content" <?php $this->checked($this->destination_options,'gallery'); ?> type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
@@ -174,7 +175,7 @@ class WETU_Importer_Destination extends WETU_Importer_Accommodation {
 								<?php } ?>
                             </ul>
 						</div>
-                        <div style="width:30%;display:block;float:left;">
+                        <div class="settings-all" style="width:30%;display:block;float:left;">
                             <h3><?php _e('Travel Information'); ?></h3>
                             <ul>
                                 <li><input class="content" <?php $this->checked($this->destination_options,'electricity'); ?> type="checkbox" name="content[]" value="electricity" /> <?php _e('Electricity','wetu-importer'); ?></li>

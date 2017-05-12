@@ -122,7 +122,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	public function display_page() {
         ?>
         <div class="wrap">
-            <?php screen_icon(); ?>
+			<?php $this->navigation('tour'); ?>
 
             <?php $this->update_options_form(); ?>
 
@@ -169,9 +169,10 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 				<form method="get" action="" id="import-list">
 
 					<div class="row">
-						<div style="width:30%;display:block;float:left;">
+						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
+                                <li><input class="content select-all" <?php $this->checked($this->destination_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->tour_options,'description'); ?> type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->tour_options,'excerpt'); ?> type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 
@@ -182,12 +183,12 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
                                 <li><input class="content" <?php $this->checked($this->tour_options,'itineraries'); ?> type="checkbox" name="content[]" value="itineraries" /> <?php _e('Itinerary Days','wetu-importer'); ?></li>
 
-								<?php if(class_exists('LSX_TO_Maps')){ ?>
+								<?php /*if(class_exists('LSX_TO_Maps')){ ?>
                                     <li><input class="content" <?php $this->checked($this->tour_options,'map'); ?> type="checkbox" name="content[]" value="map" /> <?php _e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
-								<?php } ?>
+								<?php }*/ ?>
 							</ul>
 						</div>
-                        <div style="width:30%;display:block;float:left;">
+                        <div class="settings-all" style="width:30%;display:block;float:left;">
                             <h3><?php _e('Itinerary Info'); ?></h3>
                             <ul>
                                 <li><input class="content" <?php $this->checked($this->tour_options,'itinerary_description'); ?> type="checkbox" name="content[]" value="itinerary_description" /> <?php _e('Description','wetu-importer'); ?></li>

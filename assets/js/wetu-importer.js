@@ -10,6 +10,7 @@ var WETU_IMPORTER = {
 			this.watchClearButton();
 			this.watchBannerButton();
 			this.watchConnectButton();
+            this.watchCheckBoxes();
 		}
 	},
 	myAccommodationSearch: function() {
@@ -263,7 +264,23 @@ var WETU_IMPORTER = {
 		        });				
 			});	
 		});
-	},	
+	},
+    watchCheckBoxes: function() {
+        jQuery('form#import-list .settings-all input[type="checkbox"]').on('change',function(event){
+            var thisOBJ = jQuery(this);
+            if('all' === thisOBJ.val()){
+
+                thisOBJ.parents('form').find('.settings-all input[type="checkbox"]:not([value="all"])').each(function(){
+
+                	if('checked' === thisOBJ.attr('checked')) {
+                        jQuery(this).attr('checked', 'checked');
+                    }else{
+                        jQuery(this).removeAttr('checked');
+					}
+                });
+			}
+        });
+    }
 
 }
 jQuery(document).ready( function() {
