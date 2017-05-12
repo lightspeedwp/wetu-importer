@@ -249,11 +249,14 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 			if(true === $result){
 			    echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span>';
+			    if(!isset($_GET['refresh_tours'])){
+			        echo ' - <small><a href="'.admin_url('admin.php').'?page='.$this->plugin_slug.'&tab=tour&refresh_tours=true">'.esc_attr('Refresh','wetu-importer').'</a></small>';
+                }
             }else{
 			    echo '<span style="color:red;">'.wp_kses_post($result).'</span>';
             }
 		}else{
-			echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span>';
+			echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span> - <small><a href="'.admin_url('admin.php').'?page='.$this->plugin_slug.'&tab=tour&refresh_tours=true">'.esc_attr('Refresh','wetu-importer').'</a></small>';
         }
 		echo '</h3></div>';
 	}
