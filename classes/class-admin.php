@@ -31,6 +31,13 @@ class WETU_Importer_Admin extends WETU_Importer {
 	public $cleanup_posts = array();
 
 	/**
+	 * A post => parent relationship array.
+	 *
+	 * @var      array()
+	 */
+	public $relation_meta = array();
+
+	/**
 	 * the featured image id
 	 *
 	 * @var      int

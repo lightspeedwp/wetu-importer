@@ -848,10 +848,11 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 			if(false !== $this->current_destinations && !empty($this->current_destinations) && array_key_exists($day['destination_content_entity_id'],$this->current_destinations)){
 				$dest_id = $this->current_destinations[$day['destination_content_entity_id']];
 
+				//Check if there is a country asigned.
 				$potential_id = wp_get_post_parent_id($dest_id);
 				$country_wetu_id = get_post_meta($potential_id,'lsx_wetu_id',true);
 				if(false !== $country_wetu_id){
-					$this->set_country($country_wetu_id, $id);
+					$country_id = $this->set_country($country_wetu_id, $id);
                 }
 
 			}else {
@@ -898,6 +899,14 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 				$this->save_custom_field($dest_id, 'destination_to_tour', $id, false, false);
 				$this->save_custom_field($id, 'tour_to_destination', $dest_id, false, false);
 				$this->cleanup_posts[$dest_id] = 'tour_to_destination';
+
+				//Add this relation info so we can make sure certain items are set as countries.
+				if(0 !== $country_id && false !== $country_id){
+                    $this->relation_meta[$dest_id] = $country_id;
+					$this->relation_meta[$country_id] = 0;
+                }else{
+					$this->relation_meta[$dest_id] = 0;
+                }
 			}
 		}
 		return $dest_id;
