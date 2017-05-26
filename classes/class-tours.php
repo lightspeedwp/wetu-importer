@@ -80,14 +80,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-		parent::__construct();
 		$this->set_variables();
-
-		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));
-		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));
-
-		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));
-		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));
 	}
 
 	/**
@@ -452,6 +445,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 */
 	public function process_ajax_import($force = false) {
 		$return = false;
+
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_import_items' && isset($_POST['type']) && $_POST['type'] === $this->tab_slug && isset($_POST['wetu_id'])){
 			
 			$wetu_id = $_POST['wetu_id'];

@@ -62,15 +62,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-	    parent::__construct();
-
 		$this->set_variables();
-
-		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));
-		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));
-
-		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));
-		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));
 	}
 
 	/**

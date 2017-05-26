@@ -7,7 +7,7 @@
  * @copyright 2016 LightSpeed
  **/
 
-class WETU_Importer_Banner_Integration extends WETU_Importer_Admin {
+class WETU_Importer_Banner_Integration extends WETU_Importer {
 	
 	/**
 	 * The url to list items from WETU
@@ -26,8 +26,6 @@ class WETU_Importer_Banner_Integration extends WETU_Importer_Admin {
 	 * @access private
 	 */
 	public function __construct() {
-		
-		add_action( 'lsx_tour_importer_admin_tab_'.$this->tab_slug, array($this,'display_page') );
 
 		add_action('wp_ajax_lsx_import_sync_banners',array($this,'sync_new_banner'));	
 		add_action('wp_ajax_nopriv_lsx_import_sync_banners',array($this,'sync_new_banner'));		
@@ -286,6 +284,4 @@ class WETU_Importer_Banner_Integration extends WETU_Importer_Admin {
 
 		return $att_id;
 	}
-
 }
-$wetu_importer_lsx_banners_integration = new WETU_Importer_Banner_Integration();

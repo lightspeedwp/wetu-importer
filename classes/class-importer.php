@@ -28,6 +28,15 @@ class WETU_Importer {
 	public $plugin_slug = 'wetu-importer';
 
 	/**
+	 * The url to list items from WETU
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $tab_slug = 'default';
+
+	/**
 	 * The options for the plugin
 	 *
 	 * @since 0.0.1
@@ -117,6 +126,13 @@ class WETU_Importer {
 	public $banner_image = false;
 
 	/**
+	 * Holds the current import to display
+	 *
+	 * @var      int
+	 */
+	public $current_importer = false;
+
+	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since 1.0.0
@@ -137,6 +153,22 @@ class WETU_Importer {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ),20 );
+
+		require_once(WETU_IMPORTER_PATH.'classes/class-accommodation.php');
+		require_once(WETU_IMPORTER_PATH.'classes/class-destination.php');
+		require_once(WETU_IMPORTER_PATH.'classes/class-tours.php');
+		require_once(WETU_IMPORTER_PATH.'classes/class-admin.php');
+
+
+		add_action( 'init', array( $this, 'load_class' ) );
+
+		if('default' !== $this->tab_slug){
+			add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));
+			add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));
+
+			add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));
+			add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));
+		}
 	}
 
 	// ACTIVATION FUNCTIONS
@@ -156,6 +188,14 @@ class WETU_Importer {
 	public function set_variables() {
 		$this->post_types = array('accommodation','destination','tour');
 		$temp_options = get_option('_lsx-to_settings',false);
+
+		if(isset($_GET['tab']) || isset($_POST['type'])) {
+		    if(isset($_GET['tab'])) {
+				$this->tab_slug = $_GET['tab'];
+			}else{
+				$this->tab_slug = $_POST['type'];
+            }
+		}
 
 		if(isset($temp_options[$this->plugin_slug])) {
 			$this->options = $temp_options[$this->plugin_slug];
@@ -262,6 +302,32 @@ class WETU_Importer {
 	}
 
 	// DISPLAY FUNCTIONS
+
+    /*
+     * Load the importer class you want to use
+     */
+    public function load_class(){
+
+		switch($this->tab_slug){
+			case 'accommodation':
+				$this->current_importer = new WETU_Importer_Accommodation();
+				break;
+
+			case 'destination':
+				$this->current_importer = new WETU_Importer_Destination();
+				break;
+
+			case 'tour':
+				$this->current_importer = new WETU_Importer_Tours();
+				break;
+
+			default:
+				$this->current_importer = new WETU_Importer_Admin();
+				break;
+		}
+
+    }
+
 	/**
 	 * Registers the admin page which will house the importer form.
 	 */
@@ -296,34 +362,7 @@ class WETU_Importer {
         <div class="wrap">
 			<?php screen_icon(); ?>
 
-			<?php
-            $tab = 'default';
-            if(isset($_GET['tab'])) {
-				$tab = $_GET['tab'];
-			}
-            switch($tab){
-                case 'accommodation':
-                    $wetu_importer_accommodation = new WETU_Importer_Accommodation();
-                    $wetu_importer_accommodation->display_page();
-                    break;
-
-                case 'destination':
-
-                    $wetu_importer_destination = new WETU_Importer_Destination();
-                    $wetu_importer_destination->display_page();
-                    break;
-
-                case 'tour':
-                    $wetu_importer_tours = new WETU_Importer_Tours();
-                    $wetu_importer_tours->display_page();
-                    break;
-
-                default:
-                    $wetu_importer_admin = new WETU_Importer_Admin();
-                    $wetu_importer_admin->display_page();
-                    break;
-            }
-			?>
+			<?php $this->current_importer->display_page(); ?>
         </div>
 		<?php
 	}
@@ -902,5 +941,20 @@ class WETU_Importer {
 		return $att_id;
 	}
 
+
+	// AJAX FUNCTIONS
+	/**
+	 * Run through the accommodation grabbed from the DB.
+	 */
+	public function process_ajax_search() {
+	    $this->current_importer->process_ajax_search();
+	}
+
+	/**
+	 * Connect to wetu
+	 */
+	public function process_ajax_import() {
+		$this->current_importer->process_ajax_import();
+	}
 }
 $wetu_importer = new WETU_Importer();
