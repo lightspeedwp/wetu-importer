@@ -7,7 +7,7 @@
  * @copyright 2017 LightSpeed
  **/
 
-class WETU_Importer_Tours extends WETU_Importer_Accommodation {
+class WETU_Importer_Tours extends WETU_Importer {
 
 	/**
 	 * The url to list items from WETU
@@ -80,14 +80,28 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 * @access private
 	 */
 	public function __construct() {
+		parent::__construct();
 		$this->set_variables();
 
-		add_action( 'lsx_tour_importer_admin_tab_'.$this->tab_slug, array($this,'display_page') );
-		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));	
-		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));		
+		add_action('wp_ajax_lsx_tour_importer',array($this,'process_ajax_search'));
+		add_action('wp_ajax_nopriv_lsx_tour_importer',array($this,'process_ajax_search'));
 
-		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));	
+		add_action('wp_ajax_lsx_import_items',array($this,'process_ajax_import'));
 		add_action('wp_ajax_nopriv_lsx_import_items',array($this,'process_ajax_import'));
+	}
+
+	/**
+	 * Sets the variables used throughout the plugin.
+	 */
+	public function set_variables()
+	{
+		if ( false !== $this->api_username && false !== $this->api_password ) {
+			$this->url    = 'https://wetu.com/API/Itinerary/';
+			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
+		} elseif ( false !== $this->api_key ) {
+			$this->url    = 'https://wetu.com/API/Itinerary/' . $this->api_key;
+			$this->url_qs = '';
+		}
 
 		$temp_options = get_option('_lsx-to_settings',false);
 		if(false !== $temp_options && isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug])){
@@ -97,22 +111,6 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 		$tour_options = get_option('wetu_importer_tour_settings',false);
 		if(false !== $tour_options){
 			$this->tour_options = $tour_options;
-        }
-	}
-
-	/**
-	 * Sets the variables used throughout the plugin.
-	 */
-	public function set_variables()
-	{
-		parent::set_variables();
-
-		if ( false !== $this->api_username && false !== $this->api_password ) {
-			$this->url    = 'https://wetu.com/API/Itinerary/';
-			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
-		} elseif ( false !== $this->api_key ) {
-			$this->url    = 'https://wetu.com/API/Itinerary/' . $this->api_key;
-			$this->url_qs = '';
 		}
 	}
 
@@ -302,7 +300,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 			}
 		}
 		return $return;
-	}	
+	}
 
 	/**
 	 * Run through the accommodation grabbed from the DB.
@@ -320,7 +318,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 					$keyphrases = $_POST['keyword'];
 				}else{
 					$keyphrases = array(0);
-                }
+				}
 
 				if(!is_array($keyphrases)){
 					$keyphrases = array($keyphrases);
@@ -349,15 +347,15 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 
 					foreach($tours as $row_key => $row){
 
-					    if(isset($row['is_disabled']) && true === $row['is_disabled']){
-                            continue;
-                        }
+						if(isset($row['is_disabled']) && true === $row['is_disabled']){
+							continue;
+						}
 
-                        /*if('Sample' === $row['type']){
-                            continue;
-                        }*/
+						/*if('Sample' === $row['type']){
+							continue;
+						}*/
 
-                        //If this is a current tour, add its ID to the row.
+						//If this is a current tour, add its ID to the row.
 						$row['post_id'] = 0;
 						if(false !== $current_tours && array_key_exists($row['identifier'], $current_tours)){
 							$row['post_id'] = $current_tours[$row['identifier']]->post_id;
@@ -366,31 +364,31 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 						//If we are searching for
 						if(false !== $post_status){
 
-                            if('import' === $post_status){
+							if('import' === $post_status){
 
 								if(0 !== $row['post_id']){
-								    continue;
+									continue;
 								}else{
 									$searched_items[sanitize_title($row['name']).'-'.$row['identifier']] = $this->format_row($row);
-                                }
+								}
 
 
-                            }else{
+							}else{
 
 								if(0 === $row['post_id']){
 									continue;
 								}else{
 									$current_status = get_post_status($row['post_id']);
 									if($current_status !== $post_status){
-									    continue;
-                                    }
+										continue;
+									}
 
 								}
 								$searched_items[sanitize_title($row['name']).'-'.$row['identifier']] = $this->format_row($row);
 
-                            }
+							}
 
-                        }else{
+						}else{
 							//Search through each keyword.
 							foreach($keyphrases as $keyphrase){
 
@@ -404,8 +402,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 									$searched_items[sanitize_title($row['name']).'-'.$row['identifier']] = $this->format_row($row);
 								}
 							}
-                        }
-					}		
+						}
+					}
 				}
 
 				if(false !== $searched_items){
@@ -554,7 +552,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
         }
 
 		if(in_array('map',$importable_content) && isset($data['routes']) && !empty($data['routes'])){
-			$this->process_map_points($data,$id);
+			$this->set_map_data($data,$id);
 		}
 
 		//TODO Test These
@@ -705,35 +703,37 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	/**
 	 * Run through your routes and save the points as a KML file.
 	 */
-	public function process_map_points($data,$id) {
+	public function set_map_data($data,$id,$zoom=9) {
 
-	    if(!empty($data['routes'])){
+		if(!empty($data['routes'])){
 
-	        delete_post_meta($id,'wetu_map_points');
+			delete_post_meta($id,'wetu_map_points');
 
-	        $points = array();
+			$points = array();
 
-	        foreach($data['routes'] as $route){
+			foreach($data['routes'] as $route){
 
 
-	            if(isset($route['points']) && '' !== $route['points']){
+				if(isset($route['points']) && '' !== $route['points']){
 
-	                $temp_points = explode(';',$route['points']);
-	                $point_counter = count($temp_points);
+					$temp_points = explode(';',$route['points']);
+					$point_counter = count($temp_points);
 
 					for ($x = 0; $x <= $point_counter; $x++) {
-					    $y = $x+1;
+						$y = $x+1;
 						$points[] = $temp_points[$x].','.$temp_points[$y];
 						$x++;
 					}
 				}
-            }
-            if(!empty($points)){
+			}
+			if(!empty($points)){
 				$this->save_custom_field(implode(' ',$points),'wetu_map_points',$id,false,true);
-            }
-        }
+			}
+		}
 
 	}
+
+	// CLASS SPECIFIC FUNCTIONS
 
 	/**
 	 * Set the Itinerary Day
@@ -918,6 +918,8 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 	 * @param $dest_id string
      * @param $country_id array
 	 * @param $id string
+     *
+     * @return string
 	 */
 	public function set_country($country_wetu_id, $id) {
 	    $country_id = false;
@@ -963,4 +965,3 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
         }
 	}
 }
-$wetu_importer_tours = new WETU_Importer_Tours();

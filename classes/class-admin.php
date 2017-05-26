@@ -10,48 +10,6 @@
 class WETU_Importer_Admin extends WETU_Importer {
 
 	/**
-	 * The previously attached images
-	 *
-	 * @var      array()
-	 */
-	public $found_attachments = array();	
-
-	/**
-	 * The gallery ids for the found attachements
-	 *
-	 * @var      array()
-	 */
-	public $gallery_meta = array();
-
-	/**
-	 * The post ids to clean up (make sure the connected items are only singular)
-	 *
-	 * @var      array()
-	 */
-	public $cleanup_posts = array();
-
-	/**
-	 * A post => parent relationship array.
-	 *
-	 * @var      array()
-	 */
-	public $relation_meta = array();
-
-	/**
-	 * the featured image id
-	 *
-	 * @var      int
-	 */
-	public $featured_image = false;
-
-	/**
-	 * the banner image
-	 *
-	 * @var      int
-	 */
-	public $banner_image = false;	
-
-	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since 1.0.0
@@ -59,104 +17,30 @@ class WETU_Importer_Admin extends WETU_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array($this,'admin_scripts') ,11 );
-		add_action( 'admin_menu', array( $this, 'register_importer_page' ),20 );
+		parent::__construct();
 	}
-
-	/**
-	 * Registers the admin page which will house the importer form.
-	 */
-	public function register_importer_page() {
-		add_submenu_page( 'tour-operator',esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'wetu-importer', array( $this, 'display_page' ) );
-	}
-
-	/**
-	 * Enqueue the JS needed to contact wetu and return your result.
-	 */
-	public function admin_scripts() {
-		if ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) {
-			$min = '';
-		} else {
-			$min = '.min';
-		}
-		$min = '';
-
-		if(is_admin() && isset($_GET['page']) && $this->plugin_slug === $_GET['page']){
-			wp_enqueue_script( 'wetu-importers-script', WETU_IMPORTER_URL . 'assets/js/wetu-importer' . $min . '.js', array( 'jquery' ), WETU_IMPORTER_VER, true );
-			wp_localize_script( 'wetu-importers-script', 'lsx_tour_importer_params', array(
-			'ajax_url' => admin_url('admin-ajax.php'),
-			) );			
-		}
-	}			
 
 	/**
 	 * Display the importer administration screen
 	 */
 	public function display_page() {
-        ?>
-        <div class="wrap">
-            <?php screen_icon(); ?>
+		?>
+            <h2><?php _e('Welcome to the LSX Wetu Importer','wetu-importer'); ?></h2>
+            <p>If this is the first time you are running the import, then follow the steps below.</p>
+            <ul>
+                <li>Step 1 - Import your <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
+                <li>Step 2 - The tour import will have created draft <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('accommodation','wetu-importer'); ?></a> that will need to be imported.</li>
+                <li>Step 3 - Lastly import the <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('destinations','wetu-importer'); ?></a> draft posts created during the previous two steps.</li>
+            </ul>
 
-            <?php if(!isset($_GET['tab'])){ ?>
-	            <h2><?php _e('Welcome to the LSX Wetu Importer','wetu-importer'); ?></h2>
-	            <p>If this is the first time you are running the import, then follow the steps below.</p>
-	            <ul>
-                    <li>Step 1 - Import your <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
-	            	<li>Step 2 - The tour import will have created draft <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('accommodation','wetu-importer'); ?></a> that will need to be imported.</li>
-                    <li>Step 3 - Lastly import the <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('destinations','wetu-importer'); ?></a> draft posts created during the previous two steps.</li>
-	            </ul>
-
-		            <h3><?php _e('Additional Tools','wetu-importer'); ?></h3>
-		            <ul>
-		            	<li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','wetu-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','wetu-importer'); ?></small></li>
-		            	<?php if(class_exists('Lsx_Banners')){ ?>
-		            		<li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync High Res Banner Images','wetu-importer'); ?></a></li>
-		            	<?php } ?>
-		            </ul> 
-	             	            
-            <?php } else {
-            	do_action('lsx_tour_importer_admin_tab_'.$_GET['tab']);
-            } ?>
-        </div>
-        <?php
+            <h3><?php _e('Additional Tools','wetu-importer'); ?></h3>
+            <ul>
+                <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','wetu-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','wetu-importer'); ?></small></li>
+                <?php if(class_exists('Lsx_Banners')){ ?>
+                    <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync High Res Banner Images','wetu-importer'); ?></a></li>
+                <?php } ?>
+            </ul>
+		<?php
 	}
 
-	/**
-	 * The header of the item list
-	 */
-	public function table_header() {
-	?>
-		<thead>
-			<tr>
-				<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
-					<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
-					<input type="checkbox" id="cb-select-all-1">
-				</th>
-				<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col">Title</th>
-				<th style="" class="manage-column column-date" id="date" scope="col">Date</th>
-				<th style="" class="manage-column column-ssid" id="ssid" scope="col">WETU ID</th>
-			</tr>
-		</thead>
-	<?php 
-	}	
-
-	/**
-	 * The footer of the item list
-	 */
-	public function table_footer() {
-	?>
-		<tfoot>
-			<tr>
-				<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
-					<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
-					<input type="checkbox" id="cb-select-all-1">
-				</th>
-				<th style="" class="manage-column column-title" scope="col">Title</th>
-				<th style="" class="manage-column column-date" scope="col">Date</th>
-				<th style="" class="manage-column column-ssid" scope="col">WETU ID</th>
-			</tr>
-		</tfoot>
-	<?php 
-	}
 }
-$wetu_importer_admin = new WETU_Importer_Admin();
