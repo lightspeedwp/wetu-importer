@@ -19,13 +19,5 @@ define('WETU_IMPORTER_VER',  '1.0.0' );
 register_activation_hook( WETU_IMPORTER_CORE, array( 'WETU_Importer', 'register_activation_hook' ) );
 
 require_once(WETU_IMPORTER_PATH.'classes/class-importer.php');
-require_once(WETU_IMPORTER_PATH.'classes/class-admin.php');
-require_once(WETU_IMPORTER_PATH.'classes/class-accommodation.php');
-require_once(WETU_IMPORTER_PATH.'classes/class-tours.php');
-require_once(WETU_IMPORTER_PATH.'classes/class-destination.php');
-require_once(WETU_IMPORTER_PATH.'classes/class-connect-accommodation.php');
+//require_once(WETU_IMPORTER_PATH.'classes/class-connect-accommodation.php');
 require_once(WETU_IMPORTER_PATH.'classes/class-settings.php');
-
-if(class_exists('Lsx_Banners')){
-	require_once(WETU_IMPORTER_PATH.'classes/lsx-banners-integration.php');
-}

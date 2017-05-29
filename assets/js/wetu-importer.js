@@ -53,7 +53,7 @@ var WETU_IMPORTER = {
 				}				
 			}		
 
-			console.log(keywords);	
+			console.log(lsx_tour_importer_params.ajax_url);
 
 			jQuery.post(lsx_tour_importer_params.ajax_url,
 	        {
