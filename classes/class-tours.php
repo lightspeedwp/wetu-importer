@@ -172,7 +172,7 @@ class WETU_Importer_Tours extends WETU_Importer_Accommodation {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-                                <li><input class="content select-all" <?php $this->checked($this->destination_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
+                                <li><input class="content select-all" <?php $this->checked($this->tour_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->tour_options,'description'); ?> type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->tour_options,'excerpt'); ?> type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 
