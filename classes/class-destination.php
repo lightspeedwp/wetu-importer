@@ -72,6 +72,7 @@ class WETU_Importer_Destination extends WETU_Importer
 	 */
 	public function set_variables()
 	{
+		parent::set_variables();
 		// ** This request only works with API KEY **
 		//if ( false !== $this->api_username && false !== $this->api_password ) {
 		//	$this->url    = 'https://wetu.com/API/Pins/';
@@ -473,12 +474,11 @@ class WETU_Importer_Destination extends WETU_Importer
 
 			$safari_brands = false;
 
+			delete_option('wetu_importer_destination_settings');
 			if (isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])) {
 				$content = $_POST['content'];
-				delete_option('wetu_importer_destination_settings');
 				add_option('wetu_importer_destination_settings', $content);
 			} else {
-				delete_option('wetu_importer_destination_settings');
 				$content = false;
 			}
 
@@ -490,10 +490,7 @@ class WETU_Importer_Destination extends WETU_Importer
 					$this->format_completed_row($return);
 				}
 			}
-
-			die();
 		}
-
 	}
 
 	/**

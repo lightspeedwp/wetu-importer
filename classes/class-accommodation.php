@@ -70,6 +70,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	 */
 	public function set_variables()
 	{
+	    parent::set_variables();
 		// ** This request only works with API KEY **
 		//if ( false !== $this->api_username && false !== $this->api_password ) {
 		//	$this->url    = 'https://wetu.com/API/Pins/';
@@ -88,39 +89,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 		if(false !== $accommodation_options){
 			$this->accommodation_options = $accommodation_options;
 		}
-	}
-
-	/**
-	 * search_form
-	 */
-	public function get_scaling_url($args=array()) {
-
-		$defaults = array(
-			'width' => '640',
-			'height' => '480',
-			'cropping' => 'c'
-		);
-		if(false !== $this->options){
-			if(isset($this->options['width']) && '' !== $this->options['width']){
-				$defaults['width'] = $this->options['width'];
-			}
-
-			if(isset($this->options['height']) && '' !== $this->options['height']){
-				$defaults['height'] = $this->options['height'];
-			}
-
-			if(isset($this->options['cropping']) && '' !== $this->options['cropping']){
-				$defaults['cropping'] = $this->options['cropping'];
-			}	
-		}	
-		$args = wp_parse_args($args,$defaults);
-
-		$cropping = $args['cropping'];
-		$width = $args['width'];
-		$height = $args['height'];
-
-		return 'https://wetu.com/ImageHandler/'.$cropping.$width.'x'.$height.'/';
-
 	}
 
 	/**
@@ -179,7 +147,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-                                <li><input class="content select-all" <?php $this->checked($this->destination_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
+                                <li><input class="content select-all" <?php $this->checked($this->accommodation_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'description'); ?>" type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'excerpt'); ?>" type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 								<li><input class="content" checked="<?php $this->checked($this->accommodation_options,'gallery'); ?>" type="checkbox" name="content[]" value="gallery" /> <?php _e('Main Gallery','wetu-importer'); ?></li>
@@ -276,39 +244,17 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	}
 
 	/**
-	 * Grab all the current accommodation posts via the lsx_wetu_id field.
-	 */
-	public function find_current_accommodation($post_type='accommodation') {
-		global $wpdb;
-		$return = array();
-
-		$current_accommodation = $wpdb->get_results("
-					SELECT key1.post_id,key1.meta_value
-					FROM {$wpdb->postmeta} key1
-
-					INNER JOIN  {$wpdb->posts} key2 
-    				ON key1.post_id = key2.ID
-					
-					WHERE key1.meta_key = 'lsx_wetu_id'
-					AND key2.post_type = '{$post_type}'
-
-					LIMIT 0,500
-		");
-		if(null !== $current_accommodation && !empty($current_accommodation)){
-			foreach($current_accommodation as $accom){
-				$return[$accom->meta_value] = $accom;
-			}
-		}
-		return $return;
-	}	
-
-	/**
 	 * Run through the accommodation grabbed from the DB.
 	 */
 	public function process_ajax_search() {
 		$return = false;
+
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_tour_importer' && isset($_POST['type']) && $_POST['type'] === 'accommodation'){
 			$accommodation = get_transient('lsx_ti_accommodation');
+
+			if(false === $accommodation){
+			    $this->update_options();
+            }
 
 			if ( false !== $accommodation ) {
 				$searched_items = false;
@@ -409,24 +355,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	}
 
 	/**
-	 * Does a multine search
-	 */	
-	public function multineedle_stripos($haystack, $needles, $offset=0) {
-		$found = false;
-		$needle_count = count($needles);
-	    foreach($needles as $needle) {
-	    	if(false !== stripos($haystack, $needle, $offset)){
-	        	$found[] = true;
-	    	}
-	    }
-	    if(false !== $found && $needle_count === count($found)){ 
-	    	return true;
-		}else{
-			return false;
-		}
-	}
-
-	/**
 	 * Formats the row for output on the screen.
 	 */	
 	public function format_row($row = false){
@@ -481,13 +409,14 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				$safari_brands = $_POST['safari_brands'];	
 			}else{
 				$safari_brands = false;
-			}			
+			}
 
+			delete_option('wetu_importer_accommodation_settings');
 			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
 				$content = $_POST['content'];
 				add_option('wetu_importer_accommodation_settings',$content);
 			}else{
-				delete_option('wetu_importer_accommodation_settings');
+
 				$content = false;
 			}
 
@@ -502,19 +431,9 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 					$this->cleanup_posts();
                 }
             }
-
-			die();
 		}
-
 	}
 
-
-	/**
-	 * Formats the row for the completed list.
-	 */
-	public function format_completed_row($response){
-		echo '<li class="post-'.$response.'"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="'.get_permalink($response).'">'.get_the_title($response).'</a></li>';
-	}
 	/**
 	 * Connect to wetu
 	 */

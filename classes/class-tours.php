@@ -55,6 +55,15 @@ class WETU_Importer_Tours extends WETU_Importer {
 	public $current_destinations = false;
 
 	/**
+	 * Holds a list of the destination and the image it needs to grab.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var      string
+	 */
+	public $destination_images = false;
+
+	/**
 	 * Options
 	 *
 	 * @since 0.0.1
@@ -88,6 +97,8 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 */
 	public function set_variables()
 	{
+	    parent::set_variables();
+
 		if ( false !== $this->api_username && false !== $this->api_password ) {
 			$this->url    = 'https://wetu.com/API/Itinerary/';
 			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
@@ -153,7 +164,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 				<p><input class="button button-primary add" type="button" value="<?php _e('Add to List','wetu-importer'); ?>" />
 					<input class="button button-primary clear" type="button" value="<?php _e('Clear','wetu-importer'); ?>" />
 				</p>
-			</form> 
+			</form>
 
 			<div style="display:none;" class="import-list-wrapper">
 				<br />        
@@ -163,7 +174,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php _e('What content to Sync from WETU'); ?></h3>
 							<ul>
-                                <li><input class="content select-all" <?php $this->checked($this->destination_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
+                                <li><input class="content select-all" <?php $this->checked($this->tour_options,'all'); ?> type="checkbox"name="content[]"  value="all" /> <?php _e('Select All','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->tour_options,'description'); ?> type="checkbox" name="content[]" value="description" /> <?php _e('Description','wetu-importer'); ?></li>
 								<li><input class="content" <?php $this->checked($this->tour_options,'excerpt'); ?> type="checkbox" name="content[]" value="excerpt" /> <?php _e('Excerpt','wetu-importer'); ?></li>
 
@@ -191,6 +202,8 @@ class WETU_Importer_Tours extends WETU_Importer {
                             <ul>
                                 <li><input class="content" <?php $this->checked($this->tour_options,'accommodation'); ?> type="checkbox" name="content[]" value="accommodation" /> <?php _e('Sync Accommodation','wetu-importer'); ?></li>
                                 <li><input class="content" <?php $this->checked($this->tour_options,'destination'); ?> type="checkbox" name="content[]" value="destination" /> <?php _e('Sync Destinations','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->tour_options,'featured_image'); ?> type="checkbox" name="content[]" value="featured_image" /> <?php _e('Featured Image','wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->tour_options,'banner_image'); ?> type="checkbox" name="content[]" value="banner_image" /> <?php _e('Banner Image','wetu-importer'); ?></li>
                             </ul>
                         </div>
                         <?php if(class_exists('LSX_TO_Team')){ ?>
@@ -302,6 +315,8 @@ class WETU_Importer_Tours extends WETU_Importer {
 		$return = false;
 
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_tour_importer' && isset($_POST['type']) && $_POST['type'] === $this->tab_slug){
+
+
 			$tours = get_transient('lsx_ti_tours');
 			if ( false !== $tours) {
 
@@ -455,11 +470,11 @@ class WETU_Importer_Tours extends WETU_Importer {
 				$post_id = 0;
 			}
 
+			delete_option('wetu_importer_tour_settings');
 			if(isset($_POST['content']) && is_array($_POST['content']) && !empty($_POST['content'])){
 				$content = $_POST['content'];
 				add_option('wetu_importer_tour_settings',$content);
 			}else{
-				delete_option('wetu_importer_tour_settings');
 				$content = false;
 			}
 
@@ -473,11 +488,10 @@ class WETU_Importer_Tours extends WETU_Importer {
                 	$return = $this->import_row($jdata,$wetu_id,$post_id,$content);
                 	$this->format_completed_row($return);
                 	$this->cleanup_posts();
+                	$this->attach_destination_images($content);
                 }
             }
-			die();
 		}
-
 	}
 
 	/**
@@ -541,35 +555,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$this->set_duration($data,$id);
 		}
 
-        if(in_array('itineraries',$importable_content) && isset($data['legs']) && !empty($data['legs'])){
+        if(false !== $importable_content && in_array('itineraries',$importable_content) && isset($data['legs']) && !empty($data['legs'])){
             $this->process_itineraries($data,$id,$importable_content);
         }
 
 		if(in_array('map',$importable_content) && isset($data['routes']) && !empty($data['routes'])){
 			$this->set_map_data($data,$id);
 		}
-
-		//TODO Test These
-		//Setup some default for use in the import
-		if(false !== $importable_content && (in_array('itinerary_gallery',$importable_content) || in_array('gallery',$importable_content) || in_array('banner_image',$importable_content) || in_array('featured_image',$importable_content))){
-			$this->find_attachments($id);
-		}
-        //Set the featured image
-        //TODO Test These
-        if(false !== $importable_content && in_array('featured_image',$importable_content)){
-            $this->set_featured_image($data,$id);
-        }
-
-		//TODO Test These
-        if(false !== $importable_content && in_array('banner_image',$importable_content)){
-            $this->set_banner_image($data,$id);
-        }
-
-		//TODO Test These
-        //Import the main gallery
-        if(false !== $importable_content && in_array('gallery',$importable_content)){
-            $this->create_main_gallery($data,$id);
-        }
 
         return $id;
 	}
@@ -608,7 +600,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 				//Itinerary Destination
 				$current_destination = false;
 				if(false !== $importable_content && in_array('destination',$importable_content)){
-					$current_destination = $this->set_destination($leg,$id);
+					$current_destination = $this->set_destination($leg,$id,$leg_counter);
 				}
 
 				//If the Nights are the same mount of days in the array,  then it isnt "By Destination"
@@ -832,7 +824,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 * @param $id string
 	 * @return boolean / string
 	 */
-	public function set_destination($day,$id) {
+	public function set_destination($day,$id,$leg_counter) {
 		$dest_id = false;
 		$country_id = false;
 		$this->current_destinations = $this->find_current_destinations();
@@ -893,6 +885,11 @@ class WETU_Importer_Tours extends WETU_Importer {
 				$this->save_custom_field($dest_id, 'destination_to_tour', $id, false, false);
 				$this->save_custom_field($id, 'tour_to_destination', $dest_id, false, false);
 				$this->cleanup_posts[$dest_id] = 'tour_to_destination';
+
+				// Save the first destination so we can grab the tour featured image and banner
+				if(0 === $leg_counter){
+				    $this->destination_images[$id] = array($dest_id,$day['destination_content_entity_id']);
+                }
 
 				//Add this relation info so we can make sure certain items are set as countries.
 				if(0 !== $country_id && false !== $country_id){
@@ -956,6 +953,43 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$this->cleanup_posts[$country_id] = 'tour_to_destination';
 
             return $country_id;
+        }
+	}
+
+	/**
+	 * Connects the destinations post type
+	 *
+	 * @param $dest_id string
+	 * @param $country_id array
+	 * @param $id string
+	 *
+	 * @return string
+	 */
+	public function attach_destination_images($importable_content=array()) {
+	    if(false !== $this->destination_images){
+
+	        foreach($this->destination_images as $tour => $destination){
+
+				$url = 'https://wetu.com/API/Pins/' . $this->api_key;
+				$url_qs = '';
+
+				$jdata = file_get_contents($url . '/Get?' . $url_qs . '&ids=' . $destination[1]);
+				if ($jdata) {
+					$adata = json_decode($jdata, true);
+
+					if (!empty($adata)) {
+						$this->find_attachments($destination[0]);
+
+						//Set the featured image
+						if (false !== $importable_content && in_array('featured_image', $importable_content)) {
+							$this->set_featured_image($adata, $tour);
+						}
+						if (false !== $importable_content && in_array('banner_image', $importable_content)) {
+							$this->set_banner_image($adata, $tour);
+						}
+					}
+				}
+            }
         }
 	}
 }

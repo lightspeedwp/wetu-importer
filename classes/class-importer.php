@@ -157,8 +157,6 @@ class WETU_Importer {
 		require_once(WETU_IMPORTER_PATH.'classes/class-accommodation.php');
 		require_once(WETU_IMPORTER_PATH.'classes/class-destination.php');
 		require_once(WETU_IMPORTER_PATH.'classes/class-tours.php');
-		require_once(WETU_IMPORTER_PATH.'classes/class-admin.php');
-
 
 		add_action( 'init', array( $this, 'load_class' ) );
 
@@ -322,7 +320,7 @@ class WETU_Importer {
 				break;
 
 			default:
-				$this->current_importer = new WETU_Importer_Admin();
+				$this->current_importer = false;
 				break;
 		}
 
@@ -362,7 +360,27 @@ class WETU_Importer {
         <div class="wrap">
 			<?php screen_icon(); ?>
 
-			<?php $this->current_importer->display_page(); ?>
+			<?php if(!is_object($this->current_importer)){
+				?>
+                <h2><?php _e('Welcome to the LSX Wetu Importer','wetu-importer'); ?></h2>
+                <p>If this is the first time you are running the import, then follow the steps below.</p>
+                <ul>
+                    <li>Step 1 - Import your <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=tour"><?php _e('Tours','wetu-importer'); ?></a></li>
+                    <li>Step 2 - The tour import will have created draft <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=accommodation"><?php _e('accommodation','wetu-importer'); ?></a> that will need to be imported.</li>
+                    <li>Step 3 - Lastly import the <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('destinations','wetu-importer'); ?></a> draft posts created during the previous two steps.</li>
+                </ul>
+
+                <h3><?php _e('Additional Tools','wetu-importer'); ?></h3>
+                <ul>
+                    <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','wetu-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','wetu-importer'); ?></small></li>
+					<?php if(class_exists('Lsx_Banners')){ ?>
+                        <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync High Res Banner Images','wetu-importer'); ?></a></li>
+					<?php } ?>
+                </ul>
+				<?php
+			}else{
+			   $this->current_importer->display_page();
+            }; ?>
         </div>
 		<?php
 	}
@@ -542,7 +560,7 @@ class WETU_Importer {
 			}
 			if (in_array($needle, $haystack)) {
 				if(true === $wrap || 'true' === $wrap) {
-					$html = $type . '"' . $type . '"';
+					$html = $type . '="' . $type . '"';
 				}else{
 					$html = $type;
 				}
@@ -816,6 +834,39 @@ class WETU_Importer {
 	}
 
 	/**
+	 * search_form
+	 */
+	public function get_scaling_url($args=array()) {
+
+		$defaults = array(
+			'width' => '640',
+			'height' => '480',
+			'cropping' => 'c'
+		);
+		if(false !== $this->options){
+			if(isset($this->options['width']) && '' !== $this->options['width']){
+				$defaults['width'] = $this->options['width'];
+			}
+
+			if(isset($this->options['height']) && '' !== $this->options['height']){
+				$defaults['height'] = $this->options['height'];
+			}
+
+			if(isset($this->options['cropping']) && '' !== $this->options['cropping']){
+				$defaults['cropping'] = $this->options['cropping'];
+			}
+		}
+		$args = wp_parse_args($args,$defaults);
+
+		$cropping = $args['cropping'];
+		$width = $args['width'];
+		$height = $args['height'];
+
+		return 'https://wetu.com/ImageHandler/'.$cropping.$width.'x'.$height.'/';
+
+	}
+
+	/**
 	 * Attaches 1 image
 	 */
 	public function attach_image($v=false,$parent_id,$image_sizes=false){
@@ -955,6 +1006,59 @@ class WETU_Importer {
 	 */
 	public function process_ajax_import() {
 		$this->current_importer->process_ajax_import();
+		die();
+	}
+
+	/**
+	 * Formats the row for the completed list.
+	 */
+	public function format_completed_row($response){
+		echo '<li class="post-'.$response.'"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="'.get_permalink($response).'">'.get_the_title($response).'</a></li>';
+	}
+
+	/**
+	 * Does a multine search
+	 */
+	public function multineedle_stripos($haystack, $needles, $offset=0) {
+		$found = false;
+		$needle_count = count($needles);
+		foreach($needles as $needle) {
+			if(false !== stripos($haystack, $needle, $offset)){
+				$found[] = true;
+			}
+		}
+		if(false !== $found && $needle_count === count($found)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * Grab all the current accommodation posts via the lsx_wetu_id field.
+	 */
+	public function find_current_accommodation($post_type='accommodation') {
+		global $wpdb;
+		$return = array();
+
+		$current_accommodation = $wpdb->get_results("
+					SELECT key1.post_id,key1.meta_value
+					FROM {$wpdb->postmeta} key1
+
+					INNER JOIN  {$wpdb->posts} key2 
+    				ON key1.post_id = key2.ID
+					
+					WHERE key1.meta_key = 'lsx_wetu_id'
+					AND key2.post_type = '{$post_type}'
+
+					LIMIT 0,500
+		");
+		if(null !== $current_accommodation && !empty($current_accommodation)){
+			foreach($current_accommodation as $accom){
+				$return[$accom->meta_value] = $accom;
+			}
+		}
+		return $return;
 	}
 }
 $wetu_importer = new WETU_Importer();
