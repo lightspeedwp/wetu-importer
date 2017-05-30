@@ -394,6 +394,9 @@ class WETU_Importer {
             <input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>" />
 
             <h3><span class="dashicons dashicons-search"></span> <?php _e('Search','wetu-importer'); ?></h3>
+
+			<?php do_action('wetu_importer_search_form',$this); ?>
+
             <div class="normal-search">
                 <input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php _e('Search','wetu-importer'); ?>" />
             </div>

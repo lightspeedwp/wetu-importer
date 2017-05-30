@@ -269,7 +269,6 @@ var WETU_IMPORTER = {
         jQuery('form#import-list .settings-all input[type="checkbox"]').on('change',function(event){
             var thisOBJ = jQuery(this);
             if('all' === thisOBJ.val()){
-
                 thisOBJ.parents('form').find('.settings-all input[type="checkbox"]:not([value="all"])').each(function(){
 
                 	if('checked' === thisOBJ.attr('checked')) {
@@ -278,10 +277,31 @@ var WETU_IMPORTER = {
                         jQuery(this).removeAttr('checked');
 					}
                 });
+			}else{
+
 			}
+
+
+        });
+
+        var lastChecked = null;
+
+        jQuery('#the-list input[type="checkbox"]').on('click',function(event){
+            if(!lastChecked) {
+                lastChecked = this;
+                return;
+            }
+
+            if(e.shiftKey) {
+                var start = $chkboxes.index(this);
+                var end = $chkboxes.index(lastChecked);
+
+                $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastChecked.checked);
+
+            }
+            lastChecked = this;
         });
     }
-
 }
 jQuery(document).ready( function() {
 	WETU_IMPORTER.init();

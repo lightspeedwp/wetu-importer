@@ -90,6 +90,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 */
 	public function __construct() {
 		$this->set_variables();
+		add_action('wetu_importer_search_form',array($this,'tour_search_options'),10);
 	}
 
 	/**
@@ -242,6 +243,19 @@ class WETU_Importer_Tours extends WETU_Importer {
         </div>
         <?php
 	}
+
+	/**
+	 * displays the options for the tours
+	 */
+    public function tour_search_options() {
+        ?>
+            <p class="tour-search-options">
+                <label for="type"><input class="content" checked type="radio" name="type[]" value="all" /> <?php _e('All','wetu-importer'); ?></label>
+                <label for="type"><input class="content" type="radio" name="type[]" value="sample" /> <?php _e('Sample','wetu-importer'); ?></label>
+                <label for="type"><input class="content" type="radio" name="type[]" value="personal" /> <?php _e('Personal','wetu-importer'); ?></label>
+            </p>
+        <?php
+    }
 
 	/**
 	 * search_form
