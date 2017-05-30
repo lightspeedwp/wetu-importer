@@ -281,11 +281,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 
             <p class="tour-search-options">
                 <label for="type"><input class="content" <?php if(in_array('allitineraries',$form_options)){ echo 'checked'; } ?> type="radio" name="type[]" value="allitineraries" /> <?php _e('All','wetu-importer'); ?></label>
-                <label for="type"><input class="content" <?php if(in_array('sample',$form_options)){ echo 'checked'; } ?>type="radio" name="type[]" value="sample" /> <?php _e('Sample','wetu-importer'); ?></label>
-                <label for="type"><input class="content" <?php if(in_array('personal',$form_options)){ echo 'checked'; } ?>type="radio" name="type[]" value="personal" /> <?php _e('Personal','wetu-importer'); ?></label>
+                <label for="type"><input class="content" <?php if(in_array('sample',$form_options)){ echo 'checked'; } ?> type="radio" name="type[]" value="sample" /> <?php _e('Sample','wetu-importer'); ?></label>
+                <label for="type"><input class="content" <?php if(in_array('personal',$form_options)){ echo 'checked'; } ?> type="radio" name="type[]" value="personal" /> <?php _e('Personal','wetu-importer'); ?></label>
             </p>
-        </form>
 
+            <p><input class="button button-primary submit" type="submit" value="<?php echo esc_attr('Refresh Tours','wetu-importer'); ?>"></p>
+        </form>
+<br />
 		<?php
 		echo '</div>';
 	}
