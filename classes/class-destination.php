@@ -269,50 +269,6 @@ class WETU_Importer_Destination extends WETU_Importer
 	}
 
 	/**
-	 * search_form
-	 */
-	public function search_form()
-	{
-		?>
-        <form class="ajax-form" id="<?php echo $this->plugin_slug; ?>-search-form" method="get" action="tools.php"
-              data-type="<?php echo $this->tab_slug; ?>">
-            <input type="hidden" name="page" value="<?php echo $this->tab_slug; ?>"/>
-
-            <h3><span class="dashicons dashicons-search"></span> <?php _e('Search', 'wetu-importer'); ?></h3>
-            <div class="normal-search">
-                <input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value="">
-                <input class="button button-primary submit" type="submit"
-                       value="<?php _e('Search', 'wetu-importer'); ?>"/>
-            </div>
-
-
-            <div class="advanced-search hidden" style="display:none;">
-                <p><?php _e('Enter several keywords, each on a new line.', 'wetu-importer'); ?></p>
-                <textarea rows="10" cols="40" name="bulk-keywords"></textarea>
-                <input class="button button-primary submit" type="submit"
-                       value="<?php _e('Search', 'wetu-importer'); ?>"/>
-            </div>
-
-            <p>
-                <a class="advanced-search-toggle" href="#"><?php _e('Bulk Search', 'wetu-importer'); ?></a> |
-                <a class="published search-toggle"
-                   href="#publish"><?php esc_attr_e('Published', 'wetu-importer'); ?></a> |
-                <a class="pending search-toggle" href="#pending"><?php esc_attr_e('Pending', 'wetu-importer'); ?></a> |
-                <a class="draft search-toggle" href="#draft"><?php esc_attr_e('Draft', 'wetu-importer'); ?></a>
-            </p>
-
-            <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
-                <img style="width:64px;" src="<?php echo WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif'; ?>"/>
-            </div>
-
-            <div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
-                <img style="width:32px;" src="<?php echo WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif'; ?>"/>
-            </div>
-        </form>
-		<?php
-	}
-
-	/**
 	 * Grab all the current destination posts via the lsx_wetu_id field.
 	 */
 	public function find_current_destination($post_type = 'destination')

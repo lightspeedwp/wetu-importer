@@ -410,8 +410,8 @@ class WETU_Importer {
                 <a class="advanced-search-toggle" href="#"><?php _e('Bulk Search','wetu-importer'); ?></a> |
                 <a class="published search-toggle" href="#publish"><?php esc_attr_e('Published','wetu-importer'); ?></a> |
                 <a class="pending search-toggle"  href="#pending"><?php esc_attr_e('Pending','wetu-importer'); ?></a> |
-                <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','wetu-importer'); ?></a> |
-                <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU','wetu-importer'); ?></a>
+                <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','wetu-importer'); ?></a>
+                <?php if('tour'===$this->tab_slug){ ?> | <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU','wetu-importer'); ?></a><?php } ?>
             </p>
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
