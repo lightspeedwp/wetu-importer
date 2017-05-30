@@ -286,7 +286,7 @@ var WETU_IMPORTER = {
 
         var lastChecked = null;
 
-        jQuery('#the-list input[type="checkbox"]').on('click',function(event){
+        jQuery('#the-list input[type="checkbox"], #import-list tbody input[type="checkbox"]').on('click',function(event){
             if(!lastChecked) {
                 lastChecked = this;
                 return;
