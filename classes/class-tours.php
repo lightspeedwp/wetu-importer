@@ -90,7 +90,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 */
 	public function __construct() {
 		$this->set_variables();
-		add_action('wetu_importer_search_form',array($this,'tour_search_options'),10);
 	}
 
 	/**
@@ -245,46 +244,78 @@ class WETU_Importer_Tours extends WETU_Importer {
 	}
 
 	/**
-	 * displays the options for the tours
-	 */
-    public function tour_search_options() {
-        ?>
-            <p class="tour-search-options">
-                <label for="type"><input class="content" checked type="radio" name="type[]" value="all" /> <?php _e('All','wetu-importer'); ?></label>
-                <label for="type"><input class="content" type="radio" name="type[]" value="sample" /> <?php _e('Sample','wetu-importer'); ?></label>
-                <label for="type"><input class="content" type="radio" name="type[]" value="personal" /> <?php _e('Personal','wetu-importer'); ?></label>
-            </p>
-        <?php
-    }
-
-	/**
 	 * search_form
 	 */
 	public function update_options_form() {
 		$tours = get_transient('lsx_ti_tours');
-		echo '<div class="wetu-status"><h3>'.__('Wetu Status','wetu-importer').' - ';
+
+		echo '<div class="wetu-status tour-wetu-status"><h3>'.__('Wetu Status','wetu-importer').' - ';
 		if('' === $tours || false === $tours || isset($_GET['refresh_tours'])){
 			$result = $this->update_options();
 
 			if(true === $result){
 			    echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span>';
-			    if(!isset($_GET['refresh_tours'])){
-			        echo ' - <small><a href="'.admin_url('admin.php').'?page='.$this->plugin_slug.'&tab=tour&refresh_tours=true">'.esc_attr('Refresh','wetu-importer').'</a></small>';
-                }
+                echo ' - <small><a href="#">'.esc_attr('Refresh','wetu-importer').'</a></small>';
             }else{
 			    echo '<span style="color:red;">'.wp_kses_post($result).'</span>';
             }
 		}else{
-			echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span> - <small><a href="'.admin_url('admin.php').'?page='.$this->plugin_slug.'&tab=tour&refresh_tours=true">'.esc_attr('Refresh','wetu-importer').'</a></small>';
+			echo '<span style="color:green;">'.esc_attr('Connected','wetu-importer').'</span> - <small><a href="#">'.esc_attr('Refresh','wetu-importer').'</a></small>';
         }
-		echo '</h3></div>';
+		echo '</h3>';
+
+		$form_options = get_option('lsx_ti_tours_api_options');
+		if(false === $form_options){
+			$form_options = array(0);
+        }
+		?>
+        <form method="get" class="tour-refresh-form" action="<?php echo admin_url('admin.php'); ?>">
+
+            <input type="hidden" name="page" value="<?php echo $this->plugin_slug; ?>" />
+            <input type="hidden" name="tab" value="tour" />
+            <input type="hidden" name="refresh_tours" value="true" />
+
+            <p class="tour-search-options">
+                <label for="own"><input class="content" <?php if(in_array('own',$form_options)){ echo 'checked'; } ?> type="checkbox" name="own" value="true" /> <?php esc_html_e('Own Tours','wetu-importer'); ?> </label>
+            </p>
+
+            <p class="tour-search-options">
+                <label for="type"><input class="content" <?php if(in_array('allitineraries',$form_options)){ echo 'checked'; } ?> type="radio" name="type[]" value="allitineraries" /> <?php _e('All','wetu-importer'); ?></label>
+                <label for="type"><input class="content" <?php if(in_array('sample',$form_options)){ echo 'checked'; } ?>type="radio" name="type[]" value="sample" /> <?php _e('Sample','wetu-importer'); ?></label>
+                <label for="type"><input class="content" <?php if(in_array('personal',$form_options)){ echo 'checked'; } ?>type="radio" name="type[]" value="personal" /> <?php _e('Personal','wetu-importer'); ?></label>
+            </p>
+        </form>
+
+		<?php
+		echo '</div>';
 	}
 
 	/**
 	 * Save the list of Tours into an option
 	 */
 	public function update_options() {
-		$data = file_get_contents( $this->url . '/V7/List?' . $this->url_qs . '&own=true&type=All' );
+
+	    $own = '';
+	    $options = array();
+
+	    delete_option('lsx_ti_tours_api_options');
+
+	    if(isset($_GET['own'])){
+			$this->url_qs .= '&own=true';
+			$options[] = 'own';
+        }
+
+		if(isset($_GET['type'])){
+			$this->url_qs .= '&type='.implode('',$_GET['type']);
+			$options[] = implode('',$_GET['type']);
+		}
+
+		$this->url_qs .= '&results=2000';
+
+		add_option('lsx_ti_tours_api_options',$options);
+
+		$data = file_get_contents( $this->url . '/V7/List?' . $this->url_qs );
+
 		$tours = json_decode($data, true);
 
 		if(isset($tours['error'])){
