@@ -1017,6 +1017,7 @@ class WETU_Importer {
 	 */
 	public function process_ajax_search() {
 	    $this->current_importer->process_ajax_search();
+		die();
 	}
 
 	/**
