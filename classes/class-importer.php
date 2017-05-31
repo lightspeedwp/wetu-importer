@@ -137,7 +137,15 @@ class WETU_Importer {
 	 *
 	 * @var      int
 	 */
-	public $queued_imports = false;
+	public $queued_imports = array();
+
+	/**
+	 * An Array to hold the items to queue
+	 *
+	 * @var      int
+	 */
+	public $import_queue = array();
+
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -214,17 +222,16 @@ class WETU_Importer {
 
 			//Set the tab slug
 			if(isset($_GET['tab']) || isset($_POST['type'])) {
-				if(isset($_GET['tab'])) {
+				if (isset($_GET['tab'])) {
 					$this->tab_slug = $_GET['tab'];
-				}else{
+				} else {
 					$this->tab_slug = $_POST['type'];
 				}
 
-				if('tours' !== $this->tab_slug) {
-					//If any tours were queued
-					$this->queued_imports = get_option('wetu_importer_que', false);
-				}
-            }
+				//If any tours were queued
+				$this->queued_imports = get_option('wetu_importer_que', array());
+
+			}
 
 			//Set the scaling options
             if (isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug]) && isset($this->options['image_scaling'])) {
@@ -426,7 +433,12 @@ class WETU_Importer {
                 <a class="published search-toggle" href="#publish"><?php esc_attr_e('Published','wetu-importer'); ?></a> |
                 <a class="pending search-toggle"  href="#pending"><?php esc_attr_e('Pending','wetu-importer'); ?></a> |
                 <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','wetu-importer'); ?></a>
-                <?php if('tour'===$this->tab_slug || false !== $this->queued_imports){ ?> | <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU','wetu-importer'); ?></a><?php } ?>
+
+                <?php if('tour'===$this->tab_slug){ ?>
+                    | <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU','wetu-importer'); ?></a>
+                <?php }else if(!empty($this->queued_imports)) { ?>
+                    | <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU Queue','wetu-importer'); ?></a>
+                <?php } ?>
             </p>
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
@@ -1079,5 +1091,39 @@ class WETU_Importer {
 		}
 		return $return;
 	}
+
+	/**
+	 * Set the Video date
+	 */
+	public function set_video_data($data,$id) {
+		if(!empty($data[0]['content']['youtube_videos']) && is_array($data[0]['content']['youtube_videos'])){
+			$videos = false;
+
+			foreach($data[0]['content']['youtube_videos'] as $video){
+				$temp_video = array();
+
+				if(isset($video['label'])){
+					$temp_video['title'] = $video['label'];
+				}
+				if(isset($video['description'])){
+					$temp_video['description'] = strip_tags($video['description']);
+				}
+				if(isset($video['url'])){
+					$temp_video['url'] = $video['url'];
+				}
+				$temp_video['thumbnail'] = '';
+				$videos[] = $temp_video;
+			}
+
+			if(false !== $id && '0' !== $id){
+				delete_post_meta($id, 'videos');
+			}
+			foreach($videos as $video){
+				add_post_meta($id,'videos',$video,false);
+			}
+		}
+	}
+
+
 }
 $wetu_importer = new WETU_Importer();

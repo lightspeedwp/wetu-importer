@@ -534,6 +534,7 @@ class WETU_Importer_Tours extends WETU_Importer {
                 {
                 	$return = $this->import_row($jdata,$wetu_id,$post_id,$content);
                 	$this->format_completed_row($return);
+					$this->save_queue();
                 	$this->cleanup_posts();
                 	$this->attach_destination_images($content);
                 }
@@ -832,6 +833,8 @@ class WETU_Importer_Tours extends WETU_Importer {
 			if('' !== $ac_id && false !== $ac_id){
 			    $this->save_custom_field($ac_id,'accommodation_to_tour',$id,false,false);
 				$this->save_custom_field($id,'tour_to_accommodation',$ac_id,false,false);
+
+				$this->queue_item($ac_id);
             }
 		}
 		return $ac_id;
@@ -931,7 +934,12 @@ class WETU_Importer_Tours extends WETU_Importer {
 			if ('' !== $dest_id && false !== $dest_id) {
 				$this->save_custom_field($dest_id, 'destination_to_tour', $id, false, false);
 				$this->save_custom_field($id, 'tour_to_destination', $dest_id, false, false);
-				$this->cleanup_posts[$dest_id] = 'tour_to_destination';
+
+				//Save the item to display in the queue
+				$this->queue_item($dest_id);
+
+				//Save the item to clean up the amount of connections.
+                $this->cleanup_posts[$dest_id] = 'tour_to_destination';
 
 				// Save the first destination so we can grab the tour featured image and banner
 				if(0 === $leg_counter){
@@ -997,6 +1005,7 @@ class WETU_Importer_Tours extends WETU_Importer {
         if ('' !== $country_id && false !== $country_id) {
             $this->save_custom_field($country_id, 'destination_to_tour', $id, false, false);
             $this->save_custom_field($id, 'tour_to_destination', $country_id, false, false);
+			$this->queue_item($country_id);
 			$this->cleanup_posts[$country_id] = 'tour_to_destination';
 
             return $country_id;
@@ -1038,5 +1047,38 @@ class WETU_Importer_Tours extends WETU_Importer {
 				}
             }
         }
+	}
+
+	/**
+	 * Que an item to be saved.
+	 *
+	 * @param   $id     int
+	 */
+	public function queue_item($id) {
+		if(is_array($this->import_queue) && !in_array($id,$this->import_queue)){
+			$this->import_queue[] = $id;
+		}else{
+			$this->import_queue[] = $id;
+		}
+	}
+
+	/**
+	 * Saves the queue to the option.
+	 */
+	public function save_queue() {
+
+		if(!empty($this->import_queue)) {
+			if (!empty($this->queued_imports)) {
+				$saved_imports = array_merge($this->queued_imports,$this->import_queue);
+
+			}else{
+				$saved_imports = $this->import_queue;
+			}
+			delete_option('wetu_importer_que');
+			if(!empty($saved_imports)){
+				$saved_imports = array_unique($saved_imports);
+				update_option('wetu_importer_que',$saved_imports);
+			}
+		}
 	}
 }

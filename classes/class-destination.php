@@ -302,6 +302,7 @@ class WETU_Importer_Destination extends WETU_Importer
 	public function process_ajax_search()
 	{
 		$return = false;
+
 		if (isset($_POST['action']) && $_POST['action'] === 'lsx_tour_importer' && isset($_POST['type']) && $_POST['type'] === 'destination') {
 
 			if (isset($_POST['keyword'])) {
@@ -330,6 +331,9 @@ class WETU_Importer_Destination extends WETU_Importer
 				if (in_array('draft', $keyphrases)) {
 					$post_status = 'draft';
 				}
+				if (in_array('import', $keyphrases)) {
+					$post_status = 'import';
+				}
 
 				$destination = $this->find_current_destination();
 
@@ -338,7 +342,13 @@ class WETU_Importer_Destination extends WETU_Importer
 					foreach ($destination as $row) {
 
 						//If we are searching for
-						if (false !== $post_status) {
+						if('import' === $post_status) {
+							if(is_array($this->queued_imports) && in_array($row->post_id,$this->queued_imports)){
+								$searched_items[sanitize_title($row->name) . '-' . $row->meta_value] = $this->format_row($row);
+							}else{
+								continue;
+							}
+						}else if (false !== $post_status) {
 
 							$current_status = get_post_status($row->post_id);
 							if ($current_status !== $post_status) {
@@ -443,8 +453,24 @@ class WETU_Importer_Destination extends WETU_Importer
 				$adata = json_decode($jdata, true);
 				if (!empty($adata)) {
 					$return = $this->import_row($adata, $wetu_id, $post_id, $team_members, $content, $safari_brands);
+					$this->remove_from_queue($return);
 					$this->format_completed_row($return);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Saves the queue to the option.
+	 */
+	public function remove_from_queue($id) {
+		if (!empty($this->queued_imports)) {
+
+			if(($key = array_search($id, $this->queued_imports)) !== false) {
+				unset($this->queued_imports[$key]);
+
+				delete_option('wetu_importer_que');
+				update_option('wetu_importer_que',$this->queued_imports);
 			}
 		}
 	}

@@ -304,12 +304,11 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 
 							if('import' === $post_status){
 
-								if(0 !== $row['post_id']){
-									continue;
-								}else{
+							    if(is_array($this->queued_imports) && in_array($row['post_id'],$this->queued_imports)){
 									$searched_items[sanitize_title($row['name']).'-'.$row['id']] = $this->format_row($row);
-								}
-
+                                }else{
+							        continue;
+                                }
 
 							}else{
 
@@ -385,6 +384,21 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	}
 
 	/**
+	 * Saves the queue to the option.
+	 */
+	public function remove_from_queue($id) {
+        if (!empty($this->queued_imports)) {
+
+			if(($key = array_search($id, $this->queued_imports)) !== false) {
+				unset($this->queued_imports[$key]);
+
+				delete_option('wetu_importer_que');
+				update_option('wetu_importer_que',$this->queued_imports);
+			}
+        }
+	}
+
+	/**
 	 * Connect to wetu
 	 */
 	public function process_ajax_import() {
@@ -427,6 +441,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
                 {
                 	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members,$content,$safari_brands);
                 	$this->format_completed_row($return);
+                	$this->remove_from_queue($return);
 					$this->cleanup_posts();
                 }
             }
@@ -796,38 +811,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			$time = str_replace('h',':',$data[0]['features']['check_out_time']);
 			$time = date('h:ia',strtotime($time));
 			$this->save_custom_field($time,'checkout_time',$id);
-		}
-	}	
-
-	/**
-	 * Set the Video date
-	 */
-	public function set_video_data($data,$id) {
-		if(!empty($data[0]['content']['youtube_videos']) && is_array($data[0]['content']['youtube_videos'])){
-			$videos = false;
-
-			foreach($data[0]['content']['youtube_videos'] as $video){
-				$temp_video = array();
-
-				if(isset($video['label'])){
-					$temp_video['title'] = $video['label'];
-				}
-				if(isset($video['description'])){
-					$temp_video['description'] = strip_tags($video['description']);
-				}	
-				if(isset($video['url'])){
-					$temp_video['url'] = $video['url'];
-				}						
-				$temp_video['thumbnail'] = '';
-				$videos[] = $temp_video;
-			}
-
-			if(false !== $id && '0' !== $id){
-				delete_post_meta($id, 'videos');				
-			}
-			foreach($videos as $video){
-		        add_post_meta($id,'videos',$video,false);			
-			}
 		}
 	}	
 
