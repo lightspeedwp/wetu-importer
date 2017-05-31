@@ -133,6 +133,13 @@ class WETU_Importer {
 	public $current_importer = false;
 
 	/**
+	 * if you ran a tour import then you will have accommodation and destination queued to sync as well.
+	 *
+	 * @var      int
+	 */
+	public $queued_imports = false;
+
+	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since 1.0.0
@@ -187,48 +194,56 @@ class WETU_Importer {
 		$this->post_types = array('accommodation','destination','tour');
 		$temp_options = get_option('_lsx-to_settings',false);
 
-		if(isset($_GET['tab']) || isset($_POST['type'])) {
-		    if(isset($_GET['tab'])) {
-				$this->tab_slug = $_GET['tab'];
-			}else{
-				$this->tab_slug = $_POST['type'];
-            }
-		}
-
-		if(isset($temp_options[$this->plugin_slug])) {
+		//Set the options.
+		if(false !== $temp_options && isset($temp_options[$this->plugin_slug])) {
 			$this->options = $temp_options[$this->plugin_slug];
 
 			$this->api_key = false;
 			$this->api_username = false;
 			$this->api_password = false;
-			if (false !== $temp_options) {
-				if (isset($temp_options['api']['wetu_api_key']) && '' !== $temp_options['api']['wetu_api_key']) {
-					$this->api_key = $temp_options['api']['wetu_api_key'];
-				}
-				if (isset($temp_options['api']['wetu_api_username']) && '' !== $temp_options['api']['wetu_api_username']) {
-					$this->api_username = $temp_options['api']['wetu_api_username'];
-				}
-				if (isset($temp_options['api']['wetu_api_password']) && '' !== $temp_options['api']['wetu_api_password']) {
-					$this->api_password = $temp_options['api']['wetu_api_password'];
+
+            if (isset($temp_options['api']['wetu_api_key']) && '' !== $temp_options['api']['wetu_api_key']) {
+                $this->api_key = $temp_options['api']['wetu_api_key'];
+            }
+            if (isset($temp_options['api']['wetu_api_username']) && '' !== $temp_options['api']['wetu_api_username']) {
+                $this->api_username = $temp_options['api']['wetu_api_username'];
+            }
+            if (isset($temp_options['api']['wetu_api_password']) && '' !== $temp_options['api']['wetu_api_password']) {
+                $this->api_password = $temp_options['api']['wetu_api_password'];
+            }
+
+			//Set the tab slug
+			if(isset($_GET['tab']) || isset($_POST['type'])) {
+				if(isset($_GET['tab'])) {
+					$this->tab_slug = $_GET['tab'];
+				}else{
+					$this->tab_slug = $_POST['type'];
 				}
 
-				if (isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug]) && isset($this->options['image_scaling'])) {
-					$this->scale_images = true;
-					$width = '800';
-					if (isset($this->options['width']) && '' !== $this->options['width']) {
-						$width = $this->options['width'];
-					}
-					$height = '600';
-					if (isset($this->options['height']) && '' !== $this->options['height']) {
-						$height = $this->options['height'];
-					}
-					$cropping = 'raw';
-					if (isset($this->options['cropping']) && '' !== $this->options['cropping']) {
-						$cropping = $this->options['cropping'];
-					}
-					$this->image_scaling_url = 'https://wetu.com/ImageHandler/' . $cropping . $width . 'x' . $height . '/';
+				if('tours' !== $this->tab_slug) {
+					//If any tours were queued
+					$this->queued_imports = get_option('wetu_importer_que', false);
 				}
-			}
+            }
+
+			//Set the scaling options
+            if (isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug]) && isset($this->options['image_scaling'])) {
+                $this->scale_images = true;
+                $width = '800';
+                if (isset($this->options['width']) && '' !== $this->options['width']) {
+                    $width = $this->options['width'];
+                }
+                $height = '600';
+                if (isset($this->options['height']) && '' !== $this->options['height']) {
+                    $height = $this->options['height'];
+                }
+                $cropping = 'raw';
+                if (isset($this->options['cropping']) && '' !== $this->options['cropping']) {
+                    $cropping = $this->options['cropping'];
+                }
+                $this->image_scaling_url = 'https://wetu.com/ImageHandler/' . $cropping . $width . 'x' . $height . '/';
+            }
+
 		}
 	}
 
@@ -411,7 +426,7 @@ class WETU_Importer {
                 <a class="published search-toggle" href="#publish"><?php esc_attr_e('Published','wetu-importer'); ?></a> |
                 <a class="pending search-toggle"  href="#pending"><?php esc_attr_e('Pending','wetu-importer'); ?></a> |
                 <a class="draft search-toggle"  href="#draft"><?php esc_attr_e('Draft','wetu-importer'); ?></a>
-                <?php if('tour'===$this->tab_slug){ ?> | <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU','wetu-importer'); ?></a><?php } ?>
+                <?php if('tour'===$this->tab_slug || false !== $this->queued_imports){ ?> | <a class="import search-toggle"  href="#import"><?php esc_attr_e('WETU','wetu-importer'); ?></a><?php } ?>
             </p>
 
             <div class="ajax-loader" style="display:none;width:100%;text-align:center;">
@@ -421,7 +436,7 @@ class WETU_Importer {
             <div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
                 <img style="width:32px;" src="<?php echo WETU_IMPORTER_URL.'assets/images/ajaxloader.gif';?>" />
             </div>
-        </form>
+        </form> 
 		<?php
 	}
 

@@ -350,7 +350,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				}
 			}
 			print_r($return);
-			die();
 		}
 	}
 
