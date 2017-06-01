@@ -802,7 +802,13 @@ class WETU_Importer {
 	 */
 	public function set_featured_image($data,$id) {
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
-			$this->featured_image = $this->attach_image($data[0]['content']['images'][0],$id);
+		    if('tour' === $this->tab_slug){
+		        $key = array_rand($data[0]['content']['images']);
+                $this->featured_image = $this->attach_image($data[0]['content']['images'][$key],$id);
+            }else{
+				$this->featured_image = $this->attach_image($data[0]['content']['images'][0],$id);
+            }
+
 
 			if(false !== $this->featured_image){
 				delete_post_meta($id,'_thumbnail_id');
@@ -821,7 +827,13 @@ class WETU_Importer {
 	 */
 	public function set_banner_image($data,$id) {
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
-			$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id,array('width'=>'1920','height'=>'600','cropping'=>'c'));
+
+			if('tour' === $this->tab_slug){
+				$key = array_rand($data[0]['content']['images']);
+				$this->banner_image = $this->attach_image($data[0]['content']['images'][$key],$id,array('width'=>'1920','height'=>'600','cropping'=>'c'));
+			}else{
+				$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id,array('width'=>'1920','height'=>'600','cropping'=>'c'));
+			}
 
 			if(false !== $this->banner_image){
 				delete_post_meta($id,'image_group');
