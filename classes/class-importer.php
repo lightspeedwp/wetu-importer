@@ -392,14 +392,14 @@ class WETU_Importer {
                     <li>Step 3 - Lastly import the <a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=destination"><?php _e('destinations','wetu-importer'); ?></a> draft posts created during the previous two steps.</li>
                 </ul>
 
-                <h3><?php _e('Additional Tools','wetu-importer'); ?></h3>
+                <?php /*<h3><?php _e('Additional Tools','wetu-importer'); ?></h3>
                 <ul>
                     <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php _e('Connect Accommodation','wetu-importer'); ?></a> <small><?php _e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.','wetu-importer'); ?></small></li>
 					<?php if(class_exists('Lsx_Banners')){ ?>
                         <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php _e('Sync High Res Banner Images','wetu-importer'); ?></a></li>
 					<?php } ?>
                 </ul>
-				<?php
+				<?php*/
 			}else{
 			   $this->current_importer->display_page();
             }; ?>
