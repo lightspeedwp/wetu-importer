@@ -821,7 +821,7 @@ class WETU_Importer {
 	 */
 	public function set_banner_image($data,$id) {
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
-			$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id,array('width'=>'1920','height'=>'800','cropping'=>'c'));
+			$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id,array('width'=>'1920','height'=>'600','cropping'=>'c'));
 
 			if(false !== $this->banner_image){
 				delete_post_meta($id,'image_group');
