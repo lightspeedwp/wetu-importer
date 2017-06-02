@@ -453,8 +453,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	 */
 	public function import_row($data,$wetu_id,$id=0,$team_members=false,$importable_content=false,$safari_brands=false) {
 
-        if(trim($data[0]['type'])=='Accommodation')
-        {
+
 	        $post_name = $data_post_content = $data_post_excerpt = '';
 	        $post = array(
 	          'post_type'		=> 'accommodation',
@@ -591,8 +590,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	        //Import the main gallery
 	        if(false !== $importable_content && in_array('gallery',$importable_content)){	    	
 	    		$this->create_main_gallery($data,$id);
-	        }	        	        	        
-        }
+	        }
         return $id;
 	}
 
