@@ -77,7 +77,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 		//	$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
 		//} elseif ( false !== $this->api_key ) {
 			$this->url    = 'https://wetu.com/API/Pins/' . $this->api_key;
-			$this->url_qs = '';
+			$this->url_qs = 'all=include';
 		//}
 
 		$temp_options = get_option('_lsx-to_settings',false);
