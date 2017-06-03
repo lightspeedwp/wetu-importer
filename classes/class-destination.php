@@ -235,9 +235,9 @@ class WETU_Importer_Destination extends WETU_Importer
                                 <li><input class="content" <?php $this->checked($this->destination_options, 'visa'); ?>
                                            type="checkbox" name="content[]"
                                            value="visa"/> <?php _e('Visa', 'wetu-importer'); ?></li>
-                                <li><input class="content" <?php $this->checked($this->destination_options, 'genral'); ?>
+                                <li><input class="content" <?php $this->checked($this->destination_options, 'additional_info'); ?>
                                            type="checkbox" name="content[]"
-                                           value="genral"/> <?php _e('Genral', 'wetu-importer'); ?></li>
+                                           value="additional_info"/> <?php _e('General', 'wetu-importer'); ?></li>
                             </ul>
                         </div>
 
@@ -605,8 +605,8 @@ class WETU_Importer_Destination extends WETU_Importer
 				$this->set_travel_info($data, $id, 'visa');
 			}
 			//Set the General
-			if (false !== $importable_content && in_array('general', $importable_content)) {
-				$this->set_travel_info($data, $id, 'general');
+			if (false !== $importable_content && in_array('additional_info', $importable_content)) {
+				$this->set_travel_info($data, $id, 'additional_info');
 			}
 
 			//Setup some default for use in the import
