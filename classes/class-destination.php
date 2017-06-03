@@ -226,6 +226,18 @@ class WETU_Importer_Destination extends WETU_Importer
                                 <li><input class="content" <?php $this->checked($this->destination_options, 'dress'); ?>
                                            type="checkbox" name="content[]"
                                            value="dress"/> <?php _e('Dress', 'wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options, 'health'); ?>
+                                           type="checkbox" name="content[]"
+                                           value="health"/> <?php _e('Health', 'wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options, 'safety'); ?>
+                                           type="checkbox" name="content[]"
+                                           value="safety"/> <?php _e('Safety', 'wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options, 'visa'); ?>
+                                           type="checkbox" name="content[]"
+                                           value="visa"/> <?php _e('Visa', 'wetu-importer'); ?></li>
+                                <li><input class="content" <?php $this->checked($this->destination_options, 'genral'); ?>
+                                           type="checkbox" name="content[]"
+                                           value="genral"/> <?php _e('Genral', 'wetu-importer'); ?></li>
                             </ul>
                         </div>
 
@@ -579,6 +591,22 @@ class WETU_Importer_Destination extends WETU_Importer
 			//Set the climate
 			if (false !== $importable_content && in_array('climate', $importable_content)) {
 				$this->set_travel_info($data, $id, 'climate');
+			}
+			//Set the Health
+			if (false !== $importable_content && in_array('health', $importable_content)) {
+				$this->set_travel_info($data, $id, 'health');
+			}
+			//Set the Safety
+			if (false !== $importable_content && in_array('safety', $importable_content)) {
+				$this->set_travel_info($data, $id, 'safety');
+			}
+			//Set the Visa
+			if (false !== $importable_content && in_array('visa', $importable_content)) {
+				$this->set_travel_info($data, $id, 'visa');
+			}
+			//Set the General
+			if (false !== $importable_content && in_array('general', $importable_content)) {
+				$this->set_travel_info($data, $id, 'general');
 			}
 
 			//Setup some default for use in the import
