@@ -438,13 +438,18 @@ class WETU_Importer_Accommodation extends WETU_Importer {
             if($jdata)
             {
                 $adata=json_decode($jdata,true);
-                if(!empty($adata))
-                {
+				if (!empty($adata) && !isset($adata['error'])) {
                 	$return = $this->import_row($adata,$wetu_id,$post_id,$team_members,$content,$safari_brands);
                 	$this->format_completed_row($return);
                 	$this->remove_from_queue($return);
 					$this->cleanup_posts();
-                }
+                }else{
+					if(isset($adata['error'])){
+						$this->format_error($adata['error']);
+					}else{
+						$this->format_error(esc_html__('There was a problem importing your accommodation, please try refreshing the page.','wetu-importer'));
+					}
+				}
             }
 		}
 	}

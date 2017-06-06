@@ -530,14 +530,19 @@ class WETU_Importer_Tours extends WETU_Importer {
             if($jdata)
             {
 				$jdata=json_decode($jdata,true);
-                if(!empty($jdata))
-                {
+				if (!empty($jdata) && !isset($jdata['error'])) {
                 	$return = $this->import_row($jdata,$wetu_id,$post_id,$content);
                 	$this->format_completed_row($return);
 					$this->save_queue();
                 	$this->cleanup_posts();
                 	$this->attach_destination_images($content);
-                }
+                }else{
+					if(isset($adata['error'])){
+						$this->format_error($adata['error']);
+					}else{
+						$this->format_error(esc_html__('There was a problem importing your tour, please try refreshing the page.','wetu-importer'));
+					}
+				}
             }
 		}
 	}

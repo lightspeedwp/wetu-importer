@@ -472,7 +472,7 @@ class WETU_Importer_Destination extends WETU_Importer
 				    if(isset($adata['error'])){
 				        $this->format_error($adata['error']);
                     }else{
-						$this->format_error(esc_html__('There was a problem importing your destination.','wet-importer'));
+						$this->format_error(esc_html__('There was a problem importing your destination, please try refreshing the page.','wetu-importer'));
                     }
                 }
 			}
