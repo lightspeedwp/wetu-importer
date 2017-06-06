@@ -463,11 +463,18 @@ class WETU_Importer_Destination extends WETU_Importer
 			$jdata = file_get_contents($this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id);
 			if ($jdata) {
 				$adata = json_decode($jdata, true);
-				if (!empty($adata)) {
+
+				if (!empty($adata) && !isset($adata['error'])) {
 					$return = $this->import_row($adata, $wetu_id, $post_id, $team_members, $content, $safari_brands);
 					$this->remove_from_queue($return);
 					$this->format_completed_row($return);
-				}
+				}else{
+				    if(isset($adata['error'])){
+				        $this->format_error($adata['error']);
+                    }else{
+						$this->format_error(esc_html__('There was a problem importing your destination.','wet-importer'));
+                    }
+                }
 			}
 		}
 	}
@@ -493,7 +500,8 @@ class WETU_Importer_Destination extends WETU_Importer
 	public function import_row($data, $wetu_id, $id = 0, $team_members = false, $importable_content = false, $safari_brands = false)
 	{
 
-		if (trim($data[0]['type']) == 'Destination') {
+		if ('Destination' === trim($data[0]['type'])) {
+
 			$post_name = $data_post_content = $data_post_excerpt = '';
 			$post = array(
 				'post_type' => 'destination',
@@ -553,6 +561,8 @@ class WETU_Importer_Destination extends WETU_Importer
 					add_post_meta($id, 'lsx_wetu_modified_date', strtotime($data[0]['last_modified']));
 				}
 			}
+
+			$this->find_attachments($id);
 
 			//Set the team member if it is there
 			if (post_type_exists('team') && false !== $team_members && '' !== $team_members) {

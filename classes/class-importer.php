@@ -827,15 +827,21 @@ class WETU_Importer {
 	 */
 	public function set_banner_image($data,$id) {
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
-
-			if('tour' === $this->tab_slug){
-				$key = array_rand($data[0]['content']['images']);
-				$this->banner_image = $this->attach_image($data[0]['content']['images'][$key],$id,array('width'=>'1920','height'=>'600','cropping'=>'c'));
+		    if(isset($data[0]['destination_image']) && is_array($data[0]['destination_image'])) {
+				$temp_banner = $this->attach_image($data[0]['destination_image'], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
 			}else{
-				$this->banner_image = $this->attach_image($data[0]['content']['images'][1],$id,array('width'=>'1920','height'=>'600','cropping'=>'c'));
-			}
+				if ('tour' === $this->tab_slug) {
+					$key = array_rand($data[0]['content']['images']);
+					$temp_banner = $this->attach_image($data[0]['content']['images'][$key], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
+				} else {
+					$temp_banner = $this->attach_image($data[0]['content']['images'][1], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
+				}
+            }
 
-			if(false !== $this->banner_image){
+
+			if(false !== $temp_banner){
+				$this->banner_image = $temp_banner;
+
 				delete_post_meta($id,'image_group');
 				$new_banner = array('banner_image'=>array('cmb-field-0'=>$this->banner_image));
 				add_post_meta($id,'image_group',$new_banner,true);
@@ -916,6 +922,8 @@ class WETU_Importer {
 			$temp_fragment = explode('/',$v['url_fragment']);
 			$url_filename = $temp_fragment[count($temp_fragment)-1];
 			$url_filename = str_replace(array('.jpg','.png','.jpeg'),'',$url_filename);
+			$url_filename = trim($url_filename);
+			$url_filename = str_replace(" ",'_',$url_filename);
 
 			if(in_array($url_filename,$this->found_attachments)){
 				return array_search($url_filename,$this->found_attachments);
@@ -1057,6 +1065,13 @@ class WETU_Importer {
 	 */
 	public function format_completed_row($response){
 		echo '<li class="post-'.$response.'"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="'.get_permalink($response).'">'.get_the_title($response).'</a></li>';
+	}
+
+	/**
+	 * Formats the error.
+	 */
+	public function format_error($response){
+		echo '<li class="post-error"><span class="dashicons dashicons-no"></span>'.$response.'</li>';
 	}
 
 	/**

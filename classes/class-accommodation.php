@@ -403,6 +403,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	 */
 	public function process_ajax_import() {
 		$return = false;
+
 		if(isset($_POST['action']) && $_POST['action'] === 'lsx_import_items' && isset($_POST['type']) && $_POST['type'] === 'accommodation' && isset($_POST['wetu_id'])){
 			
 			$wetu_id = $_POST['wetu_id'];
@@ -452,7 +453,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	 * Connect to wetu
 	 */
 	public function import_row($data,$wetu_id,$id=0,$team_members=false,$importable_content=false,$safari_brands=false) {
-
 
 	        $post_name = $data_post_content = $data_post_excerpt = '';
 	        $post = array(
