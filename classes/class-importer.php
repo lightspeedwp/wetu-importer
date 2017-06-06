@@ -887,8 +887,8 @@ class WETU_Importer {
 	public function get_scaling_url($args=array()) {
 
 		$defaults = array(
-			'width' => '640',
-			'height' => '480',
+			'width' => '1024',
+			'height' => '768',
 			'cropping' => 'c'
 		);
 		if(false !== $this->options){
@@ -910,7 +910,7 @@ class WETU_Importer {
 		$width = $args['width'];
 		$height = $args['height'];
 
-		return 'https://wetu.com/ImageHandler/'.$cropping.$width.'x'.$height.'/';
+		return 'https://wetu.com/ImageHandler/'.$cropping.'/'.$width.'x'.$height.'/';
 
 	}
 
@@ -949,6 +949,7 @@ class WETU_Importer {
 			//Resizor - add option to setting if required
 			$fragment = str_replace(' ','%20',$v['url_fragment']);
 			$url = $this->get_scaling_url($image_sizes).$fragment;
+
 			$attachID = $this->attach_external_image2($url,$parent_id,'',$v['label'],$postdata);
 
 			//echo($attachID.' add image');
