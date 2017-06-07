@@ -889,7 +889,7 @@ class WETU_Importer {
 		$defaults = array(
 			'width' => '1024',
 			'height' => '768',
-			'cropping' => 'raw'
+			'cropping' => 'w'
 		);
 		if(false !== $this->options){
 			if(isset($this->options['width']) && '' !== $this->options['width']){
@@ -911,7 +911,6 @@ class WETU_Importer {
 		$height = $args['height'];
 
 		return 'https://wetu.com/ImageHandler/'.$cropping.$width.'x'.$height.'/';
-
 	}
 
 	/**
