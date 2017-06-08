@@ -216,14 +216,19 @@ class WETU_Importer {
 			$this->api_username = false;
 			$this->api_password = false;
 
-            if (isset($temp_options['api']['wetu_api_key']) && '' !== $temp_options['api']['wetu_api_key']) {
-                $this->api_key = $temp_options['api']['wetu_api_key'];
-            }
-            if (isset($temp_options['api']['wetu_api_username']) && '' !== $temp_options['api']['wetu_api_username']) {
-                $this->api_username = $temp_options['api']['wetu_api_username'];
-            }
-            if (isset($temp_options['api']['wetu_api_password']) && '' !== $temp_options['api']['wetu_api_password']) {
-                $this->api_password = $temp_options['api']['wetu_api_password'];
+            if(!defined('WETU_API_KEY')) {
+
+				if (isset($temp_options['api']['wetu_api_key']) && '' !== $temp_options['api']['wetu_api_key']) {
+					$this->api_key = $temp_options['api']['wetu_api_key'];
+				}
+				if (isset($temp_options['api']['wetu_api_username']) && '' !== $temp_options['api']['wetu_api_username']) {
+					$this->api_username = $temp_options['api']['wetu_api_username'];
+				}
+				if (isset($temp_options['api']['wetu_api_password']) && '' !== $temp_options['api']['wetu_api_password']) {
+					$this->api_password = $temp_options['api']['wetu_api_password'];
+				}
+			}else{
+				$this->api_key = WETU_API_KEY;
             }
 
 			//Set the tab slug
