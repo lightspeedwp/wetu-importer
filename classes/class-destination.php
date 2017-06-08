@@ -440,6 +440,7 @@ class WETU_Importer_Destination extends WETU_Importer
 			$wetu_id = $_POST['wetu_id'];
 			if (isset($_POST['post_id'])) {
 				$post_id = $_POST['post_id'];
+				$this->current_post = get_post($post_id);
 			} else {
 				$post_id = 0;
 			}
@@ -507,31 +508,11 @@ class WETU_Importer_Destination extends WETU_Importer
 				'post_type' => 'destination',
 			);
 
-			$content_used_general_description = false;
-
 			//Set the post_content
-			if (false !== $importable_content && in_array('description', $importable_content)) {
-				if (isset($data[0]['content']['extended_description'])) {
-					$data_post_content = $data[0]['content']['extended_description'];
-				} elseif (isset($data[0]['content']['general_description'])) {
-					$data_post_content = $data[0]['content']['general_description'];
-					$content_used_general_description = true;
-				} elseif (isset($data[0]['content']['teaser_description'])) {
-					$data_post_content = $data[0]['content']['teaser_description'];
+			if (false !== $this->current_post && '' === $this->current_post->post_content && false !== $importable_content && in_array('description', $importable_content)) {
+				if (isset($data[0]['content']['general_description'])) {
+					$post['post_content'] = wp_strip_all_tags($data[0]['content']['general_description']);
 				}
-				$post['post_content'] = wp_strip_all_tags($data_post_content);
-			}
-
-			//set the post_excerpt
-			if (false !== $importable_content && in_array('excerpt', $importable_content)) {
-				if (isset($data[0]['content']['teaser_description'])) {
-					$data_post_excerpt = $data[0]['content']['teaser_description'];
-				} elseif (isset($data[0]['content']['extended_description'])) {
-					$data_post_excerpt = $data[0]['content']['extended_description'];
-				} elseif (isset($data[0]['content']['general_description']) && false === $content_used_general_description) {
-					$data_post_excerpt = $data[0]['content']['general_description'];
-				}
-				$post['post_excerpt'] = $data_post_excerpt;
 			}
 
 			if (false !== $id && '0' !== $id) {

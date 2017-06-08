@@ -146,6 +146,12 @@ class WETU_Importer {
 	 */
 	public $import_queue = array();
 
+	/**
+	 * Holds the current post that is being imported. Use to check the content and excerpt.
+	 *
+	 * @var      int
+	 */
+	public $current_post = false;
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -236,15 +242,15 @@ class WETU_Importer {
 			//Set the scaling options
             if (isset($temp_options[$this->plugin_slug]) && !empty($temp_options[$this->plugin_slug]) && isset($this->options['image_scaling'])) {
                 $this->scale_images = true;
-                $width = '800';
+                $width = '1024';
                 if (isset($this->options['width']) && '' !== $this->options['width']) {
                     $width = $this->options['width'];
                 }
-                $height = '600';
+                $height = '768';
                 if (isset($this->options['height']) && '' !== $this->options['height']) {
                     $height = $this->options['height'];
                 }
-                $cropping = 'raw';
+                $cropping = 'w';
                 if (isset($this->options['cropping']) && '' !== $this->options['cropping']) {
                     $cropping = $this->options['cropping'];
                 }
