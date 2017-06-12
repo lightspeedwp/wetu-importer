@@ -813,12 +813,12 @@ class WETU_Importer {
 	 */
 	public function set_featured_image($data,$id) {
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
-		    if('tour' === $this->tab_slug){
-		        $key = array_rand($data[0]['content']['images']);
-                $this->featured_image = $this->attach_image($data[0]['content']['images'][$key],$id);
-            }else{
+		   // if('tour' === $this->tab_slug){
+		        //$key = array_rand($data[0]['content']['images']);
+                //$this->featured_image = $this->attach_image($data[0]['content']['images'][$key],$id);
+            //}else{
 				$this->featured_image = $this->attach_image($data[0]['content']['images'][0],$id);
-            }
+           // }
 
 
 			if(false !== $this->featured_image){
