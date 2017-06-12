@@ -838,17 +838,16 @@ class WETU_Importer {
 	 */
 	public function set_banner_image($data,$id) {
 		if(is_array($data[0]['content']['images']) && !empty($data[0]['content']['images'])){
-		    if(isset($data[0]['destination_image']) && is_array($data[0]['destination_image'])) {
-				$temp_banner = $this->attach_image($data[0]['destination_image'], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
-			}else{
-				if ('tour' === $this->tab_slug) {
-					$key = array_rand($data[0]['content']['images']);
-					$temp_banner = $this->attach_image($data[0]['content']['images'][$key], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
-				} else {
+		    //if(isset($data[0]['destination_image']) && is_array($data[0]['destination_image'])) {
+				//$temp_banner = $this->attach_image($data[0]['destination_image'], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
+			//}else{
+				//if ('tour' === $this->tab_slug) {
+					//$key = array_rand($data[0]['content']['images']);
+					//$temp_banner = $this->attach_image($data[0]['content']['images'][$key], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
+				//} else {
 					$temp_banner = $this->attach_image($data[0]['content']['images'][1], $id, array('width' => '1920', 'height' => '600', 'cropping' => 'c'));
-				}
-            }
-
+				//}
+            //}
 
 			if(false !== $temp_banner){
 				$this->banner_image = $temp_banner;
@@ -857,9 +856,9 @@ class WETU_Importer {
 				$new_banner = array('banner_image'=>array('cmb-field-0'=>$this->banner_image));
 				add_post_meta($id,'image_group',$new_banner,true);
 
-				if(!empty($this->gallery_meta) && !in_array($this->banner_image,$this->gallery_meta)){
-					add_post_meta($id,'gallery',$this->banner_image,false);
-					$this->gallery_meta[] = $this->banner_image;
+				if(!empty($this->gallery_meta) && !in_array($this->banner_image,$this->gallery_meta)) {
+					//add_post_meta($id,'gallery',$this->banner_image,false);
+					//$this->gallery_meta[] = $this->banner_image;
 				}
 			}
 		}
