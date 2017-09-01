@@ -282,7 +282,7 @@ class WETU_Importer {
 	 * @since 1.0.0
 	 */
 	public static function compatible_version() {
-		if ( version_compare( PHP_VERSION, '5.6', '<' ) ) {
+		if ( version_compare( PHP_VERSION, '7.0', '<' ) ) {
 			return false;
 		}
 
