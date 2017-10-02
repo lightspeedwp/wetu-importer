@@ -1,42 +1,97 @@
-var gulp = require('gulp');
+const gulp         = require('gulp');
+const rtlcss       = require('gulp-rtlcss');
+const sass         = require('gulp-sass');
+const sourcemaps   = require('gulp-sourcemaps');
+const jshint       = require('gulp-jshint');
+const concat       = require('gulp-concat');
+const uglify       = require('gulp-uglify');
+const sort         = require('gulp-sort');
+const wppot        = require('gulp-wp-pot');
+const gettext      = require('gulp-gettext');
+const plumber      = require('gulp-plumber');
+const autoprefixer = require('gulp-autoprefixer');
+const gutil        = require('gulp-util');
+const rename       = require('gulp-rename');
+const minify       = require('gulp-minify-css');
+const map          = require('map-stream');
+const browserlist  = ['last 2 version', '> 1%'];
 
-gulp.task('default', function() {	 
+const errorreporter = map(function(file, cb) {
+	if (file.jshint.success) {
+		return cb(null, file);
+	}
+
+	console.log('JSHINT fail in', file.path);
+
+	file.jshint.results.forEach(function (result) {
+		if (!result.error) {
+			return;
+		}
+
+		const err = result.error
+		console.log(`  line ${err.line}, col ${err.character}, code ${err.code}, ${err.reason}`);
+	});
+
+	cb(null, file);
+});
+
+gulp.task('default', function() {
 	console.log('Use the following commands');
 	console.log('--------------------------');
-	console.log('gulp js				to compile the wetu-importer.js to wetu-importer.min.js');
-	console.log('gulp compile-js		to compile both JS files above');
-	console.log('gulp watch				to continue watching all files for changes, and build when changed');
-	console.log('gulp wordpress-pot		to compile the wetu-importer.pot');
-	console.log('gulp reload-node-js	Copy over the .js files from teh various node modules');
+	console.log('gulp compile-js     to compile the js to min.js');
+	console.log('gulp watch          to continue watching the files for changes');
+	console.log('gulp wordpress-lang to compile the wetu-importer.pot, en_EN.po and en_EN.mo');
 });
 
-var sass = require('gulp-sass');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var sort = require('gulp-sort');
-var wppot = require('gulp-wp-pot');
-
-gulp.task('js', function () {
-	gulp.src('assets/js/wetu-importer.js')
+gulp.task('js', function() {
+	return gulp.src('assets/js/wetu-importer.js')
+		.pipe(plumber({
+			errorHandler: function(err) {
+				console.log(err);
+				this.emit('end');
+			}
+		}))
+		.pipe(jshint())
+		//.pipe(errorreporter)
 		.pipe(concat('wetu-importer.min.js'))
 		.pipe(uglify())
-		.pipe(gulp.dest('assets/js'));
-});
-gulp.task('compile-js', (['js']));
-
-gulp.task('watch', function() {
-	gulp.watch('assets/js/wetu-importer.js', ['js']);
+		.pipe(gulp.dest('assets/js'))
 });
 
-gulp.task('wordpress-pot', function () {
-	gulp.src('**/*.php')
+gulp.task('compile-js', ['js']);
+
+gulp.task('watch-js', function () {
+	return gulp.watch('assets/js/**/*.js', ['compile-js']);
+});
+
+gulp.task('watch', ['watch-css', 'watch-js']);
+
+gulp.task('wordpress-pot', function() {
+	return gulp.src('**/*.php')
 		.pipe(sort())
 		.pipe(wppot({
 			domain: 'wetu-importer',
-			destFile: 'wetu-importer.pot',
 			package: 'wetu-importer',
-			bugReport: 'https://www.lsdev.biz/product/wetu-importer/issues',
 			team: 'LightSpeed <webmaster@lsdev.biz>'
 		}))
-		.pipe(gulp.dest('languages'));
+		.pipe(gulp.dest('languages/wetu-importer.pot'))
 });
+
+gulp.task('wordpress-po', function() {
+	return gulp.src('**/*.php')
+		.pipe(sort())
+		.pipe(wppot({
+			domain: 'wetu-importer',
+			package: 'wetu-importer',
+			team: 'LightSpeed <webmaster@lsdev.biz>'
+		}))
+		.pipe(gulp.dest('languages/en_EN.po'))
+});
+
+gulp.task('wordpress-po-mo', ['wordpress-po'], function() {
+	return gulp.src('languages/en_EN.po')
+		.pipe(gettext())
+		.pipe(gulp.dest('languages'))
+});
+
+gulp.task('wordpress-lang', (['wordpress-pot', 'wordpress-po-mo']));

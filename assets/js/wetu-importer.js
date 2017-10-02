@@ -111,27 +111,30 @@ var WETU_IMPORTER = {
 		var $this = this;
 		var $row = row;
 
+        $row.find('td.post-title strong').css('color','#555');
+
 	    jQuery.ajax( {
 	        url : lsx_tour_importer_params.ajax_url,
 	        data : args,
 	        method : 'POST'
 	    } )
         .always( function( data, textStatus, response ) {
-			if('none' == jQuery('.completed-list-wrapper').css('display')){
-				jQuery('.completed-list-wrapper').fadeIn('fast');
-			}
-			jQuery('.completed-list-wrapper ul').append(data);
-        	$row.fadeOut('fast', 
-	    		function(here){ 
-	            	jQuery(this).fadeOut('fast').remove();
-	        	});
+            $this.importNext();
         } )	    
         .done( function( data ) {
-        	$this.importNext();
+            if('none' == jQuery('.completed-list-wrapper').css('display')){
+                jQuery('.completed-list-wrapper').fadeIn('fast');
+            }
+            jQuery('.completed-list-wrapper ul').append(data);
+            $row.fadeOut('fast',
+                function(here){
+                    jQuery(this).fadeOut('fast').remove();
+                });
+
         } )
         .fail( function( reason ) {
             // Handles errors only
-            console.debug( reason );
+            $row.find('td.post-title strong').css('color','red');
         } );
 	},	
 
