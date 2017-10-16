@@ -313,6 +313,18 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 					$current_accommodation = $this->find_current_accommodation();
 
 					foreach ( $accommodation as $row_key => $row ) {
+
+						if ( 'Destination' === trim( $row['type'] ) ||
+							 'Activity' === trim( $row['type'] ) ||
+							 'Restaurant' === trim( $row['type'] ) ||
+						     'None' === trim( $row['type'] ) ||
+						     'Site / Attraction' === trim( $row['type'] ) ||
+						     '' === trim( $row['type'] )
+
+						) {
+							continue;
+						}
+
 						//If this is a current tour, add its ID to the row.
 						$row['post_id'] = 0;
 
