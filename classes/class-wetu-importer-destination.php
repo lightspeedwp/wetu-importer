@@ -679,7 +679,8 @@ class WETU_Importer_Destination extends WETU_Importer {
 	 * Set the Travel Style
 	 */
 	public function set_continent( $data, $id ) {
-		if ( isset( $data[0]['position']['country'] ) ) {
+
+		if ( isset( $data[0]['position']['country'] ) && $data[0]['map_object_id'] === $data[0]['position']['country_content_entity_id'] ) {
 			//get the continent code.
 			$continent_code = to_continent_label( to_continent_code( to_country_data( $data[0]['position']['country'], false ) ) );
 
@@ -693,11 +694,10 @@ class WETU_Importer_Destination extends WETU_Importer {
 						echo $term->get_error_message();
 					}
 				} else {
-					wp_set_object_terms( $id, intval( $term['term_id'] ), 'continent', true );
+					wp_set_object_terms( $id, sanitize_title( $continent_code ), 'continent', true );
 				}
-			} else {
-				wp_set_object_terms( $id, intval( $term['term_id'] ), 'continent', true );
 			}
+
 		}
 	}
 }
