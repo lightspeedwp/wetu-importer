@@ -76,7 +76,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 		//	$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
 		//} elseif ( false !== $this->api_key ) {
 		$this->url = 'https://wetu.com/API/Pins/' . $this->api_key;
-		$this->url_qs = '';
+		$this->url_qs = 'all=include';
 		//}
 
 		$temp_options = get_option( '_lsx-to_settings', false );
@@ -366,58 +366,59 @@ class WETU_Importer_Destination extends WETU_Importer {
 				}
 
 				if ( ! empty( $accommodation ) ) {
-					$current_accommodation = $this->find_current_destination();
+					$current_accommodation = $this->find_current_accommodation( 'destination' );
 
 					foreach ( $accommodation as $row_key => $row ) {
 
-						if ( 'Destination' !== trim( $row[0]['type'] ) ) {
-							continue;
-						}
+						if ( 'Destination' === trim( $row['type'] ) ) {
 
-						//If this is a current tour, add its ID to the row.
-						$row['post_id'] = 0;
+							print_r( $row );
 
-						if ( false !== $current_accommodation && array_key_exists( $row['id'], $current_accommodation ) ) {
-							$row['post_id'] = $current_accommodation[ $row['id'] ]->post_id;
-						}
+							//If this is a current tour, add its ID to the row.
+							$row['post_id'] = 0;
 
-						//If we are searching for
-						if ( false !== $post_status ) {
-							if ( 'import' === $post_status ) {
+							if ( false !== $current_accommodation && array_key_exists( $row['id'], $current_accommodation ) ) {
+								$row['post_id'] = $current_accommodation[ $row['id'] ]->post_id;
+							}
 
-								if ( is_array( $this->queued_imports ) && in_array( $row['post_id'],$this->queued_imports ) ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
-								} else {
-									continue;
-								}
-							} else {
-								if ( 0 === $row['post_id'] ) {
-									continue;
-								} else {
-									$current_status = get_post_status( $row['post_id'] );
+							//If we are searching for
+							if ( false !== $post_status ) {
+								if ( 'import' === $post_status ) {
 
-									if ( $current_status !== $post_status ) {
+									if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+									} else {
 										continue;
 									}
-								}
+								} else {
+									if ( 0 === $row['post_id'] ) {
+										continue;
+									} else {
+										$current_status = get_post_status( $row['post_id'] );
 
-								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
-							}
-						} else {
-							//Search through each keyword.
-							foreach ( $keyphrases as $keyphrase ) {
-								//Make sure the keyphrase is turned into an array
-								$keywords = explode( ' ',$keyphrase );
+										if ( $current_status !== $post_status ) {
+											continue;
+										}
+									}
 
-								if ( ! is_array( $keywords ) ) {
-									$keywords = array( $keywords );
-								}
-
-								if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
 								}
+							} else {
+								//Search through each keyword.
+								foreach ( $keyphrases as $keyphrase ) {
+									//Make sure the keyphrase is turned into an array
+									$keywords = explode( ' ', $keyphrase );
+
+									if ( ! is_array( $keywords ) ) {
+										$keywords = array( $keywords );
+									}
+
+									if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+									}
+								}
 							}
-						}
+						}// end of the destination if
 					}
 				}
 
@@ -440,24 +441,24 @@ class WETU_Importer_Destination extends WETU_Importer {
 		if ( false !== $row ) {
 
 			$status = 'import';
-			if ( 0 !== $row->post_id ) {
-				$status = '<a href="' . admin_url( '/post.php?post=' . $row->post_id . '&action=edit' ) . '" target="_blank">' . get_post_status( $row->post_id ) . '</a>';
+			if ( 0 !== $row['post_id'] ) {
+				$status = '<a href="' . admin_url( '/post.php?post=' . $row['post_id'] . '&action=edit' ) . '" target="_blank">' . get_post_status( $row['post_id'] ) . '</a>';
 			}
 
 			$row_html = '
-			<tr class="post-' . $row->post_id . ' type-tour" id="post-' . $row->post_id . '">
+			<tr class="post-' . $row['post_id'] . ' type-tour" id="post-' . $row['post_id'] . '">
 				<th class="check-column" scope="row">
-					<label for="cb-select-' . $row->meta_value . '" class="screen-reader-text">' . $row->name . '</label>
-					<input type="checkbox" data-identifier="' . $row->meta_value . '" value="' . $row->post_id . '" name="post[]" id="cb-select-' . $row->meta_value . '">
+					<label for="cb-select-' . $row['id'] . '" class="screen-reader-text">' . $row['name'] . '</label>
+					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
 				<td class="post-title page-title column-title">
-					<strong>' . $row->name . '</strong> - ' . $status . '
+					<strong>' . $row['name'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
-					<abbr title="' . date( 'Y/m/d', strtotime( $row->last_modified ) ) . '">' . date( 'Y/m/d', strtotime( $row->last_modified ) ) . '</abbr><br>Last Modified
+					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
-					' . $row->meta_value . '
+					' . $row['id'] . '
 				</td>
 			</tr>';
 			return $row_html;
