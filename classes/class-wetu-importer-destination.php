@@ -325,7 +325,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 		$return = false;
 
 		// @codingStandardsIgnoreLine
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === 'accommodation' ) {
+		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === 'destination' ) {
 			$accommodation = get_transient( 'lsx_ti_accommodation' );
 
 			if ( false === $accommodation ) {
@@ -366,7 +366,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 				}
 
 				if ( ! empty( $accommodation ) ) {
-					$current_accommodation = $this->find_current_accommodation();
+					$current_accommodation = $this->find_current_destination();
 
 					foreach ( $accommodation as $row_key => $row ) {
 
