@@ -1,5 +1,10 @@
 ## Change log
 
+### 1.1.1
+* Fix - Tours no longer use the same destination for the featured and the banner image
+* Dev - Added in a destination search which searches the cached "List" from the WETU content API
+* Dev - Changed the continents taxonomy to only apply to the countries and not the regions
+
 ### 1.1.0
 * Added compatibility with Tour Operator 1.1
 * Fix - Fixed small issues

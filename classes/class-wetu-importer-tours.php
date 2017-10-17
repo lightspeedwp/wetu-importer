@@ -1119,9 +1119,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 				print_r('</pre>');*/
 
 				$image_set = false;
+				$forced = false;
 
 				foreach ( $destinations as $destination ) {
-					if ( false === $image_set ) {
+					if ( false === $image_set && false === $forced ) {
 						$url = 'https://wetu.com/API/Pins/' . $this->api_key;
 						$url_qs = '';
 
@@ -1136,6 +1137,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 								//Set the featured image
 								if ( false !== $importable_content && in_array( 'featured_image', $importable_content ) ) {
 									$image_set = $this->set_featured_image( $adata, $tour );
+									if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
+										$forced = true;
+									}
+									continue;
 								}
 								if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
 									$image_set = $this->set_banner_image( $adata, $tour );

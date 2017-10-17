@@ -4,7 +4,7 @@
  * Plugin URI: https://www.lsdev.biz/product/wetu-importer/
  * Description: By integrating with the Wetu Tour Operator system, you are able to import your content into the LSX Tour Operators plugin format
  * Author: LightSpeed
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author URI: https://www.lsdev.biz/products/
  * License: GPL3+
  * Text Domain: wetu-importer
@@ -14,7 +14,7 @@
 define( 'WETU_IMPORTER_PATH',  plugin_dir_path( __FILE__ ) );
 define( 'WETU_IMPORTER_CORE',  __FILE__ );
 define( 'WETU_IMPORTER_URL',  plugin_dir_url( __FILE__ ) );
-define( 'WETU_IMPORTER_VER',  '1.1.0' );
+define( 'WETU_IMPORTER_VER',  '1.1.1' );
 
 register_activation_hook( WETU_IMPORTER_CORE, array( 'WETU_Importer', 'register_activation_hook' ) );
 
@@ -60,7 +60,7 @@ function lsx_to_wetu_importer_api_admin_init() {
 
 	$api_array = array(
 		'product_id' => 'Wetu Importer',
-		'version' => '1.1.0',
+		'version' => '1.1.1',
 		'instance' => $instance,
 		'email' => $data['email'],
 		'api_key' => $data['api_key'],
