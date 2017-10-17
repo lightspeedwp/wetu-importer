@@ -1190,27 +1190,42 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 */
 	public function set_banner_image( $data, $id ) {
 		$image_set = false;
+		$counter = 0;
 
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
-			$temp_banner = $this->attach_image( $data[0]['content']['images'][1], $id, array(
-				'width' => '1920',
-				'height' => '600',
-				'cropping' => 'c',
-			) );
 
-			if ( false !== $temp_banner ) {
-				$this->banner_image = $temp_banner;
+			foreach ( $data[0]['content']['images'] as $v ) {
+				/*print_r('<pre>');
+				print_r( $v );
+				print_r('</pre>');*/
 
-				delete_post_meta( $id,'image_group' );
+				if ( true === $image_set || 0 === $counter ) {
+					$counter++;
+					continue;
+				}
 
-				$new_banner = array(
-					'banner_image' => array(
-						'cmb-field-0' => $this->banner_image,
-					),
-				);
+				if ( ! $this->check_if_image_is_used( $v ) ) {
+					$temp_banner = $this->attach_image( $v, $id, array(
+						'width' => '1920',
+						'height' => '600',
+						'cropping' => 'c',
+					) );
 
-				add_post_meta( $id,'image_group',$new_banner,true );
-				$image_set = true;
+					if ( false !== $temp_banner ) {
+						$this->banner_image = $temp_banner;
+
+						delete_post_meta( $id,'image_group' );
+
+						$new_banner = array(
+							'banner_image' => array(
+								'cmb-field-0' => $this->banner_image,
+							),
+						);
+						add_post_meta( $id,'image_group',$new_banner,true );
+						$image_set = true;
+					}
+				}
+				$counter++;
 			}
 		}
 

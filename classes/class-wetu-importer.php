@@ -1031,6 +1031,7 @@ class WETU_Importer {
 			$url_filename = $temp_fragment[ count( $temp_fragment ) -1 ];
 			$url_filename = str_replace( array( '.jpg', '.png', '.jpeg' ),'',$url_filename );
 			$url_filename = trim( $url_filename );
+			$title = $url_filename;
 			$url_filename = str_replace( ' ','_',$url_filename );
 
 			if ( ! isset( $this->options['image_replacing'] ) && in_array( $url_filename, $this->found_attachments ) ) {
@@ -1063,6 +1064,8 @@ class WETU_Importer {
 			$url = $this->get_scaling_url( $image_sizes ) . $fragment;
 
 			$attach_id = $this->attach_external_image2( $url,$parent_id,'',$v['label'],$postdata );
+
+			$this->found_attachments[ $attach_id ] = $url_filename;
 
 			//echo($attach_id.' add image');
 			if ( ! empty( $attach_id ) ) {
