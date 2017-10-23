@@ -317,10 +317,9 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 						if ( 'Destination' === trim( $row['type'] ) ||
 							 'Activity' === trim( $row['type'] ) ||
 							 'Restaurant' === trim( $row['type'] ) ||
-						     'None' === trim( $row['type'] ) ||
-						     'Site / Attraction' === trim( $row['type'] ) ||
-						     '' === trim( $row['type'] )
-
+							 'None' === trim( $row['type'] ) ||
+							 'Site / Attraction' === trim( $row['type'] ) ||
+							 '' === trim( $row['type'] )
 						) {
 							continue;
 						}

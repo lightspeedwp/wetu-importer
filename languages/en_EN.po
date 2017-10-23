@@ -110,11 +110,11 @@ msgstr ""
 msgid "next"
 msgstr ""
 
-#: classes/class-wetu-importer-accommodation.php:238, classes/class-wetu-importer-tours.php:254
+#: classes/class-wetu-importer-accommodation.php:238, classes/class-wetu-importer-destination.php:731, classes/class-wetu-importer-tours.php:254
 msgid "Wetu Status"
 msgstr ""
 
-#: classes/class-wetu-importer-accommodation.php:480
+#: classes/class-wetu-importer-accommodation.php:491
 msgid "There was a problem importing your accommodation, please try refreshing the page."
 msgstr ""
 
@@ -186,7 +186,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: classes/class-wetu-importer-destination.php:497
+#: classes/class-wetu-importer-destination.php:521
 msgid "There was a problem importing your destination, please try refreshing the page."
 msgstr ""
 

@@ -721,7 +721,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 					wp_set_object_terms( $id, sanitize_title( $continent_code ), 'continent', true );
 				}
 			}
-
 		}
 	}
 
