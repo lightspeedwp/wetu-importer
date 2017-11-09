@@ -582,6 +582,8 @@ class WETU_Importer_Tours extends WETU_Importer {
 		$data_post_content = '';
 		$data_post_excerpt = '';
 
+		$current_post = get_post( $id );
+
 		$post = array(
 		  'post_type'		=> 'tour',
 		);
@@ -590,11 +592,9 @@ class WETU_Importer_Tours extends WETU_Importer {
 		$content_used_general_description = false;
 
 		if ( false !== $importable_content && in_array( 'description',$importable_content ) ) {
-			$data_post_content = '';
+			$data_post_content = $current_post->post_content;
 
-			if ( isset( $data['description'] ) ) {
-				$data_post_content = $data['description'];
-			} elseif ( isset( $data['summary'] ) ) {
+			if ( isset( $data['summary'] ) && ! empty( $data['summary'] ) ) {
 				$data_post_content = $data['summary'];
 			}
 
