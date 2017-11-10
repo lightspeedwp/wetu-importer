@@ -1196,9 +1196,9 @@ class WETU_Importer_Tours extends WETU_Importer {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
 
 			foreach ( $data[0]['content']['images'] as $v ) {
-				print_r('<pre>');
+				/*print_r('<pre>');
 				print_r( $v );
-				print_r('</pre>');
+				print_r('</pre>');*/
 
 				if ( true === $image_set || 0 === $counter ) {
 					$counter++;
