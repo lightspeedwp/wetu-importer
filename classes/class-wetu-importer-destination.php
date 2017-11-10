@@ -618,43 +618,43 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 			//Set the Electricity
 			if ( false !== $importable_content && in_array( 'electricity', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'electricity' );
+				$this->set_travel_info( $data, $id, 'electricity', $importable_content );
 			}
 			//Set the cuisine
 			if ( false !== $importable_content && in_array( 'cuisine', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'cuisine' );
+				$this->set_travel_info( $data, $id, 'cuisine', $importable_content );
 			}
 			//Set the banking
 			if ( false !== $importable_content && in_array( 'banking', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'banking' );
+				$this->set_travel_info( $data, $id, 'banking', $importable_content );
 			}
 			//Set the transport
 			if ( false !== $importable_content && in_array( 'transport', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'transport' );
+				$this->set_travel_info( $data, $id, 'transport', $importable_content );
 			}
 			//Set the dress
 			if ( false !== $importable_content && in_array( 'dress', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'dress' );
+				$this->set_travel_info( $data, $id, 'dress', $importable_content );
 			}
 			//Set the climate
 			if ( false !== $importable_content && in_array( 'climate', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'climate' );
+				$this->set_travel_info( $data, $id, 'climate', $importable_content );
 			}
 			//Set the Health
 			if ( false !== $importable_content && in_array( 'health', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'health' );
+				$this->set_travel_info( $data, $id, 'health', $importable_content );
 			}
 			//Set the Safety
 			if ( false !== $importable_content && in_array( 'safety', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'safety' );
+				$this->set_travel_info( $data, $id, 'safety', $importable_content );
 			}
 			//Set the Visa
 			if ( false !== $importable_content && in_array( 'visa', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'visa' );
+				$this->set_travel_info( $data, $id, 'visa', $importable_content );
 			}
 			//Set the General
 			if ( false !== $importable_content && in_array( 'additional_info', $importable_content ) ) {
-				$this->set_travel_info( $data, $id, 'additional_info' );
+				$this->set_travel_info( $data, $id, 'additional_info', $importable_content );
 			}
 
 			//Setup some default for use in the import
@@ -697,9 +697,14 @@ class WETU_Importer_Destination extends WETU_Importer {
 	/**
 	 * Saves the room data
 	 */
-	public function set_travel_info( $data, $id, $meta_key ) {
+	public function set_travel_info( $data, $id, $meta_key, $importable = array( 'none' ) ) {
 		if ( ! empty( $data[0]['travel_information'] ) && isset( $data[0]['travel_information'][ $meta_key ] ) ) {
 			$content = $data[0]['travel_information'][ $meta_key ];
+
+			if ( in_array( 'strip_tags', $importable ) ) {
+				$content = strip_tags( $content );
+			}
+
 			$this->save_custom_field( $content, $meta_key, $id );
 		}
 	}
