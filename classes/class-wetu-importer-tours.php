@@ -1111,12 +1111,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$this->shuffle_assoc( $this->destination_images );
 
 			foreach ( $this->destination_images as $tour => $destinations ) {
-				$this->shuffle_assoc( $destinations );
-
-				/*print_r('<pre>');
-				print_r( $tour );
-				print_r( $destinations );
-				print_r('</pre>');*/
+				//$this->shuffle_assoc( $destinations );
 
 				$image_set = false;
 				$forced = false;
@@ -1138,6 +1133,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 								if ( false !== $importable_content && in_array( 'featured_image', $importable_content ) ) {
 									$image_set = $this->set_featured_image( $adata, $tour );
 									if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
+										$image_set = $this->set_banner_image( $adata, $tour );
 										$forced = true;
 									}
 									continue;
@@ -1168,7 +1164,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 				print_r( $v );
 				print_r('</pre>');*/
 
-				if ( true === $image_set || 0 === $counter ) {
+				if ( true === $image_set ) {
 					$counter++;
 					continue;
 				}
@@ -1200,9 +1196,9 @@ class WETU_Importer_Tours extends WETU_Importer {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
 
 			foreach ( $data[0]['content']['images'] as $v ) {
-				/*print_r('<pre>');
+				print_r('<pre>');
 				print_r( $v );
-				print_r('</pre>');*/
+				print_r('</pre>');
 
 				if ( true === $image_set || 0 === $counter ) {
 					$counter++;

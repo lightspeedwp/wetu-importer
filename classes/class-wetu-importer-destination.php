@@ -199,6 +199,11 @@ class WETU_Importer_Destination extends WETU_Importer {
 											   type="checkbox" name="content[]"
 											   value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'wetu-importer' ); ?>
 									</li>
+									<li>
+										<input class="content" <?php $this->checked( $this->destination_options, 'unique_banner_image' ); ?>
+											   type="checkbox" name="content[]"
+											   value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'wetu-importer' ); ?>
+									</li>
 								<?php } ?>
 
 								<li>
@@ -661,7 +666,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 					$this->set_featured_image( $data, $id );
 				}
 				if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
-					$this->set_banner_image( $data, $id );
+					$this->set_banner_image( $data, $id, $importable_content );
 				}
 				//Import the main gallery
 				if ( false !== $importable_content && in_array( 'gallery', $importable_content ) ) {

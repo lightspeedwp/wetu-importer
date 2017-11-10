@@ -903,21 +903,20 @@ class WETU_Importer {
 	/**
 	 * Sets a banner image
 	 */
-	public function set_banner_image( $data, $id ) {
+	public function set_banner_image( $data, $id, $content = array( 'none' ) ) {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
-			if ( isset( $data[0]['destination_image'] ) && is_array( $data[0]['destination_image'] ) ) {
+			if ( in_array( 'unique_banner_image', $content ) && isset( $data[0]['destination_image'] ) && is_array( $data[0]['destination_image'] ) ) {
 				$temp_banner = $this->attach_image( $data[0]['destination_image'], $id, array(
 					'width' => '1920',
 					'height' => '600',
 					'cropping' => 'c',
-				) );
+				));
 			} else {
 				$temp_banner = $this->attach_image( $data[0]['content']['images'][1], $id, array(
 					'width' => '1920',
 					'height' => '600',
 					'cropping' => 'c',
-				) );
-
+				));
 			}
 
 			if ( false !== $temp_banner ) {
@@ -1025,7 +1024,7 @@ class WETU_Importer {
 	/**
 	 * Attaches 1 image
 	 */
-	public function attach_image( $v = false, $parent_id, $image_sizes = false ) {
+	public function attach_image( $v = false, $parent_id, $image_sizes = false, $banner = false ) {
 		if ( false !== $v ) {
 			$temp_fragment = explode( '/',$v['url_fragment'] );
 			$url_filename = $temp_fragment[ count( $temp_fragment ) -1 ];
