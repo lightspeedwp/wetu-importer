@@ -766,12 +766,12 @@ class WETU_Importer_Destination extends WETU_Importer {
 	public function check_for_parent( $data = array() ) {
 		global $wpdb;
 
-		if ( $data[0]['country_content_entity_id'] !== $data[0]['destination_content_entity_id'] ) {
+		if ( $data[0]['position']['country_content_entity_id'] !== $data[0]['position']['destination_content_entity_id'] ) {
 			$query = "
 			SELECT post_id
 			FROM {$wpdb->postmeta}
 			WHERE meta_key = 'lsx_wetu_id'
-			AND meta_valule = {$data[0]['country_content_entity_id']}";
+			AND meta_valule = {$data[0]['position']['country_content_entity_id']}";
 
 			$result = $wpdb->get_var( $query );
 
