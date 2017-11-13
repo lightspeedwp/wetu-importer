@@ -563,7 +563,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 			);
 
 			if ( false !== $importable_content && in_array( 'country', $importable_content ) ) {
-				$parent = $this->check_for_parent();
+				$parent = $this->check_for_parent( $data );
 				if( false !== $parent ) {
 					//$post['post_parent'] = $parent;
 				}
@@ -763,23 +763,25 @@ class WETU_Importer_Destination extends WETU_Importer {
 	/**
 	 * Save the list of Accommodation into an option
 	 */
-	public function check_for_parent( $wid = 0 ) {
+	public function check_for_parent( $data = array() ) {
 		global $wpdb;
 
-		$query = "
-		SELECT post_id
-		FROM {$wpdb->postmeta}
-		WHERE meta_key = 'lsx_wetu_id'
-		AND meta_valule = {$wid}";
+		if ( $data[0]['country_content_entity_id'] !== $data[0]['destination_content_entity_id'] ) {
+			$query = "
+			SELECT post_id
+			FROM {$wpdb->postmeta}
+			WHERE meta_key = 'lsx_wetu_id'
+			AND meta_valule = {$data[0]['country_content_entity_id']}";
 
-		print_r( $query );
+			$result = $wpdb->get_var( $query );
 
-		$result = $wpdb->get_var( $query );
+			print_r( $result );
 
-		if( ! empty( $result ) && '' !== $result && false !== $result ) {
-			return $result;
-		} else {
-			return false;
+			if( ! empty( $result ) && '' !== $result && false !== $result ) {
+				return $result;
+			}
 		}
+
+		return false;
 	}
 }
