@@ -565,7 +565,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 			if ( false !== $importable_content && in_array( 'country', $importable_content ) ) {
 				$parent = $this->check_for_parent( $data );
 				if( false !== $parent ) {
-					//$post['post_parent'] = $parent;
+					$post['post_parent'] = $parent;
 				}
 			}
 
@@ -774,8 +774,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 			AND meta_valule = {$data[0]['position']['country_content_entity_id']}";
 
 			$result = $wpdb->get_var( $query );
-
-			print_r( $result );
 
 			if( ! empty( $result ) && '' !== $result && false !== $result ) {
 				return $result;
