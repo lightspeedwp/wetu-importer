@@ -771,7 +771,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 			SELECT post_id
 			FROM {$wpdb->postmeta}
 			WHERE meta_key = 'lsx_wetu_id'
-			AND meta_valule = {$data[0]['position']['country_content_entity_id']}";
+			AND meta_value = {$data[0]['position']['country_content_entity_id']}";
 
 			$result = $wpdb->get_var( $query );
 
