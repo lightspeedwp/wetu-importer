@@ -184,6 +184,10 @@ class WETU_Importer_Destination extends WETU_Importer {
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
 							<ul>
 								<li>
+									<input class="content" <?php $this->checked( $this->destination_options, 'country' ); ?>
+										   type="checkbox" name="content[]"
+										   value="country"/> <?php esc_html_e( 'Set Country', 'wetu-importer' ); ?></li>
+								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'continent' ); ?>
 										   type="checkbox" name="content[]"
 										   value="continent"/> <?php esc_html_e( 'Set Continent', 'wetu-importer' ); ?></li>
@@ -558,6 +562,13 @@ class WETU_Importer_Destination extends WETU_Importer {
 				'post_type' => 'destination',
 			);
 
+			if ( false !== $importable_content && in_array( 'country', $importable_content ) ) {
+				$parent = $this->check_for_parent();
+				if( false !== $parent ) {
+					//$post['post_parent'] = $parent;
+				}
+			}
+
 			//Set the post_content
 			if ( false !== $importable_content && in_array( 'description', $importable_content ) ) {
 				if ( isset( $data[0]['content']['general_description'] ) ) {
@@ -752,17 +763,23 @@ class WETU_Importer_Destination extends WETU_Importer {
 	/**
 	 * Save the list of Accommodation into an option
 	 */
-	public function update_options() {
-		$data = file_get_contents( $this->url . '/List?' . $this->url_qs );
+	public function check_for_parent( $wid = 0 ) {
+		global $wpdb;
 
-		$accommodation = json_decode( $data, true );
+		$query = "
+		SELECT post_id
+		FROM {$wpdb->postmeta}
+		WHERE meta_key = 'lsx_wetu_id'
+		AND meta_valule = {$wid}";
 
-		if ( isset( $accommodation['error'] ) ) {
-			return $accommodation['error'];
-		} elseif ( isset( $accommodation ) && ! empty( $accommodation ) ) {
-			set_transient( 'lsx_ti_accommodation',$accommodation,60 * 60 * 2 );
-			return true;
+		print_r( $query );
+
+		$result = $wpdb->get_var( $query );
+
+		if( ! empty( $result ) && '' !== $result && false !== $result ) {
+			return $result;
+		} else {
+			return false;
 		}
 	}
-
 }
