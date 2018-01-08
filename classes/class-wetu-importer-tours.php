@@ -592,6 +592,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 		$content_used_general_description = false;
 
 		if ( false !== $importable_content && in_array( 'description',$importable_content ) ) {
+
 			$data_post_content = $current_post->post_content;
 
 			if ( isset( $data['summary'] ) && ! empty( $data['summary'] ) ) {
@@ -608,15 +609,30 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$id = wp_update_post( $post );
 			$prev_date = get_post_meta( $id,'lsx_wetu_modified_date',true );
 			update_post_meta( $id,'lsx_wetu_modified_date',strtotime( $data['last_modified'] ),$prev_date );
+
+			//If the logger is enabled then log the data being saved.
+			if ( $this->debug_enabled ) {
+				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
+			}
+
 		} else {
 			//Set the name
 			if ( isset( $data['name'] ) ) {
 				$post_name = wp_unique_post_slug( sanitize_title( $data['name'] ),$id, 'draft', 'tour', 0 );
 			}
 
+			if ( ! isset( $post['post_content'] ) ) {
+				$post['post_content'] = " ";
+			}
+
 			$post['post_name'] = $post_name;
 			$post['post_title'] = $data['name'];
 			$post['post_status'] = 'publish';
+
+			//If the logger is enabled then log the data being saved.
+			if ( $this->debug_enabled ) {
+				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
+			}
 			$id = wp_insert_post( $post );
 
 			//Save the WETU ID and the Last date it was modified.

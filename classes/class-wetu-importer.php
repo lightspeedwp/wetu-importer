@@ -181,7 +181,19 @@ class WETU_Importer {
 	 */
 	public $destination_settings = false;
 
+	/**
+	 * Hold the flag to let you know if the debug is enabled or not.
+	 *
+	 * @var      int
+	 */
+	public $debug_enabled = false;
 
+	/**
+	 * Logger Class
+	 *
+	 * @var      \lsx\LSX_Logger
+	 */
+	public $logger = false;
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -248,6 +260,11 @@ class WETU_Importer {
 			$this->api_key = false;
 			$this->api_username = false;
 			$this->api_password = false;
+
+			if ( false !== $this->options['enable_debug'] ) {
+				$this->debug_enabled = true;
+				$this->logger = \lsx\LSX_Logger::init();
+			}
 
 			if ( ! defined( 'WETU_API_KEY' ) ) {
 				if ( isset( $temp_options['api']['wetu_api_key'] ) && '' !== $temp_options['api']['wetu_api_key'] ) {

@@ -74,6 +74,7 @@ add_action( 'admin_init', 'lsx_to_wetu_importer_api_admin_init' );
 
 /* ======================= Below is the Plugin Class init ========================= */
 
+require_once( WETU_IMPORTER_PATH . 'classes/class-lsx-logger.php' );
 require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer.php' );
 //require_once(WETU_IMPORTER_PATH.'classes/class-wetu-importer-connect-accommodation.php');
 require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer-settings.php' );

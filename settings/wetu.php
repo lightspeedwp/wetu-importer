@@ -7,6 +7,14 @@
 	<div id="ui-general" class="ui-tab active">
 		<table class="form-table">
 			<tbody>
+				<tr class="form-field">
+					<th scope="row">
+						<label for="wetu_debug"><?php esc_html_e( 'Enable debug mode', 'wetu-importer' ); ?></label>
+					</th>
+					<td>
+						<input type="checkbox" {{#if wetu_debug}} checked="checked" {{/if}} name="wetu_debug" />
+					</td>
+				</tr>
 				<tr class="form-field -wrap">
 					<th scope="row">
 						<label for="disable_tour_descriptions">Disable Tour Descriptions</label>
