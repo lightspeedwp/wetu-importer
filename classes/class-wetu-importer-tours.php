@@ -1205,7 +1205,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	/**
 	 * Sets a banner image
 	 */
-	public function set_banner_image( $data, $id ) {
+	public function set_banner_image( $data, $id, $content = array( 'none' ) ) {
 		$image_set = false;
 		$counter = 0;
 
