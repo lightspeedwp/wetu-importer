@@ -413,7 +413,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 							}
 						} else {
 							//Search through each keyword.
-							/*foreach ( $keyphrases as $keyphrase ) {
+							foreach ( $keyphrases as $keyphrase ) {
 								//Make sure the keyphrase is turned into an array
 								$keywords = explode( ' ', $keyphrase );
 
@@ -424,7 +424,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 								if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
 								}
-							}*/
+							}
 						}
 					}
 				}
