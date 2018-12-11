@@ -335,47 +335,43 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 		// @codingStandardsIgnoreLine
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === 'destination' ) {
-			$accommodation = get_transient( 'lsx_ti_accommodation' );
 
-			//if ( false === $accommodation ) {
-				//$this->update_options();
-			//}
+			$searched_items = false;
 
-			//if ( false !== $accommodation ) {
-				$searched_items = false;
-
+			// @codingStandardsIgnoreLine
+			if ( isset( $_POST['keyword'] ) ) {
 				// @codingStandardsIgnoreLine
-				if ( isset( $_POST['keyword'] ) ) {
-					// @codingStandardsIgnoreLine
-					$keyphrases = $_POST['keyword'];
-				} else {
-					$keyphrases = array( 0 );
-				}
+				$keyphrases = $_POST['keyword'];
+			} else {
+				$keyphrases = array( 0 );
+			}
 
-				if ( ! is_array( $keyphrases ) ) {
-					$keyphrases = array( $keyphrases );
-				}
-				foreach ( $keyphrases as &$keyword ) {
-					$keyword = ltrim( rtrim( $keyword ) );
-				}
+			if ( ! is_array( $keyphrases ) ) {
+				$keyphrases = array( $keyphrases );
+			}
+			foreach ( $keyphrases as &$keyword ) {
+				$keyword = ltrim( rtrim( $keyword ) );
+			}
 
-				$post_status = false;
+			$post_status = false;
 
-				if ( in_array( 'publish',$keyphrases ) ) {
-					$post_status = 'publish';
-				}
-				if ( in_array( 'pending',$keyphrases ) ) {
-					$post_status = 'pending';
-				}
-				if ( in_array( 'draft',$keyphrases ) ) {
-					$post_status = 'draft';
-				}
-				if ( in_array( 'import',$keyphrases ) ) {
-					$post_status = 'import';
-				}
+			if ( in_array( 'publish',$keyphrases ) ) {
+				$post_status = 'publish';
+			}
+			if ( in_array( 'pending',$keyphrases ) ) {
+				$post_status = 'pending';
+			}
+			if ( in_array( 'draft',$keyphrases ) ) {
+				$post_status = 'draft';
+			}
+			if ( in_array( 'import',$keyphrases ) ) {
+				$post_status = 'import';
+			}
+
+			// If there is a post status use it.
+			if ( false !== $post_status ) {
 
 				$accommodation = array();
-
 				$current_accommodation = $this->find_current_accommodation( 'destination' );
 				if ( ! empty( $current_accommodation ) ) {
 					foreach ( $current_accommodation as $cs_key => $ccs_id ) {
@@ -383,57 +379,54 @@ class WETU_Importer_Destination extends WETU_Importer {
 					}
 				}
 
+				// Run through each accommodation and use it.
 				if ( ! empty( $accommodation ) ) {
-
 					foreach ( $accommodation as $row_key => $row ) {
+						if ( 'import' === $post_status ) {
 
-						//If this is a current tour, add its ID to the row.
-
-						//If we are searching for
-						if ( false !== $post_status ) {
-							if ( 'import' === $post_status ) {
-
-								if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
-								} else {
-									continue;
-								}
-							} else {
-								if ( 0 === $row['post_id'] ) {
-									continue;
-								} else {
-									$current_status = get_post_status( $row['post_id'] );
-
-									if ( $current_status !== $post_status ) {
-										continue;
-									}
-								}
-
+							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'],$this->queued_imports ) ) {
 								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+							} else {
+								continue;
 							}
 						} else {
-							//Search through each keyword.
-							foreach ( $keyphrases as $keyphrase ) {
-								//Make sure the keyphrase is turned into an array
-								$keywords = explode( ' ', $keyphrase );
+							if ( 0 === $row['post_id'] ) {
+								continue;
+							} else {
+								$current_status = get_post_status( $row['post_id'] );
 
-								if ( ! is_array( $keywords ) ) {
-									$keywords = array( $keywords );
-								}
-
-								if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+								if ( $current_status !== $post_status ) {
+									continue;
 								}
 							}
+							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
 						}
 					}
 				}
 
-				if ( false !== $searched_items ) {
-					ksort( $searched_items );
-					$return = implode( $searched_items );
+			} else {
+
+				$key_string_search = implode( '+', $keyphrases );
+				$search_data = file_get_contents( $this->url . '/Search/' . $key_string_search . '/?all=include' );
+				$search_data = json_decode( $search_data, true );
+
+				if ( ! isset( $search_data['error'] ) ) {
+					foreach ( $search_data as $sdata ) {
+
+						if ( 'Destination' !== trim( $sdata['type'] ) ) {
+							continue;
+						}
+
+						$sdata['post_id'] = 0;
+						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata );
+					}
 				}
-			//}
+			}
+
+			if ( false !== $searched_items ) {
+				ksort( $searched_items );
+				$return = implode( $searched_items );
+			}
 
 			print_r( $return );
 		}

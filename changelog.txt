@@ -2,6 +2,7 @@
 
 ### 1.1.2
 * Dev - Removing the need to index the accommodation and destination items from WETU.
+* Dev - Changed the Accommodation and Destination search to use the WETU API Search.
 
 ### 1.1.1
 * Fix - Tours no longer use the same destination for the featured and the banner image
