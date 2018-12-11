@@ -239,9 +239,9 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 
 		$accommodation = get_transient( 'lsx_ti_accommodation' );
 
-		if ( '' === $accommodation || false === $accommodation || isset( $_GET['refresh_accommodation'] ) ) {
-			$this->update_options();
-		}
+		//if ( '' === $accommodation || false === $accommodation || isset( $_GET['refresh_accommodation'] ) ) {
+			//$this->update_options();
+		//}
 
 		echo '</div>';
 	}
@@ -270,13 +270,13 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 
 		// @codingStandardsIgnoreLine
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === 'accommodation' ) {
-			$accommodation = get_transient( 'lsx_ti_accommodation' );
+			//$accommodation = get_transient( 'lsx_ti_accommodation' );
 
-			if ( false === $accommodation ) {
-				$this->update_options();
-			}
+			//if ( false === $accommodation ) {
+				//$this->update_options();
+			//}
 
-			if ( false !== $accommodation ) {
+			//if ( false !== $accommodation ) {
 				$searched_items = false;
 
 				// @codingStandardsIgnoreLine
@@ -309,8 +309,17 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 					$post_status = 'import';
 				}
 
+				$accommodation = array();
+
+				$current_accommodation = $this->find_current_accommodation();
+
+				if ( ! empty( $current_accommodation ) ) {
+					foreach ( $current_accommodation as $cs_key => $ccs_id ) {
+						$accommodation[] = $this->prepare_row_attributes( $cs_key, $ccs_id->post_id );
+					}
+				}
+
 				if ( ! empty( $accommodation ) ) {
-					$current_accommodation = $this->find_current_accommodation();
 
 					foreach ( $accommodation as $row_key => $row ) {
 
@@ -322,13 +331,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 							 '' === trim( $row['type'] )
 						) {
 							continue;
-						}
-
-						//If this is a current tour, add its ID to the row.
-						$row['post_id'] = 0;
-
-						if ( false !== $current_accommodation && array_key_exists( $row['id'], $current_accommodation ) ) {
-							$row['post_id'] = $current_accommodation[ $row['id'] ]->post_id;
 						}
 
 						//If we are searching for
@@ -375,12 +377,22 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 					ksort( $searched_items );
 					$return = implode( $searched_items );
 				}
-			}
+			//}
 
 			print_r( $return );
 		}
 
 		die();
+	}
+
+	public function prepare_row_attributes( $cs_key, $ccs_id ) {
+		return 	$row_item = array(
+			'id' => $cs_key,
+			'type' => 'Accommodation',
+			'name' => get_the_title( $ccs_id ),
+			'last_modified' => date('Y-m-d', strtotime( 'now' ) ),
+			'post_id' => $ccs_id,
+		);
 	}
 
 	/**

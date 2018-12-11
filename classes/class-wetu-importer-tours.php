@@ -256,6 +256,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
 
+			print_r('<pre>');
+			print_r($result);
+			print_r('</pre>');
+
 			if ( true === $result ) {
 				echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span>';
 				echo ' - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
@@ -318,9 +322,8 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 		add_option( 'lsx_ti_tours_api_options',$options );
 
-		$data = file_get_contents( $this->url . '/V7/List?' . $this->url_qs );
-
-		$tours = json_decode( $data, true );
+		$data = wp_remote_get( $this->url . '/V7/List?' . $this->url_qs );
+		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
 
 		if ( isset( $tours['error'] ) ) {
 			return $tours['error'];
