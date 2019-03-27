@@ -417,7 +417,12 @@ class WETU_Importer_Destination extends WETU_Importer {
 							continue;
 						}
 
-						$sdata['post_id'] = 0;
+						$temp_id = $this->get_post_id_by_key_value( $sdata['id'] );
+						if ( false === $temp_id ) {
+							$sdata['post_id'] = 0;
+						} else {
+							$sdata['post_id'] = $temp_id;
+						}
 						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata );
 					}
 				}
@@ -433,6 +438,20 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 		die();
 	}
+	
+	private function get_post_id_by_key_value( $wetu_id = false ) {
+		global $wpdb;
+		$id = false;
+
+		if ( false !== $wetu_id && '' !== $wetu_id ) {
+			$result = $wpdb->get_results("SELECT post_id FROM `vtbY3n_postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'");
+			if ( false !== $result && ! empty( $result ) ) {
+				$id = $result;
+			}
+		}
+
+		return $id;
+	}	
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
 		return 	$row_item = array(
