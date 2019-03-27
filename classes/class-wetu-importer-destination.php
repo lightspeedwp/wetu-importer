@@ -444,7 +444,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 		$id = false;
 
 		if ( false !== $wetu_id && '' !== $wetu_id ) {
-			$result = $wpdb->get_results("SELECT post_id FROM `vtbY3n_postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'");
+			$result = $wpdb->get_var("SELECT post_id FROM `vtbY3n_postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'");
 			if ( false !== $result && ! empty( $result ) ) {
 				$id = $result;
 			}
