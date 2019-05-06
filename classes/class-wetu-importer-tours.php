@@ -98,6 +98,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	public function set_variables() {
 		parent::set_variables();
 
+		//https://wetu.com/API/Itinerary/V8/Get
 		if ( false !== $this->api_username && false !== $this->api_password ) {
 			$this->url    = 'https://wetu.com/API/Itinerary/';
 			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
@@ -256,10 +257,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
 
-			print_r('<pre>');
-			print_r($result);
-			print_r('</pre>');
-
 			if ( true === $result ) {
 				echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span>';
 				echo ' - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
@@ -322,7 +319,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 		add_option( 'lsx_ti_tours_api_options',$options );
 
-		$data = wp_remote_get( $this->url . '/V7/List?' . $this->url_qs );
+		$data = wp_remote_get( $this->url . '/V8/List?' . $this->url_qs );
 		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
 
 		if ( isset( $tours['error'] ) ) {
@@ -536,7 +533,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 				$content = false;
 			}
 
-			$jdata = file_get_contents( 'http://wetu.com/API/Itinerary/V7/Get?id=' . $wetu_id );
+			$jdata = file_get_contents( 'http://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
 
 			if ( $jdata ) {
 				$jdata = json_decode( $jdata,true );
