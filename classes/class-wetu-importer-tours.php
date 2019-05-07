@@ -713,8 +713,8 @@ class WETU_Importer_Tours extends WETU_Importer {
 			}
 
 			//If the Nights are the same mount of days in the array,  then it isnt "By Destination"
-			if ( ((1 <= (int) $leg['nights'] && isset( $leg['days'] ))) || 0 === $leg['itinerary_leg_id'] ) {
-				foreach ( $leg['days'] as $day ) {
+			if ( ((1 <= (int) $leg['nights'] && isset( $leg['periods'] ))) || 0 === $leg['itinerary_leg_id'] ) {
+				foreach ( $leg['periods'] as $day ) {
 					$current_day = array();
 					$current_day['title'] = esc_attr( 'Day ', 'wetu-importer' ) . $day_counter;
 
