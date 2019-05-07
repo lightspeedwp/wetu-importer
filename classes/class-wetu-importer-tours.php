@@ -184,7 +184,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 								<li><input class="content" <?php $this->checked( $this->tour_options,'price' ); ?> type="checkbox" name="content[]" value="price" /> <?php esc_html_e( 'Price','wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'duration' ); ?> type="checkbox" name="content[]" value="duration" /> <?php esc_html_e( 'Duration','wetu-importer' ); ?></li>
-
+								<li><input class="content" <?php $this->checked( $this->tour_options,'group_size' ); ?> type="checkbox" name="content[]" value="group_size" /> <?php esc_html_e( 'Group Size','wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'category' ); ?> type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category','wetu-importer' ); ?></li>
 
 								<li><input class="content" <?php $this->checked( $this->tour_options,'itineraries' ); ?> type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','wetu-importer' ); ?></li>
@@ -533,7 +533,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 				$content = false;
 			}
 
-			$jdata = file_get_contents( 'http://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
+			$jdata = file_get_contents( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
 
 			if ( $jdata ) {
 				$jdata = json_decode( $jdata,true );
@@ -651,6 +651,11 @@ class WETU_Importer_Tours extends WETU_Importer {
 		if ( false !== $importable_content && in_array( 'duration',$importable_content ) ) {
 			$this->set_duration( $data,$id );
 		}
+
+		//Set the Group Size
+		if ( false !== $importable_content && in_array( 'group_size',$importable_content ) ) {
+			$this->set_group_size( $data,$id );
+		}		
 
 		if ( false !== $importable_content && in_array( 'itineraries',$importable_content ) && isset( $data['legs'] ) && ! empty( $data['legs'] ) ) {
 			$this->process_itineraries( $data,$id,$importable_content );
@@ -904,6 +909,16 @@ class WETU_Importer_Tours extends WETU_Importer {
 	}
 
 	/**
+	 * Set the group size
+	 */
+	public function set_group_size( $data, $id ) {
+		if ( isset( $data['group_size'] ) && ! empty( $data['group_size'] ) ) {
+			$group_size = $data['group_size'];
+			$this->save_custom_field( $group_size,'group_size',$id );
+		}
+	}	
+
+	/**
 	 * Connects the Accommodation if its available
 	 */
 	public function set_accommodation( $day, $id ) {
@@ -987,7 +1002,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 					$country_id = $this->set_country( $country_wetu_id, $id );
 				}
 			} else {
-				$destination_json = file_get_contents( 'http://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
+				$destination_json = file_get_contents( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
 
 				if ( $destination_json ) {
 					$destination_data = json_decode( $destination_json, true );
@@ -1069,7 +1084,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$country_id = $this->current_destinations[ $country_wetu_id ];
 			$this->destination_images[ $id ][] = array( $country_id, $country_wetu_id );
 		} else {
-			$country_json = file_get_contents( 'http://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
+			$country_json = file_get_contents( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
 
 			if ( $country_json ) {
 				$country_data = json_decode( $country_json, true );
