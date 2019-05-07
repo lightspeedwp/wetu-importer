@@ -261,10 +261,10 @@ class WETU_Importer {
 			$this->api_username = false;
 			$this->api_password = false;
 
-			if ( false !== $this->options['enable_debug'] ) {
+			/*if ( false !== $this->options['enable_debug'] ) {
 				$this->debug_enabled = true;
 				$this->logger = \lsx\LSX_Logger::init();
-			}
+			}*/
 
 			if ( ! defined( 'WETU_API_KEY' ) ) {
 				if ( isset( $temp_options['api']['wetu_api_key'] ) && '' !== $temp_options['api']['wetu_api_key'] ) {

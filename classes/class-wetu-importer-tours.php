@@ -178,7 +178,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 							<ul>
 								<li><input class="content select-all" <?php $this->checked( $this->tour_options,'all' ); ?> type="checkbox"name="content[]"  value="all" /> <?php esc_html_e( 'Select All','wetu-importer' ); ?></li>
 
-								<?php if ( isset( $this->options ) && 'on' !== $this->options['disable_tour_descriptions'] ) { ?>
+								<?php if ( isset( $this->options ) && ! isset( $this->options['disable_tour_descriptions'] ) ) { ?>
 									<li><input class="content" <?php $this->checked( $this->tour_options,'description' ); ?> type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description','wetu-importer' ); ?></li>
 								<?php } ?>
 
@@ -534,6 +534,11 @@ class WETU_Importer_Tours extends WETU_Importer {
 			}
 
 			$jdata = file_get_contents( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
+
+			//wp_remote_get
+			print_r('<pre>');
+			print_r($jdata);
+			print_r('</pre>');
 
 			if ( $jdata ) {
 				$jdata = json_decode( $jdata,true );
