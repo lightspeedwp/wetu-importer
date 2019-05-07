@@ -147,14 +147,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 							<th class="check-column" scope="row">
 								<label for="cb-select-0" class="screen-reader-text"><?php esc_html_e( 'Enter a title to search for and press enter','wetu-importer' ); ?></label>
 							</th>
-							<td class="post-title page-title column-title">
+							<td class="date column-date column-ref" colspan="4">
 								<strong>
-									<?php esc_html_e( 'Enter a title to search for','wetu-importer' ); ?>
-								</strong>
-							</td>
-							<td class="date column-date">
-							</td>
-							<td class="ssid column-ssid">
+									<?php esc_html_e( 'Search for tours using the search form above','wetu-importer' ); ?>
+								</strong>							
 							</td>
 						</tr>
 					</tbody>
@@ -455,7 +451,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 								if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+								} else if ( $this->multineedle_stripos( ltrim( rtrim( $row['reference_number'] ) ), $keywords ) !== false ) {
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+								}else if ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
 								}
+
+								//Add in the year and ref
 							}
 						}
 					}
@@ -536,9 +538,9 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$jdata = file_get_contents( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
 
 			//wp_remote_get
-			print_r('<pre>');
+			/*print_r('<pre>');
 			print_r($jdata);
-			print_r('</pre>');
+			print_r('</pre>');*/
 
 			if ( $jdata ) {
 				$jdata = json_decode( $jdata,true );
@@ -1359,5 +1361,45 @@ class WETU_Importer_Tours extends WETU_Importer {
 			}
 		}
 	}
+
+	/**
+	 * The header of the item list
+	 */
+	public function table_header() {
+		?>
+		<thead>
+		<tr>
+			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+				<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+				<input type="checkbox" id="cb-select-all-1">
+			</th>
+			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col">Ref</th>
+			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col">Title</th>
+			<th style="" class="manage-column column-date" id="date" scope="col">Date</th>
+			<th style="" class="manage-column column-ssid" id="ssid" scope="col">WETU ID</th>
+		</tr>
+		</thead>
+		<?php
+	}
+
+	/**
+	 * The footer of the item list
+	 */
+	public function table_footer() {
+		?>
+		<tfoot>
+		<tr>
+			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+				<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+				<input type="checkbox" id="cb-select-all-1">
+			</th>
+			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col">Ref</th>
+			<th style="" class="manage-column column-title" scope="col">Title</th>
+			<th style="" class="manage-column column-date" scope="col">Date</th>
+			<th style="" class="manage-column column-ssid" scope="col">WETU ID</th>
+		</tr>
+		</tfoot>
+		<?php
+	}	
 
 }
