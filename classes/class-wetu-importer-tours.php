@@ -489,10 +489,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 				<th class="check-column" scope="row">
 					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['name'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['identifier'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['identifier'] . '">
-				</th>
+				</th>			
 				<td class="post-title page-title column-title">
 					<strong>' . $row['name'] . '</strong> - ' . $status . '
 				</td>
+				<td class="date column-date">
+					' . $row['reference_number'] . '
+				</td>				
 				<td class="date column-date">
 					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
@@ -1370,13 +1373,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 		<thead>
 		<tr>
 			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
-				<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col">Ref</th>
-			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col">Title</th>
-			<th style="" class="manage-column column-date" id="date" scope="col">Date</th>
-			<th style="" class="manage-column column-ssid" id="ssid" scope="col">WETU ID</th>
+			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col"><?php esc_attr_e( 'Title', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col"><?php esc_attr_e( 'Ref', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="date" scope="col"><?php esc_attr_e( 'Date', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-ssid" id="ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'wetu-importer' ); ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -1390,13 +1393,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 		<tfoot>
 		<tr>
 			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
-				<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col">Ref</th>
-			<th style="" class="manage-column column-title" scope="col">Title</th>
-			<th style="" class="manage-column column-date" scope="col">Date</th>
-			<th style="" class="manage-column column-ssid" scope="col">WETU ID</th>
+			<th style="" class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col"><?php esc_attr_e( 'Ref', 'wetu-importer' ); ?></th>			
+			<th style="" class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'wetu-importer' ); ?></th>
 		</tr>
 		</tfoot>
 		<?php
