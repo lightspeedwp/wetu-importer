@@ -542,20 +542,16 @@ class WETU_Importer_Tours extends WETU_Importer {
 			} else {
 				$content = false;
 			}
-			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
+			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );		
 
-			if ( $jdata ) {
+			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$jdata = json_decode( $jdata['body'], true );
-				if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && '200' === $jdata['response']['code'] ) {
-					$return = $this->import_row( $jdata, $wetu_id, $post_id, $content );
-					$this->format_completed_row( $return );
-					$this->save_queue();
-					$this->cleanup_posts();
-					$this->attach_destination_images( $content );
-					$this->clean_attached_destinations( $return );
-				} else {
-					$this->format_error( esc_html__( 'There was a problem importing your tour, please try refreshing the page.','wetu-importer' ) );
-				}
+				$return = $this->import_row( $jdata, $wetu_id, $post_id, $content );
+				$this->format_completed_row( $return );
+				$this->save_queue();
+				$this->cleanup_posts();
+				$this->attach_destination_images( $content );
+				$this->clean_attached_destinations( $return );
 			} else {
 				$this->format_error( esc_html__( 'There was a problem importing your tour, please contact support.', 'wetu-importer' ) );
 			}
@@ -584,7 +580,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 * @param $data array
 	 * @param $wetu_id string
 	 */
-	public function import_row( $data, $wetu_id, $id = 0, $importable_content = false, $old1 = false, $old2 = false ) {
+	public function import_row( $data, $wetu_id, $id = 0, $importable_content = array(), $old1 = false, $old2 = false ) {
 		$post_name = '';
 		$data_post_content = '';
 		$data_post_excerpt = '';
@@ -597,7 +593,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 		$content_used_general_description = false;
 
-		if ( false !== $importable_content && in_array( 'description', $importable_content ) ) {
+		if ( ! empty( $importable_content ) && in_array( 'description', $importable_content ) ) {
 			$data_post_content = $current_post->post_content;
 			if ( isset( $data['summary'] ) && ! empty( $data['summary'] ) ) {
 				$data_post_content = $data['summary'];
@@ -605,19 +601,18 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$post['post_content'] = $data_post_content;
 		}
 
-		//Create or update the post
+		// Create or update the post
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
 			$id = wp_update_post( $post );
-			$prev_date = get_post_meta( $id,'lsx_wetu_modified_date',true );
-			update_post_meta( $id,'lsx_wetu_modified_date',strtotime( $data['last_modified'] ),$prev_date );
+			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date',true );
+			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
 
 			//If the logger is enabled then log the data being saved.
 			if ( $this->debug_enabled ) {
 				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
 			}
-
 		} else {
 			//Set the name
 			if ( isset( $data['name'] ) ) {

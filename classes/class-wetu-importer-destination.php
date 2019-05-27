@@ -385,7 +385,10 @@ class WETU_Importer_Destination extends WETU_Importer {
 						if ( 'import' === $post_status ) {
 
 							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'],$this->queued_imports ) ) {
-								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+								$current_status = get_post_status( $row['post_id'] );
+								if ( 'draft' === $current_status ) {
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+								}
 							} else {
 								continue;
 							}
@@ -438,20 +441,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 		die();
 	}
-	
-	private function get_post_id_by_key_value( $wetu_id = false ) {
-		global $wpdb;
-		$id = false;
-
-		if ( false !== $wetu_id && '' !== $wetu_id ) {
-			$result = $wpdb->get_var("SELECT post_id FROM `vtbY3n_postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'");
-			if ( false !== $result && ! empty( $result ) ) {
-				$id = $result;
-			}
-		}
-
-		return $id;
-	}	
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
 		return 	$row_item = array(

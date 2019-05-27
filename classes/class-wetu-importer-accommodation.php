@@ -290,16 +290,16 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 
 			$post_status = false;
 
-			if ( in_array( 'publish',$keyphrases ) ) {
+			if ( in_array( 'publish', $keyphrases ) ) {
 				$post_status = 'publish';
 			}
-			if ( in_array( 'pending',$keyphrases ) ) {
+			if ( in_array( 'pending', $keyphrases ) ) {
 				$post_status = 'pending';
 			}
-			if ( in_array( 'draft',$keyphrases ) ) {
+			if ( in_array( 'draft', $keyphrases ) ) {
 				$post_status = 'draft';
 			}
-			if ( in_array( 'import',$keyphrases ) ) {
+			if ( in_array( 'import', $keyphrases ) ) {
 				$post_status = 'import';
 			}
 
@@ -318,9 +318,11 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				if ( ! empty( $accommodation ) ) {
 					foreach ( $accommodation as $row_key => $row ) {
 						if ( 'import' === $post_status ) {
-
 							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'],$this->queued_imports ) ) {
-								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+								$current_status = get_post_status( $row['post_id'] );
+								if ( 'draft' === $current_status ) {
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+								}
 							} else {
 								continue;
 							}
@@ -329,7 +331,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 								continue;
 							} else {
 								$current_status = get_post_status( $row['post_id'] );
-
 								if ( $current_status !== $post_status ) {
 									continue;
 								}
@@ -338,9 +339,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 						}
 					}
 				}
-
 			} else {
-
 				$key_string_search = implode( '+', $keyphrases );
 				$search_data = file_get_contents( $this->url . '/Search/' . $key_string_search );
 				$search_data = json_decode( $search_data, true );
@@ -379,18 +378,6 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 
 		die();
 	}
-	
-	private function get_post_id_by_key_value( $wetu_id = false ) {
-		global $wpdb;
-		$id = false;			
-		if ( false !== $wetu_id && '' !== $wetu_id ) {
-			$result = $wpdb->get_var("SELECT post_id FROM `vtbY3n_postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'");
-			if ( false !== $result && ! empty( $result ) ) {
-				$id = $result;
-			}
-		}
-		return $id;
-	}	
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
 		return 	$row_item = array(
@@ -404,6 +391,9 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 
 	/**
 	 * Formats the row for output on the screen.
+	 *
+	 * @param boolean $row the current row to format.
+	 * @return void
 	 */
 	public function format_row( $row = false ) {
 		if ( false !== $row ) {

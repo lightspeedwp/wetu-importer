@@ -1299,6 +1299,24 @@ class WETU_Importer {
 		return true;
 	}
 
+	/**
+	 * Gets the Post ID by the wetu ID.
+	 *
+	 * @param boolean $wetu_id the wetu ID.
+	 * @return boolean | string
+	 */
+	private function get_post_id_by_key_value( $wetu_id = false ) {
+		global $wpdb;
+		$id = false;
+
+		if ( false !== $wetu_id && '' !== $wetu_id ) {
+			$result = $wpdb->get_var( "SELECT post_id FROM `{$wpdb->postmeta}` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'" );
+			if ( false !== $result && ! empty( $result ) ) {
+				$id = $result;
+			}
+		}
+		return $id;
+	}
 }
 
 $wetu_importer = new WETU_Importer();
