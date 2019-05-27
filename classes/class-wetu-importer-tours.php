@@ -182,12 +182,17 @@ class WETU_Importer_Tours extends WETU_Importer {
 								<li><input class="content" <?php $this->checked( $this->tour_options,'duration' ); ?> type="checkbox" name="content[]" value="duration" /> <?php esc_html_e( 'Duration','wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'group_size' ); ?> type="checkbox" name="content[]" value="group_size" /> <?php esc_html_e( 'Group Size','wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'category' ); ?> type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category','wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options,'tags' ); ?> type="checkbox" name="content[]" value="tags" /> <?php esc_html_e( 'Tags','wetu-importer' ); ?></li>
 
 								<li><input class="content" <?php $this->checked( $this->tour_options,'itineraries' ); ?> type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','wetu-importer' ); ?></li>
 
-								<?php /*if(class_exists('LSX_TO_Maps')){ ?>
-                                    <li><input class="content" <?php $this->checked($this->tour_options,'map'); ?> type="checkbox" name="content[]" value="map" /> <?php esc_html_e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
-								<?php }*/ ?>
+								<?php
+								/*
+								if ( class_exists( 'LSX_TO_Maps' ) ) { ?>
+								<li><input class="content" <?php $this->checked($this->tour_options,'map'); ?> type="checkbox" name="content[]" value="map" /> <?php esc_html_e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
+								<?php } 
+								*/
+								?>
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
@@ -537,30 +542,22 @@ class WETU_Importer_Tours extends WETU_Importer {
 			} else {
 				$content = false;
 			}
-
-			$jdata = file_get_contents( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
-
-			//wp_remote_get
-			/*print_r('<pre>');
-			print_r($jdata);
-			print_r('</pre>');*/
+			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
 
 			if ( $jdata ) {
-				$jdata = json_decode( $jdata,true );
-				if ( ! empty( $jdata ) && ! isset( $jdata['error'] ) ) {
-					$return = $this->import_row( $jdata,$wetu_id,$post_id,$content );
+				$jdata = json_decode( $jdata['body'], true );
+				if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && '200' === $jdata['response']['code'] ) {
+					$return = $this->import_row( $jdata, $wetu_id, $post_id, $content );
 					$this->format_completed_row( $return );
 					$this->save_queue();
 					$this->cleanup_posts();
 					$this->attach_destination_images( $content );
 					$this->clean_attached_destinations( $return );
 				} else {
-					if ( isset( $adata['error'] ) ) {
-						$this->format_error( $adata['error'] );
-					} else {
-						$this->format_error( esc_html__( 'There was a problem importing your tour, please try refreshing the page.','wetu-importer' ) );
-					}
+					$this->format_error( esc_html__( 'There was a problem importing your tour, please try refreshing the page.','wetu-importer' ) );
 				}
+			} else {
+				$this->format_error( esc_html__( 'There was a problem importing your tour, please contact support.', 'wetu-importer' ) );
 			}
 		}
 	}
@@ -595,20 +592,16 @@ class WETU_Importer_Tours extends WETU_Importer {
 		$current_post = get_post( $id );
 
 		$post = array(
-		  'post_type'		=> 'tour',
+			'post_type' => 'tour',
 		);
 
-		//Set the post_content
 		$content_used_general_description = false;
 
-		if ( false !== $importable_content && in_array( 'description',$importable_content ) ) {
-
+		if ( false !== $importable_content && in_array( 'description', $importable_content ) ) {
 			$data_post_content = $current_post->post_content;
-
 			if ( isset( $data['summary'] ) && ! empty( $data['summary'] ) ) {
 				$data_post_content = $data['summary'];
 			}
-
 			$post['post_content'] = $data_post_content;
 		}
 
