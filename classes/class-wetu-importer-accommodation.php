@@ -433,7 +433,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				unset( $this->queued_imports[ $key ] );
 
 				delete_option( 'wetu_importer_que' );
-				update_option( 'wetu_importer_que',$this->queued_imports );
+				update_option( 'wetu_importer_que', $this->queued_imports );
 			}
 		}
 	}
@@ -484,22 +484,16 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				$content = false;
 			}
 
-			$jdata = file_get_contents( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
+			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
 
-			if ( $jdata ) {
-				$adata = json_decode( $jdata,true );
-				if ( ! empty( $adata ) && ! isset( $adata['error'] ) ) {
-					$return = $this->import_row( $adata,$wetu_id,$post_id,$team_members,$content,$safari_brands );
-					$this->format_completed_row( $return );
-					$this->remove_from_queue( $return );
-					$this->cleanup_posts();
-				} else {
-					if ( isset( $adata['error'] ) ) {
-						$this->format_error( $adata['error'] );
-					} else {
-						$this->format_error( esc_html__( 'There was a problem importing your accommodation, please try refreshing the page.', 'wetu-importer' ) );
-					}
-				}
+			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+				$adata = json_decode( $jdata['body'], true );
+				$return = $this->import_row( $adata, $wetu_id, $post_id, $team_members, $content, $safari_brands );
+				$this->format_completed_row( $return );
+				$this->remove_from_queue( $return );
+				$this->cleanup_posts();
+			} else {
+				$this->format_error( esc_html__( 'There was a problem importing your accommodation, please try refreshing the page.', 'wetu-importer' ) );
 			}
 		}
 	}
@@ -507,19 +501,18 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	/**
 	 * Connect to wetu
 	 */
-	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = false, $safari_brands = false ) {
+	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = array(), $safari_brands = false ) {
 		$post_name = '';
 		$data_post_content = '';
 		$data_post_excerpt = '';
 
 		$post = array(
-		  'post_type' => 'accommodation',
+			'post_type' => 'accommodation',
 		);
-
 		$content_used_general_description = false;
 
-		//Set the post_content
-		if ( false !== $importable_content && in_array( 'description',$importable_content ) ) {
+		// Set the post_content.
+		if ( ! empty( $importable_content ) && in_array( 'description', $importable_content ) ) {
 			if ( isset( $data[0]['content']['extended_description'] ) ) {
 				$data_post_content = $data[0]['content']['extended_description'];
 			} elseif ( isset( $data[0]['content']['general_description'] ) ) {
@@ -532,8 +525,8 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			$post['post_content'] = wp_strip_all_tags( $data_post_content );
 		}
 
-		//set the post_excerpt
-		if ( false !== $importable_content && in_array( 'excerpt',$importable_content ) ) {
+		// set the post_excerpt.
+		if ( ! empty( $importable_content ) && in_array( 'excerpt', $importable_content ) ) {
 			if ( isset( $data[0]['content']['teaser_description'] ) ) {
 				$data_post_excerpt = $data[0]['content']['teaser_description'];
 			} elseif ( isset( $data[0]['content']['general_description'] ) && false === $content_used_general_description ) {
@@ -549,109 +542,109 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			if ( isset( $data[0]['name'] ) ) {
 				$post['post_title'] = $data[0]['name'];
 				$post['post_status'] = 'publish';
-				$post['post_name'] = wp_unique_post_slug( sanitize_title( $data[0]['name'] ),$id, 'draft', 'accommodation', 0 );
+				$post['post_name'] = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'accommodation', 0 );
 			}
 
 			$id = wp_update_post( $post );
-			$prev_date = get_post_meta( $id,'lsx_wetu_modified_date', true );
+			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
 			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ), $prev_date );
 		} else {
-			//Set the name
+			// Set the name.
 			if ( isset( $data[0]['name'] ) ) {
-				$post_name = wp_unique_post_slug( sanitize_title( $data[0]['name'] ),$id, 'draft', 'accommodation', 0 );
+				$post_name = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'accommodation', 0 );
 			}
 
-			$post['post_name'] = $post_name;
-			$post['post_title'] = $data[0]['name'];
+			$post['post_name']   = $post_name;
+			$post['post_title']  = $data[0]['name'];
 			$post['post_status'] = 'publish';
-			$id = wp_insert_post( $post );
+			$id                  = wp_insert_post( $post );
 
-			//Save the WETU ID and the Last date it was modified.
+			// Save the WETU ID and the Last date it was modified.
 			if ( false !== $id ) {
-				add_post_meta( $id,'lsx_wetu_id',$wetu_id );
-				add_post_meta( $id,'lsx_wetu_modified_date',strtotime( $data[0]['last_modified'] ) );
+				add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
+				add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ) );
 			}
 		}
 
-		//Setup some default for use in the import
-		if ( false !== $importable_content && (in_array( 'gallery',$importable_content ) || in_array( 'banner_image',$importable_content ) || in_array( 'featured_image',$importable_content )) ) {
+		// Setup some default for use in the import.
+		if ( false !== $importable_content && ( in_array( 'gallery', $importable_content ) || in_array( 'banner_image', $importable_content ) || in_array( 'featured_image', $importable_content ) ) ) {
 			$this->find_attachments( $id );
 		}
 
-		//Set the team member if it is there
+		// Set the team member if it is there.
 		if ( post_type_exists( 'team' ) && false !== $team_members && '' !== $team_members ) {
-			$this->set_team_member( $id,$team_members );
+			$this->set_team_member( $id, $team_members );
 		}
 
-		//Set the safari brand
+		// Set the safari brand.
 		if ( false !== $safari_brands && '' !== $safari_brands ) {
-			$this->set_safari_brands( $id,$safari_brands );
+			$this->set_safari_brands( $id, $safari_brands );
 		}
 
 		if ( class_exists( 'LSX_TO_Maps' ) ) {
-			$this->set_map_data( $data,$id,9 );
+			$this->set_map_data( $data, $id, 9 );
 		}
 
-		if ( post_type_exists( 'destination' ) && false !== $importable_content && in_array( 'destination',$importable_content ) ) {
-			$this->connect_destinations( $data,$id );
+		if ( post_type_exists( 'destination' ) && false !== $importable_content && in_array( 'destination', $importable_content ) ) {
+			$this->connect_destinations( $data, $id );
 		}
 
-		if ( false !== $importable_content && in_array( 'category',$importable_content ) ) {
-			$this->set_taxonomy_style( $data,$id );
+		if ( false !== $importable_content && in_array( 'category', $importable_content ) ) {
+			$this->set_taxonomy_style( $data, $id );
 		}
 
-		//Set the Room Data
-		if ( false !== $importable_content && in_array( 'rooms',$importable_content ) ) {
-			$this->set_room_data( $data,$id );
+		// Set the Room Data.
+		if ( false !== $importable_content && in_array( 'rooms', $importable_content ) ) {
+			$this->set_room_data( $data, $id );
 		}
 
-		//Set the rating
-		if ( false !== $importable_content && in_array( 'rating',$importable_content ) ) {
-			$this->set_rating( $data,$id );
+		// Set the rating.
+		if ( false !== $importable_content && in_array( 'rating', $importable_content ) ) {
+			$this->set_rating( $data, $id );
 		}
 
-		//Set the checkin checkout data
-		if ( false !== $importable_content && in_array( 'checkin',$importable_content ) ) {
-			$this->set_checkin_checkout( $data,$id );
+		// Set the checkin checkout data.
+		if ( false !== $importable_content && in_array( 'checkin', $importable_content ) ) {
+			$this->set_checkin_checkout( $data, $id );
 		}
 
-		//Set the Spoken Languages
-		if ( false !== $importable_content && in_array( 'spoken_languages',$importable_content ) ) {
-			$this->set_spoken_languages( $data,$id );
+		// Set the Spoken Languages.
+		if ( false !== $importable_content && in_array( 'spoken_languages', $importable_content ) ) {
+			$this->set_spoken_languages( $data, $id );
 		}
 
-		//Set the friendly options
-		if ( false !== $importable_content && in_array( 'friendly',$importable_content ) ) {
-			$this->set_friendly( $data,$id );
+		// Set the friendly options.
+		if ( false !== $importable_content && in_array( 'friendly', $importable_content ) ) {
+			$this->set_friendly( $data, $id );
 		}
 
-		//Set the special_interests
-		if ( false !== $importable_content && in_array( 'special_interests',$importable_content ) ) {
-			$this->set_special_interests( $data,$id );
+		// Set the special_interests.
+		if ( false !== $importable_content && in_array( 'special_interests', $importable_content ) ) {
+			$this->set_special_interests( $data, $id );
 		}
 
-		//Import the videos
-		if ( false !== $importable_content && in_array( 'videos',$importable_content ) ) {
-			$this->set_video_data( $data,$id );
+		// Import the videos.
+		if ( false !== $importable_content && in_array( 'videos', $importable_content ) ) {
+			$this->set_video_data( $data, $id );
 		}
 
-		//Import the facilities
-		if ( false !== $importable_content && in_array( 'facilities',$importable_content ) ) {
-			$this->set_facilities( $data,$id );
+		// Import the facilities.
+		if ( false !== $importable_content && in_array( 'facilities', $importable_content ) ) {
+			$this->set_facilities( $data, $id );
 		}
 
-		//Set the featured image
-		if ( false !== $importable_content && in_array( 'featured_image',$importable_content ) ) {
-			$this->set_featured_image( $data,$id );
+		// Set the featured image.
+		if ( false !== $importable_content && in_array( 'featured_image', $importable_content ) ) {
+			$this->set_featured_image( $data, $id );
 		}
 
-		if ( false !== $importable_content && in_array( 'banner_image',$importable_content ) ) {
-			$this->set_banner_image( $data,$id );
+		if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
+			$this->set_banner_image( $data, $id );
 		}
 
-		//Import the main gallery
-		if ( false !== $importable_content && in_array( 'gallery',$importable_content ) ) {
-			$this->create_main_gallery( $data,$id );
+		// Import the main gallery.
+		if ( false !== $importable_content && in_array( 'gallery', $importable_content ) ) {
+			$this->create_main_gallery( $data, $id );
 		}
 
 		return $id;
@@ -664,7 +657,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 		delete_post_meta( $id, 'team_to_' . $this->tab_slug );
 
 		foreach ( $team_members as $team ) {
-			add_post_meta( $id,'team_to_' . $this->tab_slug,$team );
+			add_post_meta( $id, 'team_to_' . $this->tab_slug, $team );
 		}
 	}
 
@@ -693,24 +686,21 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			}
 
 			if ( false !== $destinations ) {
-				$prev_values = get_post_meta( $id,'destination_to_accommodation',false );
+				$prev_values = get_post_meta( $id, 'destination_to_accommodation',false );
 
 				if ( false === $prev_values || ! is_array( $prev_values ) ) {
 					$prev_values = array();
 				}
 
-				delete_post_meta( $id,'destination_to_accommodation',$prev_values );
-
-				//print_r($destinations);
+				delete_post_meta( $id, 'destination_to_accommodation', $prev_values );
 				$destinations = array_unique( $destinations );
-				//print_r($destinations);
 
 				foreach ( $destinations as $key => $value ) {
 					$destination = get_page_by_title( ltrim( rtrim( $value ) ), 'OBJECT', 'destination' );
 					if ( null !== $destination ) {
-						if ( ! in_array( $destination->ID,$prev_values ) ) {
-							   add_post_meta( $id,'destination_to_accommodation',$destination->ID,false );
-							   add_post_meta( $destination->ID,'accommodation_to_destination',$id,false );
+						if ( ! in_array( $destination->ID, $prev_values ) ) {
+							add_post_meta( $id, 'destination_to_accommodation', $destination->ID, false );
+							add_post_meta( $destination->ID, 'accommodation_to_destination', $id, false );
 							$this->cleanup_posts[ $destination->ID ] = 'accommodation_to_destination';
 						}
 					}
@@ -761,17 +751,12 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				}
 
 				$temp_room['price'] = 0;
-				$temp_room['type'] = 'room';
+				$temp_room['type']  = 'room';
 
 				if ( ! empty( $room['images'] ) && is_array( $room['images'] ) ) {
 					$temp_room['gallery'] = array();
 					$temp_room['gallery'][] = $this->attach_image( $room['images'][0], $id );
-
-					/*foreach($room['images'] as $image_data){
-			    		$temp_room['gallery'][] = $this->attach_image($image_data,$id);
-			    	}*/
 				}
-
 				$rooms[] = $temp_room;
 			}
 
@@ -780,7 +765,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			}
 
 			foreach ( $rooms as $room ) {
-				add_post_meta( $id,'units',$room,false );
+				add_post_meta( $id, 'units', $room, false );
 			}
 
 			if ( isset( $data[0]['features'] ) && isset( $data[0]['features']['rooms'] ) ) {
@@ -790,10 +775,10 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			}
 
 			if ( false !== $id && '0' !== $id ) {
-				$prev_rooms = get_post_meta( $id,'number_of_rooms',true );
-				update_post_meta( $id,'number_of_rooms',$room_count,$prev_rooms );
+				$prev_rooms = get_post_meta( $id, 'number_of_rooms', true );
+				update_post_meta( $id, 'number_of_rooms', $room_count, $prev_rooms );
 			} else {
-				add_post_meta( $id,'number_of_rooms',$room_count,true );
+				add_post_meta( $id, 'number_of_rooms', $room_count, true );
 			}
 		}
 	}
@@ -808,10 +793,10 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			$rating_type = 'Unspecified2';
 		}
 
-		$this->save_custom_field( $rating_type,'rating_type',$id );
+		$this->save_custom_field( $rating_type, 'rating_type', $id );
 
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['stars'] ) ) {
-			$this->save_custom_field( $data[0]['features']['stars'],'rating',$id,true );
+			$this->save_custom_field( $data[0]['features']['stars'], 'rating', $id, true );
 		}
 	}
 
@@ -827,7 +812,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			}
 
 			if ( false !== $languages ) {
-				$this->save_custom_field( $languages,'spoken_languages',$id );
+				$this->save_custom_field( $languages, 'spoken_languages', $id );
 			}
 		}
 	}
@@ -844,7 +829,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			}
 
 			if ( false !== $friendly_options ) {
-				$this->save_custom_field( $friendly_options,'suggested_visitor_types',$id );
+				$this->save_custom_field( $friendly_options, 'suggested_visitor_types', $id );
 			}
 		}
 	}
@@ -861,7 +846,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			}
 
 			if ( false !== $interests ) {
-				$this->save_custom_field( $interests,'special_interests',$id );
+				$this->save_custom_field( $interests, 'special_interests', $id );
 			}
 		}
 	}
@@ -871,15 +856,15 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	 */
 	public function set_checkin_checkout( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['check_in_time'] ) ) {
-			$time = str_replace( 'h',':',$data[0]['features']['check_in_time'] );
-			$time = date( 'h:ia',strtotime( $time ) );
-			$this->save_custom_field( $time,'checkin_time',$id );
+			$time = str_replace( 'h', ':', $data[0]['features']['check_in_time'] );
+			$time = date( 'h:ia', strtotime( $time ) );
+			$this->save_custom_field( $time, 'checkin_time', $id );
 		}
 
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['check_out_time'] ) ) {
-			$time = str_replace( 'h',':',$data[0]['features']['check_out_time'] );
-			$time = date( 'h:ia',strtotime( $time ) );
-			$this->save_custom_field( $time,'checkout_time',$id );
+			$time = str_replace( 'h', ':', $data[0]['features']['check_out_time'] );
+			$time = date( 'h:ia', strtotime( $time ) );
+			$this->save_custom_field( $time, 'checkout_time', $id );
 		}
 	}
 
@@ -898,11 +883,11 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			$terms = false;
 
 			if ( isset( $data[0]['features'] ) && isset( $data[0]['features'][ $key ] ) ) {
-				$parent_id = $this->set_term( $id,$label,'facility' );
+				$parent_id = $this->set_term( $id, $label, 'facility' );
 			}
 
 			foreach ( $data[0]['features'][ $key ] as $child_facility ) {
-				$this->set_term( $id,$child_facility,'facility',$parent_id );
+				$this->set_term( $id, $child_facility, 'facility', $parent_id );
 			}
 		}
 	}
