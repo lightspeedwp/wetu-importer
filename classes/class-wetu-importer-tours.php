@@ -98,6 +98,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	public function set_variables() {
 		parent::set_variables();
 
+		//https://wetu.com/API/Itinerary/V8/Get
 		if ( false !== $this->api_username && false !== $this->api_password ) {
 			$this->url    = 'https://wetu.com/API/Itinerary/';
 			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
@@ -146,14 +147,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 							<th class="check-column" scope="row">
 								<label for="cb-select-0" class="screen-reader-text"><?php esc_html_e( 'Enter a title to search for and press enter','wetu-importer' ); ?></label>
 							</th>
-							<td class="post-title page-title column-title">
+							<td class="date column-date column-ref" colspan="4">
 								<strong>
-									<?php esc_html_e( 'Enter a title to search for','wetu-importer' ); ?>
-								</strong>
-							</td>
-							<td class="date column-date">
-							</td>
-							<td class="ssid column-ssid">
+									<?php esc_html_e( 'Search for tours using the search form above','wetu-importer' ); ?>
+								</strong>							
 							</td>
 						</tr>
 					</tbody>
@@ -177,20 +174,25 @@ class WETU_Importer_Tours extends WETU_Importer {
 							<ul>
 								<li><input class="content select-all" <?php $this->checked( $this->tour_options,'all' ); ?> type="checkbox"name="content[]"  value="all" /> <?php esc_html_e( 'Select All','wetu-importer' ); ?></li>
 
-								<?php if ( isset( $this->options ) && 'on' !== $this->options['disable_tour_descriptions'] ) { ?>
+								<?php if ( isset( $this->options ) && ! isset( $this->options['disable_tour_descriptions'] ) ) { ?>
 									<li><input class="content" <?php $this->checked( $this->tour_options,'description' ); ?> type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description','wetu-importer' ); ?></li>
 								<?php } ?>
 
 								<li><input class="content" <?php $this->checked( $this->tour_options,'price' ); ?> type="checkbox" name="content[]" value="price" /> <?php esc_html_e( 'Price','wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'duration' ); ?> type="checkbox" name="content[]" value="duration" /> <?php esc_html_e( 'Duration','wetu-importer' ); ?></li>
-
+								<li><input class="content" <?php $this->checked( $this->tour_options,'group_size' ); ?> type="checkbox" name="content[]" value="group_size" /> <?php esc_html_e( 'Group Size','wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'category' ); ?> type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category','wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options,'tags' ); ?> type="checkbox" name="content[]" value="tags" /> <?php esc_html_e( 'Tags','wetu-importer' ); ?></li>
 
 								<li><input class="content" <?php $this->checked( $this->tour_options,'itineraries' ); ?> type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','wetu-importer' ); ?></li>
 
-								<?php /*if(class_exists('LSX_TO_Maps')){ ?>
-                                    <li><input class="content" <?php $this->checked($this->tour_options,'map'); ?> type="checkbox" name="content[]" value="map" /> <?php esc_html_e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
-								<?php }*/ ?>
+								<?php
+								/*
+								if ( class_exists( 'LSX_TO_Maps' ) ) { ?>
+								<li><input class="content" <?php $this->checked($this->tour_options,'map'); ?> type="checkbox" name="content[]" value="map" /> <?php esc_html_e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
+								<?php } 
+								*/
+								?>
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
@@ -256,10 +258,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
 
-			print_r('<pre>');
-			print_r($result);
-			print_r('</pre>');
-
 			if ( true === $result ) {
 				echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span>';
 				echo ' - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
@@ -322,7 +320,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 		add_option( 'lsx_ti_tours_api_options',$options );
 
-		$data = wp_remote_get( $this->url . '/V7/List?' . $this->url_qs );
+		$data = wp_remote_get( $this->url . '/V8/List?' . $this->url_qs );
 		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
 
 		if ( isset( $tours['error'] ) ) {
@@ -458,7 +456,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 								if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+								} else if ( $this->multineedle_stripos( ltrim( rtrim( $row['reference_number'] ) ), $keywords ) !== false ) {
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+								}else if ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
 								}
+
+								//Add in the year and ref
 							}
 						}
 					}
@@ -490,10 +494,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 				<th class="check-column" scope="row">
 					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['name'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['identifier'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['identifier'] . '">
-				</th>
+				</th>			
 				<td class="post-title page-title column-title">
 					<strong>' . $row['name'] . '</strong> - ' . $status . '
 				</td>
+				<td class="date column-date">
+					' . $row['reference_number'] . '
+				</td>				
 				<td class="date column-date">
 					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
@@ -535,25 +542,18 @@ class WETU_Importer_Tours extends WETU_Importer {
 			} else {
 				$content = false;
 			}
+			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );		
 
-			$jdata = file_get_contents( 'http://wetu.com/API/Itinerary/V7/Get?id=' . $wetu_id );
-
-			if ( $jdata ) {
-				$jdata = json_decode( $jdata,true );
-				if ( ! empty( $jdata ) && ! isset( $jdata['error'] ) ) {
-					$return = $this->import_row( $jdata,$wetu_id,$post_id,$content );
-					$this->format_completed_row( $return );
-					$this->save_queue();
-					$this->cleanup_posts();
-					$this->attach_destination_images( $content );
-					$this->clean_attached_destinations( $return );
-				} else {
-					if ( isset( $adata['error'] ) ) {
-						$this->format_error( $adata['error'] );
-					} else {
-						$this->format_error( esc_html__( 'There was a problem importing your tour, please try refreshing the page.','wetu-importer' ) );
-					}
-				}
+			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+				$jdata = json_decode( $jdata['body'], true );
+				$return = $this->import_row( $jdata, $wetu_id, $post_id, $content );
+				$this->format_completed_row( $return );
+				$this->save_queue();
+				$this->cleanup_posts();
+				$this->attach_destination_images( $content );
+				$this->clean_attached_destinations( $return );
+			} else {
+				$this->format_error( esc_html__( 'There was a problem importing your tour, please contact support.', 'wetu-importer' ) );
 			}
 		}
 	}
@@ -580,7 +580,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 * @param $data array
 	 * @param $wetu_id string
 	 */
-	public function import_row( $data, $wetu_id, $id = 0, $importable_content = false, $old1 = false, $old2 = false ) {
+	public function import_row( $data, $wetu_id, $id = 0, $importable_content = array(), $old1 = false, $old2 = false ) {
 		$post_name = '';
 		$data_post_content = '';
 		$data_post_excerpt = '';
@@ -588,79 +588,84 @@ class WETU_Importer_Tours extends WETU_Importer {
 		$current_post = get_post( $id );
 
 		$post = array(
-		  'post_type'		=> 'tour',
+			'post_type' => 'tour',
 		);
 
-		//Set the post_content
 		$content_used_general_description = false;
 
-		if ( false !== $importable_content && in_array( 'description',$importable_content ) ) {
-
+		if ( ! empty( $importable_content ) && in_array( 'description', $importable_content ) ) {
 			$data_post_content = $current_post->post_content;
-
 			if ( isset( $data['summary'] ) && ! empty( $data['summary'] ) ) {
 				$data_post_content = $data['summary'];
 			}
-
 			$post['post_content'] = $data_post_content;
 		}
 
-		//Create or update the post
+		// Create or update the post.
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
 			$id = wp_update_post( $post );
-			$prev_date = get_post_meta( $id,'lsx_wetu_modified_date',true );
-			update_post_meta( $id,'lsx_wetu_modified_date',strtotime( $data['last_modified'] ),$prev_date );
+			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
+			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
 
-			//If the logger is enabled then log the data being saved.
+			// If the logger is enabled then log the data being saved.
 			if ( $this->debug_enabled ) {
 				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
 			}
-
 		} else {
-			//Set the name
+			// Set the name.
 			if ( isset( $data['name'] ) ) {
-				$post_name = wp_unique_post_slug( sanitize_title( $data['name'] ),$id, 'draft', 'tour', 0 );
+				$post_name = wp_unique_post_slug( sanitize_title( $data['name'] ), $id, 'draft', 'tour', 0 );
 			}
 
 			if ( ! isset( $post['post_content'] ) ) {
-				$post['post_content'] = " ";
+				$post['post_content'] = ' ';
 			}
 
-			$post['post_name'] = $post_name;
-			$post['post_title'] = $data['name'];
+			$post['post_name']   = $post_name;
+			$post['post_title']  = $data['name'];
 			$post['post_status'] = 'publish';
 
-			//If the logger is enabled then log the data being saved.
+			// If the logger is enabled then log the data being saved.
 			if ( $this->debug_enabled ) {
 				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
 			}
 			$id = wp_insert_post( $post );
 
-			//Save the WETU ID and the Last date it was modified.
+			// Save the WETU ID and the Last date it was modified.
 			if ( false !== $id ) {
-				add_post_meta( $id,'lsx_wetu_id',$wetu_id );
-				add_post_meta( $id,'lsx_wetu_modified_date',strtotime( $data['last_modified'] ) );
+				add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
+				add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ) );
 			}
 		}
 
-		//Set the price
-		if ( false !== $importable_content && in_array( 'price',$importable_content ) ) {
-			$this->set_price( $data,$id );
+		// Set the price.
+		if ( false !== $importable_content && in_array( 'price', $importable_content ) ) {
+			$this->set_price( $data, $id );
 		}
 
-		//Set the Duration
-		if ( false !== $importable_content && in_array( 'duration',$importable_content ) ) {
-			$this->set_duration( $data,$id );
+		// Set the Duration.
+		if ( false !== $importable_content && in_array( 'duration', $importable_content ) ) {
+			$this->set_duration( $data, $id );
 		}
 
-		if ( false !== $importable_content && in_array( 'itineraries',$importable_content ) && isset( $data['legs'] ) && ! empty( $data['legs'] ) ) {
-			$this->process_itineraries( $data,$id,$importable_content );
+		// Set the Group Size.
+		if ( false !== $importable_content && in_array( 'group_size', $importable_content ) ) {
+			$this->set_group_size( $data, $id );
 		}
 
-		if ( in_array( 'map',$importable_content ) && isset( $data['routes'] ) && ! empty( $data['routes'] ) ) {
-			$this->set_map_data( $data,$id );
+		// Set the Group Size.
+		if ( false !== $importable_content && in_array( 'tags', $importable_content ) ) {
+			$this->set_travel_styles( $id, $data );
+		}
+
+		if ( false !== $importable_content && in_array( 'itineraries', $importable_content ) && isset( $data['legs'] ) && ! empty( $data['legs'] ) ) {
+			$this->process_itineraries( $data, $id, $importable_content );
+		}
+
+		if ( in_array( 'map', $importable_content ) && isset( $data['routes'] ) && ! empty( $data['routes'] ) ) {
+			$this->set_map_data( $data, $id );
 		}
 
 		return $id;
@@ -673,78 +678,77 @@ class WETU_Importer_Tours extends WETU_Importer {
 		$day_counter = 1;
 		$leg_counter = 0;
 
-		delete_post_meta( $id,'itinerary' );
+		delete_post_meta( $id, 'itinerary' );
 
-		if ( false !== $importable_content && in_array( 'accommodation',$importable_content ) ) {
-			delete_post_meta( $id,'accommodation_to_tour' );
+		if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
+			delete_post_meta( $id, 'accommodation_to_tour' );
 		}
-		if ( false !== $importable_content && in_array( 'destination',$importable_content ) ) {
-			//delete_post_meta($id,'destination_to_tour');
-			delete_post_meta( $id,'departs_from' );
-			delete_post_meta( $id,'ends_in' );
+		if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
+			delete_post_meta( $id, 'departs_from' );
+			delete_post_meta( $id, 'ends_in' );
 		}
 
 		$departs_from = false;
 		$ends_in = false;
 
 		foreach ( $data['legs'] as $leg ) {
-			//Itinerary Accommodation
+			// Itinerary Accommodation.
 			$current_accommodation = false;
-			if ( false !== $importable_content && in_array( 'accommodation',$importable_content ) ) {
-				$current_accommodation = $this->set_accommodation( $leg,$id );
+			if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
+				$current_accommodation = $this->set_accommodation( $leg, $id );
 			}
 
-			//Itinerary Destination
+			// Itinerary Destination.
 			$current_destination = false;
-			if ( false !== $importable_content && in_array( 'destination',$importable_content ) ) {
-				$current_destination = $this->set_destination( $leg,$id,$leg_counter );
+			if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
+				$current_destination = $this->set_destination( $leg, $id, $leg_counter );
 			}
 
-			//If the Nights are the same mount of days in the array,  then it isnt "By Destination"
-			if ( ((1 <= (int) $leg['nights'] && isset( $leg['days'] ))) || 0 === $leg['itinerary_leg_id'] ) {
-				foreach ( $leg['days'] as $day ) {
+			// If the Nights are the same mount of days in the array,  then it isnt "By Destination".
+			if ( ( (1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
+				foreach ( $leg['periods'] as $day ) {
 					$current_day = array();
 					$current_day['title'] = esc_attr( 'Day ', 'wetu-importer' ) . $day_counter;
 
 					//print_r('<pre>');print_r($day['notes']);print_r('</pre>');
 
-					//Description
-					if ( false !== $importable_content && in_array( 'itinerary_description',$importable_content ) && isset( $day['notes'] ) ) {
+					// Description.
+					if ( false !== $importable_content && in_array( 'itinerary_description', $importable_content ) && isset( $day['notes'] ) ) {
 						$current_day['description'] = $day['notes'];
 					} else {
 						$current_day['description'] = '';
 					}
 
-					//Itinerary Gallery
-					if ( false !== $importable_content && in_array( 'itinerary_gallery',$importable_content ) && isset( $day['images'] ) ) {
+					// Itinerary Gallery.
+					if ( false !== $importable_content && in_array( 'itinerary_gallery', $importable_content ) && isset( $day['images'] ) ) {
 						$current_day['featured_image'] = '';
 					} else {
 						$current_day['featured_image'] = '';
 					}
 
-					//Accommodation
+					// Accommodation.
 					if ( false !== $current_accommodation ) {
 						$current_day['accommodation_to_tour'] = array( $current_accommodation );
 					} else {
 						$current_day['accommodation_to_tour'] = array();
 					}
 
-					//Destination
+					// Destination.
 					if ( false !== $current_destination ) {
 						$current_day['destination_to_tour'] = array( $current_destination );
 					} else {
 						$current_day['destination_to_tour'] = array();
 					}
 
-					//Included
-					if ( false !== $importable_content && in_array( 'itinerary_included',$importable_content ) && isset( $day['included'] ) && '' !== $day['included'] ) {
+					// Included.
+					if ( false !== $importable_content && in_array( 'itinerary_included', $importable_content ) && isset( $day['included'] ) && '' !== $day['included'] ) {
 						$current_day['included'] = $day['included'];
 					} else {
 						$current_day['included'] = '';
 					}
 
-					//Excluded
-					if ( false !== $importable_content && in_array( 'itinerary_excluded',$importable_content ) && isset( $day['excluded'] ) && '' !== $day['excluded'] ) {
+					// Excluded.
+					if ( false !== $importable_content && in_array( 'itinerary_excluded', $importable_content ) && isset( $day['excluded'] ) && '' !== $day['excluded'] ) {
 						$current_day['excluded'] = $day['excluded'];
 					} else {
 						$current_day['excluded'] = '';
@@ -754,40 +758,40 @@ class WETU_Importer_Tours extends WETU_Importer {
 					$day_counter++;
 				}
 			} else {
-				// This is for the by destination
+				// This is for the by destination.
 
 				$current_day = array();
 				$next_day_count = $day_counter + (int) $leg['nights'];
-				$day_count_label = $next_day_count -1;
+				$day_count_label = $next_day_count - 1;
 
-				$current_day['title'] = esc_attr( 'Day ','wetu-importer' ) . $day_counter;
+				$current_day['title'] = esc_attr( 'Day ', 'wetu-importer' ) . $day_counter;
 
 				if ( 0 !== (int) $leg['nights'] ) {
 					$current_day['title'] .= ' - ' . $day_count_label;
 				}
 
-				//Description
-				if ( false !== $importable_content && in_array( 'itinerary_description',$importable_content ) && isset( $leg['notes'] ) ) {
+				// Description.
+				if ( false !== $importable_content && in_array( 'itinerary_description', $importable_content ) && isset( $leg['notes'] ) ) {
 					$current_day['description'] = $leg['notes'];
 				} else {
 					$current_day['description'] = '';
 				}
 
-				//Itinerary Gallery
-				if ( false !== $importable_content && in_array( 'itinerary_gallery',$importable_content ) && isset( $leg['images'] ) ) {
+				// Itinerary Gallery.
+				if ( false !== $importable_content && in_array( 'itinerary_gallery', $importable_content ) && isset( $leg['images'] ) ) {
 					$current_day['featured_image'] = '';
 				} else {
 					$current_day['featured_image'] = '';
 				}
 
-				//Accommodation
+				// Accommodation.
 				if ( false !== $current_accommodation ) {
 					$current_day['accommodation_to_tour'] = array( $current_accommodation );
 				} else {
 					$current_day['accommodation_to_tour'] = array();
 				}
 
-				//Destination
+				// Destination.
 				if ( false !== $current_destination ) {
 					$current_day['destination_to_tour'] = array( $current_destination );
 				} else {
@@ -795,14 +799,14 @@ class WETU_Importer_Tours extends WETU_Importer {
 				}
 
 				//Included
-				if ( false !== $importable_content && in_array( 'itinerary_included',$importable_content ) && isset( $leg['included'] ) && '' !== $leg['included'] ) {
+				if ( false !== $importable_content && in_array( 'itinerary_included', $importable_content ) && isset( $leg['included'] ) && '' !== $leg['included'] ) {
 					$current_day['included'] = $leg['included'];
 				} else {
 					$current_day['included'] = '';
 				}
 
 				//Excluded
-				if ( false !== $importable_content && in_array( 'itinerary_excluded',$importable_content ) && isset( $leg['excluded'] ) && '' !== $leg['excluded'] ) {
+				if ( false !== $importable_content && in_array( 'itinerary_excluded', $importable_content ) && isset( $leg['excluded'] ) && '' !== $leg['excluded'] ) {
 					$current_day['excluded'] = $leg['excluded'];
 				} else {
 					$current_day['excluded'] = '';
@@ -827,10 +831,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 		}
 
 		if ( false !== $departs_from ) {
-			add_post_meta( $id,'departs_from',$departs_from,true );
+			add_post_meta( $id, 'departs_from', $departs_from, true );
 		}
 		if ( false !== $ends_in ) {
-			add_post_meta( $id,'ends_in',$ends_in,true );
+			add_post_meta( $id, 'ends_in', $ends_in, true );
 		}
 	}
 
@@ -865,7 +869,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 	}
 
-	// CLASS SPECIFIC FUNCTIONS
+	// CLASS SPECIFIC FUNCTIONS.
 
 	/**
 	 * Set the Itinerary Day
@@ -903,6 +907,31 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$price = $data['days'];
 			$price = preg_replace( '/[^0-9,.]/', '', $price );
 			$this->save_custom_field( $price,'duration',$id );
+		}
+	}
+
+	/**
+	 * Set the group size
+	 */
+	public function set_group_size( $data, $id ) {
+		if ( isset( $data['group_size'] ) && ! empty( $data['group_size'] ) ) {
+			$group_size = $data['group_size'];
+			$this->save_custom_field( $group_size,'group_size',$id );
+		}
+	}
+
+	/**
+	 * Takes the WETU tags and sets the Travel Styles.
+	 *
+	 * @param string $id
+	 * @param array $travel_styles
+	 * @return void
+	 */
+	public function set_travel_styles( $id, $data ) {
+		if ( isset( $data['tags'] ) ) {
+			foreach ( $data['tags'] as $tag ) {
+				$this->set_term( $id, $tag, 'travel-style' );
+			}
 		}
 	}
 
@@ -971,12 +1000,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 * @return boolean / string
 	 */
 	public function set_destination( $day, $id, $leg_counter ) {
-		$dest_id = false;
+		$dest_id    = false;
 		$country_id = false;
+		
 		$this->current_destinations = $this->find_current_destinations();
 
 		if ( isset( $day['destination_content_entity_id'] ) && ! empty( $day['destination_content_entity_id'] ) ) {
-			if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) && array_key_exists( $day['destination_content_entity_id'],$this->current_destinations ) ) {
+			if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) && array_key_exists( $day['destination_content_entity_id'], $this->current_destinations ) ) {
 				$dest_id = $this->current_destinations[ $day['destination_content_entity_id'] ];
 
 				//TODO Check for attachments here.
@@ -984,16 +1014,17 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 				//Check if there is a country asigned.
 				$potential_id = wp_get_post_parent_id( $dest_id );
-				$country_wetu_id = get_post_meta( $potential_id,'lsx_wetu_id',true );
+				$country_wetu_id = get_post_meta( $potential_id, 'lsx_wetu_id', true );
 
 				if ( false !== $country_wetu_id ) {
 					$country_id = $this->set_country( $country_wetu_id, $id );
 				}
 			} else {
-				$destination_json = file_get_contents( 'http://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
+				$destination_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
 
-				if ( $destination_json ) {
-					$destination_data = json_decode( $destination_json, true );
+				if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+
+					$destination_data = json_decode( $destination_json['body'], true );
 
 					if ( ! empty( $destination_data ) && ! isset( $destination_data['error'] ) ) {
 						$destination_title = $day['destination_content_entity_id'];
@@ -1006,7 +1037,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 							&& $destination_data[0]['map_object_id'] !== $destination_data[0]['position']['country_content_entity_id'] ) {
 
 							$country_id = $this->set_country( $destination_data[0]['position']['country_content_entity_id'], $id );
-							// Save the destination so we can grab the tour featured image and banner from them
+							// Save the destination so we can grab the tour featured image and banner from them.
 						}
 
 						$dest_post = array(
@@ -1020,10 +1051,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 						}
 						$dest_id = wp_insert_post( $dest_post );
 
-						//Make sure we register the
+						// Make sure we register the.
 						$this->current_destinations[ $day['destination_content_entity_id'] ] = $dest_id;
 
-						//If there are images attached then use the destination
+						// If there are images attached then use the destination.
 						if ( isset( $destination_data[0]['content']['images'] ) && ! empty( $destination_data[0]['content']['images'] ) ) {
 							$this->destination_images[ $id ][] = array( $dest_id, $day['destination_content_entity_id'] );
 						}
@@ -1072,7 +1103,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$country_id = $this->current_destinations[ $country_wetu_id ];
 			$this->destination_images[ $id ][] = array( $country_id, $country_wetu_id );
 		} else {
-			$country_json = file_get_contents( 'http://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
+			$country_json = file_get_contents( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
 
 			if ( $country_json ) {
 				$country_data = json_decode( $country_json, true );
@@ -1342,5 +1373,45 @@ class WETU_Importer_Tours extends WETU_Importer {
 			}
 		}
 	}
+
+	/**
+	 * The header of the item list
+	 */
+	public function table_header() {
+		?>
+		<thead>
+		<tr>
+			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'wetu-importer' ); ?></label>
+				<input type="checkbox" id="cb-select-all-1">
+			</th>
+			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col"><?php esc_attr_e( 'Title', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col"><?php esc_attr_e( 'Ref', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="date" scope="col"><?php esc_attr_e( 'Date', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-ssid" id="ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'wetu-importer' ); ?></th>
+		</tr>
+		</thead>
+		<?php
+	}
+
+	/**
+	 * The footer of the item list
+	 */
+	public function table_footer() {
+		?>
+		<tfoot>
+		<tr>
+			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'wetu-importer' ); ?></label>
+				<input type="checkbox" id="cb-select-all-1">
+			</th>
+			<th style="" class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col"><?php esc_attr_e( 'Ref', 'wetu-importer' ); ?></th>			
+			<th style="" class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'wetu-importer' ); ?></th>
+		</tr>
+		</tfoot>
+		<?php
+	}	
 
 }

@@ -70,15 +70,8 @@ class WETU_Importer_Destination extends WETU_Importer {
 	 */
 	public function set_variables() {
 		parent::set_variables();
-		// ** This request only works with API KEY **
-		//if ( false !== $this->api_username && false !== $this->api_password ) {
-		//	$this->url    = 'https://wetu.com/API/Pins/';
-		//	$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
-		//} elseif ( false !== $this->api_key ) {
-		$this->url = 'https://wetu.com/API/Pins/' . $this->api_key;
+		$this->url    = 'https://wetu.com/API/Pins/' . $this->api_key;
 		$this->url_qs = 'all=include';
-		//}
-
 		$temp_options = get_option( '_lsx-to_settings', false );
 
 		if ( false !== $temp_options && isset( $temp_options[ $this->plugin_slug ] ) && ! empty( $temp_options[ $this->plugin_slug ] ) ) {
@@ -355,16 +348,16 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 			$post_status = false;
 
-			if ( in_array( 'publish',$keyphrases ) ) {
+			if ( in_array( 'publish', $keyphrases ) ) {
 				$post_status = 'publish';
 			}
-			if ( in_array( 'pending',$keyphrases ) ) {
+			if ( in_array( 'pending', $keyphrases ) ) {
 				$post_status = 'pending';
 			}
-			if ( in_array( 'draft',$keyphrases ) ) {
+			if ( in_array( 'draft', $keyphrases ) ) {
 				$post_status = 'draft';
 			}
-			if ( in_array( 'import',$keyphrases ) ) {
+			if ( in_array( 'import', $keyphrases ) ) {
 				$post_status = 'import';
 			}
 
@@ -384,8 +377,11 @@ class WETU_Importer_Destination extends WETU_Importer {
 					foreach ( $accommodation as $row_key => $row ) {
 						if ( 'import' === $post_status ) {
 
-							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'],$this->queued_imports ) ) {
-								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
+								$current_status = get_post_status( $row['post_id'] );
+								if ( 'draft' === $current_status ) {
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+								}
 							} else {
 								continue;
 							}
@@ -438,20 +434,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 		die();
 	}
-	
-	private function get_post_id_by_key_value( $wetu_id = false ) {
-		global $wpdb;
-		$id = false;
-
-		if ( false !== $wetu_id && '' !== $wetu_id ) {
-			$result = $wpdb->get_var("SELECT post_id FROM `vtbY3n_postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'");
-			if ( false !== $result && ! empty( $result ) ) {
-				$id = $result;
-			}
-		}
-
-		return $id;
-	}	
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
 		return 	$row_item = array(
@@ -535,22 +517,15 @@ class WETU_Importer_Destination extends WETU_Importer {
 				$content = false;
 			}
 
-			$jdata = file_get_contents( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
+			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
 
-			if ( $jdata ) {
+			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$adata = json_decode( $jdata, true );
-
-				if ( ! empty( $adata ) && ! isset( $adata['error'] ) ) {
-					$return = $this->import_row( $adata, $wetu_id, $post_id, $team_members, $content, $safari_brands );
-					$this->remove_from_queue( $return );
-					$this->format_completed_row( $return );
-				} else {
-					if ( isset( $adata['error'] ) ) {
-						$this->format_error( $adata['error'] );
-					} else {
-						$this->format_error( esc_html__( 'There was a problem importing your destination, please try refreshing the page.','wetu-importer' ) );
-					}
-				}
+				$return = $this->import_row( $adata, $wetu_id, $post_id, $team_members, $content, $safari_brands );
+				$this->remove_from_queue( $return );
+				$this->format_completed_row( $return );
+			} else {
+				$this->format_error( esc_html__( 'There was a problem importing your destination, please try refreshing the page.', 'wetu-importer' ) );
 			}
 		}
 	}
@@ -565,7 +540,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 				unset( $this->queued_imports[ $key ] );
 
 				delete_option( 'wetu_importer_que' );
-				update_option( 'wetu_importer_que',$this->queued_imports );
+				update_option( 'wetu_importer_que', $this->queued_imports );
 			}
 		}
 	}
@@ -573,7 +548,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 	/**
 	 * Connect to wetu
 	 */
-	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = false, $safari_brands = false ) {
+	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = array(), $safari_brands = false ) {
 		if ( 'Destination' === trim( $data[0]['type'] ) ) {
 			$post_name = '';
 			$data_post_content = '';
@@ -583,7 +558,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 				'post_type' => 'destination',
 			);
 
-			if ( false !== $importable_content && in_array( 'country', $importable_content ) ) {
+			if ( ! empty( $importable_content ) && in_array( 'country', $importable_content ) ) {
 				$parent = $this->check_for_parent( $data );
 				if( false !== $parent ) {
 					$post['post_parent'] = $parent;
@@ -591,10 +566,10 @@ class WETU_Importer_Destination extends WETU_Importer {
 			}
 
 			//Set the post_content
-			if ( false !== $importable_content && in_array( 'description', $importable_content ) ) {
+			if ( ! empty( $importable_content ) && in_array( 'description', $importable_content ) ) {
 				if ( isset( $data[0]['content']['general_description'] ) ) {
 
-					if ( false !== $importable_content && in_array( 'strip_tags', $importable_content ) ) {
+					if ( in_array( 'strip_tags', $importable_content ) ) {
 						$post['post_content'] = wp_strip_all_tags( $data[0]['content']['general_description'] );
 					} else {
 						$post['post_content'] = $data[0]['content']['general_description'];
@@ -615,7 +590,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 				$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
 				update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ), $prev_date );
 			} else {
-				//Set the name
+				// Set the name.
 				if ( isset( $data[0]['name'] ) ) {
 					$post_name = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'destination', 0 );
 				}
@@ -625,7 +600,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 				$post['post_status'] = 'publish';
 				$id = wp_insert_post( $post );
 
-				//Save the WETU ID and the Last date it was modified.
+				// Save the WETU ID and the Last date it was modified.
 				if ( false !== $id ) {
 					add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
 					add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ) );
@@ -634,7 +609,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 			$this->find_attachments( $id );
 
-			//Set the team member if it is there
+			// Set the team member if it is there.
 			if ( post_type_exists( 'team' ) && false !== $team_members && '' !== $team_members ) {
 				$this->set_team_member( $id, $team_members );
 			}
@@ -643,70 +618,70 @@ class WETU_Importer_Destination extends WETU_Importer {
 				$this->set_map_data( $data, $id, 9 );
 			}
 
-			//Set the Room Data
+			// Set the Room Data.
 			if ( false !== $importable_content && in_array( 'videos', $importable_content ) ) {
 				$this->set_video_data( $data, $id );
 			}
 
-			//Set the Electricity
+			// Set the Electricity.
 			if ( false !== $importable_content && in_array( 'electricity', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'electricity', $importable_content );
 			}
-			//Set the cuisine
+			// Set the cuisine.
 			if ( false !== $importable_content && in_array( 'cuisine', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'cuisine', $importable_content );
 			}
-			//Set the banking
+			// Set the banking.
 			if ( false !== $importable_content && in_array( 'banking', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'banking', $importable_content );
 			}
-			//Set the transport
+			// Set the transport.
 			if ( false !== $importable_content && in_array( 'transport', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'transport', $importable_content );
 			}
-			//Set the dress
+			// Set the dress.
 			if ( false !== $importable_content && in_array( 'dress', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'dress', $importable_content );
 			}
-			//Set the climate
+			// Set the climate.
 			if ( false !== $importable_content && in_array( 'climate', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'climate', $importable_content );
 			}
-			//Set the Health
+			// Set the Health.
 			if ( false !== $importable_content && in_array( 'health', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'health', $importable_content );
 			}
-			//Set the Safety
+			// Set the Safety.
 			if ( false !== $importable_content && in_array( 'safety', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'safety', $importable_content );
 			}
-			//Set the Visa
+			// Set the Visa.
 			if ( false !== $importable_content && in_array( 'visa', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'visa', $importable_content );
 			}
-			//Set the General
+			// Set the General.
 			if ( false !== $importable_content && in_array( 'additional_info', $importable_content ) ) {
 				$this->set_travel_info( $data, $id, 'additional_info', $importable_content );
 			}
 
-			//Setup some default for use in the import
+			// Setup some default for use in the import.
 			if ( false !== $importable_content && (in_array( 'gallery', $importable_content ) || in_array( 'banner_image', $importable_content ) || in_array( 'featured_image', $importable_content )) ) {
 				$this->find_attachments( $id );
 
-				//Set the featured image
+				// Set the featured image.
 				if ( false !== $importable_content && in_array( 'featured_image', $importable_content ) ) {
 					$this->set_featured_image( $data, $id );
 				}
 				if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
 					$this->set_banner_image( $data, $id, $importable_content );
 				}
-				//Import the main gallery
+				// Import the main gallery.
 				if ( false !== $importable_content && in_array( 'gallery', $importable_content ) ) {
 					$this->create_main_gallery( $data, $id );
 				}
 			}
 
-			//Set the continent
+			// Set the continent.
 			if ( false !== $importable_content && in_array( 'continent', $importable_content ) ) {
 				$this->set_continent( $data, $id );
 			}
@@ -777,7 +752,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 		if ( isset( $accommodation['error'] ) ) {
 			return $accommodation['error'];
 		} elseif ( isset( $accommodation ) && ! empty( $accommodation ) ) {
-			set_transient( 'lsx_ti_accommodation',$accommodation,60 * 60 * 2 );
+			set_transient( 'lsx_ti_accommodation', $accommodation,60 * 60 * 2 );
 			return true;
 		}
 	}
@@ -812,11 +787,10 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 			$result = $wpdb->get_var( $query );
 
-			if( ! empty( $result ) && '' !== $result && false !== $result ) {
+			if ( ! empty( $result ) && '' !== $result && false !== $result ) {
 				return $result;
 			}
 		}
-
 		return false;
 	}
 }
