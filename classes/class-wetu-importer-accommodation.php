@@ -666,7 +666,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	 */
 	public function set_safari_brands( $id, $safari_brands ) {
 		foreach ( $safari_brands as $safari_brand ) {
-			wp_set_object_terms( $id, intval( $safari_brand ), 'accommodation-brand',true );
+			wp_set_object_terms( $id, intval( $safari_brand ), 'accommodation-brand', true );
 		}
 	}
 
@@ -686,7 +686,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 			}
 
 			if ( false !== $destinations ) {
-				$prev_values = get_post_meta( $id, 'destination_to_accommodation',false );
+				$prev_values = get_post_meta( $id, 'destination_to_accommodation', false );
 
 				if ( false === $prev_values || ! is_array( $prev_values ) ) {
 					$prev_values = array();
@@ -725,10 +725,10 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 					echo $term->get_error_message();
 				}
 			} else {
-				wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type',true );
+				wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type', true );
 			}
 		} else {
-			wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type',true );
+			wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type', true );
 		}
 	}
 

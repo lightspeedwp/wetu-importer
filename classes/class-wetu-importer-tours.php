@@ -645,14 +645,19 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$this->set_price( $data, $id );
 		}
 
-		//Set the Duration.
+		// Set the Duration.
 		if ( false !== $importable_content && in_array( 'duration', $importable_content ) ) {
 			$this->set_duration( $data, $id );
 		}
 
-		//Set the Group Size.
+		// Set the Group Size.
 		if ( false !== $importable_content && in_array( 'group_size', $importable_content ) ) {
 			$this->set_group_size( $data, $id );
+		}
+
+		// Set the Group Size.
+		if ( false !== $importable_content && in_array( 'tags', $importable_content ) ) {
+			$this->set_travel_styles( $id, $data );
 		}
 
 		if ( false !== $importable_content && in_array( 'itineraries', $importable_content ) && isset( $data['legs'] ) && ! empty( $data['legs'] ) ) {
@@ -864,7 +869,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 	}
 
-	// CLASS SPECIFIC FUNCTIONS
+	// CLASS SPECIFIC FUNCTIONS.
 
 	/**
 	 * Set the Itinerary Day
@@ -913,7 +918,22 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$group_size = $data['group_size'];
 			$this->save_custom_field( $group_size,'group_size',$id );
 		}
-	}	
+	}
+
+	/**
+	 * Takes the WETU tags and sets the Travel Styles.
+	 *
+	 * @param string $id
+	 * @param array $travel_styles
+	 * @return void
+	 */
+	public function set_travel_styles( $id, $data ) {
+		if ( isset( $data['tags'] ) ) {
+			foreach ( $data['tags'] as $tag ) {
+				$this->set_term( $id, $tag, 'travel-style' );
+			}
+		}
+	}
 
 	/**
 	 * Connects the Accommodation if its available
@@ -999,10 +1019,11 @@ class WETU_Importer_Tours extends WETU_Importer {
 					$country_id = $this->set_country( $country_wetu_id, $id );
 				}
 			} else {
-				$destination_json = file_get_contents( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
+				$destination_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
 
-				if ( $destination_json ) {
-					$destination_data = json_decode( $destination_json, true );
+				if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+
+					$destination_data = json_decode( $destination_json['body'], true );
 
 					if ( ! empty( $destination_data ) && ! isset( $destination_data['error'] ) ) {
 						$destination_title = $day['destination_content_entity_id'];

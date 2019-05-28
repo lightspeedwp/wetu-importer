@@ -791,7 +791,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 				return $result;
 			}
 		}
-
 		return false;
 	}
 }
