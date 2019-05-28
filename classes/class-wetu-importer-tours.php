@@ -1000,12 +1000,13 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 * @return boolean / string
 	 */
 	public function set_destination( $day, $id, $leg_counter ) {
-		$dest_id = false;
+		$dest_id    = false;
 		$country_id = false;
+		
 		$this->current_destinations = $this->find_current_destinations();
 
 		if ( isset( $day['destination_content_entity_id'] ) && ! empty( $day['destination_content_entity_id'] ) ) {
-			if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) && array_key_exists( $day['destination_content_entity_id'],$this->current_destinations ) ) {
+			if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) && array_key_exists( $day['destination_content_entity_id'], $this->current_destinations ) ) {
 				$dest_id = $this->current_destinations[ $day['destination_content_entity_id'] ];
 
 				//TODO Check for attachments here.
@@ -1013,7 +1014,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 
 				//Check if there is a country asigned.
 				$potential_id = wp_get_post_parent_id( $dest_id );
-				$country_wetu_id = get_post_meta( $potential_id,'lsx_wetu_id',true );
+				$country_wetu_id = get_post_meta( $potential_id, 'lsx_wetu_id', true );
 
 				if ( false !== $country_wetu_id ) {
 					$country_id = $this->set_country( $country_wetu_id, $id );
@@ -1036,7 +1037,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 							&& $destination_data[0]['map_object_id'] !== $destination_data[0]['position']['country_content_entity_id'] ) {
 
 							$country_id = $this->set_country( $destination_data[0]['position']['country_content_entity_id'], $id );
-							// Save the destination so we can grab the tour featured image and banner from them
+							// Save the destination so we can grab the tour featured image and banner from them.
 						}
 
 						$dest_post = array(
@@ -1050,10 +1051,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 						}
 						$dest_id = wp_insert_post( $dest_post );
 
-						//Make sure we register the
+						// Make sure we register the.
 						$this->current_destinations[ $day['destination_content_entity_id'] ] = $dest_id;
 
-						//If there are images attached then use the destination
+						// If there are images attached then use the destination.
 						if ( isset( $destination_data[0]['content']['images'] ) && ! empty( $destination_data[0]['content']['images'] ) ) {
 							$this->destination_images[ $id ][] = array( $dest_id, $day['destination_content_entity_id'] );
 						}

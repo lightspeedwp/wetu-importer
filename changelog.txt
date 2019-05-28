@@ -1,5 +1,11 @@
 ## Change log
 
+### 2.0.0
+* Dev - Upgraded Wetu API to V8.
+* Dev - Added in support for the group size and the tags fields.
+* Fix - Updated the 'file_get_contents()' call with 'wp_remote_get()'
+* Dev - Coding Standards Updates
+
 ### 1.1.2
 * Dev - Removing the need to index the accommodation and destination items from WETU.
 * Dev - Changed the Accommodation and Destination search to use the WETU API Search.
