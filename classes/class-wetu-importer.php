@@ -213,9 +213,10 @@ class WETU_Importer {
 		$this->set_variables();
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) ,11 );
-		add_action( 'admin_menu', array( $this, 'register_importer_page' ),20 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) , 11 );
+		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
 
+		require_once( WETU_IMPORTER_PATH . 'classes/class-welcome.php' );
 		require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php' );
 		require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php' );
 		require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer-tours.php' );
@@ -223,15 +224,15 @@ class WETU_Importer {
 		add_action( 'init', array( $this, 'load_class' ) );
 
 		if ( 'default' !== $this->tab_slug ) {
-			add_action( 'wp_ajax_lsx_tour_importer',array( $this, 'process_ajax_search' ) );
-			add_action( 'wp_ajax_nopriv_lsx_tour_importer',array( $this, 'process_ajax_search' ) );
+			add_action( 'wp_ajax_lsx_tour_importer', array( $this, 'process_ajax_search' ) );
+			add_action( 'wp_ajax_nopriv_lsx_tour_importer', array( $this, 'process_ajax_search' ) );
 
-			add_action( 'wp_ajax_lsx_import_items',array( $this, 'process_ajax_import' ) );
-			add_action( 'wp_ajax_nopriv_lsx_import_items',array( $this, 'process_ajax_import' ) );
+			add_action( 'wp_ajax_lsx_import_items', array( $this, 'process_ajax_import' ) );
+			add_action( 'wp_ajax_nopriv_lsx_import_items', array( $this, 'process_ajax_import' ) );
 		}
 	}
 
-	// ACTIVATION FUNCTIONS
+	// ACTIVATION FUNCTIONS.
 
 	/**
 	 * Load the plugin text domain for translation.
@@ -324,7 +325,7 @@ class WETU_Importer {
 		}
 	}
 
-	// COMPATABILITY FUNCTIONS
+	// COMPATABILITY FUNCTIONS.
 
 	/**
 	 * On plugin activation
@@ -391,7 +392,7 @@ class WETU_Importer {
 		}
 	}
 
-	// DISPLAY FUNCTIONS
+	// DISPLAY FUNCTIONS.
 
 	/*
      * Load the importer class you want to use
@@ -411,7 +412,7 @@ class WETU_Importer {
 				break;
 
 			default:
-				$this->current_importer = false;
+				$this->current_importer = \wetu_importer\classes\Welcome::get_instance();
 				break;
 		}
 	}
@@ -420,7 +421,7 @@ class WETU_Importer {
 	 * Registers the admin page which will house the importer form.
 	 */
 	public function register_importer_page() {
-		add_submenu_page( 'tour-operator',esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'wetu-importer', array( $this, 'display_page' ) );
+		add_submenu_page( 'tour-operator', esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'wetu-importer', array( $this, 'display_page' ) );
 	}
 
 	/**
@@ -451,31 +452,9 @@ class WETU_Importer {
 		?>
 		<div class="wrap">
 			<?php
-				// @codingStandardsIgnoreLine
-				screen_icon();
-			?>
-
-			<?php if ( ! is_object( $this->current_importer ) ) {
-				?>
-				<h2><?php esc_html_e( 'Welcome to the LSX Wetu Importer', 'wetu-importer' ); ?></h2>
-				<p>If this is the first time you are running the import, then follow the steps below.</p>
-				<ul>
-					<li>Step 1 - Import your <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?page=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=tour"><?php esc_html_e( 'Tours', 'wetu-importer' ); ?></a></li>
-					<li>Step 2 - The tour import will have created draft <a href="<?php echo esc_attr( admin_url( 'admin.php' ) ); ?>?page=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=accommodation"><?php esc_html_e( 'accommodation', 'wetu-importer' ); ?></a> that will need to be imported.</li>
-					<li>Step 3 - Lastly import the <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?page=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations', 'wetu-importer' ); ?></a> draft posts created during the previous two steps.</li>
-				</ul>
-
-				<?php /*<h3><?php esc_html_e('Additional Tools', 'wetu-importer'); ?></h3>
-                <ul>
-                    <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=connect_accommodation"><?php esc_html_e('Connect Accommodation', 'wetu-importer'); ?></a> <small><?php esc_html_e('If you already have accommodation, you can "connect" it with its WETU counter part, so it works with the importer.', 'wetu-importer'); ?></small></li>
-					<?php if(class_exists('Lsx_Banners')){ ?>
-                        <li><a href="<?php echo admin_url('admin.php'); ?>?page=<?php echo $this->plugin_slug; ?>&tab=banners"><?php esc_html_e('Sync High Res Banner Images', 'wetu-importer'); ?></a></li>
-					<?php } ?>
-                </ul>
-				<?php*/
-			} else {
+				$this->navigation( $this->tab_slug );
 				$this->current_importer->display_page();
-			}; ?>
+			?>
 		</div>
 		<?php
 	}
@@ -571,24 +550,24 @@ class WETU_Importer {
 	 */
 	public function navigation( $tab = '' ) {
 		$post_types = array(
-			'tour'              => esc_attr( 'Tours', 'wetu-importer' ),
-			'accommodation'     => esc_attr( 'Accommodation', 'wetu-importer' ),
-			'destination'       => esc_attr( 'Destinations', 'wetu-importer' ),
+			'tour'          => esc_attr( 'Tours', 'wetu-importer' ),
+			'accommodation' => esc_attr( 'Accommodation', 'wetu-importer' ),
+			'destination'   => esc_attr( 'Destinations', 'wetu-importer' ),
 		);
 
-		// @codingStandardsIgnoreLine
-		echo '<div class="wet-navigation"><div class="subsubsub"><a class="' . $this->itemd( $tab, '', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '">' . esc_attr__( 'Home', 'wetu-importer' ) . '</a>';
+		echo wp_kses_post( '<div class="wp-filter">' );
+		echo wp_kses_post( '<ul class="filter-links">' );
+		echo wp_kses_post( '<li><a class="' . $this->itemd( $tab, 'default', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '">' . esc_attr__( 'Home', 'wetu-importer' ) . '</a></li>' );
 
 		foreach ( $post_types as $post_type => $label ) {
-			// @codingStandardsIgnoreLine
-			echo ' | <a class="' . $this->itemd( $tab, $post_type, 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=' . $post_type . '">' . $label . '</a>';
+			echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, $post_type, 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=' . $post_type . '">' . $label . '</a></li>' );
 		}
 
-		echo '</div><br clear="both"/></div>';
+		echo wp_kses_post( '</ul> </div>' );
 	}
 
 	/**
-	 * set_taxonomy with some terms
+	 * Set_taxonomy with some terms
 	 */
 	public function team_member_checkboxes( $selected = array() ) {
 		if ( post_type_exists( 'team' ) ) { ?>
@@ -617,7 +596,7 @@ class WETU_Importer {
 	}
 
 
-	// GENERAL FUNCTIONS
+	// GENERAL FUNCTIONS.
 
 	/**
 	 * Checks to see if an item is checked.
@@ -647,7 +626,7 @@ class WETU_Importer {
 	 * @param $echo bool
 	 */
 	public function selected( $haystack = false, $needle = '', $echo = true ) {
-		$return = $this->itemd( $haystack,$needle,'selected' );
+		$return = $this->itemd( $haystack, $needle, 'selected' );
 
 		if ( '' !== $return ) {
 			if ( true === $echo ) {
@@ -688,7 +667,7 @@ class WETU_Importer {
 	}
 
 	/**
-	 * grabs any attachments for the current item
+	 * Grabs any attachments for the current item
 	 */
 	public function find_attachments( $id = false ) {
 		if ( false !== $id ) {
@@ -706,15 +685,14 @@ class WETU_Importer {
 
 				if ( $attachments->have_posts() ) {
 					foreach ( $attachments->posts as $attachment ) {
-						$this->found_attachments[ $attachment->ID ] = str_replace( array( '.jpg', '.png', '.jpeg' ),'',$attachment->post_title );
-						//$this->gallery_meta[] = $attachment->ID;
+						$this->found_attachments[ $attachment->ID ] = str_replace( array( '.jpg', '.png', '.jpeg' ), '', $attachment->post_title );
 					}
 				}
 			}
 		}
 	}
 
-	// CUSTOM FIELD FUNCTIONS
+	// CUSTOM FIELD FUNCTIONS.
 
 	/**
 	 * Saves the room data
@@ -726,12 +704,12 @@ class WETU_Importer {
 				$value--;
 			}
 
-			$prev = get_post_meta( $id,$meta_key,true );
+			$prev = get_post_meta( $id, $meta_key, true );
 
 			if ( false !== $id && '0' !== $id && false !== $prev && true === $unique ) {
-				update_post_meta( $id,$meta_key,$value,$prev );
+				update_post_meta( $id, $meta_key, $value, $prev );
 			} else {
-				add_post_meta( $id,$meta_key,$value,$unique );
+				add_post_meta( $id, $meta_key, $value, $unique );
 			}
 		}
 	}
@@ -754,10 +732,10 @@ class WETU_Importer {
 		}
 	}
 
-	// TAXONOMY FUNCTIONS
+	// TAXONOMY FUNCTIONS.
 
 	/**
-	 * set_taxonomy with some terms
+	 * Set_taxonomy with some terms
 	 */
 	public function set_taxonomy( $taxonomy, $terms, $id ) {
 		$result = array();
@@ -786,6 +764,15 @@ class WETU_Importer {
 		return $result;
 	}
 
+	/**
+	 * Sets the terms of the current post
+	 *
+	 * @param boolean $id
+	 * @param boolean $name
+	 * @param boolean $taxonomy
+	 * @param boolean $parent
+	 * @return void
+	 */
 	public function set_term( $id = false, $name = false, $taxonomy = false, $parent = false ) {
 		// @codingStandardsIgnoreLine
 		if ( ! $term = term_exists( $name, $taxonomy ) ) {

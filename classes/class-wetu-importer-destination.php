@@ -91,8 +91,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<?php $this->navigation( 'destination' ); ?>
-
 			<?php $this->search_form(); ?>
 
 			<form method="get" action="" id="posts-filter">

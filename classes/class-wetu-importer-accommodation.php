@@ -99,8 +99,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<?php $this->navigation( 'accommodation' ); ?>
-
+			
 			<?php $this->update_options_form(); ?>
 
 			<?php $this->search_form(); ?>

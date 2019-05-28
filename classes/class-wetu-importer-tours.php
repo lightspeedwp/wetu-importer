@@ -126,8 +126,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<?php $this->navigation( 'tour' ); ?>
-
 			<?php $this->update_options_form(); ?>
 
 			<?php $this->search_form(); ?>
