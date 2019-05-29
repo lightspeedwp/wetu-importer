@@ -205,7 +205,7 @@ class WETU_Importer {
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'compatible_version_check' ) );
 
-		// Don't run anything else in the plugin, if we're on an incompatible PHP version
+		// Don't run anything else in the plugin, if we're on an incompatible PHP version.
 		if ( ! self::compatible_version() ) {
 			return;
 		}
@@ -216,10 +216,11 @@ class WETU_Importer {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) , 11 );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
 
-		require_once( WETU_IMPORTER_PATH . 'classes/class-welcome.php' );
-		require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php' );
-		require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php' );
-		require_once( WETU_IMPORTER_PATH . 'classes/class-wetu-importer-tours.php' );
+		require_once WETU_IMPORTER_PATH . 'classes/class-welcome.php';
+		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php';
+		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php';
+		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-tours.php';
+		require_once WETU_IMPORTER_PATH . 'classes/class-settings.php';
 
 		add_action( 'init', array( $this, 'load_class' ) );
 
@@ -247,25 +248,20 @@ class WETU_Importer {
 	 * Sets the variables used throughout the plugin.
 	 */
 	public function set_variables() {
-		$this->post_types = array( 'accommodation','destination','tour' );
-		$temp_options = get_option( '_lsx-to_settings',false );
+		$this->post_types = array( 'accommodation', 'destination', 'tour' );
+		$temp_options     = get_option( '_lsx-to_settings', false );
 
-		//Set the options.
+		// Set the options.
 		if ( false !== $temp_options && isset( $temp_options[ $this->plugin_slug ] ) ) {
 			$this->options = $temp_options[ $this->plugin_slug ];
 
 			$this->accommodation_settings = $temp_options['accommodation'];
-			$this->tour_settings = $temp_options['tour'];
-			$this->destination_settings = $temp_options['destination'];
+			$this->tour_settings          = $temp_options['tour'];
+			$this->destination_settings   = $temp_options['destination'];
 
-			$this->api_key = false;
+			$this->api_key      = false;
 			$this->api_username = false;
 			$this->api_password = false;
-
-			/*if ( false !== $this->options['enable_debug'] ) {
-				$this->debug_enabled = true;
-				$this->logger = \lsx\LSX_Logger::init();
-			}*/
 
 			if ( ! defined( 'WETU_API_KEY' ) ) {
 				if ( isset( $temp_options['api']['wetu_api_key'] ) && '' !== $temp_options['api']['wetu_api_key'] ) {
@@ -281,37 +277,33 @@ class WETU_Importer {
 				$this->api_key = WETU_API_KEY;
 			}
 
-			//Set the tab slug
-			// @codingStandardsIgnoreLine
+			// Set the tab slug.
 			if ( isset( $_GET['tab'] ) || isset( $_POST['type'] ) ) {
 				if ( isset( $_GET['tab'] ) ) {
-					$this->tab_slug = $_GET['tab'];
+					$this->tab_slug = wp_unslash( $_GET['tab'] );
 				} else {
-					// @codingStandardsIgnoreLine
-					$this->tab_slug = $_POST['type'];
+					$this->tab_slug = wp_unslash( $_POST['type'] );
 				}
 
-				//If any tours were queued
+				// If any tours were queued.
 				$this->queued_imports = get_option( 'wetu_importer_que', array() );
 			}
 
-			//Set the scaling options
+			// Set the scaling options.
 			if ( isset( $this->options ) && isset( $this->options['image_scaling'] ) ) {
 				$this->scale_images = true;
-				$width = '1024';
 
+				$width = '1024';
 				if ( isset( $this->options['width'] ) && '' !== $this->options['width'] ) {
 					$width = $this->options['width'];
 				}
 
 				$height = '768';
-
 				if ( isset( $this->options['height'] ) && '' !== $this->options['height'] ) {
 					$height = $this->options['height'];
 				}
 
 				$cropping = 'w';
-
 				if ( isset( $this->options['cropping'] ) && '' !== $this->options['cropping'] ) {
 					$cropping = $this->options['cropping'];
 				}
@@ -394,9 +386,9 @@ class WETU_Importer {
 
 	// DISPLAY FUNCTIONS.
 
-	/*
-     * Load the importer class you want to use
-     */
+	/**
+	 * Load the importer class you want to use
+	 */
 	public function load_class() {
 		switch ( $this->tab_slug ) {
 			case 'accommodation':
@@ -409,6 +401,10 @@ class WETU_Importer {
 
 			case 'tour':
 				$this->current_importer = new WETU_Importer_Tours();
+				break;
+
+			case 'settings':
+				$this->current_importer = \wetu_importer\classes\Settings::get_instance();
 				break;
 
 			default:
@@ -563,6 +559,7 @@ class WETU_Importer {
 			echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, $post_type, 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=' . $post_type . '">' . $label . '</a></li>' );
 		}
 
+		echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, 'settings', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=settings">' . esc_attr__( 'Settings', 'wetu-importer' ) . '</a></li>' );
 		echo wp_kses_post( '</ul> </div>' );
 	}
 
