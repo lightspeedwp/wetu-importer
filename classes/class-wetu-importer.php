@@ -1,12 +1,16 @@
 <?php
 /**
+ * The main plugin class.
+ *
  * @package   WETU_Importer
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link
  * @copyright 2016 LightSpeed
- **/
-
+ */
+/**
+ * The Main plugin class.
+ */
 class WETU_Importer {
 
 	/**
@@ -67,16 +71,6 @@ class WETU_Importer {
 	 * The WETU API Key
 	 */
 	public $api_key = false;
-
-	/**
-	 * The WETU API Username
-	 */
-	public $api_username = false;
-
-	/**
-	 * The WETU API Password
-	 */
-	public $api_password = false;
 
 	/**
 	 * The post types this works with.
@@ -204,6 +198,7 @@ class WETU_Importer {
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'compatible_version_check' ) );
+		require_once WETU_IMPORTER_PATH . 'includes/helpers.php';
 
 		// Don't run anything else in the plugin, if we're on an incompatible PHP version.
 		if ( ! self::compatible_version() ) {
@@ -216,7 +211,6 @@ class WETU_Importer {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) , 11 );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
 
-		require_once WETU_IMPORTER_PATH . 'includes/helpers.php';
 		require_once WETU_IMPORTER_PATH . 'classes/class-welcome.php';
 		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php';
 		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php';
@@ -250,29 +244,24 @@ class WETU_Importer {
 	 */
 	public function set_variables() {
 		$this->post_types = array( 'accommodation', 'destination', 'tour' );
-		$temp_options     = get_option( '_lsx-to_settings', false );
+		$options = \wetu_importer\includes\helpers\get_options();
 
 		// Set the options.
-		if ( false !== $temp_options && isset( $temp_options[ $this->plugin_slug ] ) ) {
-			$this->options = $temp_options[ $this->plugin_slug ];
+		if ( ! empty( $options ) ) {
+			$this->options = $options;
 
-			$this->accommodation_settings = $temp_options['accommodation'];
-			$this->tour_settings          = $temp_options['tour'];
-			$this->destination_settings   = $temp_options['destination'];
+			$temp_options = get_option( '_lsx-to_settings', false );
+			if ( false !== $temp_options ) {
+				$this->accommodation_settings = $temp_options['accommodation'];
+				$this->tour_settings          = $temp_options['tour'];
+				$this->destination_settings   = $temp_options['destination'];
+			}
 
-			$this->api_key      = false;
-			$this->api_username = false;
-			$this->api_password = false;
+			$this->api_key = false;
 
 			if ( ! defined( 'WETU_API_KEY' ) ) {
-				if ( isset( $temp_options['api']['wetu_api_key'] ) && '' !== $temp_options['api']['wetu_api_key'] ) {
-					$this->api_key = $temp_options['api']['wetu_api_key'];
-				}
-				if ( isset( $temp_options['api']['wetu_api_username'] ) && '' !== $temp_options['api']['wetu_api_username'] ) {
-					$this->api_username = $temp_options['api']['wetu_api_username'];
-				}
-				if ( isset( $temp_options['api']['wetu_api_password'] ) && '' !== $temp_options['api']['wetu_api_password'] ) {
-					$this->api_password = $temp_options['api']['wetu_api_password'];
+				if ( isset( $options['api_key'] ) && '' !== $options['api_key'] ) {
+					$this->api_key = $options['api_key'];
 				}
 			} else {
 				$this->api_key = WETU_API_KEY;

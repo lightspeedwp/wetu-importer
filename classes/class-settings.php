@@ -59,7 +59,6 @@ class Settings {
 			'scaling'                            => 'h',
 		);
 		$this->fields   = array_keys( $this->defaults );
-
 		add_action( 'admin_init', array( $this, 'save_options' ) );
 	}
 
@@ -87,7 +86,7 @@ class Settings {
 		$options = wp_parse_args( $options, $this->defaults );
 		?>
 		<div class="wrap">
-			<form class="">
+			<form method="post" class="">
 				<?php wp_nonce_field( 'wetu_importer_save', 'wetu_importer_save_options' ); ?>
 				
 				<h1><?php esc_html_e( 'General', 'wetu-importer' ); ?></h1>
@@ -95,7 +94,7 @@ class Settings {
 					<tbody>
 						<tr class="form-field">
 							<th scope="row">
-								<i class="dashicons-before dashicons-admin-network"></i> <label for="wetu_api_key"> <?php esc_html_e( 'Key', 'wetu-importer' ); ?></label>
+								<label for="wetu_api_key"> <?php esc_html_e( 'API Key', 'wetu-importer' ); ?></label>
 							</th>
 							<td>
 								<input type="text" value="<?php if ( isset( $options['api_key'] ) ) { echo esc_attr( $options['api_key'] ); } ?>" name="api_key" />
@@ -298,6 +297,7 @@ class Settings {
 						</tr>
 					</tbody>
 				</table>
+				<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'wetu-importer' ); ?>"></p>
 			</form>
 		</div>
 		<?php
@@ -313,13 +313,13 @@ class Settings {
 			return;
 		}
 		$data_to_save = array();
-		foreach ( $this->fields as $field ) {
-			$data_to_save[ $field ] = false;
-			if ( isset( $_POST[ $field ] ) ) {
-				$data_to_save[ $field ] = $_POST[ $field ];
+		foreach ( $this->defaults as $key => $field ) {
+			if ( isset( $_POST[ $key ] ) ) {
+				$data_to_save[ $key ] = $_POST[ $key ];
+			} else {
+				$data_to_save[ $key ] = '';
 			}
 		}
-
 		update_option( 'wetu_importer_settings', $data_to_save );
 	}
 }

@@ -97,24 +97,11 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 */
 	public function set_variables() {
 		parent::set_variables();
-
-		//https://wetu.com/API/Itinerary/V8/Get
-		if ( false !== $this->api_username && false !== $this->api_password ) {
-			$this->url    = 'https://wetu.com/API/Itinerary/';
-			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
-		} elseif ( false !== $this->api_key ) {
+		if ( false !== $this->api_key ) {
 			$this->url    = 'https://wetu.com/API/Itinerary/' . $this->api_key;
 			$this->url_qs = '';
 		}
-
-		$temp_options = get_option( '_lsx-to_settings',false );
-
-		if ( false !== $temp_options && isset( $temp_options[ $this->plugin_slug ] ) && ! empty( $temp_options[ $this->plugin_slug ] ) ) {
-			$this->options = $temp_options[ $this->plugin_slug ];
-		}
-
 		$tour_options = get_option( 'wetu_importer_tour_settings',false );
-
 		if ( false !== $tour_options ) {
 			$this->tour_options = $tour_options;
 		}
@@ -607,10 +594,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
 			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
 
-			// If the logger is enabled then log the data being saved.
-			if ( $this->debug_enabled ) {
-				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
-			}
 		} else {
 			// Set the name.
 			if ( isset( $data['name'] ) ) {
@@ -624,11 +607,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$post['post_name']   = $post_name;
 			$post['post_title']  = $data['name'];
 			$post['post_status'] = 'publish';
-
-			// If the logger is enabled then log the data being saved.
-			if ( $this->debug_enabled ) {
-				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
-			}
 			$id = wp_insert_post( $post );
 
 			// Save the WETU ID and the Last date it was modified.
