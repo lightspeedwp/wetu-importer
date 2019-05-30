@@ -445,9 +445,33 @@ class WETU_Importer {
 		<div class="wrap">
 			<?php
 				$this->navigation( $this->tab_slug );
+				$this->wetu_status();
+				$this->post_status_navigation();
 				$this->current_importer->display_page();
 			?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Outputs the post status navigation
+	 *
+	 * @return void
+	 */
+	public function post_status_navigation() {
+		?>
+		<ul class="subsubsub">
+			<li class="searchform"><a class="current" href="#search"><?php esc_attr_e( 'Search', 'wetu-importer' ); ?></a> | </li>
+			<li class="publish"><a href="#publish"><?php esc_attr_e( 'Published', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'publish ' ) ); ?>)</span></a> | </li>
+			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li> 
+			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
+
+			<?php if ( 'tour' === $this->tab_slug ) { ?>
+				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'wetu-importer' ); ?></a></li>
+			<?php } else if ( ! empty( $this->queued_imports ) ) { ?>
+				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
+			<?php } ?>
+		</ul>
 		<?php
 	}
 
@@ -459,8 +483,6 @@ class WETU_Importer {
 		<form class="ajax-form" id="<?php echo esc_attr( $this->plugin_slug ); ?>-search-form" method="get" action="tools.php" data-type="<?php echo esc_attr( $this->tab_slug ); ?>">
 			<input type="hidden" name="page" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
 
-			<h3><span class="dashicons dashicons-search"></span> <?php esc_html_e( 'Search', 'wetu-importer' ); ?></h3>
-
 			<?php do_action( 'wetu_importer_search_form',$this ); ?>
 
 			<div class="normal-search">
@@ -470,21 +492,8 @@ class WETU_Importer {
 			<div class="advanced-search hidden" style="display:none;">
 				<p><?php esc_html_e( 'Enter several keywords, each on a new line.', 'wetu-importer' ); ?></p>
 				<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
-				<input class="button button-primary submit" type="submit" value="<?php esc_attr_e( 'Search', 'wetu-importer' ); ?>" />
+				<input class="button submit" type="submit" value="<?php esc_attr_e( 'Search', 'wetu-importer' ); ?>" />
 			</div>
-
-			<p>
-				<a class="advanced-search-toggle" href="#"><?php esc_html_e( 'Bulk Search', 'wetu-importer' ); ?></a> |
-				<a class="published search-toggle" href="#publish"><?php esc_attr_e( 'Published', 'wetu-importer' ); ?></a> |
-				<a class="pending search-toggle"  href="#pending"><?php esc_attr_e( 'Pending', 'wetu-importer' ); ?></a> |
-				<a class="draft search-toggle"  href="#draft"><?php esc_attr_e( 'Draft', 'wetu-importer' ); ?></a>
-
-				<?php if ( 'tour' === $this->tab_slug ) { ?>
-					| <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'wetu-importer' ); ?></a>
-				<?php } else if ( ! empty( $this->queued_imports ) ) { ?>
-					| <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'wetu-importer' ); ?></a>
-				<?php } ?>
-			</p>
 
 			<div class="ajax-loader" style="display:none;width:100%;text-align:center;">
 				<img style="width:64px;" src="<?php echo esc_url( WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
@@ -493,6 +502,8 @@ class WETU_Importer {
 			<div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
 				<img style="width:32px;" src="<?php echo esc_url( WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
 			</div>
+
+			<a class="button advanced-search-toggle" href="#"><?php esc_html_e( 'Bulk Search', 'wetu-importer' ); ?></a>
 		</form>
 		<?php
 	}
@@ -536,7 +547,7 @@ class WETU_Importer {
 	}
 
 	/**
-	 * Displays the importers navigation
+	 * Displays the importers navigation.
 	 *
 	 * @param $tab string
 	 */
@@ -557,6 +568,29 @@ class WETU_Importer {
 
 		echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, 'settings', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=settings">' . esc_attr__( 'Settings', 'wetu-importer' ) . '</a></li>' );
 		echo wp_kses_post( '</ul> </div>' );
+	}
+
+	/**
+	 * Wetu Status Bar.
+	 */
+	public function wetu_status() {
+		$tours = get_transient( 'lsx_ti_tours' );
+		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status','wetu-importer' ) . ' - ';
+
+		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
+			$result = $this->update_options();
+
+			if ( true === $result ) {
+				echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span>';
+				echo ' - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
+			} else {
+				echo '<span style="color:red;">' . wp_kses_post( $result ) . '</span>';
+			}
+		} else {
+			echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span> - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
+		}
+		echo '</h3>';
+		echo '</div>';
 	}
 
 	/**

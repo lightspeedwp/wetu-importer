@@ -96,12 +96,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>"/>
 
-				<p><input class="button button-primary add" type="button"
-						  value="<?php esc_html_e( 'Add to List', 'wetu-importer' ); ?>"/>
-					<input class="button button-primary clear" type="button"
-						   value="<?php esc_html_e( 'Clear', 'wetu-importer' ); ?>"/>
-				</p>
-
 				<table class="wp-list-table widefat fixed posts">
 					<?php $this->table_header(); ?>
 

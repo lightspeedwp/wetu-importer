@@ -1,6 +1,7 @@
 /** Wetu Importer Styles */
 body.tour-operator_page_wetu-importer {
 
+	/* Home Screen */
 	.row.section {
 		margin-bottom:25px;
 
@@ -92,6 +93,21 @@ body.tour-operator_page_wetu-importer {
                 }
             }
         }
-    }
+	}
+	
+	/* Tour / Accommodation / Destinations */
+	.wetu-status {
+		h3 {
+			margin: 0px;
+		}
+	}
+	.subsubsub {
+		margin-bottom: 10px;
+	}
+	#wetu-importer-search-form {
+		.normal-search {
+			display: inline-block;
+		}
+	}
 }
 
