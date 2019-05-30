@@ -125,9 +125,9 @@ class Welcome {
 			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>" class="button button-primary"><?php esc_html_e( 'Import Tours', 'wetu-importer' ); ?></a></p>
 			<p>
 				<ul class="link-list">
-					<li><a href=""><?php esc_html_e( 'Published', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'publish ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Pending', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'pending ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Draft', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>#publish"><?php esc_html_e( 'Published', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>#pending"><?php esc_html_e( 'Pending', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>#draft"><?php esc_html_e( 'Draft', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'draft ' ) ); ?>)</a></li>
 				</ul>
 			</p>			
 		<?php
@@ -145,10 +145,10 @@ class Welcome {
 
 			<p>
 				<ul class="link-list">
-					<li><a href=""><?php esc_html_e( 'Published', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'publish ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Pending', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'pending ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Draft', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'draft ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Wetu Queue', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'accommodation' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#publish"><?php esc_html_e( 'Published', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#pending"><?php esc_html_e( 'Pending', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#draft"><?php esc_html_e( 'Draft', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'accommodation' ) ); ?>)</a></li>
 				</ul>
 			</p>			
 		<?php
@@ -165,10 +165,10 @@ class Welcome {
 			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync destinations', 'wetu-importer' ); ?></a></p>
 			<p>
 				<ul class="link-list">
-					<li><a href=""><?php esc_html_e( 'Published', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'publish ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Pending', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'pending ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Draft', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'draft ' ) ); ?>)</a></li>
-					<li><a href=""><?php esc_html_e( 'Wetu Queue', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'destination' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#publish"><?php esc_html_e( 'Published', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#pending"><?php esc_html_e( 'Pending', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#draft"><?php esc_html_e( 'Draft', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'destination' ) ); ?>)</a></li>
 				</ul>
 			</p>
 		<?php
