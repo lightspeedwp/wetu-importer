@@ -33,3 +33,18 @@ function get_post_count( $post_type = '', $post_status = '' ) {
 	}
 	return $count;
 }
+
+/**
+ * Returns the qetu queue count.
+ *
+ * @param string $post_type
+ * @return void
+ */
+function get_wetu_queue_count( $post_type = '' ) {
+	$count = '0';
+	$queued_imports = get_option( 'wetu_importer_que', array() );
+	if ( isset( $queued_imports[ $post_type ] ) ) {
+		$count = count( $queued_imports[ $post_type ] );
+	}
+	return $count;
+}
