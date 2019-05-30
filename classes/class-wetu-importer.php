@@ -216,6 +216,7 @@ class WETU_Importer {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) , 11 );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
 
+		require_once WETU_IMPORTER_PATH . 'includes/helpers.php';
 		require_once WETU_IMPORTER_PATH . 'classes/class-welcome.php';
 		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php';
 		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php';
@@ -433,11 +434,17 @@ class WETU_Importer {
 		$min = '';
 
 		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
+
+			wp_enqueue_style( 'wetu-importer-style', WETU_IMPORTER_URL . 'assets/css/wetu-importer.css', WETU_IMPORTER_VER, true );
 			wp_enqueue_script( 'wetu-importers-script', WETU_IMPORTER_URL . 'assets/js/wetu-importer' . $min . '.js', array( 'jquery' ), WETU_IMPORTER_VER, true );
 
-			wp_localize_script( 'wetu-importers-script', 'lsx_tour_importer_params', array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-			) );
+			wp_localize_script(
+				'wetu-importers-script',
+				'lsx_tour_importer_params',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+				)
+			);
 		}
 	}
 
@@ -456,7 +463,7 @@ class WETU_Importer {
 	}
 
 	/**
-	 * search_form
+	 * Search Form
 	 */
 	public function search_form() {
 		?>
@@ -1281,25 +1288,6 @@ class WETU_Importer {
 		$array = $new;
 
 		return true;
-	}
-
-	/**
-	 * Gets the Post ID by the wetu ID.
-	 *
-	 * @param boolean $wetu_id the wetu ID.
-	 * @return boolean | string
-	 */
-	private function get_post_id_by_key_value( $wetu_id = false ) {
-		global $wpdb;
-		$id = false;
-
-		if ( false !== $wetu_id && '' !== $wetu_id ) {
-			$result = $wpdb->get_var( "SELECT post_id FROM `{$wpdb->postmeta}` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '{$wetu_id}'" );
-			if ( false !== $result && ! empty( $result ) ) {
-				$id = $result;
-			}
-		}
-		return $id;
 	}
 }
 

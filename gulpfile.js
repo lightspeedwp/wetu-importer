@@ -12,7 +12,6 @@ const plumber      = require('gulp-plumber');
 const autoprefixer = require('gulp-autoprefixer');
 const gutil        = require('gulp-util');
 const rename       = require('gulp-rename');
-const minify       = require('gulp-minify-css');
 const map          = require('map-stream');
 const browserlist  = ['last 2 version', '> 1%'];
 
@@ -42,6 +41,14 @@ gulp.task('default', function() {
 	console.log('gulp watch          to continue watching the files for changes');
 	console.log('gulp wordpress-lang to compile the wetu-importer.pot, en_EN.po and en_EN.mo');
 });
+
+gulp.task('sass', function() {
+	gulp.src('assets/css/scss/wetu-importer.scss')
+		.pipe(sass())
+		.pipe(gulp.dest('assets/css'));
+});
+
+gulp.task('compile-css', ['sass']);
 
 gulp.task('js', function() {
 	return gulp.src('assets/js/wetu-importer.js')
