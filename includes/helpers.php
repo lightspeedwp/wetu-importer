@@ -56,7 +56,7 @@ function get_post_count( $post_type = '', $post_status = '' ) {
 }
 
 /**
- * Returns the qetu queue count.
+ * Returns the wetu queue count.
  *
  * @param string $post_type
  * @return void
@@ -66,6 +66,21 @@ function get_wetu_queue_count( $post_type = '' ) {
 	$queued_imports = get_option( 'wetu_importer_que', array() );
 	if ( isset( $queued_imports[ $post_type ] ) ) {
 		$count = count( $queued_imports[ $post_type ] );
+	}
+	return $count;
+}
+
+/**
+ * Returns the wetu tour count.
+ *
+ * @param string $post_type
+ * @return void
+ */
+function get_wetu_tour_count( $post_type = '' ) {
+	$count = '0';
+	$wetu_tours = get_transient( 'lsx_ti_tours', array() );
+	if ( ! empty( $wetu_tours ) ) {
+		$count = count( $wetu_tours );
 	}
 	return $count;
 }

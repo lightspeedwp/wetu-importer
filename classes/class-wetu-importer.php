@@ -467,7 +467,7 @@ class WETU_Importer {
 			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
 
 			<?php if ( 'tour' === $this->tab_slug ) { ?>
-				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'wetu-importer' ); ?></a></li>
+				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_tour_count() ); ?>)</span></a></li>
 			<?php } else if ( ! empty( $this->queued_imports ) ) { ?>
 				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
 			<?php } ?>
@@ -493,6 +493,7 @@ class WETU_Importer {
 				<p><?php esc_html_e( 'Enter several keywords, each on a new line.', 'wetu-importer' ); ?></p>
 				<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
 				<input class="button submit" type="submit" value="<?php esc_attr_e( 'Search', 'wetu-importer' ); ?>" />
+				<a class="button simple-search-toggle" href="#"><?php esc_html_e( 'Simple Search', 'wetu-importer' ); ?></a>
 			</div>
 
 			<div class="ajax-loader" style="display:none;width:100%;text-align:center;">
@@ -1312,6 +1313,39 @@ class WETU_Importer {
 
 		return true;
 	}
+
+	/**
+	 * Save the list of Tours into an option
+	 */
+	public function update_options() {
+		$own = '';
+		$options = array();
+		delete_option( 'lsx_ti_tours_api_options' );
+
+		if ( isset( $_GET['own'] ) ) {
+			$this->current_importer->url_qs .= '&own=true';
+			$options[] = 'own';
+		}
+
+		if ( isset( $_GET['type'] ) && 'allitineraries' !== $_GET['type'] ) {
+			$this->current_importer->url_qs .= '&type=' . implode( '', $_GET['type'] );
+			$options[] = implode( '', $_GET['type'] );
+		}
+
+		$this->current_importer->url_qs .= '&results=2000';
+
+		add_option( 'lsx_ti_tours_api_options', $options );
+
+		$data = wp_remote_get( $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
+		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
+
+		if ( isset( $tours['error'] ) ) {
+			return $tours['error'];
+		} elseif ( isset( $tours['itineraries'] ) && ! empty( $tours['itineraries'] ) ) {
+			set_transient( 'lsx_ti_tours', $tours['itineraries'], 60 * 60 * 2 );
+			return true;
+		}
+	}	
 }
 
 $wetu_importer = new WETU_Importer();
