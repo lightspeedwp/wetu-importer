@@ -493,7 +493,7 @@ class WETU_Importer {
 				<p><?php esc_html_e( 'Enter several keywords, each on a new line.', 'wetu-importer' ); ?></p>
 				<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
 				<input class="button submit" type="submit" value="<?php esc_attr_e( 'Search', 'wetu-importer' ); ?>" />
-				<a class="button simple-search-toggle" href="#"><?php esc_html_e( 'Simple Search', 'wetu-importer' ); ?></a>
+				<a class="button advanced-search-toggle" href="#"><?php esc_html_e( 'Simple Search', 'wetu-importer' ); ?></a>
 			</div>
 
 			<div class="ajax-loader" style="display:none;width:100%;text-align:center;">

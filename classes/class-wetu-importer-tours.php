@@ -246,9 +246,9 @@ class WETU_Importer_Tours extends WETU_Importer {
 			<input class="content" type="hidden" name="own" value="true" />
 
 			<select name="type" id="wpseo-readability-filter">
-				<option <?php if ( in_array( 'allitineraries', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?> value="allitineraries"><?php esc_html_e( 'All','wetu-importer' ); ?></option>
-				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="bad">Readability: Needs improvement</option>
-				<option <?php if ( in_array( 'personal', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="ok">Readability: OK</option>
+				<option <?php if ( in_array( 'allitineraries', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?> value="allitineraries"><?php esc_html_e( 'All Itineraries','wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="bad"><?php esc_html_e( 'Sample','wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'personal', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="ok"><?php esc_html_e( 'Personal','wetu-importer' ); ?></option>
 			</select>
 			<input class="button submit" type="submit" value="<?php esc_attr_e( 'Refresh', 'wetu-importer' ); ?>" />
 		</form>
