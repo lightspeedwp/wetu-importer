@@ -445,8 +445,10 @@ class WETU_Importer {
 		<div class="wrap">
 			<?php
 				$this->navigation( $this->tab_slug );
-				$this->wetu_status();
-				$this->post_status_navigation();
+				if ( 'default' !== $this->tab_slug && 'settings' !== $this->tab_slug ) {	
+					$this->wetu_status();
+					$this->post_status_navigation();
+				}
 				$this->current_importer->display_page();
 			?>
 		</div>
@@ -490,10 +492,8 @@ class WETU_Importer {
 			</div>
 
 			<div class="advanced-search hidden" style="display:none;">
-				<p><?php esc_html_e( 'Enter several keywords, each on a new line.', 'wetu-importer' ); ?></p>
 				<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
-				<input class="button submit" type="submit" value="<?php esc_attr_e( 'Search', 'wetu-importer' ); ?>" />
-				<a class="button advanced-search-toggle" href="#"><?php esc_html_e( 'Simple Search', 'wetu-importer' ); ?></a>
+				<input class="button button-primary submit" type="submit" value="<?php esc_attr_e( 'Search', 'wetu-importer' ); ?>" />
 			</div>
 
 			<div class="ajax-loader" style="display:none;width:100%;text-align:center;">
