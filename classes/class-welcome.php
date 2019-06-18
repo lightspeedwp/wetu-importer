@@ -52,7 +52,7 @@ class Welcome {
 	public function display_page() {
 		?>
 		<div class="row section">
-			<h1><?php esc_html_e( 'Welcome to the LSX Wetu Importer', 'wetu-importer' ); ?></h1>
+			<h1><?php esc_html_e( 'Welcome to the LSX LSX Importer for Wetu', 'wetu-importer' ); ?></h1>
 			<p><?php esc_html_e( 'If this is the first time running the import, please follow the steps below.', 'wetu-importer' ); ?></p>
 		</div>
 		<?php

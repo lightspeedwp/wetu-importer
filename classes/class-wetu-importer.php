@@ -358,7 +358,7 @@ class LSX_WETU_Importer {
 	 */
 	public function compatible_version_notice() {
 		$class = 'notice notice-error';
-		$message = esc_html__( 'Wetu Importer Plugin requires PHP 5.6 or higher.', 'wetu-importer' );
+		$message = esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'wetu-importer' );
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_html( $class ), esc_html( $message ) );
 	}
 
@@ -371,7 +371,7 @@ class LSX_WETU_Importer {
 	public static function compatible_version_check_on_activation() {
 		if ( ! self::compatible_version() ) {
 			deactivate_plugins( plugin_basename( LSX_WETU_IMPORTER_CORE ) );
-			wp_die( esc_html__( 'Wetu Importer Plugin requires PHP 5.6 or higher.', 'wetu-importer' ) );
+			wp_die( esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'wetu-importer' ) );
 		}
 	}
 

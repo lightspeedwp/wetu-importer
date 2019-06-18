@@ -271,11 +271,11 @@ msgid "There was a problem importing your tour, please try refreshing the page."
 msgstr ""
 
 #: classes/class-wetu-importer.php:360, classes/class-wetu-importer.php:373
-msgid "Wetu Importer Plugin requires PHP 5.6 or higher."
+msgid "LSX Importer for Wetu Plugin requires PHP 5.6 or higher."
 msgstr ""
 
 #: classes/class-wetu-importer.php:443
-msgid "Welcome to the LSX Wetu Importer"
+msgid "Welcome to the LSX LSX Importer for Wetu"
 msgstr ""
 
 #: classes/class-wetu-importer.php:446
