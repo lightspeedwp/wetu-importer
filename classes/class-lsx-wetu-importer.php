@@ -433,6 +433,7 @@ class LSX_WETU_Importer {
 				'lsx_tour_importer_params',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'ajax_nonce' => wp_create_nonce( 'lsx_wetu_ajax_action' ),
 				)
 			);
 		}

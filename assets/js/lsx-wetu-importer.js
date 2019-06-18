@@ -71,7 +71,8 @@ var WETU_IMPORTER = {
 	        {
 	            'action' 	: 			'lsx_tour_importer',
 	            'type'		: 			type,
-	            'keyword' 	: 			keywords
+				'keyword' 	: 			keywords,
+				'security'  :			lsx_tour_importer_params.ajax_nonce
 	        },
 	        function(response) {
 	        	jQuery('#posts-filter tbody').html(response);
@@ -128,7 +129,8 @@ var WETU_IMPORTER = {
 	    jQuery.ajax( {
 	        url : lsx_tour_importer_params.ajax_url,
 	        data : args,
-	        method : 'POST'
+			method : 'POST',
+			security :	lsx_tour_importer_params.ajax_nonce,
 	    } )
         .always( function( data, textStatus, response ) {
             $this.importNext();
@@ -236,7 +238,8 @@ var WETU_IMPORTER = {
 				jQuery.post(lsx_tour_importer_params.ajax_url,
 		        {
 		            'action' 	: 			'lsx_import_sync_banners',
-		            'post_id'	:			post_id,
+					'post_id'	:			post_id,
+					'security'  :			lsx_tour_importer_params.ajax_nonce
 		        },
 		        function(response) {
 		        	current_row.fadeOut('fast', 
@@ -266,7 +269,8 @@ var WETU_IMPORTER = {
 		            'action' 	: 			'lsx_import_connect_accommodation',
 		            'post_id'	:			post_id,
 		            'type'		:			type,
-		            'wetu_id'	:			wetu_id,
+					'wetu_id'	:			wetu_id,
+					'security'  :			lsx_tour_importer_params.ajax_nonce
 		        },
 		        function(response) {
 					if('none' == jQuery('.completed-list-wrapper').css('display')){
