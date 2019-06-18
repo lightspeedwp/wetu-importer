@@ -130,7 +130,6 @@ var WETU_IMPORTER = {
 	        url : lsx_tour_importer_params.ajax_url,
 	        data : args,
 			method : 'POST',
-			security :	lsx_tour_importer_params.ajax_nonce,
 	    } )
         .always( function( data, textStatus, response ) {
             $this.importNext();
@@ -197,7 +196,8 @@ var WETU_IMPORTER = {
 	            'post_id'	:			post_id,
 	            'team_members' : 		team_members,
 	            'safari_brands' : 		safari_brands,
-	            'content'	: 			content
+				'content'	: 			content,
+				'security'  :			lsx_tour_importer_params.ajax_nonce,
 	        };	
 			this.importRow(data,row);
 		}

@@ -5,9 +5,9 @@
 <p align="center">
     <a href="http://gulpjs.com/"><img src="https://img.shields.io/badge/built%20with-gulp.js-green.svg" alt="Built with gulp.js"></a> 
   	<a href="https://travis-ci.org/lightspeeddevelopment/lsx-wetu-importer/"><img src="https://travis-ci.org/lightspeeddevelopment/lsx-wetu-importer.svg?branch=master" alt="Build Status"></a>
-    <a href="https://codeclimate.com/github/lightspeeddevelopment/lsx-wetu-importer/"><img src="https://codeclimate.com/github/lightspeeddevelopment/lsx-wetu-importer/badges/gpa.svg" alt="Code Climate"></a>
+    <a href="https://codeclimate.com/github/lightspeeddevelopment/wetu-importer/"><img src="https://codeclimate.com/github/lightspeeddevelopment/wetu-importer/badges/gpa.svg" alt="Code Climate"></a>
     <a href="https://scrutinizer-ci.com/g/lightspeeddevelopment/lsx-wetu-importer/?branch=master"><img src="https://scrutinizer-ci.com/g/lightspeeddevelopment/lsx-wetu-importer/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
-    <a href="https://coveralls.io/github/lightspeeddevelopment/lsx-wetu-importer?branch=master"><img src="https://coveralls.io/repos/github/lightspeeddevelopment/lsx-wetu-importer/badge.svg?branch=master" alt="Coveralls"></a>
+    <a href="https://coveralls.io/github/lightspeeddevelopment/wetu-importer?branch=master"><img src="https://coveralls.io/repos/github/lightspeeddevelopment/wetu-importer/badge.svg?branch=master" alt="Coveralls"></a>
 </p>
 
 Welcome to the [LSX Importer for Wetu](https://tour-operator.lsdev.biz/lsx-wetu-importer/). This WordPress plugin allows destination, accommodation and tour content to be imported via the Wetu.com API. 

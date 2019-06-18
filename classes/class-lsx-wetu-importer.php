@@ -268,16 +268,18 @@ class LSX_WETU_Importer {
 			}
 
 			// Set the tab slug.
-			if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && check_ajax_referer( 'lsx_wetu_ajax_action', 'security' ) && isset( $_POST['type'] ) ) ) {
+			// @codingStandardsIgnoreLine
+			if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && isset( $_POST['type'] ) ) ) {
 				if ( isset( $_GET['tab'] ) ) {
 					$this->tab_slug = wp_unslash( $_GET['tab'] );
 				} else {
+					// @codingStandardsIgnoreLine
 					$this->tab_slug = wp_unslash( $_POST['type'] );
 				}
-
-				// If any tours were queued.
-				$this->queued_imports = get_option( 'lsx_wetu_importer_que', array() );
 			}
+
+			// If any tours were queued.
+			$this->queued_imports = get_option( 'lsx_wetu_importer_que', array() );			
 
 			// Set the scaling options.
 			if ( isset( $this->options ) && isset( $this->options['image_scaling'] ) ) {
