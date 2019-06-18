@@ -42,7 +42,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
 
 			   <div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
-					<img style="width:32px;" src="<?php echo esc_url( WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
+					<img style="width:32px;" src="<?php echo esc_url( LSX_WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
 				</div>
 
 				<table class="wp-list-table widefat fixed posts">

@@ -198,7 +198,7 @@ class LSX_WETU_Importer {
 	 */
 	public function __construct() {
 		add_action( 'admin_init', array( $this, 'compatible_version_check' ) );
-		require_once WETU_IMPORTER_PATH . 'includes/helpers.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'includes/helpers.php';
 
 		// Don't run anything else in the plugin, if we're on an incompatible PHP version.
 		if ( ! self::compatible_version() ) {
@@ -211,11 +211,11 @@ class LSX_WETU_Importer {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) , 11 );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
 
-		require_once WETU_IMPORTER_PATH . 'classes/class-welcome.php';
-		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php';
-		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php';
-		require_once WETU_IMPORTER_PATH . 'classes/class-wetu-importer-tours.php';
-		require_once WETU_IMPORTER_PATH . 'classes/class-settings.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-welcome.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-importer-tours.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-settings.php';
 
 		add_action( 'init', array( $this, 'load_class' ) );
 
@@ -236,7 +236,7 @@ class LSX_WETU_Importer {
 	 * @since 1.0.0
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'wetu-importer', false, basename( WETU_IMPORTER_PATH ) . '/languages' );
+		load_plugin_textdomain( 'wetu-importer', false, basename( LSX_WETU_IMPORTER_PATH ) . '/languages' );
 	}
 
 	/**
@@ -340,8 +340,8 @@ class LSX_WETU_Importer {
 	 */
 	public function compatible_version_check() {
 		if ( ! self::compatible_version() ) {
-			if ( is_plugin_active( plugin_basename( WETU_IMPORTER_CORE ) ) ) {
-				deactivate_plugins( plugin_basename( WETU_IMPORTER_CORE ) );
+			if ( is_plugin_active( plugin_basename( LSX_WETU_IMPORTER_CORE ) ) ) {
+				deactivate_plugins( plugin_basename( LSX_WETU_IMPORTER_CORE ) );
 				add_action( 'admin_notices', array( $this, 'compatible_version_notice' ) );
 
 				if ( isset( $_GET['activate'] ) ) {
@@ -370,7 +370,7 @@ class LSX_WETU_Importer {
 	 */
 	public static function compatible_version_check_on_activation() {
 		if ( ! self::compatible_version() ) {
-			deactivate_plugins( plugin_basename( WETU_IMPORTER_CORE ) );
+			deactivate_plugins( plugin_basename( LSX_WETU_IMPORTER_CORE ) );
 			wp_die( esc_html__( 'Wetu Importer Plugin requires PHP 5.6 or higher.', 'wetu-importer' ) );
 		}
 	}
@@ -425,8 +425,8 @@ class LSX_WETU_Importer {
 
 		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
 
-			wp_enqueue_style( 'wetu-importer-style', WETU_IMPORTER_URL . 'assets/css/wetu-importer.css', WETU_IMPORTER_VER, true );
-			wp_enqueue_script( 'wetu-importers-script', WETU_IMPORTER_URL . 'assets/js/wetu-importer' . $min . '.js', array( 'jquery' ), WETU_IMPORTER_VER, true );
+			wp_enqueue_style( 'wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
+			wp_enqueue_script( 'wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/wetu-importer' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
 
 			wp_localize_script(
 				'wetu-importers-script',
@@ -498,11 +498,11 @@ class LSX_WETU_Importer {
 			</div>
 
 			<div class="ajax-loader" style="display:none;width:100%;text-align:center;">
-				<img style="width:64px;" src="<?php echo esc_url( WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
+				<img style="width:64px;" src="<?php echo esc_url( LSX_WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
 			</div>
 
 			<div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
-				<img style="width:32px;" src="<?php echo esc_url( WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
+				<img style="width:32px;" src="<?php echo esc_url( LSX_WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
 			</div>
 
 			<a class="button advanced-search-toggle" href="#"><?php esc_html_e( 'Bulk Search', 'wetu-importer' ); ?></a>

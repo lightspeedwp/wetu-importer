@@ -63,7 +63,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 				<p><?php esc_html_e( 'Below is a list of your accommodation that does not contain a WETU ID, but its Title matches a name in the WETU DB. Connecting it will all you to pull through information from WETU.','wetu-importer' ); ?></p>
 
 				<div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
-					<img style="width:32px;" src="<?php echo esc_url( WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
+					<img style="width:32px;" src="<?php echo esc_url( LSX_WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
 				</div>
 
 				<?php
