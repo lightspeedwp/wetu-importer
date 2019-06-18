@@ -5,6 +5,8 @@
 * Dev - Added in support for the group size and the tags fields.
 * Fix - Updated the 'file_get_contents()' call with 'wp_remote_get()'
 * Dev - Coding Standards Updates
+* Dev - Added UI enhancements for the Tour Importer Page
+* Dev - Moved the settings tab to the importer page.
 
 ### 1.1.2
 * Dev - Removing the need to index the accommodation and destination items from WETU.
