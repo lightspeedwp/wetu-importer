@@ -17,7 +17,9 @@ var WETU_IMPORTER = {
 	myAccommodationSearch: function() {
 		jQuery('.subsubsub li a').on( 'click', function(event) {
 			event.preventDefault();
-			console.log('testing2');
+
+			jQuery('.subsubsub li a.current').removeClass('current');
+			jQuery(this).addClass('current');
 
 			var keyword = '';
 			if( jQuery(this).parent().hasClass('publish' ) ) {
@@ -28,15 +30,25 @@ var WETU_IMPORTER = {
                 keyword = 'draft';
             } else if ( jQuery(this).parent().hasClass('import' ) ) {
                 keyword = 'import';
-            }
+			}
+
             jQuery('#wetu-importer-search-form').find('input.keyword').val(keyword);
 			jQuery('#wetu-importer-search-form').submit();
             jQuery('#wetu-importer-search-form').find('input.keyword').val('');
 		});
 	},		
 	watchSearch: function() {
+
+		jQuery('#wetu-importer-search-form input.submit').on( 'click', function(event) {
+			jQuery('.subsubsub li a.current').removeClass('current');
+			jQuery('.subsubsub li.searchform a').addClass('current');
+		});
+
 		jQuery('#wetu-importer-search-form').on( 'submit', function(event) {
 			event.preventDefault();
+			
+			jQuery('.subsubsub li a.current').removeClass('current');
+			jQuery('.subsubsub li.searchform a').addClass('current');
 
 			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
 
@@ -53,9 +65,7 @@ var WETU_IMPORTER = {
 				for (var i = 0; i < arrayLength; i++) {
 				    keywords.push(bulk_keywords[i]);
 				}				
-			}		
-
-			console.log(lsx_tour_importer_params.ajax_url);
+			}
 
 			jQuery.post(lsx_tour_importer_params.ajax_url,
 	        {
