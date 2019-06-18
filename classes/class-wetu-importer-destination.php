@@ -771,7 +771,7 @@ class WETU_Importer_Destination extends WETU_Importer {
 		global $wpdb;
 
 		if ( $data[0]['position']['country_content_entity_id'] !== $data[0]['position']['destination_content_entity_id'] ) {
-			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM %s WHERE meta_key = 'lsx_wetu_id' AND meta_value = %s", array( $wpdb->postmeta, $data[0]['position']['country_content_entity_id'] ) ) );
+			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'lsx_wetu_id' AND meta_value = '%s'", array( $data[0]['position']['country_content_entity_id'] ) ) );
 			if ( ! empty( $result ) && '' !== $result && false !== $result ) {
 				return $result;
 			}

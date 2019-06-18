@@ -268,8 +268,13 @@ class WETU_Importer {
 			}
 
 			// Set the tab slug.
-			if ( isset( $_GET['tab'] ) ) {
-				$this->tab_slug = wp_unslash( $_GET['tab'] );
+			// @codingStandardsIgnoreLine
+			if ( isset( $_GET['tab'] ) || isset( $_POST['type'] ) ) {
+				if ( isset( $_GET['tab'] ) ) {
+					$this->tab_slug = wp_unslash( $_GET['tab'] );
+				} else {
+					$this->tab_slug = wp_unslash( $_POST['type'] );
+				}
 
 				// If any tours were queued.
 				$this->queued_imports = get_option( 'wetu_importer_que', array() );

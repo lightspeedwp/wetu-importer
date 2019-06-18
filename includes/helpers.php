@@ -42,7 +42,7 @@ function get_post_count( $post_type = '', $post_status = '' ) {
 	global $wpdb;
 	$count = '0';
 	if ( '' !== $post_type && '' !== $post_status ) {
-		$result = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(`ID`) FROM %s WHERE `post_status` = %s AND `post_type` = %s ', array( $wpdb->posts, $post_status, $post_type ) ) );
+		$result = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(`ID`) FROM $wpdb->posts WHERE `post_status` = '%s' AND `post_type` = '%s'", array( trim( $post_status ), $post_type ) ) );
 		if ( false !== $result && '' !== $result ) {
 			$count = $result;
 		}
