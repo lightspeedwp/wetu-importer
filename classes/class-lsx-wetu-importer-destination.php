@@ -140,7 +140,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 									<input class="content select-all" <?php $this->checked( $this->destination_options, 'all' ); ?>
 										   type="checkbox" name="content[]"
 										   value="all"/> <?php esc_html_e( 'Select All', 'lsx-wetu-importer' ); ?></li>
-								<?php if ( isset( $this->options ) && 'on' !== $this->options['disable_destination_descriptions'] ) { ?>
+								<?php if ( isset( $this->options ) && isset( $this->options['disable_destination_descriptions'] ) && 'on' !== $this->options['disable_destination_descriptions'] ) { ?>
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'description' ); ?>
 										   type="checkbox" name="content[]"
