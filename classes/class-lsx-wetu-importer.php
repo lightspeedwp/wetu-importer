@@ -268,8 +268,7 @@ class LSX_WETU_Importer {
 			}
 
 			// Set the tab slug.
-			// @codingStandardsIgnoreLine
-			if ( isset( $_GET['tab'] ) || isset( $_POST['type'] ) ) {
+			if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && check_ajax_referer( 'lsx_wetu_ajax_action', 'security' ) && isset( $_POST['type'] ) ) ) {
 				if ( isset( $_GET['tab'] ) ) {
 					$this->tab_slug = wp_unslash( $_GET['tab'] );
 				} else {

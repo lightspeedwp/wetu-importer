@@ -476,10 +476,10 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	public function process_ajax_import() {
 		$return = false;
 
-		// @codingStandardsIgnoreLine
+		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_import_items' && isset( $_POST['type'] ) && $_POST['type'] === 'destination' && isset( $_POST['wetu_id'] ) ) {
-			// @codingStandardsIgnoreLine
-			$wetu_id = $_POST['wetu_id'];
+
+			$wetu_id = wp_unslash( $_POST['wetu_id'] );
 
 			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['post_id'] ) ) {
