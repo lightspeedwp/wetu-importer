@@ -435,27 +435,20 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function process_ajax_import( $force = false ) {
 		$return = false;
-
-		// @codingStandardsIgnoreLine
+		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_import_items' && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug && isset( $_POST['wetu_id'] ) ) {
 
-			// @codingStandardsIgnoreLine
-			$wetu_id = $_POST['wetu_id'];
-
-			// @codingStandardsIgnoreLine
+			$wetu_id = wp_unslash( $_POST['wetu_id'] );
 			if ( isset( $_POST['post_id'] ) ) {
-				// @codingStandardsIgnoreLine
-				$post_id = $_POST['post_id'];
+				$post_id = wp_unslash( $_POST['post_id'] );
 			} else {
 				$post_id = 0;
 			}
 
 			delete_option( 'lsx_wetu_importer_tour_settings' );
 
-			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
-				// @codingStandardsIgnoreLine
-				$content = $_POST['content'];
+				$content = wp_unslash( $_POST['content'] );
 				add_option( 'lsx_wetu_importer_tour_settings',$content );
 			} else {
 				$content = false;
@@ -1204,17 +1197,16 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		$url_filename = str_replace( ' ', '_', $url_filename );
 
 		if ( in_array( $url_filename, $this->found_attachments ) ) {
-			//check to see if there is a featured image set with this ID.
+			// check to see if there is a featured image set with this ID.
 			$found_id = array_search( $url_filename, $this->found_attachments );
 
 			$querystring = "
 				SELECT      post_id
 				FROM        {$wpdb->postmeta}
-				WHERE       meta_value = '{$found_id}'
+				WHERE       meta_value = '%s'
 				AND 		meta_key = '_thumbnail_id'
 			";
-			// @codingStandardsIgnoreLine
-			$results = $wpdb->get_results( $querystring );
+			$results = $wpdb->get_results( $wpdb->prepare( $querystring, array( $found_id ) ) );
 
 			if ( ! empty( $results ) ) {
 				return true;
@@ -1227,7 +1219,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				FROM        {$wpdb->posts}
 				WHERE       post_name = '{$url_filename}'
 			";
-			// @codingStandardsIgnoreLine
 			$results = $wpdb->get_results( $querystring );
 			if ( ! empty( $results ) ) {
 				$querystring = "
@@ -1236,7 +1227,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					WHERE       meta_value = '{$results[0]->ID}'
 					AND 		meta_key = '_thumbnail_id'
 				";
-				// @codingStandardsIgnoreLine
 				$results = $wpdb->get_results( $querystring );
 				if ( ! empty( $results ) ) {
 					return true;

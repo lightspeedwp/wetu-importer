@@ -167,12 +167,12 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 	 * Creates the main gallery data
 	 */
 	public function sync_new_banner() {
-		// @codingStandardsIgnoreLine
+		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && 'lsx_import_sync_banners' === $_POST['action'] && isset( $_POST['post_id'] ) ) {
-			// @codingStandardsIgnoreLine
-			$banners = get_post_meta( $_POST['post_id'],'image_group',true );
-			// @codingStandardsIgnoreLine
-			$this->wetu_id = get_post_meta( $_POST['post_id'],'lsx_wetu_id',true );
+
+			$post_id = wp_unslash( $_POST['post_id'] );
+			$banners       = get_post_meta( $post_id, 'image_group', true );
+			$this->wetu_id = get_post_meta( $post_id, 'lsx_wetu_id', true );
 
 			$new_banner_array = false;
 			$array_index = 0;
@@ -186,10 +186,8 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 			}
 
 			if ( false !== $new_banner_array ) {
-				// @codingStandardsIgnoreLine
-				delete_post_meta( $_POST['post_id'],'image_group' );
-				// @codingStandardsIgnoreLine
-				add_post_meta( $_POST['post_id'],'image_group',$new_banner_array,true );
+				delete_post_meta( $post_id, 'image_group' );
+				add_post_meta( $post_id, 'image_group', $new_banner_array, true );
 				echo true;
 			} else {
 				echo false;
@@ -240,9 +238,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 		//var_dump($tmp);
 		$tmp = tempnam( '/tmp', 'FOO' );
-		print_r( $url );
 		$image = file_get_contents( $url );
-		print_r( $image );
 		file_put_contents( $tmp, $image );
 		chmod( $tmp,'777' );
 
@@ -252,32 +248,28 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 		// extract filename from url for title
 		$url_type = wp_check_filetype( $url_filename );                                           // determine file type (ext and mime/type)
 
-		// assemble file data (should be built like $_FILES since wp_handle_sideload() will be using)
-		$file_array['tmp_name'] = $tmp;                                                         // full server path to temp file
+		// assemble file data (should be built like $_FILES since wp_handle_sideload() will be using).
+		$file_array['tmp_name'] = $tmp;                                                         // full server path to temp file.
 
 		if ( ! empty( $filename ) && ' ' != $filename ) {
 			$file_array['name'] = $filename . '.' . $url_type['ext'];                           // user given filename for title, add original URL extension
 		} else {
-			$file_array['name'] = $url_filename;                                                // just use original URL filename
+			$file_array['name'] = $url_filename;                                                // just use original URL filename.
 		}
 
-		// set additional wp_posts columns
+		// set additional wp_posts columns.
 		if ( empty( $post_data['post_title'] ) ) {
 			$url_filename = str_replace( '%20',' ',$url_filename );
-			$post_data['post_title'] = basename( $url_filename, '.' . $url_type['ext'] );         // just use the original filename (no extension)
+			$post_data['post_title'] = basename( $url_filename, '.' . $url_type['ext'] );         // just use the original filename (no extension).
 		}
 
-		// make sure gets tied to parent
+		// make sure gets tied to parent.
 		if ( empty( $post_data['post_parent'] ) ) {
-			// @codingStandardsIgnoreLine
-			$post_data['post_parent'] = $_POST['post_id'];
+			$post_data['post_parent'] = wp_unslash( $_POST['post_id'] );
 		}
 
-		// required libraries for media_handle_sideload
-
-		// do the validation and storage stuff
-		// @codingStandardsIgnoreLine
-		$att_id = media_handle_sideload( $file_array, $_POST['post_id'], null, $post_data );             // $post_data can override the items saved to wp_posts table, like post_mime_type, guid, post_parent, post_title, post_content, post_status
+		// do the validation and storage stuff.
+		$att_id = media_handle_sideload( $file_array, wp_unslash( $_POST['post_id'] ), null, $post_data );             // $post_data can override the items saved to wp_posts table, like post_mime_type, guid, post_parent, post_title, post_content, post_status
 
 		// If error storing permanently, unlink
 		if ( is_wp_error( $att_id ) ) {

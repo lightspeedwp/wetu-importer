@@ -262,16 +262,12 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function process_ajax_search() {
 		$return = false;
-
-		// @codingStandardsIgnoreLine
+		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === 'accommodation' ) {
 
 			$searched_items = false;
-
-			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['keyword'] ) ) {
-				// @codingStandardsIgnoreLine
-				$keyphrases = $_POST['keyword'];
+				$keyphrases = wp_unslash( $_POST['keyword'] );
 			} else {
 				$keyphrases = array( 0 );
 			}
@@ -433,42 +429,32 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function process_ajax_import() {
 		$return = false;
+		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 
-		// @codingStandardsIgnoreLine
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_import_items' && isset( $_POST['type'] ) && $_POST['type'] === 'accommodation' && isset( $_POST['wetu_id'] ) ) {
-			// @codingStandardsIgnoreLine
-			$wetu_id = $_POST['wetu_id'];
 
-			// @codingStandardsIgnoreLine
+			$wetu_id = wp_unslash( $_POST['wetu_id'] );
 			if ( isset( $_POST['post_id'] ) ) {
-				// @codingStandardsIgnoreLine
-				$post_id = $_POST['post_id'];
+				$post_id = wp_unslash( $_POST['post_id'] );
 			} else {
 				$post_id = 0;
 			}
 
-			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['team_members'] ) ) {
-				// @codingStandardsIgnoreLine
-				$team_members = $_POST['team_members'];
+				$team_members = wp_unslash( $_POST['team_members'] );
 			} else {
 				$team_members = false;
 			}
 
-			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['safari_brands'] ) ) {
-				// @codingStandardsIgnoreLine
-				$safari_brands = $_POST['safari_brands'];
+				$safari_brands = wp_unslash( $_POST['safari_brands'] );
 			} else {
 				$safari_brands = false;
 			}
-
 			delete_option( 'lsx_wetu_importer_accommodation_settings' );
 
-			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
-				// @codingStandardsIgnoreLine
-				$content = $_POST['content'];
+				$content = wp_unslash( $_POST['content'] );
 				add_option( 'lsx_wetu_importer_accommodation_settings',$content );
 			} else {
 				$content = false;

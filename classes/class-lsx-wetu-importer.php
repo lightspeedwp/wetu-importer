@@ -614,7 +614,7 @@ class LSX_WETU_Importer {
 					if ( $team_members->have_posts() ) {
 						foreach ( $team_members->posts as $member ) {
 							?>
-							<li><input class="team" <?php $this->checked( $selected, $member ); ?> type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title( $member ); ?></li>
+							<li><input class="team" <?php $this->checked( $selected, $member ); ?> type="checkbox" value="<?php echo esc_attr( $member ); ?>" /> <?php echo wp_kses_post( get_the_title( $member ) ); ?></li>
 							<?php
 						}
 					} else { ?>

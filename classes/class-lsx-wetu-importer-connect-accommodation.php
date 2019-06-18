@@ -229,18 +229,14 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 	 */
 	public function process_connection() {
 		$return = false;
-
-		// @codingStandardsIgnoreLine
+		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_import_connect_accommodation' && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug && isset( $_POST['post_id'] ) && isset( $_POST['wetu_id'] ) ) {
-			$post_id = false;
+			$post_id     = false;
 			$matching_id = false;
+			$post_id     = wp_unslash( $_POST['post_id'] );
+			$matching_id = wp_unslash( $_POST['wetu_id'] );
 
-			// @codingStandardsIgnoreLine
-			$post_id = $_POST['post_id'];
-			// @codingStandardsIgnoreLine
-			$matching_id = $_POST['wetu_id'];
-
-			add_post_meta( $post_id,'lsx_wetu_id',$matching_id );
+			add_post_meta( $post_id, 'lsx_wetu_id', $matching_id );
 			$return = '<li class="post-' . $post_id . '"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="' . get_permalink( $post_id ) . '">' . get_the_title( $post_id ) . '</a></li>';
 		}
 
