@@ -101,7 +101,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$this->url    = 'https://wetu.com/API/Itinerary/' . $this->api_key;
 			$this->url_qs = '';
 		}
-		$tour_options = get_option( 'wetu_importer_tour_settings',false );
+		$tour_options = get_option( 'lsx_wetu_importer_tour_settings',false );
 		if ( false !== $tour_options ) {
 			$this->tour_options = $tour_options;
 		}
@@ -454,13 +454,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$post_id = 0;
 			}
 
-			delete_option( 'wetu_importer_tour_settings' );
+			delete_option( 'lsx_wetu_importer_tour_settings' );
 
 			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
 				// @codingStandardsIgnoreLine
 				$content = $_POST['content'];
-				add_option( 'wetu_importer_tour_settings',$content );
+				add_option( 'lsx_wetu_importer_tour_settings',$content );
 			} else {
 				$content = false;
 			}
@@ -1278,11 +1278,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$saved_imports = $this->import_queue;
 			}
 
-			delete_option( 'wetu_importer_que' );
+			delete_option( 'lsx_wetu_importer_que' );
 
 			if ( ! empty( $saved_imports ) ) {
 				$saved_imports = array_unique( $saved_imports );
-				update_option( 'wetu_importer_que',$saved_imports );
+				update_option( 'lsx_wetu_importer_que',$saved_imports );
 			}
 		}
 	}

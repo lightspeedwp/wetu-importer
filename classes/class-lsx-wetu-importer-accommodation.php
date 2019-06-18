@@ -86,7 +86,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			$this->options = $temp_options[ $this->plugin_slug ];
 		}
 
-		$accommodation_options = get_option( 'wetu_importer_accommodation_settings',false );
+		$accommodation_options = get_option( 'lsx_wetu_importer_accommodation_settings',false );
 
 		if ( false !== $accommodation_options ) {
 			$this->accommodation_options = $accommodation_options;
@@ -422,8 +422,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			if ( ( $key = array_search( $id, $this->queued_imports ) ) !== false ) {
 				unset( $this->queued_imports[ $key ] );
 
-				delete_option( 'wetu_importer_que' );
-				update_option( 'wetu_importer_que', $this->queued_imports );
+				delete_option( 'lsx_wetu_importer_que' );
+				update_option( 'lsx_wetu_importer_que', $this->queued_imports );
 			}
 		}
 	}
@@ -463,13 +463,13 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				$safari_brands = false;
 			}
 
-			delete_option( 'wetu_importer_accommodation_settings' );
+			delete_option( 'lsx_wetu_importer_accommodation_settings' );
 
 			// @codingStandardsIgnoreLine
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
 				// @codingStandardsIgnoreLine
 				$content = $_POST['content'];
-				add_option( 'wetu_importer_accommodation_settings',$content );
+				add_option( 'lsx_wetu_importer_accommodation_settings',$content );
 			} else {
 				$content = false;
 			}

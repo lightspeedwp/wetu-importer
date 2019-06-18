@@ -251,4 +251,4 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 
 }
 
-$wetu_importer_connect_accommodation = new LSX_WETU_Importer_Connect_Accommodation();
+$lsx_wetu_importer_connect_accommodation = new LSX_WETU_Importer_Connect_Accommodation();

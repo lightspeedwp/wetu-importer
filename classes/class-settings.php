@@ -2,14 +2,14 @@
 /**
  * The Settings Screen for the Importer Plugin
  *
- * @package   wetu_importer
+ * @package   lsx_wetu_importer
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link
  * @copyright 2019 LightSpeed
  **/
 
-namespace wetu_importer\classes;
+namespace lsx_wetu_importer\classes;
 
 /**
  * The Welcome Screen for the Importer Plugin
@@ -79,7 +79,7 @@ class Settings {
 	 * Display the importer welcome screen
 	 */
 	public function display_page() {
-		$options = \wetu_importer\includes\helpers\get_options();
+		$options = \lsx_wetu_importer\includes\helpers\get_options();
 		foreach ( $options as $key => $value ) {
 			$value = trim( $value );
 		}
@@ -87,7 +87,7 @@ class Settings {
 		?>
 		<div class="wrap">
 			<form method="post" class="">
-				<?php wp_nonce_field( 'wetu_importer_save', 'wetu_importer_save_options' ); ?>
+				<?php wp_nonce_field( 'lsx_wetu_importer_save', 'lsx_wetu_importer_save_options' ); ?>
 				
 				<h1><?php esc_html_e( 'General', 'lsx-wetu-importer' ); ?></h1>
 				<table class="form-table">
@@ -309,7 +309,7 @@ class Settings {
 	 * @return void
 	 */
 	public function save_options() {
-		if ( ! isset( $_POST['wetu_importer_save_options'] ) || ! wp_verify_nonce( $_POST['wetu_importer_save_options'], 'wetu_importer_save' ) ) {
+		if ( ! isset( $_POST['lsx_wetu_importer_save_options'] ) || ! wp_verify_nonce( $_POST['lsx_wetu_importer_save_options'], 'lsx_wetu_importer_save' ) ) {
 			return;
 		}
 		$data_to_save = array();
@@ -320,6 +320,6 @@ class Settings {
 				$data_to_save[ $key ] = '';
 			}
 		}
-		update_option( 'wetu_importer_settings', $data_to_save );
+		update_option( 'lsx_wetu_importer_settings', $data_to_save );
 	}
 }

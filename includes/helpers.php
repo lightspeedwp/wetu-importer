@@ -2,14 +2,14 @@
 /**
  * Helper functions
  *
- * @package   wetu_importer
+ * @package   lsx_wetu_importer
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link
  * @copyright 2019 LightSpeed
  **/
 
-namespace wetu_importer\includes\helpers;
+namespace lsx_wetu_importer\includes\helpers;
 
 /**
  * Gets the settings
@@ -17,7 +17,7 @@ namespace wetu_importer\includes\helpers;
  * @return array
  */
 function get_options() {
-	$options = get_option( 'wetu_importer_settings', array() );
+	$options = get_option( 'lsx_wetu_importer_settings', array() );
 	if ( empty( $options ) ) {
 		// Check for any previous options.
 		$temp_options = get_option( '_lsx-to_settings', false );
@@ -58,7 +58,7 @@ function get_post_count( $post_type = '', $post_status = '' ) {
  */
 function get_wetu_queue_count( $post_type = '' ) {
 	$count = '0';
-	$queued_imports = get_option( 'wetu_importer_que', array() );
+	$queued_imports = get_option( 'lsx_wetu_importer_que', array() );
 	if ( isset( $queued_imports[ $post_type ] ) ) {
 		$count = count( $queued_imports[ $post_type ] );
 	}
