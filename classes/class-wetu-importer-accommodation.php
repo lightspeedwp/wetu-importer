@@ -342,12 +342,12 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				if ( ! isset( $search_data['error'] ) ) {
 					foreach ( $search_data as $sdata ) {
 
-						if ( 'Destination'  	 === trim( $sdata['type'] ) ||
-						     'Activity' 		 === trim( $sdata['type'] ) ||
-						     'Restaurant' 		 === trim( $sdata['type'] ) ||
-						     'None' 			 === trim( $sdata['type'] ) ||
+						if ( 'Destination' === trim( $sdata['type'] ) ||
+						     'Activity' === trim( $sdata['type'] ) ||
+						     'Restaurant' === trim( $sdata['type'] ) ||
+						     'None' === trim( $sdata['type'] ) ||
 						     'Site / Attraction' === trim( $sdata['type'] ) ||
-						     '' 				 === trim( $sdata['type'] )
+						     '' === trim( $sdata['type'] )
 						) {
 							continue;
 						}

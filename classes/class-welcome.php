@@ -115,7 +115,7 @@ class Welcome {
 
 	/**
 	 * Outputs the Tour Block.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function tour_block() {

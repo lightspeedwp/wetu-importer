@@ -444,12 +444,12 @@ class WETU_Importer {
 		?>
 		<div class="wrap">
 			<?php
-				$this->navigation( $this->tab_slug );
-				if ( 'default' !== $this->tab_slug && 'settings' !== $this->tab_slug ) {	
-					$this->wetu_status();
-					$this->post_status_navigation();
-				}
-				$this->current_importer->display_page();
+			$this->navigation( $this->tab_slug );
+			if ( 'default' !== $this->tab_slug && 'settings' !== $this->tab_slug ) {
+				$this->wetu_status();
+				$this->post_status_navigation();
+			}
+			$this->current_importer->display_page();
 			?>
 		</div>
 		<?php
@@ -1345,7 +1345,7 @@ class WETU_Importer {
 			set_transient( 'lsx_ti_tours', $tours['itineraries'], 60 * 60 * 2 );
 			return true;
 		}
-	}	
+	}
 }
 
 $wetu_importer = new WETU_Importer();

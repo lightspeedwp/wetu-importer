@@ -369,10 +369,10 @@ class WETU_Importer_Tours extends WETU_Importer {
 								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
 							}
 						} else {
-							//Search through each keyword.
+							// Search through each keyword.
 							foreach ( $keyphrases as $keyphrase ) {
 
-								//Make sure the keyphrase is turned into an array
+								// Make sure the keyphrase is turned into an array.
 								$keywords = explode( ' ',$keyphrase );
 								if ( ! is_array( $keywords ) ) {
 									$keywords = array( $keywords );
@@ -382,11 +382,9 @@ class WETU_Importer_Tours extends WETU_Importer {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
 								} else if ( $this->multineedle_stripos( ltrim( rtrim( $row['reference_number'] ) ), $keywords ) !== false ) {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
-								}else if ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
+								} else if ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
 								}
-
-								//Add in the year and ref
 							}
 						}
 					}
@@ -466,7 +464,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 			} else {
 				$content = false;
 			}
-			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );		
+			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
 
 			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$jdata = json_decode( $jdata['body'], true );
@@ -917,7 +915,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 	public function set_destination( $day, $id, $leg_counter ) {
 		$dest_id    = false;
 		$country_id = false;
-		
+
 		$this->current_destinations = $this->find_current_destinations();
 
 		if ( isset( $day['destination_content_entity_id'] ) && ! empty( $day['destination_content_entity_id'] ) ) {
@@ -1327,6 +1325,5 @@ class WETU_Importer_Tours extends WETU_Importer {
 		</tr>
 		</tfoot>
 		<?php
-	}	
-
+	}
 }

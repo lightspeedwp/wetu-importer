@@ -391,7 +391,6 @@ class WETU_Importer_Destination extends WETU_Importer {
 						}
 					}
 				}
-
 			} else {
 
 				$key_string_search = implode( '+', $keyphrases );
@@ -428,11 +427,11 @@ class WETU_Importer_Destination extends WETU_Importer {
 	}
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
-		return 	$row_item = array(
+		return $row_item = array(
 			'id' => $cs_key,
 			'type' => 'Destination',
 			'name' => get_the_title( $ccs_id ),
-			'last_modified' => date('Y-m-d', strtotime( 'now' ) ),
+			'last_modified' => date( 'Y-m-d', strtotime( 'now' ) ),
 			'post_id' => $ccs_id,
 		);
 	}
@@ -552,12 +551,12 @@ class WETU_Importer_Destination extends WETU_Importer {
 
 			if ( ! empty( $importable_content ) && in_array( 'country', $importable_content ) ) {
 				$parent = $this->check_for_parent( $data );
-				if( false !== $parent ) {
+				if ( false !== $parent ) {
 					$post['post_parent'] = $parent;
 				}
 			}
 
-			//Set the post_content
+			// Set the post_content.
 			if ( ! empty( $importable_content ) && in_array( 'description', $importable_content ) ) {
 				if ( isset( $data[0]['content']['general_description'] ) ) {
 
