@@ -369,13 +369,14 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	}
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
-		return $row_item = array(
+		$row_item = array(
 			'id' => $cs_key,
 			'type' => 'Accommodation',
 			'name' => get_the_title( $ccs_id ),
-			'last_modified' => date('Y-m-d', strtotime( 'now' ) ),
+			'last_modified' => date( 'Y-m-d', strtotime( 'now' ) ),
 			'post_id' => $ccs_id,
 		);
+		return $row_item;
 	}
 
 	/**
