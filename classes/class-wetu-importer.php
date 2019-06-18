@@ -2,7 +2,7 @@
 /**
  * The main plugin class.
  *
- * @package   WETU_Importer
+ * @package   LSX_WETU_Importer
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link
@@ -11,7 +11,7 @@
 /**
  * The Main plugin class.
  */
-class WETU_Importer {
+class LSX_WETU_Importer {
 
 	/**
 	 * Holds class instance
@@ -1348,4 +1348,4 @@ class WETU_Importer {
 	}
 }
 
-$wetu_importer = new WETU_Importer();
+$wetu_importer = new LSX_WETU_Importer();

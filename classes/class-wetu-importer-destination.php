@@ -7,7 +7,7 @@
  * @copyright 2016 LightSpeed
  **/
 
-class LSX_WETU_Importer_Destination extends WETU_Importer {
+class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 	/**
 	 * The url to list items from WETU

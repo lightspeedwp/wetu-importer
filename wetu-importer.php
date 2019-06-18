@@ -16,7 +16,7 @@ define( 'WETU_IMPORTER_CORE', __FILE__ );
 define( 'WETU_IMPORTER_URL', plugin_dir_url( __FILE__ ) );
 define( 'WETU_IMPORTER_VER', '2.0.0' );
 
-register_activation_hook( WETU_IMPORTER_CORE, array( 'WETU_Importer', 'register_activation_hook' ) );
+register_activation_hook( WETU_IMPORTER_CORE, array( 'LSX_WETU_Importer', 'register_activation_hook' ) );
 
 /* ======================= Below is the Plugin Class init ========================= */
 

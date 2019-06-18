@@ -7,7 +7,7 @@
  * @copyright 2016 LightSpeed
  **/
 
-class LSX_WETU_Importer_Banner_Integration extends WETU_Importer {
+class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 	/**
 	 * The url to list items from WETU
