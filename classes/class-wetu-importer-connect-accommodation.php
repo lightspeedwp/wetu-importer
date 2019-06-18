@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   WETU_Importer_Connect_Accommodation
+ * @package   LSX_WETU_Importer_Connect_Accommodation
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link
  * @copyright 2016 LightSpeed
  **/
 
-class WETU_Importer_Connect_Accommodation extends WETU_Importer_Admin {
+class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 
 	/**
 	 * The url to list items from WETU
@@ -251,4 +251,4 @@ class WETU_Importer_Connect_Accommodation extends WETU_Importer_Admin {
 
 }
 
-$wetu_importer_connect_accommodation = new WETU_Importer_Connect_Accommodation();
+$wetu_importer_connect_accommodation = new LSX_WETU_Importer_Connect_Accommodation();

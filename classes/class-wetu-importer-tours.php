@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   WETU_Importer_Tours
+ * @package   LSX_WETU_Importer_Tours
  * @author    LightSpeed
  * @license   GPL-3+
  * @link
  * @copyright 2017 LightSpeed
  **/
 
-class WETU_Importer_Tours extends WETU_Importer {
+class LSX_WETU_Importer_Tours extends WETU_Importer {
 
 	/**
 	 * The url to list items from WETU

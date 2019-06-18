@@ -383,15 +383,15 @@ class WETU_Importer {
 	public function load_class() {
 		switch ( $this->tab_slug ) {
 			case 'accommodation':
-				$this->current_importer = new WETU_Importer_Accommodation();
+				$this->current_importer = new LSX_WETU_Importer_Accommodation();
 				break;
 
 			case 'destination':
-				$this->current_importer = new WETU_Importer_Destination();
+				$this->current_importer = new LSX_WETU_Importer_Destination();
 				break;
 
 			case 'tour':
-				$this->current_importer = new WETU_Importer_Tours();
+				$this->current_importer = new LSX_WETU_Importer_Tours();
 				break;
 
 			case 'settings':

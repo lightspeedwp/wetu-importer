@@ -1,13 +1,13 @@
 <?php
 /**
- * @package   WETU_Importer_Banner_Integration
+ * @package   LSX_WETU_Importer_Banner_Integration
  * @author    LightSpeed
  * @license   GPL-2.0+
  * @link
  * @copyright 2016 LightSpeed
  **/
 
-class WETU_Importer_Banner_Integration extends WETU_Importer {
+class LSX_WETU_Importer_Banner_Integration extends WETU_Importer {
 
 	/**
 	 * The url to list items from WETU
