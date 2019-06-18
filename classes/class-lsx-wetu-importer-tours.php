@@ -291,7 +291,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		$return = false;
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug ) {
+		if ( isset( $_POST['action'] ) && 'lsx_tour_importer' === $_POST['action'] && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug ) {
 			$tours = get_transient( 'lsx_ti_tours' );
 
 			if ( false !== $tours ) {
@@ -700,14 +700,14 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					$current_day['destination_to_tour'] = array();
 				}
 
-				//Included
+				// Included.
 				if ( false !== $importable_content && in_array( 'itinerary_included', $importable_content ) && isset( $leg['included'] ) && '' !== $leg['included'] ) {
 					$current_day['included'] = $leg['included'];
 				} else {
 					$current_day['included'] = '';
 				}
 
-				//Excluded
+				// Excluded.
 				if ( false !== $importable_content && in_array( 'itinerary_excluded', $importable_content ) && isset( $leg['excluded'] ) && '' !== $leg['excluded'] ) {
 					$current_day['excluded'] = $leg['excluded'];
 				} else {
@@ -773,41 +773,41 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	// CLASS SPECIFIC FUNCTIONS.
 
 	/**
-	 * Set the Itinerary Day
+	 * Set the Itinerary Day.
 	 */
 	public function set_itinerary_day( $day, $id ) {
-		$this->save_custom_field( $day,'itinerary',$id,false,false );
+		$this->save_custom_field( $day, 'itinerary', $id, false, false );
 	}
 
 	/**
-	 * Set the price
+	 * Set the price.
 	 */
 	public function set_price( $data, $id ) {
-		//Price
+		// Price.
 		if ( isset( $data['price'] ) && '' !== $data['price'] ) {
 			$price = preg_replace( '/[^0-9,.]/', '', $data['price'] );
-			$this->save_custom_field( $price,'price',$id );
+			$this->save_custom_field( $price, 'price', $id );
 		}
 
-		//Price includes
+		// Price includes.
 		if ( isset( $data['price_includes'] ) && '' !== $data['price_includes'] ) {
-			$this->save_custom_field( $data['price_includes'],'included',$id );
+			$this->save_custom_field( $data['price_includes'], 'included', $id );
 		}
 
-		//Price Excludes
+		// Price Excludes.
 		if ( isset( $data['price_excludes'] ) && '' !== $data['price_excludes'] ) {
-			$this->save_custom_field( $data['price_excludes'],'not_included',$id );
+			$this->save_custom_field( $data['price_excludes'], 'not_included', $id );
 		}
 	}
 
 	/**
-	 * Set the duration
+	 * Set the duration.
 	 */
 	public function set_duration( $data, $id ) {
 		if ( isset( $data['days'] ) && ! empty( $data['days'] ) ) {
 			$price = $data['days'];
 			$price = preg_replace( '/[^0-9,.]/', '', $price );
-			$this->save_custom_field( $price,'duration',$id );
+			$this->save_custom_field( $price, 'duration', $id );
 		}
 	}
 
