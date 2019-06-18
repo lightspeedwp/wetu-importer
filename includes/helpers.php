@@ -21,8 +21,8 @@ function get_options() {
 	if ( empty( $options ) ) {
 		// Check for any previous options.
 		$temp_options = get_option( '_lsx-to_settings', false );
-		if ( false !== $temp_options && isset( $temp_options['wetu-importer'] ) && ! empty( $temp_options['wetu-importer'] ) ) {
-			$options = $temp_options['wetu-importer'];
+		if ( false !== $temp_options && isset( $temp_options['lsx-wetu-importer'] ) && ! empty( $temp_options['lsx-wetu-importer'] ) ) {
+			$options = $temp_options['lsx-wetu-importer'];
 		}
 		if ( false !== $temp_options && isset( $temp_options['api']['wetu_api_key'] ) && '' !== $temp_options['api']['wetu_api_key'] ) {
 			$options['api_key'] = $temp_options['api']['wetu_api_key'];

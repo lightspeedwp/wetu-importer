@@ -39,11 +39,11 @@ gulp.task('default', function() {
 	console.log('--------------------------');
 	console.log('gulp compile-js     to compile the js to min.js');
 	console.log('gulp watch          to continue watching the files for changes');
-	console.log('gulp wordpress-lang to compile the wetu-importer.pot, en_EN.po and en_EN.mo');
+	console.log('gulp wordpress-lang to compile the lsx-wetu-importer.pot, en_EN.po and en_EN.mo');
 });
 
 gulp.task('sass', function() {
-	gulp.src('assets/css/scss/wetu-importer.scss')
+	gulp.src('assets/css/scss/lsx-wetu-importer.scss')
 		.pipe(sass())
 		.pipe(gulp.dest('assets/css'));
 });
@@ -51,7 +51,7 @@ gulp.task('sass', function() {
 gulp.task('compile-css', ['sass']);
 
 gulp.task('js', function() {
-	return gulp.src('assets/js/wetu-importer.js')
+	return gulp.src('assets/js/lsx-wetu-importer.js')
 		.pipe(plumber({
 			errorHandler: function(err) {
 				console.log(err);
@@ -60,7 +60,7 @@ gulp.task('js', function() {
 		}))
 		.pipe(jshint())
 		//.pipe(errorreporter)
-		.pipe(concat('wetu-importer.min.js'))
+		.pipe(concat('lsx-wetu-importer.min.js'))
 		.pipe(uglify())
 		.pipe(gulp.dest('assets/js'))
 });
@@ -77,19 +77,19 @@ gulp.task('wordpress-pot', function() {
 	return gulp.src('**/*.php')
 		.pipe(sort())
 		.pipe(wppot({
-			domain: 'wetu-importer',
-			package: 'wetu-importer',
+			domain: 'lsx-wetu-importer',
+			package: 'lsx-wetu-importer',
 			team: 'LightSpeed <webmaster@lsdev.biz>'
 		}))
-		.pipe(gulp.dest('languages/wetu-importer.pot'))
+		.pipe(gulp.dest('languages/lsx-wetu-importer.pot'))
 });
 
 gulp.task('wordpress-po', function() {
 	return gulp.src('**/*.php')
 		.pipe(sort())
 		.pipe(wppot({
-			domain: 'wetu-importer',
-			package: 'wetu-importer',
+			domain: 'lsx-wetu-importer',
+			package: 'lsx-wetu-importer',
 			team: 'LightSpeed <webmaster@lsdev.biz>'
 		}))
 		.pipe(gulp.dest('languages/en_EN.po'))

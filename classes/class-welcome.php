@@ -52,8 +52,8 @@ class Welcome {
 	public function display_page() {
 		?>
 		<div class="row section">
-			<h1><?php esc_html_e( 'Welcome to the LSX LSX Importer for Wetu', 'wetu-importer' ); ?></h1>
-			<p><?php esc_html_e( 'If this is the first time running the import, please follow the steps below.', 'wetu-importer' ); ?></p>
+			<h1><?php esc_html_e( 'Welcome to the LSX LSX Importer for Wetu', 'lsx-wetu-importer' ); ?></h1>
+			<p><?php esc_html_e( 'If this is the first time running the import, please follow the steps below.', 'lsx-wetu-importer' ); ?></p>
 		</div>
 		<?php
 		$this->importer_steps();
@@ -69,19 +69,19 @@ class Welcome {
 		?>
 		<div class="row section postbox">
 			<div class="welcome-block-header">
-				<p class="heading"><?php esc_html_e( 'Import your tours', 'wetu-importer' ); ?></p>
+				<p class="heading"><?php esc_html_e( 'Import your tours', 'lsx-wetu-importer' ); ?></p>
 				<p class="value"><span>1</span></p>
 			</div>
 			<div class="welcome-block-header">
-				<p class="heading"><?php esc_html_e( 'Import accommodation', 'wetu-importer' ); ?></p>
+				<p class="heading"><?php esc_html_e( 'Import accommodation', 'lsx-wetu-importer' ); ?></p>
 				<p class="value"><span>2</span></p>
 			</div>
 			<div class="welcome-block-header">
-				<p class="heading"><?php esc_html_e( 'Import destination', 'wetu-importer' ); ?></p>
+				<p class="heading"><?php esc_html_e( 'Import destination', 'lsx-wetu-importer' ); ?></p>
 				<p class="value"><span>3</span></p>
 			</div>
 			<div class="welcome-block-header">
-				<p class="heading"><?php esc_html_e( 'Done', 'wetu-importer' ); ?></p>
+				<p class="heading"><?php esc_html_e( 'Done', 'lsx-wetu-importer' ); ?></p>
 				<p class="value"><span class="dashicons dashicons-yes"></span></p>
 			</div>
 			<div class="spacer"></div>
@@ -120,14 +120,14 @@ class Welcome {
 	 */
 	public function tour_block() {
 		?>
-			<h2 class="title"><?php esc_html_e( 'Importing tours', 'wetu-importer' ); ?></h2>
-			<p class="excerpt"><?php esc_html_e( 'Search for tours, select the ones you want to import and choose the data you want to sync on import. All connected accommodadtions will be imported as drafts to be pubished after completing the tour import.', 'wetu-importer' ); ?></p>
-			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>" class="button button-primary"><?php esc_html_e( 'Import Tours', 'wetu-importer' ); ?></a></p>
+			<h2 class="title"><?php esc_html_e( 'Importing tours', 'lsx-wetu-importer' ); ?></h2>
+			<p class="excerpt"><?php esc_html_e( 'Search for tours, select the ones you want to import and choose the data you want to sync on import. All connected accommodadtions will be imported as drafts to be pubished after completing the tour import.', 'lsx-wetu-importer' ); ?></p>
+			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>" class="button button-primary"><?php esc_html_e( 'Import Tours', 'lsx-wetu-importer' ); ?></a></p>
 			<p>
 				<ul class="link-list">
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>#publish"><?php esc_html_e( 'Published', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'publish ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>#pending"><?php esc_html_e( 'Pending', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'pending ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=tour' ); ?>#draft"><?php esc_html_e( 'Draft', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'tour', 'draft ' ) ); ?>)</a></li>
 				</ul>
 			</p>			
 		<?php
@@ -139,16 +139,16 @@ class Welcome {
 	 */
 	public function accommodation_block() {
 		?>
-			<h2 class="title"><?php esc_html_e( 'Import and publish accommodation', 'wetu-importer' ); ?></h2>
-			<p class="excerpt"><?php esc_html_e( 'All accommodations connnected to your tours have been imported as drafts. Review the imported accommodations, sync selected data and publish.', 'wetu-importer' ); ?></p>
-			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync accommodation', 'wetu-importer' ); ?></a></p>
+			<h2 class="title"><?php esc_html_e( 'Import and publish accommodation', 'lsx-wetu-importer' ); ?></h2>
+			<p class="excerpt"><?php esc_html_e( 'All accommodations connnected to your tours have been imported as drafts. Review the imported accommodations, sync selected data and publish.', 'lsx-wetu-importer' ); ?></p>
+			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync accommodation', 'lsx-wetu-importer' ); ?></a></p>
 
 			<p>
 				<ul class="link-list">
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#publish"><?php esc_html_e( 'Published', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'publish ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#pending"><?php esc_html_e( 'Pending', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'pending ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#draft"><?php esc_html_e( 'Draft', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'draft ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=accommodation' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'accommodation' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'accommodation', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'accommodation' ) ); ?>)</a></li>
 				</ul>
 			</p>			
 		<?php
@@ -160,15 +160,15 @@ class Welcome {
 	 */
 	public function destination_block() {
 		?>
-			<h2 class="title"><?php esc_html_e( 'Import and publish destinations', 'wetu-importer' ); ?></h2>
-			<p class="excerpt"><?php esc_html_e( 'All destinations and regions connnected to your tours & accommodations have been imported as drafts. Review the imported accommodations, sync selected data and publish.', 'wetu-importer' ); ?></p>
-			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync destinations', 'wetu-importer' ); ?></a></p>
+			<h2 class="title"><?php esc_html_e( 'Import and publish destinations', 'lsx-wetu-importer' ); ?></h2>
+			<p class="excerpt"><?php esc_html_e( 'All destinations and regions connnected to your tours & accommodations have been imported as drafts. Review the imported accommodations, sync selected data and publish.', 'lsx-wetu-importer' ); ?></p>
+			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync destinations', 'lsx-wetu-importer' ); ?></a></p>
 			<p>
 				<ul class="link-list">
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#publish"><?php esc_html_e( 'Published', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'publish ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#pending"><?php esc_html_e( 'Pending', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'pending ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#draft"><?php esc_html_e( 'Draft', 'wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'draft ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=wetu-importer&tab=destination' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'destination' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( 'destination', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( 'destination' ) ); ?>)</a></li>
 				</ul>
 			</p>
 		<?php
@@ -180,8 +180,8 @@ class Welcome {
 	 */
 	public function end_block() {
 		?>
-			<h2 class="title"><?php esc_html_e( 'Done! Check out your imported content', 'wetu-importer' ); ?></h2>
-			<p><?php esc_html_e( 'If you’ve updated your content on Wetu then you can return to these steps at any stage to import and re-sync any updates', 'wetu-importer' ); ?></p>
+			<h2 class="title"><?php esc_html_e( 'Done! Check out your imported content', 'lsx-wetu-importer' ); ?></h2>
+			<p><?php esc_html_e( 'If you’ve updated your content on Wetu then you can return to these steps at any stage to import and re-sync any updates', 'lsx-wetu-importer' ); ?></p>
 		<?php
 	}
 }

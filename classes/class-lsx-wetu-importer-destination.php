@@ -103,11 +103,11 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					<tr class="post-0 type-tour status-none" id="post-0">
 						<th class="check-column" scope="row">
 							<label for="cb-select-0"
-								   class="screen-reader-text"><?php esc_html_e( 'Enter a title to search for and press enter', 'wetu-importer' ); ?></label>
+								   class="screen-reader-text"><?php esc_html_e( 'Enter a title to search for and press enter', 'lsx-wetu-importer' ); ?></label>
 						</th>
 						<td class="post-title page-title column-title">
 							<strong>
-								<?php esc_html_e( 'Enter a title to search for', 'wetu-importer' ); ?>
+								<?php esc_html_e( 'Enter a title to search for', 'lsx-wetu-importer' ); ?>
 							</strong>
 						</td>
 						<td class="date column-date">
@@ -122,9 +122,9 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				</table>
 
 				<p><input class="button button-primary add" type="button"
-						  value="<?php esc_html_e( 'Add to List', 'wetu-importer' ); ?>"/>
+						  value="<?php esc_html_e( 'Add to List', 'lsx-wetu-importer' ); ?>"/>
 					<input class="button button-primary clear" type="button"
-						   value="<?php esc_html_e( 'Clear', 'wetu-importer' ); ?>"/>
+						   value="<?php esc_html_e( 'Clear', 'lsx-wetu-importer' ); ?>"/>
 				</p>
 			</form>
 
@@ -139,30 +139,30 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 								<li>
 									<input class="content select-all" <?php $this->checked( $this->destination_options, 'all' ); ?>
 										   type="checkbox" name="content[]"
-										   value="all"/> <?php esc_html_e( 'Select All', 'wetu-importer' ); ?></li>
+										   value="all"/> <?php esc_html_e( 'Select All', 'lsx-wetu-importer' ); ?></li>
 								<?php if ( isset( $this->options ) && 'on' !== $this->options['disable_destination_descriptions'] ) { ?>
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'description' ); ?>
 										   type="checkbox" name="content[]"
-										   value="description"/> <?php esc_html_e( 'Description', 'wetu-importer' ); ?></li>
+										   value="description"/> <?php esc_html_e( 'Description', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'gallery' ); ?>
 										   type="checkbox" name="content[]"
-										   value="gallery"/> <?php esc_html_e( 'Main Gallery', 'wetu-importer' ); ?></li>
+										   value="gallery"/> <?php esc_html_e( 'Main Gallery', 'lsx-wetu-importer' ); ?></li>
 								<?php if ( class_exists( 'LSX_TO_Maps' ) ) { ?>
 									<li>
 										<input class="content" <?php $this->checked( $this->destination_options, 'location' ); ?>
 											   type="checkbox" name="content[]"
-											   value="location"/> <?php esc_html_e( 'Location', 'wetu-importer' ); ?></li>
+											   value="location"/> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
 								<?php if ( class_exists( 'LSX_TO_Videos' ) ) { ?>
 									<li>
 										<input class="content" <?php $this->checked( $this->destination_options, 'videos' ); ?>
 											   type="checkbox" name="content[]"
-											   value="videos"/> <?php esc_html_e( 'Videos', 'wetu-importer' ); ?></li>
+											   value="videos"/> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
 							</ul>
@@ -171,34 +171,34 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'country' ); ?>
 										   type="checkbox" name="content[]"
-										   value="country"/> <?php esc_html_e( 'Set Country', 'wetu-importer' ); ?></li>
+										   value="country"/> <?php esc_html_e( 'Set Country', 'lsx-wetu-importer' ); ?></li>
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'continent' ); ?>
 										   type="checkbox" name="content[]"
-										   value="continent"/> <?php esc_html_e( 'Set Continent', 'wetu-importer' ); ?></li>
+										   value="continent"/> <?php esc_html_e( 'Set Continent', 'lsx-wetu-importer' ); ?></li>
 
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'featured_image' ); ?>
 										   type="checkbox" name="content[]"
-										   value="featured_image"/> <?php esc_html_e( 'Set Featured Image', 'wetu-importer' ); ?>
+										   value="featured_image"/> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?>
 								</li>
 								<?php if ( class_exists( 'LSX_Banners' ) ) { ?>
 									<li>
 										<input class="content" <?php $this->checked( $this->destination_options, 'banner_image' ); ?>
 											   type="checkbox" name="content[]"
-											   value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'wetu-importer' ); ?>
+											   value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?>
 									</li>
 									<li>
 										<input class="content" <?php $this->checked( $this->destination_options, 'unique_banner_image' ); ?>
 											   type="checkbox" name="content[]"
-											   value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'wetu-importer' ); ?>
+											   value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'lsx-wetu-importer' ); ?>
 									</li>
 								<?php } ?>
 
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'strip_tags' ); ?>
 										   type="checkbox" name="content[]"
-										   value="strip_tags"/> <?php esc_html_e( 'Strip HTML from the description', 'wetu-importer' ); ?></li>
+										   value="strip_tags"/> <?php esc_html_e( 'Strip HTML from the description', 'lsx-wetu-importer' ); ?></li>
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
@@ -207,38 +207,38 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'electricity' ); ?>
 										   type="checkbox" name="content[]"
-										   value="electricity"/> <?php esc_html_e( 'Electricity', 'wetu-importer' ); ?></li>
+										   value="electricity"/> <?php esc_html_e( 'Electricity', 'lsx-wetu-importer' ); ?></li>
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'banking' ); ?>
 										   type="checkbox" name="content[]"
-										   value="banking"/> <?php esc_html_e( 'Banking', 'wetu-importer' ); ?></li>
+										   value="banking"/> <?php esc_html_e( 'Banking', 'lsx-wetu-importer' ); ?></li>
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'cuisine' ); ?>
 										   type="checkbox" name="content[]"
-										   value="cuisine"/> <?php esc_html_e( 'Cuisine', 'wetu-importer' ); ?></li>
+										   value="cuisine"/> <?php esc_html_e( 'Cuisine', 'lsx-wetu-importer' ); ?></li>
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'climate' ); ?>
 										   type="checkbox" name="content[]"
-										   value="climate"/> <?php esc_html_e( 'Climate', 'wetu-importer' ); ?></li>
+										   value="climate"/> <?php esc_html_e( 'Climate', 'lsx-wetu-importer' ); ?></li>
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'transport' ); ?>
 										   type="checkbox" name="content[]"
-										   value="transport"/> <?php esc_html_e( 'Transport', 'wetu-importer' ); ?></li>
+										   value="transport"/> <?php esc_html_e( 'Transport', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->destination_options, 'dress' ); ?>
 										   type="checkbox" name="content[]"
-										   value="dress"/> <?php esc_html_e( 'Dress', 'wetu-importer' ); ?></li>
+										   value="dress"/> <?php esc_html_e( 'Dress', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->destination_options, 'health' ); ?>
 										   type="checkbox" name="content[]"
-										   value="health"/> <?php esc_html_e( 'Health', 'wetu-importer' ); ?></li>
+										   value="health"/> <?php esc_html_e( 'Health', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->destination_options, 'safety' ); ?>
 										   type="checkbox" name="content[]"
-										   value="safety"/> <?php esc_html_e( 'Safety', 'wetu-importer' ); ?></li>
+										   value="safety"/> <?php esc_html_e( 'Safety', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->destination_options, 'visa' ); ?>
 										   type="checkbox" name="content[]"
-										   value="visa"/> <?php esc_html_e( 'Visa', 'wetu-importer' ); ?></li>
+										   value="visa"/> <?php esc_html_e( 'Visa', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->destination_options, 'additional_info' ); ?>
 										   type="checkbox" name="content[]"
-										   value="additional_info"/> <?php esc_html_e( 'General', 'wetu-importer' ); ?></li>
+										   value="additional_info"/> <?php esc_html_e( 'General', 'lsx-wetu-importer' ); ?></li>
 							</ul>
 						</div>
 
@@ -255,7 +255,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 					<h3><?php esc_html_e( 'Your List' ); ?></h3>
 					<p><input class="button button-primary" type="submit"
-							  value="<?php esc_html_e( 'Sync', 'wetu-importer' ); ?>"/></p>
+							  value="<?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?>"/></p>
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>
 
@@ -268,7 +268,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					</table>
 
 					<p><input class="button button-primary" type="submit"
-							  value="<?php esc_html_e( 'Sync', 'wetu-importer' ); ?>"/></p>
+							  value="<?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?>"/></p>
 				</form>
 			</div>
 
@@ -517,7 +517,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				$this->remove_from_queue( $return );
 				$this->format_completed_row( $return );
 			} else {
-				$this->format_error( esc_html__( 'There was a problem importing your destination, please try refreshing the page.', 'wetu-importer' ) );
+				$this->format_error( esc_html__( 'There was a problem importing your destination, please try refreshing the page.', 'lsx-wetu-importer' ) );
 			}
 		}
 	}
@@ -753,7 +753,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	 * search_form
 	 */
 	public function update_options_form() {
-		echo '<div style="display:none;" class="wetu-status"><h3>' . esc_html__( 'Wetu Status', 'wetu-importer' ) . '</h3>';
+		echo '<div style="display:none;" class="wetu-status"><h3>' . esc_html__( 'Wetu Status', 'lsx-wetu-importer' ) . '</h3>';
 
 		$accommodation = get_transient( 'lsx_ti_accommodation' );
 

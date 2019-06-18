@@ -1,13 +1,13 @@
 <?php
 /*
  * Plugin Name: LSX Importer for Wetu
- * Plugin URI: https://github.com/lightspeeddevelopment/wetu-importer
+ * Plugin URI: https://github.com/lightspeeddevelopment/lsx-wetu-importer
  * Description: By integrating with the Wetu Tour Operator system, you are able to import your content into the LSX Tour Operators plugin format
  * Author: LightSpeed
  * Version: 1.2.0
  * Author URI: https://www.lsdev.biz/
  * License: GPL3+
- * Text Domain: wetu-importer
+ * Text Domain: lsx-wetu-importer
  * Domain Path: /languages/
  */
 
@@ -21,4 +21,4 @@ register_activation_hook( LSX_WETU_IMPORTER_CORE, array( 'LSX_WETU_Importer', 'r
 /* ======================= Below is the Plugin Class init ========================= */
 
 require_once( LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-logger.php' );
-require_once( LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-importer.php' );
+require_once( LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer.php' );

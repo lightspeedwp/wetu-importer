@@ -36,7 +36,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<h2><?php esc_html_e( 'Download new banners straight from WETU','wetu-importer' ); ?></h2>
+			<h2><?php esc_html_e( 'Download new banners straight from WETU','lsx-wetu-importer' ); ?></h2>
 
 			<form method="get" action="" id="banners-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
@@ -157,7 +157,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 				</table>
 
-				<p><input class="button button-primary download" type="button" value="<?php esc_html_e( 'Download new Banners','wetu-importer' ); ?>" />
+				<p><input class="button button-primary download" type="button" value="<?php esc_html_e( 'Download new Banners','lsx-wetu-importer' ); ?>" />
 				</p>
 			</form>
 		</div>

@@ -29,7 +29,7 @@ class LSX_WETU_Importer {
 	 *
 	 * @var      string
 	 */
-	public $plugin_slug = 'wetu-importer';
+	public $plugin_slug = 'lsx-wetu-importer';
 
 	/**
 	 * The url to list items from WETU
@@ -212,9 +212,9 @@ class LSX_WETU_Importer {
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
 
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-welcome.php';
-		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-importer-accommodation.php';
-		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-importer-destination.php';
-		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-importer-tours.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-accommodation.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-destination.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-tours.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-settings.php';
 
 		add_action( 'init', array( $this, 'load_class' ) );
@@ -236,7 +236,7 @@ class LSX_WETU_Importer {
 	 * @since 1.0.0
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'wetu-importer', false, basename( LSX_WETU_IMPORTER_PATH ) . '/languages' );
+		load_plugin_textdomain( 'lsx-wetu-importer', false, basename( LSX_WETU_IMPORTER_PATH ) . '/languages' );
 	}
 
 	/**
@@ -358,7 +358,7 @@ class LSX_WETU_Importer {
 	 */
 	public function compatible_version_notice() {
 		$class = 'notice notice-error';
-		$message = esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'wetu-importer' );
+		$message = esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'lsx-wetu-importer' );
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_html( $class ), esc_html( $message ) );
 	}
 
@@ -371,7 +371,7 @@ class LSX_WETU_Importer {
 	public static function compatible_version_check_on_activation() {
 		if ( ! self::compatible_version() ) {
 			deactivate_plugins( plugin_basename( LSX_WETU_IMPORTER_CORE ) );
-			wp_die( esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'wetu-importer' ) );
+			wp_die( esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'lsx-wetu-importer' ) );
 		}
 	}
 
@@ -408,7 +408,7 @@ class LSX_WETU_Importer {
 	 * Registers the admin page which will house the importer form.
 	 */
 	public function register_importer_page() {
-		add_submenu_page( 'tour-operator', esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'wetu-importer', array( $this, 'display_page' ) );
+		add_submenu_page( 'tour-operator', esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
 	}
 
 	/**
@@ -425,11 +425,11 @@ class LSX_WETU_Importer {
 
 		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
 
-			wp_enqueue_style( 'wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
-			wp_enqueue_script( 'wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/wetu-importer' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
+			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/lsx-wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
+			wp_enqueue_script( 'lsx-wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/lsx-wetu-importer' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
 
 			wp_localize_script(
-				'wetu-importers-script',
+				'lsx-wetu-importers-script',
 				'lsx_tour_importer_params',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -464,15 +464,15 @@ class LSX_WETU_Importer {
 	public function post_status_navigation() {
 		?>
 		<ul class="subsubsub">
-			<li class="searchform"><a class="current" href="#search"><?php esc_attr_e( 'Search', 'wetu-importer' ); ?></a> | </li>
-			<li class="publish"><a href="#publish"><?php esc_attr_e( 'Published', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'publish ' ) ); ?>)</span></a> | </li>
-			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li> 
-			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
+			<li class="searchform"><a class="current" href="#search"><?php esc_attr_e( 'Search', 'lsx-wetu-importer' ); ?></a> | </li>
+			<li class="publish"><a href="#publish"><?php esc_attr_e( 'Published', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'publish ' ) ); ?>)</span></a> | </li>
+			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li> 
+			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'lsx-wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
 
 			<?php if ( 'tour' === $this->tab_slug ) { ?>
-				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_tour_count() ); ?>)</span></a></li>
+				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_tour_count() ); ?>)</span></a></li>
 			<?php } else if ( ! empty( $this->queued_imports ) ) { ?>
-				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
+				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \wetu_importer\includes\helpers\get_wetu_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
 			<?php } ?>
 		</ul>
 		<?php
@@ -489,12 +489,12 @@ class LSX_WETU_Importer {
 			<?php do_action( 'wetu_importer_search_form',$this ); ?>
 
 			<div class="normal-search">
-				<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php esc_html_e( 'Search', 'wetu-importer' ); ?>" />
+				<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php esc_html_e( 'Search', 'lsx-wetu-importer' ); ?>" />
 			</div>
 
 			<div class="advanced-search hidden" style="display:none;">
 				<textarea rows="10" cols="40" name="bulk-keywords"></textarea>
-				<input class="button button-primary submit" type="submit" value="<?php esc_attr_e( 'Search', 'wetu-importer' ); ?>" />
+				<input class="button button-primary submit" type="submit" value="<?php esc_attr_e( 'Search', 'lsx-wetu-importer' ); ?>" />
 			</div>
 
 			<div class="ajax-loader" style="display:none;width:100%;text-align:center;">
@@ -505,7 +505,7 @@ class LSX_WETU_Importer {
 				<img style="width:32px;" src="<?php echo esc_url( LSX_WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
 			</div>
 
-			<a class="button advanced-search-toggle" href="#"><?php esc_html_e( 'Bulk Search', 'wetu-importer' ); ?></a>
+			<a class="button advanced-search-toggle" href="#"><?php esc_html_e( 'Bulk Search', 'lsx-wetu-importer' ); ?></a>
 		</form>
 		<?php
 	}
@@ -555,20 +555,20 @@ class LSX_WETU_Importer {
 	 */
 	public function navigation( $tab = '' ) {
 		$post_types = array(
-			'tour'          => esc_attr( 'Tours', 'wetu-importer' ),
-			'accommodation' => esc_attr( 'Accommodation', 'wetu-importer' ),
-			'destination'   => esc_attr( 'Destinations', 'wetu-importer' ),
+			'tour'          => esc_attr( 'Tours', 'lsx-wetu-importer' ),
+			'accommodation' => esc_attr( 'Accommodation', 'lsx-wetu-importer' ),
+			'destination'   => esc_attr( 'Destinations', 'lsx-wetu-importer' ),
 		);
 
 		echo wp_kses_post( '<div class="wp-filter">' );
 		echo wp_kses_post( '<ul class="filter-links">' );
-		echo wp_kses_post( '<li><a class="' . $this->itemd( $tab, 'default', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '">' . esc_attr__( 'Home', 'wetu-importer' ) . '</a></li>' );
+		echo wp_kses_post( '<li><a class="' . $this->itemd( $tab, 'default', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '">' . esc_attr__( 'Home', 'lsx-wetu-importer' ) . '</a></li>' );
 
 		foreach ( $post_types as $post_type => $label ) {
 			echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, $post_type, 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=' . $post_type . '">' . $label . '</a></li>' );
 		}
 
-		echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, 'settings', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=settings">' . esc_attr__( 'Settings', 'wetu-importer' ) . '</a></li>' );
+		echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, 'settings', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=settings">' . esc_attr__( 'Settings', 'lsx-wetu-importer' ) . '</a></li>' );
 		echo wp_kses_post( '</ul> </div>' );
 	}
 
@@ -577,19 +577,19 @@ class LSX_WETU_Importer {
 	 */
 	public function wetu_status() {
 		$tours = get_transient( 'lsx_ti_tours' );
-		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status','wetu-importer' ) . ' - ';
+		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status','lsx-wetu-importer' ) . ' - ';
 
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
 
 			if ( true === $result ) {
-				echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span>';
-				echo ' - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
+				echo '<span style="color:green;">' . esc_attr( 'Connected','lsx-wetu-importer' ) . '</span>';
+				echo ' - <small><a href="#">' . esc_attr( 'Refresh','lsx-wetu-importer' ) . '</a></small>';
 			} else {
 				echo '<span style="color:red;">' . wp_kses_post( $result ) . '</span>';
 			}
 		} else {
-			echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span> - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
+			echo '<span style="color:green;">' . esc_attr( 'Connected','lsx-wetu-importer' ) . '</span> - <small><a href="#">' . esc_attr( 'Refresh','lsx-wetu-importer' ) . '</a></small>';
 		}
 		echo '</h3>';
 		echo '</div>';
@@ -617,7 +617,7 @@ class LSX_WETU_Importer {
 							<li><input class="team" <?php $this->checked( $selected, $member ); ?> type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title( $member ); ?></li>
 						<?php }
 					} else { ?>
-						<li><input class="team" type="checkbox" value="0" /> <?php esc_html_e( 'None', 'wetu-importer' ); ?></li>
+						<li><input class="team" type="checkbox" value="0" /> <?php esc_html_e( 'None', 'lsx-wetu-importer' ); ?></li>
 					<?php }
 				?>
 			</ul>
@@ -844,7 +844,7 @@ class LSX_WETU_Importer {
 					$return .= '<li><input class="' . $taxonomy . '" ' . $this->checked( $selected,$term->term_id,false ) . ' type="checkbox" value="' . $term->term_id . '" /> ' . $term->name . '</li>';
 				}
 			} else {
-				$return .= '<li><input type="checkbox" value="" /> ' . __( 'None', 'wetu-importer' ) . '</li>';
+				$return .= '<li><input type="checkbox" value="" /> ' . __( 'None', 'lsx-wetu-importer' ) . '</li>';
 			}
 
 			$return .= '</ul>';

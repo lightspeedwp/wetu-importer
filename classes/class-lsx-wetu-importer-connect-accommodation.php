@@ -55,12 +55,12 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 		global $post;
 		?>
 		<div class="wrap">
-			<h3><span class="dashicons dashicons-admin-multisite"></span> <?php esc_html_e( 'Connect your Accommodation','wetu-importer' ); ?></h3>
+			<h3><span class="dashicons dashicons-admin-multisite"></span> <?php esc_html_e( 'Connect your Accommodation','lsx-wetu-importer' ); ?></h3>
 
 			<form method="get" action="" id="connect-accommodation-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
 
-				<p><?php esc_html_e( 'Below is a list of your accommodation that does not contain a WETU ID, but its Title matches a name in the WETU DB. Connecting it will all you to pull through information from WETU.','wetu-importer' ); ?></p>
+				<p><?php esc_html_e( 'Below is a list of your accommodation that does not contain a WETU ID, but its Title matches a name in the WETU DB. Connecting it will all you to pull through information from WETU.','lsx-wetu-importer' ); ?></p>
 
 				<div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
 					<img style="width:32px;" src="<?php echo esc_url( LSX_WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
@@ -69,7 +69,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 				<?php
 					$loose_accommodation = $this->find_current_accommodation();
 				?>
-				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect','wetu-importer' ); ?>" /></p>
+				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect','lsx-wetu-importer' ); ?>" /></p>
 				<table class="wp-list-table widefat fixed posts">
 					<?php $this->table_header(); ?>
 
@@ -122,7 +122,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 
 				</table>
 
-				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect','wetu-importer' ); ?>" /></p>
+				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect','lsx-wetu-importer' ); ?>" /></p>
 
 			</form>
 

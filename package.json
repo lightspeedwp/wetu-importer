@@ -1,5 +1,5 @@
 {
-  "name": "wetu-importer",
+  "name": "lsx-wetu-importer",
   "version": "2.0.0",
   "description": "Tour Operators add-on for LSX",
   "main": "gulpfile.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://www.lsdev.biz/product/wetu-importer/"
+    "url": "git+https://www.lsdev.biz/product/lsx-wetu-importer/"
   },
   "keywords": [
     "lsx",
@@ -17,9 +17,9 @@
   "author": "LightSpeed",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://www.lsdev.biz/product/wetu-importer/issues"
+    "url": "https://www.lsdev.biz/product/lsx-wetu-importer/issues"
   },
-  "homepage": "https://www.lsdev.biz/product/wetu-importer/#readme",
+  "homepage": "https://www.lsdev.biz/product/lsx-wetu-importer/#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-rtlcss": "^1.0.0",
