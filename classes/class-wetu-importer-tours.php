@@ -97,24 +97,11 @@ class WETU_Importer_Tours extends WETU_Importer {
 	 */
 	public function set_variables() {
 		parent::set_variables();
-
-		//https://wetu.com/API/Itinerary/V8/Get
-		if ( false !== $this->api_username && false !== $this->api_password ) {
-			$this->url    = 'https://wetu.com/API/Itinerary/';
-			$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
-		} elseif ( false !== $this->api_key ) {
+		if ( false !== $this->api_key ) {
 			$this->url    = 'https://wetu.com/API/Itinerary/' . $this->api_key;
 			$this->url_qs = '';
 		}
-
-		$temp_options = get_option( '_lsx-to_settings',false );
-
-		if ( false !== $temp_options && isset( $temp_options[ $this->plugin_slug ] ) && ! empty( $temp_options[ $this->plugin_slug ] ) ) {
-			$this->options = $temp_options[ $this->plugin_slug ];
-		}
-
 		$tour_options = get_option( 'wetu_importer_tour_settings',false );
-
 		if ( false !== $tour_options ) {
 			$this->tour_options = $tour_options;
 		}
@@ -126,18 +113,20 @@ class WETU_Importer_Tours extends WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<?php $this->navigation( 'tour' ); ?>
 
-			<?php $this->update_options_form(); ?>
+			<div class="tablenav top">
+				<div class="alignleft actions">
+					<?php $this->search_form(); ?>
+				</div>
 
-			<?php $this->search_form(); ?>
+				<div class="alignleft actions">
+					<?php $this->update_options_form(); ?>
+				</div>
+
+			</div>
 
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
-
-				<p><input class="button button-primary add" type="button" value="<?php esc_html_e( 'Add to List','wetu-importer' ); ?>" />
-					<input class="button button-primary clear" type="button" value="<?php esc_html_e( 'Clear','wetu-importer' ); ?>" />
-				</p>
 
 				<table class="wp-list-table widefat fixed posts">
 					<?php $this->table_header(); ?>
@@ -150,7 +139,7 @@ class WETU_Importer_Tours extends WETU_Importer {
 							<td class="date column-date column-ref" colspan="4">
 								<strong>
 									<?php esc_html_e( 'Search for tours using the search form above','wetu-importer' ); ?>
-								</strong>							
+								</strong>
 							</td>
 						</tr>
 					</tbody>
@@ -185,14 +174,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 								<li><input class="content" <?php $this->checked( $this->tour_options,'tags' ); ?> type="checkbox" name="content[]" value="tags" /> <?php esc_html_e( 'Tags','wetu-importer' ); ?></li>
 
 								<li><input class="content" <?php $this->checked( $this->tour_options,'itineraries' ); ?> type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','wetu-importer' ); ?></li>
-
-								<?php
-								/*
-								if ( class_exists( 'LSX_TO_Maps' ) ) { ?>
-								<li><input class="content" <?php $this->checked($this->tour_options,'map'); ?> type="checkbox" name="content[]" value="map" /> <?php esc_html_e('Map Coordinates (generates a KML file)','wetu-importer'); ?></li>
-								<?php } 
-								*/
-								?>
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
@@ -248,87 +229,30 @@ class WETU_Importer_Tours extends WETU_Importer {
 	}
 
 	/**
-	 * search_form
+	 * Displays the options for the form.
+	 *
+	 * @return void
 	 */
 	public function update_options_form() {
-		$tours = get_transient( 'lsx_ti_tours' );
-
-		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status','wetu-importer' ) . ' - ';
-
-		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
-			$result = $this->update_options();
-
-			if ( true === $result ) {
-				echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span>';
-				echo ' - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
-			} else {
-				echo '<span style="color:red;">' . wp_kses_post( $result ) . '</span>';
-			}
-		} else {
-			echo '<span style="color:green;">' . esc_attr( 'Connected','wetu-importer' ) . '</span> - <small><a href="#">' . esc_attr( 'Refresh','wetu-importer' ) . '</a></small>';
-		}
-
-		echo '</h3>';
-
 		$form_options = get_option( 'lsx_ti_tours_api_options' );
 		if ( false === $form_options ) {
-			$form_options = array( 0 );
+			$form_options = array( 'sample' );
 		}
 		?>
-		<form method="get" class="tour-refresh-form" action="<?php echo esc_attr( admin_url( 'admin.php' ) ); ?>">
+		<form method="get" class="tour-refresh-form">
 			<input type="hidden" name="page" value="<?php echo esc_attr( $this->plugin_slug ); ?>" />
 			<input type="hidden" name="tab" value="tour" />
 			<input type="hidden" name="refresh_tours" value="true" />
+			<input class="content" type="hidden" name="own" value="true" />
 
-			<p class="tour-search-options">
-				<label for="own"><input class="content" <?php if ( in_array( 'own',$form_options ) ) { echo 'checked'; } ?> type="checkbox" name="own" value="true" /> <?php esc_html_e( 'Own Tours','wetu-importer' ); ?> </label>
-			</p>
-
-			<p class="tour-search-options">
-				<label for="type"><input class="content" <?php if ( in_array( 'allitineraries',$form_options ) ) { echo 'checked'; } ?> type="radio" name="type[]" value="allitineraries" /> <?php esc_html_e( 'All','wetu-importer' ); ?></label>
-				<label for="type"><input class="content" <?php if ( in_array( 'sample',$form_options ) ) { echo 'checked'; } ?> type="radio" name="type[]" value="sample" /> <?php esc_html_e( 'Sample','wetu-importer' ); ?></label>
-				<label for="type"><input class="content" <?php if ( in_array( 'personal',$form_options ) ) { echo 'checked'; } ?> type="radio" name="type[]" value="personal" /> <?php esc_html_e( 'Personal','wetu-importer' ); ?></label>
-			</p>
-
-			<p><input class="button button-primary submit" type="submit" value="<?php echo esc_attr( 'Refresh Tours','wetu-importer' ); ?>"></p>
+			<select name="type" id="wpseo-readability-filter">
+				<option <?php if ( in_array( 'allitineraries', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?> value="allitineraries"><?php esc_html_e( 'All Itineraries','wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="bad"><?php esc_html_e( 'Sample','wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'personal', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="ok"><?php esc_html_e( 'Personal','wetu-importer' ); ?></option>
+			</select>
+			<input class="button submit" type="submit" value="<?php esc_attr_e( 'Refresh', 'wetu-importer' ); ?>" />
 		</form>
-		<br />
 		<?php
-		echo '</div>';
-	}
-
-	/**
-	 * Save the list of Tours into an option
-	 */
-	public function update_options() {
-		$own = '';
-		$options = array();
-
-		delete_option( 'lsx_ti_tours_api_options' );
-
-		if ( isset( $_GET['own'] ) ) {
-			$this->url_qs .= '&own=true';
-			$options[] = 'own';
-		}
-
-		if ( isset( $_GET['type'] ) ) {
-			$this->url_qs .= '&type=' . implode( '',$_GET['type'] );
-			$options[] = implode( '',$_GET['type'] );
-		}
-
-		$this->url_qs .= '&results=2000';
-
-		add_option( 'lsx_ti_tours_api_options',$options );
-
-		$data = wp_remote_get( $this->url . '/V8/List?' . $this->url_qs );
-		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
-
-		if ( isset( $tours['error'] ) ) {
-			return $tours['error'];
-		} elseif ( isset( $tours['itineraries'] ) && ! empty( $tours['itineraries'] ) ) {
-			set_transient( 'lsx_ti_tours',$tours['itineraries'],60 * 60 * 2 );
-			return true;
-		}
 	}
 
 	/**
@@ -609,10 +533,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
 			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
 
-			// If the logger is enabled then log the data being saved.
-			if ( $this->debug_enabled ) {
-				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
-			}
 		} else {
 			// Set the name.
 			if ( isset( $data['name'] ) ) {
@@ -626,11 +546,6 @@ class WETU_Importer_Tours extends WETU_Importer {
 			$post['post_name']   = $post_name;
 			$post['post_title']  = $data['name'];
 			$post['post_status'] = 'publish';
-
-			// If the logger is enabled then log the data being saved.
-			if ( $this->debug_enabled ) {
-				$this->logger->log( 'wetu-importer', 'Creating Tour', print_r( $post, true ) );
-			}
 			$id = wp_insert_post( $post );
 
 			// Save the WETU ID and the Last date it was modified.

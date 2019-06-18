@@ -99,18 +99,13 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<?php $this->navigation( 'accommodation' ); ?>
-
+			
 			<?php $this->update_options_form(); ?>
 
 			<?php $this->search_form(); ?>
 
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
-
-				<p><input class="button button-primary add" type="button" value="<?php esc_attr_e( 'Add to List', 'wetu-importer' ); ?>" />
-					<input class="button button-primary clear" type="button" value="<?php esc_attr_e( 'Clear', 'wetu-importer' ); ?>" />
-				</p>
 
 				<table class="wp-list-table widefat fixed posts">
 					<?php $this->table_header(); ?>

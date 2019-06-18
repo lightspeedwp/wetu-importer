@@ -15,22 +15,23 @@ var WETU_IMPORTER = {
 		}
 	},
 	myAccommodationSearch: function() {
-		jQuery('#wetu-importer-search-form').on( 'click', '.search-toggle', function(event) {
+		jQuery('.subsubsub li a').on( 'click', function(event) {
 			event.preventDefault();
+			console.log('testing2');
 
 			var keyword = '';
-			if(jQuery(this).hasClass('published')){
+			if( jQuery(this).parent().hasClass('publish' ) ) {
                 keyword = 'publish';
-			}else if(jQuery(this).hasClass('pending')){
+			} else if ( jQuery(this).parent().hasClass('pending' ) ) {
                 keyword = 'pending';
-            }else if(jQuery(this).hasClass('draft')){
+            } else if ( jQuery(this).parent().hasClass('draft' ) ) {
                 keyword = 'draft';
-            }else if(jQuery(this).hasClass('import')){
+            } else if ( jQuery(this).parent().hasClass('import' ) ) {
                 keyword = 'import';
             }
-            jQuery(this).parents('#wetu-importer-search-form').find('input.keyword').val(keyword);
+            jQuery('#wetu-importer-search-form').find('input.keyword').val(keyword);
 			jQuery('#wetu-importer-search-form').submit();
-            jQuery(this).parents('#wetu-importer-search-form').find('input.keyword').val('');
+            jQuery('#wetu-importer-search-form').find('input.keyword').val('');
 		});
 	},		
 	watchSearch: function() {
@@ -72,15 +73,16 @@ var WETU_IMPORTER = {
 		jQuery('#wetu-importer-search-form .advanced-search-toggle').on( 'click', function(event) {
 			event.preventDefault();
 			if(jQuery('#wetu-importer-search-form .advanced-search').hasClass('hidden')){
-				jQuery('#wetu-importer-search-form .advanced-search').fadeIn('fast').removeClass('hidden');
+				jQuery('#wetu-importer-search-form .advanced-search').fadeIn('fast').css( 'display', 'inline-block' ).removeClass('hidden');
 				jQuery('#wetu-importer-search-form .normal-search').hide('fast');
 				jQuery('#wetu-importer-search-form .normal-search input.keyword').val('');
+				jQuery( this ).html('Simple Search');
 
 			}else{
 				jQuery('#wetu-importer-search-form .advanced-search').fadeOut('fast').addClass('hidden');
 				jQuery('#wetu-importer-search-form .advanced-search textarea').val('');
 				jQuery('#wetu-importer-search-form .normal-search').fadeIn('fast');
-
+				jQuery( this ).html('Bulk Search');
 			}
 		});	
 	},	
@@ -310,7 +312,7 @@ var WETU_IMPORTER = {
     watchTourUpdate: function() {
         jQuery('.wetu-status.tour-wetu-status h3 a').on('click',function(event){
 			event.preventDefault();
-			jQuery(this).parents('.wetu-status.tour-wetu-status').find('form').submit();
+			jQuery('.wetu-status.tour-wetu-status').find('form').submit();
         });
 
     }

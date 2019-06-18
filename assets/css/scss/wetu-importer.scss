@@ -1,0 +1,113 @@
+/** Wetu Importer Styles */
+body.tour-operator_page_wetu-importer {
+
+	/* Home Screen */
+	.row.section {
+		margin-bottom:25px;
+
+		h1 {
+			padding: 0px 0 4px 0;
+		}		
+	}
+
+	.welcome-block-header, .welcome-block.postbox {
+        margin-right: 1%;
+		display: inline-block;
+        vertical-align: top;
+		min-width: unset;
+		padding: 8px 12px;
+
+        &:last-child {
+            margin-right:0px;
+		}
+	}
+
+	.welcome-block-header {
+		color: #1098AD;
+		text-align: center;
+		width: calc(24% - 27px);
+		position: relative;
+		z-index: 2;
+		.value {
+			span {
+				display:block;
+				color: white;
+				background-color: #1098AD;
+				padding: 10px;
+				border-radius: 25px 25px 25px 25px;
+				width: 20px;
+				height: 20px;
+				display: inline-block;
+			}
+		}
+	}
+
+	.spacer {
+		box-sizing: border-box;
+		width: 98%;
+		border-top: 1px solid #979797;
+		opacity: 0.33;
+		margin: -43px auto 0 auto;
+		position: absolute;
+		bottom: 40px;
+		left: 1%;
+		z-index: 1;
+	}	
+
+    .welcome-block.postbox {
+
+		width: calc(24% - 25px);
+		@media (max-width: 1670px) {
+			width: calc(24% - 26px);
+		}
+		@media (max-width: 1272px) {
+			width: calc(24% - 27px);
+		}		
+		@media (max-width: 690px) {
+			width: calc(48% - 27px);
+		}		
+
+        h2.title {
+            height: 2em;
+            line-height: 28px;
+			margin: 0 0 2em 0;
+			
+			@media (max-width: 910px) {
+				height: 3em;
+			}			
+		}
+		
+		.excerpt {
+			min-height: 100px;
+		}
+
+        .button {
+            width:100%;
+            text-align: center;
+        }
+
+        .link-list {
+            li {
+                a {
+                    font-size:14px;
+                }
+            }
+        }
+	}
+	
+	/* Tour / Accommodation / Destinations */
+	.wetu-status {
+		h3 {
+			margin: 0px;
+		}
+	}
+	.subsubsub {
+		margin-bottom: 10px;
+	}
+	#wetu-importer-search-form {
+		.normal-search {
+			display: inline-block;
+		}
+	}
+}
+
