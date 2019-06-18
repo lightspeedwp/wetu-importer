@@ -131,8 +131,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 										<td colspan="2" class="thumbnails column-thumbnails">
 										<?php
 											if ( false !== $thumbnails_html ) {
-												// @codingStandardsIgnoreLine
-												echo implode( '', $thumbnails_html );
+												echo wp_kses_post( implode( '', $thumbnails_html ) );
 											} else {
 												echo '<p>There was an error retrieving your images.</p>';
 											}

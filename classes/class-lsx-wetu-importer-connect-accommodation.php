@@ -108,8 +108,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 										</td>
 										<td class="excerpt column-excerpt">
 											<?php
-												// @codingStandardsIgnoreLine
-												echo strip_tags( get_the_excerpt() );
+												echo wp_kses_post( strip_tags( get_the_excerpt() ) );
 											?>
 										</td>
 									</tr>

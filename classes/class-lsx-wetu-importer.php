@@ -613,9 +613,10 @@ class LSX_WETU_Importer {
 
 					if ( $team_members->have_posts() ) {
 						foreach ( $team_members->posts as $member ) {
-							// @codingStandardsIgnoreLine ?>
+							?>
 							<li><input class="team" <?php $this->checked( $selected, $member ); ?> type="checkbox" value="<?php echo $member; ?>" /> <?php echo get_the_title( $member ); ?></li>
-						<?php }
+							<?php
+						}
 					} else { ?>
 						<li><input class="team" type="checkbox" value="0" /> <?php esc_html_e( 'None', 'lsx-wetu-importer' ); ?></li>
 					<?php }
@@ -639,8 +640,7 @@ class LSX_WETU_Importer {
 
 		if ( '' !== $return ) {
 			if ( true === $echo ) {
-				// @codingStandardsIgnoreLine
-				echo $return;
+				echo wp_kses_post( $return );
 			} else {
 				return $return;
 			}
@@ -659,8 +659,7 @@ class LSX_WETU_Importer {
 
 		if ( '' !== $return ) {
 			if ( true === $echo ) {
-				// @codingStandardsIgnoreLine
-				echo $return;
+				echo wp_kses_post( $return );
 			} else {
 				return $return;
 			}
@@ -772,13 +771,12 @@ class LSX_WETU_Importer {
 		if ( ! empty( $data ) ) {
 			foreach ( $data as $k ) {
 				if ( $id ) {
-					// @codingStandardsIgnoreLine
-					if ( ! $term = term_exists( trim( $k ), $tax ) ) {
+					$term = term_exists( trim( $k ), $tax );
+					if ( ! $term ) {
 						$term = wp_insert_term( trim( $k ), $tax );
 
 						if ( is_wp_error( $term ) ) {
-							// @codingStandardsIgnoreLine
-							echo $term->get_error_message();
+							echo wp_kses_post( $term->get_error_message() );
 						} else {
 							wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy,true );
 						}
@@ -803,19 +801,17 @@ class LSX_WETU_Importer {
 	 * @return void
 	 */
 	public function set_term( $id = false, $name = false, $taxonomy = false, $parent = false ) {
-		// @codingStandardsIgnoreLine
-		if ( ! $term = term_exists( $name, $taxonomy ) ) {
+		$term = term_exists( $name, $taxonomy );
+		if ( ! $term ) {
 			if ( false !== $parent ) {
 				$parent = array(
 					'parent' => $parent,
 				);
 			}
-
 			$term = wp_insert_term( trim( $name ), $taxonomy,$parent );
 
 			if ( is_wp_error( $term ) ) {
-				// @codingStandardsIgnoreLine
-				echo $term->get_error_message();
+				echo wp_kses_post( $term->get_error_message() );
 			} else {
 				wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy,true );
 			}
@@ -1202,16 +1198,14 @@ class LSX_WETU_Importer {
 	 * Formats the row for the completed list.
 	 */
 	public function format_completed_row( $response ) {
-		// @codingStandardsIgnoreLine
-		echo '<li class="post-' . $response . '"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="' . get_permalink( $response ) . '">' . get_the_title( $response ) . '</a></li>';
+		echo wp_kses_post( '<li class="post-' . $response . '"><span class="dashicons dashicons-yes"></span> <a target="_blank" href="' . get_permalink( $response ) . '">' . get_the_title( $response ) . '</a></li>' );
 	}
 
 	/**
 	 * Formats the error.
 	 */
 	public function format_error( $response ) {
-		// @codingStandardsIgnoreLine
-		echo '<li class="post-error"><span class="dashicons dashicons-no"></span>' . $response . '</li>';
+		echo wp_kses_post( '<li class="post-error"><span class="dashicons dashicons-no"></span>' . $response . '</li>' );
 	}
 
 	/**

@@ -99,10 +99,11 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			
 			<?php $this->update_options_form(); ?>
 
-			<?php $this->search_form(); ?>
+			<div class="tablenav top">
+				<?php $this->search_form(); ?>
+			</div>
 
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
@@ -192,8 +193,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						<div style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'Assign a Safari Brand' ); ?></h3>
 							<?php
-								// @codingStandardsIgnoreLine
-								echo $this->taxonomy_checkboxes( 'accommodation-brand', $this->accommodation_options );
+								echo wp_kses_post( $this->taxonomy_checkboxes( 'accommodation-brand', $this->accommodation_options ) );
 							?>
 						</div>
 
@@ -313,7 +313,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				if ( ! empty( $accommodation ) ) {
 					foreach ( $accommodation as $row_key => $row ) {
 						if ( 'import' === $post_status ) {
-							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'],$this->queued_imports ) ) {
+							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
 								$current_status = get_post_status( $row['post_id'] );
 								if ( 'draft' === $current_status ) {
 									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
@@ -418,8 +418,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function remove_from_queue( $id ) {
 		if ( ! empty( $this->queued_imports ) ) {
-			// @codingStandardsIgnoreLine
-			if ( ( $key = array_search( $id, $this->queued_imports ) ) !== false ) {
+			$key = array_search( $id, $this->queued_imports );
+			if ( false !== $key ) {
 				unset( $this->queued_imports[ $key ] );
 
 				delete_option( 'lsx_wetu_importer_que' );
@@ -706,13 +706,12 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		$terms = false;
 
 		if ( isset( $data[0]['category'] ) ) {
-			// @codingStandardsIgnoreLine
-			if ( ! $term = term_exists( trim( $data[0]['category'] ), 'accommodation-type' ) ) {
+			$term = term_exists( trim( $data[0]['category'] ), 'accommodation-type' );
+			if ( ! $term ) {
 				$term = wp_insert_term( trim( $data[0]['category'] ), 'accommodation-type' );
 
 				if ( is_wp_error( $term ) ) {
-					// @codingStandardsIgnoreLine
-					echo $term->get_error_message();
+					echo wp_kses_post( $term->get_error_message() );
 				}
 			} else {
 				wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type', true );

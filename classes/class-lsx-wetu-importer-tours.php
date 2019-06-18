@@ -729,13 +729,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$day_counter = $next_day_count;
 			}
 
-			//If we are in the first leg,  and the destination was attached then save it as the departure field.
+			// If we are in the first leg,  and the destination was attached then save it as the departure field.
 			if ( 0 === $leg_counter && false !== $current_destination ) {
 				$departs_from = $current_destination;
 			}
 
-			//If its the last leg then save it as the ends in.
-			// @codingStandardsIgnoreLine
+			// If its the last leg then save it as the ends in.
 			if ( $leg_counter === (count( $data['legs'] ) -2) && false !== $current_destination ) {
 				$ends_in = $current_destination;
 			}
@@ -1202,15 +1201,15 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	public function check_if_image_is_used( $v ) {
 		global $wpdb;
 
-		$temp_fragment = explode( '/',$v['url_fragment'] );
+		$temp_fragment = explode( '/', $v['url_fragment'] );
 		$url_filename = $temp_fragment[ count( $temp_fragment ) -1 ];
-		$url_filename = str_replace( array( '.jpg', '.png', '.jpeg' ),'',$url_filename );
+		$url_filename = str_replace( array( '.jpg', '.png', '.jpeg' ), '', $url_filename );
 		$url_filename = trim( $url_filename );
-		$url_filename = str_replace( ' ','_',$url_filename );
+		$url_filename = str_replace( ' ', '_', $url_filename );
 
-		if ( in_array( $url_filename,$this->found_attachments ) ) {
+		if ( in_array( $url_filename, $this->found_attachments ) ) {
 			//check to see if there is a featured image set with this ID.
-			$found_id = array_search( $url_filename,$this->found_attachments );
+			$found_id = array_search( $url_filename, $this->found_attachments );
 
 			$querystring = "
 				SELECT      post_id

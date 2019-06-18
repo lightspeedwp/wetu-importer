@@ -91,7 +91,9 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<?php $this->search_form(); ?>
+			<div class="tablenav top">
+				<?php $this->search_form(); ?>
+			</div>
 
 			<form method="get" action="" id="posts-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>"/>
@@ -527,8 +529,8 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	 */
 	public function remove_from_queue( $id ) {
 		if ( ! empty( $this->queued_imports ) ) {
-			// @codingStandardsIgnoreLine
-			if ( ( $key = array_search( $id, $this->queued_imports ) ) !== false ) {
+			$key = array_search( $id, $this->queued_imports );
+			if ( false !== $key ) {
 				unset( $this->queued_imports[ $key ] );
 
 				delete_option( 'lsx_wetu_importer_que' );
@@ -718,13 +720,12 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			$continent_code = to_continent_label( to_continent_code( to_country_data( $data[0]['position']['country'], false ) ) );
 
 			if ( '' !== $continent_code ) {
-				// @codingStandardsIgnoreLine
-				if ( ! $term = term_exists( trim( $continent_code ), 'continent' ) ) {
+				$term = term_exists( trim( $continent_code ), 'continent' );
+				if ( ! $term ) {
 					$term = wp_insert_term( trim( $continent_code ), 'continent' );
 
 					if ( is_wp_error( $term ) ) {
-						// @codingStandardsIgnoreLine
-						echo $term->get_error_message();
+						echo wp_kses_post( $term->get_error_message() );
 					}
 				} else {
 					wp_set_object_terms( $id, sanitize_title( $continent_code ), 'continent', true );
