@@ -1,6 +1,6 @@
 {
   "name": "wetu-importer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Tour Operators add-on for LSX",
   "main": "gulpfile.js",
   "scripts": {
