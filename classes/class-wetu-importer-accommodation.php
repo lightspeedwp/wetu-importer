@@ -342,13 +342,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 				if ( ! isset( $search_data['error'] ) ) {
 					foreach ( $search_data as $sdata ) {
 
-						if ( 'Destination' === trim( $sdata['type'] ) ||
-						     'Activity' === trim( $sdata['type'] ) ||
-						     'Restaurant' === trim( $sdata['type'] ) ||
-						     'None' === trim( $sdata['type'] ) ||
-						     'Site / Attraction' === trim( $sdata['type'] ) ||
-						     '' === trim( $sdata['type'] )
-						) {
+						if ( 'Destination' === trim( $sdata['type'] ) || 'Activity' === trim( $sdata['type'] ) || 'Restaurant' === trim( $sdata['type'] ) || 'None' === trim( $sdata['type'] ) || 'Site / Attraction' === trim( $sdata['type'] ) || '' === trim( $sdata['type'] ) ) {
 							continue;
 						}
 
@@ -375,7 +369,7 @@ class WETU_Importer_Accommodation extends WETU_Importer {
 	}
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
-		return 	$row_item = array(
+		return $row_item = array(
 			'id' => $cs_key,
 			'type' => 'Accommodation',
 			'name' => get_the_title( $ccs_id ),

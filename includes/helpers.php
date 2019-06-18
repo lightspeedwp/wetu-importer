@@ -22,12 +22,11 @@ function get_options() {
 		// Check for any previous options.
 		$temp_options = get_option( '_lsx-to_settings', false );
 		if ( false !== $temp_options && isset( $temp_options['wetu-importer'] ) && ! empty( $temp_options['wetu-importer'] ) ) {
-			$options = $temp_options['wetu-importer'];		
+			$options = $temp_options['wetu-importer'];
 		}
 		if ( false !== $temp_options && isset( $temp_options['api']['wetu_api_key'] ) && '' !== $temp_options['api']['wetu_api_key'] ) {
 			$options['api_key'] = $temp_options['api']['wetu_api_key'];
 		}
-
 	}
 	return $options;
 }
@@ -43,11 +42,7 @@ function get_post_count( $post_type = '', $post_status = '' ) {
 	global $wpdb;
 	$count = '0';
 	if ( '' !== $post_type && '' !== $post_status ) {
-		$result = $wpdb->get_var("
-			SELECT COUNT(`ID`)
-			FROM `{$wpdb->posts}`
-			WHERE `post_status` = '{$post_status}' AND `post_type` = '{$post_type}'
-		");
+		$result = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(`ID`) FROM %s WHERE `post_status` = %s AND `post_type` = %s ', array( $wpdb->posts, $post_status, $post_type ) ) );
 		if ( false !== $result && '' !== $result ) {
 			$count = $result;
 		}
