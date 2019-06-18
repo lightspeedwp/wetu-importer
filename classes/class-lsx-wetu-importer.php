@@ -279,7 +279,7 @@ class LSX_WETU_Importer {
 			}
 
 			// If any tours were queued.
-			$this->queued_imports = get_option( 'lsx_wetu_importer_que', array() );			
+			$this->queued_imports = get_option( 'lsx_wetu_importer_que', array() );
 
 			// Set the scaling options.
 			if ( isset( $this->options ) && isset( $this->options['image_scaling'] ) ) {
