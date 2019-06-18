@@ -1191,7 +1191,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		global $wpdb;
 
 		$temp_fragment = explode( '/', $v['url_fragment'] );
-		$url_filename = $temp_fragment[ count( $temp_fragment ) -1 ];
+		$url_filename = $temp_fragment[ count( $temp_fragment ) - 1 ];
 		$url_filename = str_replace( array( '.jpg', '.png', '.jpeg' ), '', $url_filename );
 		$url_filename = trim( $url_filename );
 		$url_filename = str_replace( ' ', '_', $url_filename );
@@ -1207,21 +1207,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				return false;
 			}
 		} else {
-			$querystring = "
-				SELECT      ID
-				FROM        {$wpdb->posts}
-				WHERE       post_name = '{$url_filename}'
-			";
-			$results = $wpdb->get_results( $querystring );
-			
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name = '%s'", array( $url_filename ) ) );
+
 			if ( ! empty( $results ) ) {
-				$querystring = "
-					SELECT      post_id
-					FROM        {$wpdb->postmeta}
-					WHERE       meta_value = '{$results[0]->ID}'
-					AND 		meta_key = '_thumbnail_id'
-				";
-				$results = $wpdb->get_results( $querystring );
+				$results = $wpdb->get_results( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value = '%s' AND meta_key = '_thumbnail_id'", array( $results[0]->ID ) ) );
 				if ( ! empty( $results ) ) {
 					return true;
 				} else {
@@ -1239,7 +1228,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 * @param   $id     int
 	 */
 	public function queue_item( $id ) {
-		if ( is_array( $this->import_queue ) && ! in_array( $id,$this->import_queue ) ) {
+		if ( is_array( $this->import_queue ) && ! in_array( $id, $this->import_queue ) ) {
 			$this->import_queue[] = $id;
 		} else {
 			$this->import_queue[] = $id;
@@ -1252,7 +1241,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	public function save_queue() {
 		if ( ! empty( $this->import_queue ) ) {
 			if ( ! empty( $this->queued_imports ) ) {
-				$saved_imports = array_merge( $this->queued_imports,$this->import_queue );
+				$saved_imports = array_merge( $this->queued_imports, $this->import_queue );
 			} else {
 				$saved_imports = $this->import_queue;
 			}
@@ -1261,7 +1250,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 			if ( ! empty( $saved_imports ) ) {
 				$saved_imports = array_unique( $saved_imports );
-				update_option( 'lsx_wetu_importer_que',$saved_imports );
+				update_option( 'lsx_wetu_importer_que', $saved_imports );
 			}
 		}
 	}
