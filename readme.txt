@@ -16,7 +16,7 @@ Building your [Tour Operator](https://tour-operator.lsdev.biz/) site but looking
 Our  [theme](https://lsx.lsdev.biz/) works perfectly with the Wetu Importer Extension, improving internal linking, website SEO and user experience! 
 
 == Gutenberg Compatible Plugin == 
-Have you updated to the new WordPress Gutenberg editor? We've got you covered! The Wetu Importer Plugin has been optimised for the Gutenberg update. Check out our [release post](https://lsx.lsdev.biz/lsx-blocks-available-on-wordpress-org/) on the update for more information.
+Have you updated to the new WordPress Gutenberg editor? We've got you covered! The Wetu Importer Plugin has been optimised for the Gutenberg update. 
 
 == It's free, and always will be. == 
 We’re firm believers in open source - that’s why the [Wetu Importer plugin](https://tour-operator.lsdev.biz/wetu-importer/) is free, and that won't change. We are constantly maintaining and updating our extension so you have the latest and greatest abilities on your LSX Theme powered site. 
