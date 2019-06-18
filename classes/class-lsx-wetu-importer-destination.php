@@ -320,7 +320,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	public function process_ajax_search() {
 		$return = false;
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === 'destination' ) {
+		if ( isset( $_POST['action'] ) && 'lsx_tour_importer' === $_POST['action'] && isset( $_POST['type'] ) && 'destination' === $_POST['type'] ) {
 
 			$searched_items = false;
 			if ( isset( $_POST['keyword'] ) ) {

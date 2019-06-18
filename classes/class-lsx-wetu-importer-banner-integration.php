@@ -178,7 +178,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 			$array_index = 0;
 
 			foreach ( $banners['banner_image'] as $banner_image ) {
-				$image_id = $this->attach_external_image2( $this->format_wetu_url( $banner_image ) );
+				$image_id = $this->attach_external_image2( $this->format_wetu_url( $banner_image ), array(), $post_id );
 				if ( null !== $image_id && '' !== $image_id ) {
 					$new_banner_array['banner_image'][ 'cmb-field-' . $array_index ] = $image_id;
 					$array_index++;
@@ -229,53 +229,51 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 		}
 	}
 
-	public function attach_external_image2( $url = null, $post_data = array() ) {
+	public function attach_external_image2( $url = null, $post_data = array(), $post_id = '' ) {
 		if ( ! $url ) { return new WP_Error( 'missing', 'Need a valid URL' ); }
 
 		require_once( ABSPATH . 'wp-admin/includes/file.php' );
 		require_once( ABSPATH . 'wp-admin/includes/media.php' );
 		require_once( ABSPATH . 'wp-admin/includes/image.php' );
 
-		//var_dump($tmp);
 		$tmp = tempnam( '/tmp', 'FOO' );
 		$image = file_get_contents( $url );
 		file_put_contents( $tmp, $image );
-		chmod( $tmp,'777' );
+		chmod( $tmp, '777' );
 
-		preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );    // fix file filename for query strings
+		preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );
 		$url_filename = basename( $matches[0] );
-		$url_filename = str_replace( '%20','_',$url_filename );
-		// extract filename from url for title
-		$url_type = wp_check_filetype( $url_filename );                                           // determine file type (ext and mime/type)
+		$url_filename = str_replace( '%20','_', $url_filename );
+		// extract filename from url for title.
+		$url_type = wp_check_filetype( $url_filename );
 
 		// assemble file data (should be built like $_FILES since wp_handle_sideload() will be using).
-		$file_array['tmp_name'] = $tmp;                                                         // full server path to temp file.
+		$file_array['tmp_name'] = $tmp;
 
 		if ( ! empty( $filename ) && ' ' != $filename ) {
-			$file_array['name'] = $filename . '.' . $url_type['ext'];                           // user given filename for title, add original URL extension
+			$file_array['name'] = $filename . '.' . $url_type['ext'];
 		} else {
-			$file_array['name'] = $url_filename;                                                // just use original URL filename.
+			$file_array['name'] = $url_filename;
 		}
 
 		// set additional wp_posts columns.
 		if ( empty( $post_data['post_title'] ) ) {
-			$url_filename = str_replace( '%20',' ',$url_filename );
-			$post_data['post_title'] = basename( $url_filename, '.' . $url_type['ext'] );         // just use the original filename (no extension).
+			$url_filename = str_replace( '%20', ' ', $url_filename );
+			$post_data['post_title'] = basename( $url_filename, '.' . $url_type['ext'] );
 		}
 
 		// make sure gets tied to parent.
 		if ( empty( $post_data['post_parent'] ) ) {
-			$post_data['post_parent'] = wp_unslash( $_POST['post_id'] );
+			$post_data['post_parent'] = $post_id;
 		}
 
 		// do the validation and storage stuff.
-		$att_id = media_handle_sideload( $file_array, wp_unslash( $_POST['post_id'] ), null, $post_data );             // $post_data can override the items saved to wp_posts table, like post_mime_type, guid, post_parent, post_title, post_content, post_status
+		$att_id = media_handle_sideload( $file_array, $post_id, null, $post_data );
 
-		// If error storing permanently, unlink
+		// If error storing permanently, unlink.
 		if ( is_wp_error( $att_id ) ) {
-			unlink( $file_array['tmp_name'] );   // clean up
-			return false; // output wp_error
-			//return $att_id; // output wp_error
+			unlink( $file_array['tmp_name'] );
+			return false;
 		}
 
 		return $att_id;

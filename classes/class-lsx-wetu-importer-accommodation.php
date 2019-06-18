@@ -263,7 +263,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	public function process_ajax_search() {
 		$return = false;
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_tour_importer' && isset( $_POST['type'] ) && $_POST['type'] === 'accommodation' ) {
+		if ( isset( $_POST['action'] ) && 'lsx_tour_importer' === $_POST['action'] && isset( $_POST['type'] ) && 'accommodation' === $_POST['type'] ) {
 
 			$searched_items = false;
 			if ( isset( $_POST['keyword'] ) ) {
@@ -431,7 +431,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		$return = false;
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_import_items' && isset( $_POST['type'] ) && $_POST['type'] === 'accommodation' && isset( $_POST['wetu_id'] ) ) {
+		if ( isset( $_POST['action'] ) && 'lsx_import_items' === $_POST['action'] && isset( $_POST['type'] ) && 'accommodation' === $_POST['type'] && isset( $_POST['wetu_id'] ) ) {
 
 			$wetu_id = wp_unslash( $_POST['wetu_id'] );
 			if ( isset( $_POST['post_id'] ) ) {

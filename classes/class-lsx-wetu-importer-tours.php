@@ -436,7 +436,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	public function process_ajax_import( $force = false ) {
 		$return = false;
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_import_items' && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug && isset( $_POST['wetu_id'] ) ) {
+		if ( isset( $_POST['action'] ) && 'lsx_import_items' === $_POST['action'] && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug && isset( $_POST['wetu_id'] ) ) {
 
 			$wetu_id = wp_unslash( $_POST['wetu_id'] );
 			if ( isset( $_POST['post_id'] ) ) {
@@ -724,7 +724,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			// If its the last leg then save it as the ends in.
-			if ( $leg_counter === (count( $data['legs'] ) -2) && false !== $current_destination ) {
+			if ( ( count( $data['legs'] ) - 2 ) === $leg_counter && false !== $current_destination ) {
 				$ends_in = $current_destination;
 			}
 
@@ -1200,14 +1200,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			// check to see if there is a featured image set with this ID.
 			$found_id = array_search( $url_filename, $this->found_attachments );
 
-			$querystring = "
-				SELECT      post_id
-				FROM        {$wpdb->postmeta}
-				WHERE       meta_value = '%s'
-				AND 		meta_key = '_thumbnail_id'
-			";
-			$results = $wpdb->get_results( $wpdb->prepare( $querystring, array( $found_id ) ) );
-
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value = '%s' AND meta_key = '_thumbnail_id'", array( $found_id ) ) );
 			if ( ! empty( $results ) ) {
 				return true;
 			} else {
@@ -1220,6 +1213,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				WHERE       post_name = '{$url_filename}'
 			";
 			$results = $wpdb->get_results( $querystring );
+			
 			if ( ! empty( $results ) ) {
 				$querystring = "
 					SELECT      post_id

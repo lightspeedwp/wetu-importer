@@ -230,7 +230,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 	public function process_connection() {
 		$return = false;
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
-		if ( isset( $_POST['action'] ) && $_POST['action'] === 'lsx_import_connect_accommodation' && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug && isset( $_POST['post_id'] ) && isset( $_POST['wetu_id'] ) ) {
+		if ( isset( $_POST['action'] ) && 'lsx_import_connect_accommodation' === $_POST['action'] && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug && isset( $_POST['post_id'] ) && isset( $_POST['wetu_id'] ) ) {
 			$post_id     = false;
 			$matching_id = false;
 			$post_id     = wp_unslash( $_POST['post_id'] );
