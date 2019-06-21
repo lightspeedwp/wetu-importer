@@ -495,16 +495,16 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			delete_option( 'lsx_wetu_importer_destination_settings' );
 
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
-				$content = sanitize_textarea_field( $_POST['content'] );
+				$content = array_map( 'sanitize_text_field', wp_unslash( $_POST['content'] ) );
 				add_option( 'lsx_wetu_importer_destination_settings', $content );
 			} else {
 				$content = false;
 			}
 
-			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
+			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );		
 
 			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
-				$adata = json_decode( $jdata, true );
+				$adata  = json_decode( $jdata['body'], true );
 				$return = $this->import_row( $adata, $wetu_id, $post_id, $team_members, $content, $safari_brands );
 				$this->remove_from_queue( $return );
 				$this->format_completed_row( $return );

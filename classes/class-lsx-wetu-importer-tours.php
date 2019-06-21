@@ -448,7 +448,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			delete_option( 'lsx_wetu_importer_tour_settings' );
 
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
-				$content = sanitize_textarea_field( $_POST['content'] );
+				$content = array_map( 'sanitize_text_field', wp_unslash( $_POST['content'] ) );
 				add_option( 'lsx_wetu_importer_tour_settings',$content );
 			} else {
 				$content = false;
