@@ -324,7 +324,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 			$searched_items = false;
 			if ( isset( $_POST['keyword'] ) ) {
-				$keyphrases = sanitize_text_field( $_POST['keyword'] );
+				$keyphrases = array_map( 'sanitize_text_field', wp_unslash( $_POST['keyword'] ) );
 			} else {
 				$keyphrases = array( 0 );
 			}
@@ -392,10 +392,10 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			} else {
 
 				$key_string_search = implode( '+', $keyphrases );
-				$search_data = file_get_contents( $this->url . '/Search/' . $key_string_search . '/?all=include' );
-				$search_data = json_decode( $search_data, true );
+				$search_data       = wp_remote_get( $this->url . '/Search/' . $key_string_search . '/?all=include' );
 
-				if ( ! isset( $search_data['error'] ) ) {
+				if ( ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
+					$search_data = json_decode( $search_data['body'], true );
 					foreach ( $search_data as $sdata ) {
 
 						if ( 'Destination' !== trim( $sdata['type'] ) ) {

@@ -332,7 +332,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				}
 			} else {
 				$key_string_search = implode( '+', $keyphrases );
-				$search_data       = wp_remote_get( $this->url . '/Search/' . $key_string_search );			
+				$search_data       = wp_remote_get( $this->url . '/Search/' . $key_string_search );
 				if ( ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
 
 					$search_data = json_decode( $search_data['body'], true );
