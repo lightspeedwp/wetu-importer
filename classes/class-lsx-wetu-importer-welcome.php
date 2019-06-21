@@ -9,12 +9,10 @@
  * @copyright 2019 LightSpeed
  **/
 
-namespace lsx_wetu_importer\classes;
-
 /**
  * The Welcome Screen for the Importer Plugin
  */
-class Welcome {
+class LSX_WETU_Importer_Welcome {
 
 	/**
 	 * Holds instance of the class
@@ -125,9 +123,9 @@ class Welcome {
 			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>" class="button button-primary"><?php esc_html_e( 'Import Tours', 'lsx-wetu-importer' ); ?></a></p>
 			<p>
 				<ul class="link-list">
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'tour', 'publish ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'tour', 'pending ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'tour', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( lsx_wetu_get_post_count( 'tour', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( lsx_wetu_get_post_count( 'tour', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( lsx_wetu_get_post_count( 'tour', 'draft ' ) ); ?>)</a></li>
 				</ul>
 			</p>			
 		<?php
@@ -145,10 +143,10 @@ class Welcome {
 
 			<p>
 				<ul class="link-list">
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'accommodation', 'publish ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'accommodation', 'pending ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'accommodation', 'draft ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_wetu_queue_count( 'accommodation' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( lsx_wetu_get_post_count( 'accommodation', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( lsx_wetu_get_post_count( 'accommodation', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( lsx_wetu_get_post_count( 'accommodation', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( lsx_wetu_get_queue_count( 'accommodation' ) ); ?>)</a></li>
 				</ul>
 			</p>			
 		<?php
@@ -165,10 +163,10 @@ class Welcome {
 			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync destinations', 'lsx-wetu-importer' ); ?></a></p>
 			<p>
 				<ul class="link-list">
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'destination', 'publish ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'destination', 'pending ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( 'destination', 'draft ' ) ); ?>)</a></li>
-					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_wetu_queue_count( 'destination' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( lsx_wetu_get_post_count( 'destination', 'publish ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#pending"><?php esc_html_e( 'Pending', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( lsx_wetu_get_post_count( 'destination', 'pending ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#draft"><?php esc_html_e( 'Draft', 'lsx-wetu-importer' ); ?> (<?php echo esc_attr( lsx_wetu_get_post_count( 'destination', 'draft ' ) ); ?>)</a></li>
+					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>#import"><?php esc_html_e( 'Wetu Queue', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( lsx_wetu_get_queue_count( 'destination' ) ); ?>)</a></li>
 				</ul>
 			</p>
 		<?php

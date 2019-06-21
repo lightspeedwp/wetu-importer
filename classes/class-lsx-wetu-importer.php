@@ -183,13 +183,6 @@ class LSX_WETU_Importer {
 	public $debug_enabled = false;
 
 	/**
-	 * Logger Class
-	 *
-	 * @var      \lsx\LSX_Logger
-	 */
-	public $logger = false;
-
-	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since 1.0.0
@@ -211,11 +204,11 @@ class LSX_WETU_Importer {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ), 11 );
 		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
 
-		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-welcome.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-welcome.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-accommodation.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-destination.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-tours.php';
-		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-settings.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-settings.php';
 
 		add_action( 'init', array( $this, 'load_class' ) );
 
@@ -244,7 +237,7 @@ class LSX_WETU_Importer {
 	 */
 	public function set_variables() {
 		$this->post_types = array( 'accommodation', 'destination', 'tour' );
-		$options = \lsx_wetu_importer\includes\helpers\get_options();
+		$options = lsx_wetu_get_options();
 
 		// Set the options.
 		if ( ! empty( $options ) ) {
@@ -396,11 +389,11 @@ class LSX_WETU_Importer {
 				break;
 
 			case 'settings':
-				$this->current_importer = \lsx_wetu_importer\classes\Settings::get_instance();
+				$this->current_importer = LSX_WETU_Importer_Settings::get_instance();
 				break;
 
 			default:
-				$this->current_importer = \lsx_wetu_importer\classes\Welcome::get_instance();
+				$this->current_importer = LSX_WETU_Importer_Welcome::get_instance();
 				break;
 		}
 	}
@@ -467,14 +460,14 @@ class LSX_WETU_Importer {
 		?>
 		<ul class="subsubsub">
 			<li class="searchform"><a class="current" href="#search"><?php esc_attr_e( 'Search', 'lsx-wetu-importer' ); ?></a> | </li>
-			<li class="publish"><a href="#publish"><?php esc_attr_e( 'Published', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'publish ' ) ); ?>)</span></a> | </li>
-			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li> 
-			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'lsx-wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
+			<li class="publish"><a href="#publish"><?php esc_attr_e( 'Published', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'publish ' ) ); ?>)</span></a> | </li>
+			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li> 
+			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'lsx-wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
 
 			<?php if ( 'tour' === $this->tab_slug ) { ?>
-				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_wetu_tour_count() ); ?>)</span></a></li>
+				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_tour_count() ); ?>)</span></a></li>
 			<?php } else if ( ! empty( $this->queued_imports ) ) { ?>
-				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( \lsx_wetu_importer\includes\helpers\get_wetu_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
+				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
 			<?php } ?>
 		</ul>
 		<?php

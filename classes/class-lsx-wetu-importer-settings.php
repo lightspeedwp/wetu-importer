@@ -9,12 +9,10 @@
  * @copyright 2019 LightSpeed
  **/
 
-namespace lsx_wetu_importer\classes;
-
 /**
  * The Welcome Screen for the Importer Plugin
  */
-class Settings {
+class LSX_WETU_Importer_Settings {
 
 	/**
 	 * Holds instance of the class
@@ -79,7 +77,7 @@ class Settings {
 	 * Display the importer welcome screen
 	 */
 	public function display_page() {
-		$options = \lsx_wetu_importer\includes\helpers\get_options();
+		$options = lsx_wetu_get_options();
 		foreach ( $options as $key => $value ) {
 			$value = trim( $value );
 		}

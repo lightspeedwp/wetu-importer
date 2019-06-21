@@ -9,14 +9,12 @@
  * @copyright 2019 LightSpeed
  **/
 
-namespace lsx_wetu_importer\includes\helpers;
-
 /**
  * Gets the settings
  *
  * @return array
  */
-function get_options() {
+function lsx_wetu_get_options() {
 	$options = get_option( 'lsx_wetu_importer_settings', array() );
 	if ( empty( $options ) ) {
 		// Check for any previous options.
@@ -38,7 +36,7 @@ function get_options() {
  * @param string $post_status
  * @return void
  */
-function get_post_count( $post_type = '', $post_status = '' ) {
+function lsx_wetu_get_post_count( $post_type = '', $post_status = '' ) {
 	global $wpdb;
 	$count = '0';
 	if ( '' !== $post_type && '' !== $post_status ) {
@@ -56,7 +54,7 @@ function get_post_count( $post_type = '', $post_status = '' ) {
  * @param string $post_type
  * @return void
  */
-function get_wetu_queue_count( $post_type = '' ) {
+function lsx_wetu_get_queue_count( $post_type = '' ) {
 	$count = '0';
 	$queued_imports = get_option( 'lsx_wetu_importer_que', array() );
 	if ( isset( $queued_imports[ $post_type ] ) ) {
@@ -71,7 +69,7 @@ function get_wetu_queue_count( $post_type = '' ) {
  * @param string $post_type
  * @return void
  */
-function get_wetu_tour_count( $post_type = '' ) {
+function lsx_wetu_get_tour_count( $post_type = '' ) {
 	$count = '0';
 	$wetu_tours = get_transient( 'lsx_ti_tours', array() );
 	if ( ! empty( $wetu_tours ) ) {
