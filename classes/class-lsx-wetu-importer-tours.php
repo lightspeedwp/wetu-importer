@@ -1004,37 +1004,34 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$country_id = $this->current_destinations[ $country_wetu_id ];
 			$this->destination_images[ $id ][] = array( $country_id, $country_wetu_id );
 		} else {
-			$country_json = file_get_contents( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
+			$country_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
 
-			if ( $country_json ) {
-				$country_data = json_decode( $country_json, true );
+			if ( ! empty( $country_json ) && isset( $country_json['response'] ) && isset( $country_json['response']['code'] ) && 200 === $country_json['response']['code'] ) {
+				$country_data = json_decode( $country_json['body'], true );
 
-				if ( ! empty( $country_data ) && ! isset( $country_data['error'] ) ) {
+				// Format the title of the destination if its available,  otherwise default to the WETU ID.
+				$country_title = $country_wetu_id;
 
-					//Format the title of the destination if its available,  otherwise default to the WETU ID.
-					$country_title = $country_wetu_id;
-
-					if ( isset( $country_data[0]['name'] ) ) {
-						$country_title = $country_data[0]['name'];
-					}
-
-					$country_id = wp_insert_post(array(
-						'post_type' => 'destination',
-						'post_status' => 'draft',
-						'post_title' => $country_title,
-					));
-
-					//add the country to the current destination stack
-					$this->current_destinations[ $country_wetu_id ] = $country_id;
-
-					// Check if there are images and save fore use later.
-					if ( isset( $country_data[0]['content']['images'] ) && ! empty( $country_data[0]['content']['images'] ) ) {
-						$this->destination_images[ $id ][] = array( $country_id,$country_wetu_id );
-					}
-
-					//Save the wetu field
-					$this->save_custom_field( $country_wetu_id, 'lsx_wetu_id', $country_id );
+				if ( isset( $country_data[0]['name'] ) ) {
+					$country_title = $country_data[0]['name'];
 				}
+
+				$country_id = wp_insert_post(array(
+					'post_type' => 'destination',
+					'post_status' => 'draft',
+					'post_title' => $country_title,
+				));
+
+				//add the country to the current destination stack
+				$this->current_destinations[ $country_wetu_id ] = $country_id;
+
+				// Check if there are images and save fore use later.
+				if ( isset( $country_data[0]['content']['images'] ) && ! empty( $country_data[0]['content']['images'] ) ) {
+					$this->destination_images[ $id ][] = array( $country_id,$country_wetu_id );
+				}
+
+				//Save the wetu field
+				$this->save_custom_field( $country_wetu_id, 'lsx_wetu_id', $country_id );
 			}
 		}
 
@@ -1072,10 +1069,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						$url = 'https://wetu.com/API/Pins/' . $this->api_key;
 						$url_qs = '';
 
-						$jdata = file_get_contents( $url . '/Get?' . $url_qs . '&ids=' . $destination[1] );
+						$jdata = wp_remote_get( $url . '/Get?' . $url_qs . '&ids=' . $destination[1] );
 
-						if ( $jdata ) {
-							$adata = json_decode( $jdata, true );
+						if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+							$adata = json_decode( $jdata['body'], true );
 
 							if ( ! empty( $adata ) && ! empty( $adata[0]['content']['images'] ) ) {
 								$this->find_attachments( $destination[0] );
