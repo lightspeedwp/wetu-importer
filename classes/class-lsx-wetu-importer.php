@@ -1335,6 +1335,24 @@ class LSX_WETU_Importer {
 			return true;
 		}
 	}
+
+	/**
+	 * Gets the post_id from the key
+	 *
+	 * @param boolean $wetu_id
+	 * @return string
+	 */
+	public function get_post_id_by_key_value( $wetu_id = false ) {
+		global $wpdb;
+		$id = false;
+		if ( false !== $wetu_id && '' !== $wetu_id ) {
+			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM `$wpdb->postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '%s'", array( $wetu_id ) ) );
+			if ( false !== $result && ! empty( $result ) ) {
+				$id = $result;
+			}
+		}
+		return $id;
+	}
 }
 
 $lsx_wetu_importer = new LSX_WETU_Importer();
