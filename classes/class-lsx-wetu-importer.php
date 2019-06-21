@@ -1112,61 +1112,59 @@ class LSX_WETU_Importer {
 		if ( ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
 			file_put_contents( $tmp, $image['body'] );
 			chmod( $tmp,'777' );
-	
+
 			preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );    // fix file filename for query strings
 			$url_filename = basename( $matches[0] );
 			$url_filename = str_replace( '%20','_',$url_filename );
 			// extract filename from url for title
 			$url_type = wp_check_filetype( $url_filename );                                           // determine file type (ext and mime/type)
-	
+
 			// override filename if given, reconstruct server path.
 			if ( ! empty( $filename ) && ' ' != $filename ) {
 				$filename = sanitize_file_name( $filename );
 				$tmppath = pathinfo( $tmp );
-	
+
 				$extension = '';
 				if ( isset( $tmppath['extension'] ) ) {
 					$extension = $tmppath['extension'];
 				}
-	
+
 				$new = $tmppath['dirname'] . '/' . $filename . '.' . $extension;
 				rename( $tmp, $new );                                                                 // renames temp file on server
 				$tmp = $new;                                                                        // push new filename (in path) to be used in file array later
 			}
-	
+
 			// assemble file data (should be built like $_FILES since wp_handle_sideload() will be using).
 			$file_array['tmp_name'] = $tmp;                                                         // full server path to temp file
-	
+
 			if ( ! empty( $filename ) && ' ' != $filename ) {
 				$file_array['name'] = $filename . '.' . $url_type['ext'];                           // user given filename for title, add original URL extension
 			} else {
 				$file_array['name'] = $url_filename;                                                // just use original URL filename
 			}
-	
+
 			// set additional wp_posts columns.
 			if ( empty( $post_data['post_title'] ) ) {
-	
-				$url_filename = str_replace( '%20',' ',$url_filename );
-	
+
+				$url_filename = str_replace( '%20',' ', $url_filename );
+
 				$post_data['post_title'] = basename( $url_filename, '.' . $url_type['ext'] );         // just use the original filename (no extension)
 			}
-	
+
 			// make sure gets tied to parent.
 			if ( empty( $post_data['post_parent'] ) ) {
 				$post_data['post_parent'] = $post_id;
 			}
-	
+
 			// do the validation and storage stuff.
 			$att_id = media_handle_sideload( $file_array, $post_id, null, $post_data );             // $post_data can override the items saved to wp_posts table, like post_mime_type, guid, post_parent, post_title, post_content, post_status
-	
-			// If error storing permanently, unlink
+
+			// If error storing permanently, unlink.
 			if ( is_wp_error( $att_id ) ) {
-				unlink( $file_array['tmp_name'] );   // clean up
-				return false; // output wp_error
-				//return $att_id; // output wp_error
+				unlink( $file_array['tmp_name'] );
+				return false;
 			}
 		}
-
 		return $att_id;
 	}
 
