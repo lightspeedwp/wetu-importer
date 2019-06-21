@@ -20,5 +20,4 @@ register_activation_hook( LSX_WETU_IMPORTER_CORE, array( 'LSX_WETU_Importer', 'r
 
 /* ======================= Below is the Plugin Class init ========================= */
 
-require_once( LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-logger.php' );
 require_once( LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer.php' );

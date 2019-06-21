@@ -245,7 +245,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 * Save the list of Accommodation into an option
 	 */
 	public function update_options() {
-		$data = file_get_contents( $this->url . '/List?' . $this->url_qs );
+		$data = wp_remote_get( $this->url . '/List?' . $this->url_qs );
 
 		$accommodation = json_decode( $data, true );
 
@@ -267,7 +267,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 			$searched_items = false;
 			if ( isset( $_POST['keyword'] ) ) {
-				$keyphrases = sanitize_text_field( $_POST['keyword'] );
+				$keyphrases = array_map( 'sanitize_text_field', wp_unslash( $_POST['keyword'] ) );
 			} else {
 				$keyphrases = array( 0 );
 			}
@@ -332,10 +332,10 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				}
 			} else {
 				$key_string_search = implode( '+', $keyphrases );
-				$search_data = file_get_contents( $this->url . '/Search/' . $key_string_search );
-				$search_data = json_decode( $search_data, true );
+				$search_data       = wp_remote_get( $this->url . '/Search/' . $key_string_search );			
+				if ( ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
 
-				if ( ! isset( $search_data['error'] ) ) {
+					$search_data = json_decode( $search_data['body'], true );
 					foreach ( $search_data as $sdata ) {
 
 						if ( 'Destination' === trim( $sdata['type'] ) || 'Activity' === trim( $sdata['type'] ) || 'Restaurant' === trim( $sdata['type'] ) || 'None' === trim( $sdata['type'] ) || 'Site / Attraction' === trim( $sdata['type'] ) || '' === trim( $sdata['type'] ) ) {
