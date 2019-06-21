@@ -728,14 +728,10 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	 * Save the list of Accommodation into an option
 	 */
 	public function update_options() {
-		$data = file_get_contents( $this->url . '/List?' . $this->url_qs );
-
-		$accommodation = json_decode( $data, true );
-
-		if ( isset( $accommodation['error'] ) ) {
-			return $accommodation['error'];
-		} elseif ( isset( $accommodation ) && ! empty( $accommodation ) ) {
-			set_transient( 'lsx_ti_accommodation', $accommodation,60 * 60 * 2 );
+		$data = wp_remote_get( $this->url . '/List?' . $this->url_qs );
+		if ( ! empty( $data ) && isset( $data['response'] ) && isset( $data['response']['code'] ) && 200 === $data['response']['code'] ) {
+			$accommodation = json_decode( $data['body'], true );
+			set_transient( 'lsx_ti_accommodation', $accommodation, 60 * 60 * 2 );
 			return true;
 		}
 	}
