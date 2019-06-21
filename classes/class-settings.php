@@ -325,7 +325,7 @@ class Settings {
 		$data_to_save = array();
 		foreach ( $this->defaults as $key => $field ) {
 			if ( isset( $_POST[ $key ] ) ) {
-				$data_to_save[ $key ] = $_POST[ $key ];
+				$data_to_save[ $key ] = sanitize_text_field( $_POST[ $key ] );
 			} else {
 				$data_to_save[ $key ] = '';
 			}

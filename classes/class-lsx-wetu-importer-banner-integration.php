@@ -170,7 +170,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && 'lsx_import_sync_banners' === $_POST['action'] && isset( $_POST['post_id'] ) ) {
 
-			$post_id = wp_unslash( $_POST['post_id'] );
+			$post_id = sanitize_text_field( $_POST['post_id'] );
 			$banners       = get_post_meta( $post_id, 'image_group', true );
 			$this->wetu_id = get_post_meta( $post_id, 'lsx_wetu_id', true );
 

@@ -267,7 +267,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 			$searched_items = false;
 			if ( isset( $_POST['keyword'] ) ) {
-				$keyphrases = wp_unslash( $_POST['keyword'] );
+				$keyphrases = sanitize_text_field( $_POST['keyword'] );
 			} else {
 				$keyphrases = array( 0 );
 			}
@@ -433,28 +433,28 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 		if ( isset( $_POST['action'] ) && 'lsx_import_items' === $_POST['action'] && isset( $_POST['type'] ) && 'accommodation' === $_POST['type'] && isset( $_POST['wetu_id'] ) ) {
 
-			$wetu_id = wp_unslash( $_POST['wetu_id'] );
+			$wetu_id = sanitize_text_field( $_POST['wetu_id'] );
 			if ( isset( $_POST['post_id'] ) ) {
-				$post_id = wp_unslash( $_POST['post_id'] );
+				$post_id = sanitize_text_field( $_POST['post_id'] );
 			} else {
 				$post_id = 0;
 			}
 
 			if ( isset( $_POST['team_members'] ) ) {
-				$team_members = wp_unslash( $_POST['team_members'] );
+				$team_members = sanitize_text_field( $_POST['team_members'] );
 			} else {
 				$team_members = false;
 			}
 
 			if ( isset( $_POST['safari_brands'] ) ) {
-				$safari_brands = wp_unslash( $_POST['safari_brands'] );
+				$safari_brands = sanitize_text_field( $_POST['safari_brands'] );
 			} else {
 				$safari_brands = false;
 			}
 			delete_option( 'lsx_wetu_importer_accommodation_settings' );
 
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
-				$content = wp_unslash( $_POST['content'] );
+				$content = sanitize_textarea_field( $_POST['content'] );
 				add_option( 'lsx_wetu_importer_accommodation_settings',$content );
 			} else {
 				$content = false;

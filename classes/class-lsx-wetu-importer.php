@@ -271,10 +271,10 @@ class LSX_WETU_Importer {
 			// @codingStandardsIgnoreLine
 			if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && isset( $_POST['type'] ) ) ) {
 				if ( isset( $_GET['tab'] ) ) {
-					$this->tab_slug = wp_unslash( $_GET['tab'] );
+					$this->tab_slug = sanitize_text_field( $_GET['tab'] );
 				} else {
 					// @codingStandardsIgnoreLine
-					$this->tab_slug = wp_unslash( $_POST['type'] );
+					$this->tab_slug = sanitize_text_field( $_POST['type'] );
 				}
 			}
 

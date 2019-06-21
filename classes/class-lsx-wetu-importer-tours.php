@@ -297,7 +297,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			if ( false !== $tours ) {
 				$searched_items = false;
 				if ( isset( $_POST['keyword'] ) ) {
-					$keyphrases = wp_unslash( $_POST['keyword'] );
+					$keyphrases = sanitize_text_field( $_POST['keyword'] );
 				} else {
 					$keyphrases = array( 0 );
 				}
@@ -438,9 +438,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && 'lsx_import_items' === $_POST['action'] && isset( $_POST['type'] ) && $_POST['type'] === $this->tab_slug && isset( $_POST['wetu_id'] ) ) {
 
-			$wetu_id = wp_unslash( $_POST['wetu_id'] );
+			$wetu_id = sanitize_text_field( $_POST['wetu_id'] );
 			if ( isset( $_POST['post_id'] ) ) {
-				$post_id = wp_unslash( $_POST['post_id'] );
+				$post_id = sanitize_text_field( $_POST['post_id'] );
 			} else {
 				$post_id = 0;
 			}
@@ -448,7 +448,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			delete_option( 'lsx_wetu_importer_tour_settings' );
 
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
-				$content = wp_unslash( $_POST['content'] );
+				$content = sanitize_textarea_field( $_POST['content'] );
 				add_option( 'lsx_wetu_importer_tour_settings',$content );
 			} else {
 				$content = false;
