@@ -1,5 +1,9 @@
 ## Change log
 
+### 1.2.1
+* Fix - Fixed the problem with the empty API key.
+* Fix - Fixed the WETU tour search.
+
 ### 1.2.0
 * Dev - Upgraded Wetu API to V8.
 * Dev - Added in support for the group size and the tags fields.
