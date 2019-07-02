@@ -517,8 +517,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
 			$id = wp_update_post( $post );
-			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
-			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
+			if ( isset( $data['last_modified'] ) ) {
+				$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
+				update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
+			}
 
 		} else {
 			// Set the name.
@@ -607,7 +609,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			// If the Nights are the same mount of days in the array,  then it isnt "By Destination".
-			if ( ( (1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
+			if ( ( ( 1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
 				foreach ( $leg['periods'] as $day ) {
 					$current_day = array();
 					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter;
