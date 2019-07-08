@@ -502,7 +502,6 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				$content = false;
 			}
 
-			print_r( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
 			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
 
 			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
