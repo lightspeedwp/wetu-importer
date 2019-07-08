@@ -153,12 +153,13 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 									<input class="content" <?php $this->checked( $this->destination_options, 'gallery' ); ?>
 										   type="checkbox" name="content[]"
 										   value="gallery"/> <?php esc_html_e( 'Main Gallery', 'lsx-wetu-importer' ); ?></li>
-								<?php if ( class_exists( 'LSX_TO_Maps' ) ) { ?>
+
 									<li>
 										<input class="content" <?php $this->checked( $this->destination_options, 'location' ); ?>
 											   type="checkbox" name="content[]"
-											   value="location"/> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
+											   value="location"/> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?>
+									</li>
+
 
 								<?php if ( class_exists( 'LSX_TO_Videos' ) ) { ?>
 									<li>
@@ -598,9 +599,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				$this->set_team_member( $id, $team_members );
 			}
 
-			if ( class_exists( 'LSX_TO_Maps' ) ) {
-				$this->set_map_data( $data, $id, 9 );
-			}
+			$this->set_map_data( $data, $id, 9 );
 
 			// Set the Room Data.
 			if ( false !== $importable_content && in_array( 'videos', $importable_content ) ) {
