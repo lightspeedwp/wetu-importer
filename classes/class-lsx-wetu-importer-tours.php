@@ -521,7 +521,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
 				update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
 			}
-
 		} else {
 			// Set the name.
 			if ( isset( $data['name'] ) ) {
