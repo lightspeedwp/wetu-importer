@@ -102,7 +102,9 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			<?php $this->update_options_form(); ?>
 
 			<div class="tablenav top">
-				<?php $this->search_form(); ?>
+				<div class="alignleft actions">
+					<?php $this->search_form(); ?>
+				</div>
 			</div>
 
 			<form method="get" action="" id="posts-filter">

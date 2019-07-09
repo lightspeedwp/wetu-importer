@@ -3,6 +3,7 @@
 ### 1.2.1
 * Fix - Fixed the problem with the empty API key.
 * Fix - Fixed the WETU tour search.
+* Fix - Fixed the styling of the search on the accommodation and destination tabs.
 * Dev - Removed the TO Maps plugin dependancies.
 
 ### 1.2.0
