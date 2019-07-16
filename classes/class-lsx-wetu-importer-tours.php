@@ -786,17 +786,20 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		// Price.
 		if ( isset( $data['price'] ) && '' !== $data['price'] ) {
 			$price = preg_replace( '/[^0-9,.]/', '', $data['price'] );
-			$this->save_custom_field( $price, 'price', $id );
+			$meta_key = apply_filters( 'lsx_wetu_importer_price_meta_key', 'price' );
+			$this->save_custom_field( $price, $meta_key, $id );
 		}
 
 		// Price includes.
 		if ( isset( $data['price_includes'] ) && '' !== $data['price_includes'] ) {
-			$this->save_custom_field( $data['price_includes'], 'included', $id );
+			$meta_key = apply_filters( 'lsx_wetu_importer_included_meta_key', 'included' );
+			$this->save_custom_field( $data['price_includes'], $meta_key, $id );
 		}
 
 		// Price Excludes.
 		if ( isset( $data['price_excludes'] ) && '' !== $data['price_excludes'] ) {
-			$this->save_custom_field( $data['price_excludes'], 'not_included', $id );
+			$meta_key = apply_filters( 'lsx_wetu_importer_not_included_meta_key', 'not_included' );
+			$this->save_custom_field( $data['price_excludes'], $meta_key, $id );
 		}
 	}
 

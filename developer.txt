@@ -1,0 +1,7 @@
+=== LSX Importer for Wetu - Developer Functions ===
+
+==== Filters ====
+
+apply_filters( 'lsx_wetu_importer_price_meta_key', 'price' );
+apply_filters( 'lsx_wetu_importer_included_meta_key', 'included' );
+apply_filters( 'lsx_wetu_importer_not_included_meta_key', 'not_included' );
