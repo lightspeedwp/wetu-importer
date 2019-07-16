@@ -2,6 +2,8 @@
 body.tour-operator_page_lsx-wetu-importer {
   /* Home Screen */
   /* Tour / Accommodation / Destinations */ }
+  body.tour-operator_page_lsx-wetu-importer #posts-filter {
+    margin-top: 15px; }
   body.tour-operator_page_lsx-wetu-importer .row.section {
     margin-bottom: 25px; }
     body.tour-operator_page_lsx-wetu-importer .row.section h1 {
@@ -70,3 +72,16 @@ body.tour-operator_page_lsx-wetu-importer {
     margin-bottom: 10px; }
   body.tour-operator_page_lsx-wetu-importer #lsx-wetu-importer-search-form .normal-search {
     display: inline-block; }
+  body.tour-operator_page_lsx-wetu-importer .advanced-search-toggle {
+    display: inline-block;
+    margin-top: 0;
+    padding-bottom: 10px; }
+  body.tour-operator_page_lsx-wetu-importer .widefat .check-column {
+    padding: 6px 0 6px;
+    vertical-align: middle; }
+  body.tour-operator_page_lsx-wetu-importer .widefat #the-list .check-column {
+    vertical-align: top;
+    padding: 10px 0 6px; }
+  body.tour-operator_page_lsx-wetu-importer #import-list .widefat .check-column {
+    vertical-align: top;
+    padding: 10px 0 6px; }

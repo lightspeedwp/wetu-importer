@@ -240,65 +240,63 @@ class LSX_WETU_Importer {
 		$options = lsx_wetu_get_options();
 
 		// Set the options.
-		if ( ! empty( $options ) ) {
-			$this->options = $options;
+		$this->options = $options;
 
-			$temp_options = get_option( '_lsx-to_settings', false );
-			if ( false !== $temp_options ) {
-				$this->accommodation_settings = $temp_options['accommodation'];
-				$this->tour_settings          = $temp_options['tour'];
-				$this->destination_settings   = $temp_options['destination'];
+		$temp_options = get_option( '_lsx-to_settings', false );
+		if ( false !== $temp_options ) {
+			$this->accommodation_settings = $temp_options['accommodation'];
+			$this->tour_settings          = $temp_options['tour'];
+			$this->destination_settings   = $temp_options['destination'];
+		}
+
+		$this->api_key = false;
+
+		if ( ! defined( 'WETU_API_KEY' ) ) {
+			if ( isset( $options['api_key'] ) && '' !== $options['api_key'] ) {
+				$this->api_key = $options['api_key'];
 			}
+		} else {
+			$this->api_key = WETU_API_KEY;
+		}
 
-			$this->api_key = false;
-
-			if ( ! defined( 'WETU_API_KEY' ) ) {
-				if ( isset( $options['api_key'] ) && '' !== $options['api_key'] ) {
-					$this->api_key = $options['api_key'];
-				}
+		// Set the tab slug.
+		// @codingStandardsIgnoreLine
+		if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && isset( $_POST['type'] ) ) ) {
+			if ( isset( $_GET['tab'] ) ) {
+				$this->tab_slug = sanitize_text_field( $_GET['tab'] );
 			} else {
-				$this->api_key = WETU_API_KEY;
+				// @codingStandardsIgnoreLine
+				$this->tab_slug = sanitize_text_field( $_POST['type'] );
+			}
+		}
+
+		// If any tours were queued.
+		$this->queued_imports = get_option( 'lsx_wetu_importer_que', array() );
+
+		// Set the scaling options.
+		if ( isset( $this->options ) && isset( $this->options['image_scaling'] ) ) {
+			$this->scale_images = true;
+
+			$width = '1024';
+			if ( isset( $this->options['width'] ) && '' !== $this->options['width'] ) {
+				$width = $this->options['width'];
 			}
 
-			// Set the tab slug.
-			// @codingStandardsIgnoreLine
-			if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && isset( $_POST['type'] ) ) ) {
-				if ( isset( $_GET['tab'] ) ) {
-					$this->tab_slug = sanitize_text_field( $_GET['tab'] );
-				} else {
-					// @codingStandardsIgnoreLine
-					$this->tab_slug = sanitize_text_field( $_POST['type'] );
-				}
+			$height = '768';
+			if ( isset( $this->options['height'] ) && '' !== $this->options['height'] ) {
+				$height = $this->options['height'];
 			}
 
-			// If any tours were queued.
-			$this->queued_imports = get_option( 'lsx_wetu_importer_que', array() );
-
-			// Set the scaling options.
-			if ( isset( $this->options ) && isset( $this->options['image_scaling'] ) ) {
-				$this->scale_images = true;
-
-				$width = '1024';
-				if ( isset( $this->options['width'] ) && '' !== $this->options['width'] ) {
-					$width = $this->options['width'];
-				}
-
-				$height = '768';
-				if ( isset( $this->options['height'] ) && '' !== $this->options['height'] ) {
-					$height = $this->options['height'];
-				}
-
-				$cropping = 'w';
-				if ( isset( $this->options['cropping'] ) && '' !== $this->options['cropping'] ) {
-					$cropping = $this->options['cropping'];
-				}
-
-				$this->image_scaling_url = 'https://wetu.com/ImageHandler/' . $cropping . $width . 'x' . $height . '/';
+			$cropping = 'w';
+			if ( isset( $this->options['cropping'] ) && '' !== $this->options['cropping'] ) {
+				$cropping = $this->options['cropping'];
 			}
 
-			if ( isset( $this->options ) && isset( $this->options['image_limit'] ) && '' !== $this->options['image_limit'] ) {
-				$this->image_limit = $this->options['image_limit'];
-			}
+			$this->image_scaling_url = 'https://wetu.com/ImageHandler/' . $cropping . $width . 'x' . $height . '/';
+		}
+
+		if ( isset( $this->options ) && isset( $this->options['image_limit'] ) && '' !== $this->options['image_limit'] ) {
+			$this->image_limit = $this->options['image_limit'];
 		}
 	}
 
@@ -1313,8 +1311,8 @@ class LSX_WETU_Importer {
 		}
 
 		if ( isset( $_GET['type'] ) && 'allitineraries' !== $_GET['type'] ) {
-			$this->current_importer->url_qs .= '&type=' . implode( '', $_GET['type'] );
-			$options[] = implode( '', $_GET['type'] );
+			$this->current_importer->url_qs .= '&type=' . $_GET['type'];
+			$options[] = $_GET['type'];
 		}
 
 		$this->current_importer->url_qs .= '&results=2000';

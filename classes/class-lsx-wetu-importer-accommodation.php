@@ -102,7 +102,9 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			<?php $this->update_options_form(); ?>
 
 			<div class="tablenav top">
-				<?php $this->search_form(); ?>
+				<div class="alignleft actions">
+					<?php $this->search_form(); ?>
+				</div>
 			</div>
 
 			<form method="get" action="" id="posts-filter">
@@ -157,7 +159,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 									<li><input class="content" checked="<?php $this->checked( $this->accommodation_options,'gallery' ); ?>" type="checkbox" name="content[]" value="gallery" /> <?php esc_html_e( 'Main Gallery', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 								<li><input class="content" checked="<?php $this->checked( $this->accommodation_options,'category' ); ?>" type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category', 'lsx-wetu-importer' ); ?></li>
-								<?php if ( class_exists( 'LSX_TO_Maps' ) && ! isset( $this->accommodation_settings['disable_single'] ) ) { ?>
+								<?php if ( ! isset( $this->accommodation_settings['disable_single'] ) ) { ?>
 									<li><input class="content" checked="<?php $this->checked( $this->accommodation_options,'location' ); ?>" type="checkbox" name="content[]" value="location" /> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 								<li><input class="content" checked="<?php $this->checked( $this->accommodation_options,'destination' ); ?>" type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Connect Destinations', 'lsx-wetu-importer' ); ?></li>
@@ -557,9 +559,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			$this->set_safari_brands( $id, $safari_brands );
 		}
 
-		if ( class_exists( 'LSX_TO_Maps' ) ) {
-			$this->set_map_data( $data, $id, 9 );
-		}
+		$this->set_map_data( $data, $id, 9 );
 
 		if ( post_type_exists( 'destination' ) && false !== $importable_content && in_array( 'destination', $importable_content ) ) {
 			$this->connect_destinations( $data, $id );

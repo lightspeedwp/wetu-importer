@@ -94,13 +94,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="wetu_api_key"> <?php esc_html_e( 'API Key', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input type="text" value="
-								<?php
+								<input type="text" value="<?php
 								if ( isset( $options['api_key'] ) ) {
 									echo esc_attr( $options['api_key'] );
 								}
-								?>
-								" name="api_key" />
+								?>" name="api_key" />
 							</td>
 						</tr>
 						<tr class="form-field -wrap">
@@ -191,13 +189,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="image_limit"> <?php esc_html_e( 'Limit the amount of images imported to the gallery', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input placeholder="" type="text" value="
-								<?php
+								<input placeholder="" type="text" value="<?php
 								if ( isset( $options['image_limit'] ) && '' !== $options['image_limit'] ) {
 									echo esc_attr( $options['image_limit'] );
 								}
-								?>
-								"
+								?>"
 								name="image_limit" />
 							</td>
 						</tr>
@@ -221,13 +217,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="width"> <?php esc_html_e( 'Width (px)', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input placeholder="800" type="text" value="
-								<?php
+								<input placeholder="800" type="text" value="<?php
 								if ( isset( $options['width'] ) && '' !== $options['width'] ) {
 									echo esc_attr( $options['width'] );
 								}
-								?>
-								"
+								?>"
 								name="width" />
 							</td>
 						</tr>
@@ -236,13 +230,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="height"> <?php esc_html_e( 'Height (px)', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input placeholder="600" type="text" value="
-								<?php
+								<input placeholder="600" type="text" value="<?php
 								if ( isset( $options['height'] ) && '' !== $options['height'] ) {
 									echo esc_attr( $options['height'] );
 								}
-								?>
-								"
+								?>"
 								name="height" />
 							</td>
 						</tr>

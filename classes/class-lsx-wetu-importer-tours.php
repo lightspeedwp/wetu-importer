@@ -245,10 +245,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			<input type="hidden" name="refresh_tours" value="true" />
 			<input class="content" type="hidden" name="own" value="true" />
 
-			<select name="type" id="wpseo-readability-filter">
+			<select name="type">
 				<option <?php if ( in_array( 'allitineraries', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?> value="allitineraries"><?php esc_html_e( 'All Itineraries','lsx-wetu-importer' ); ?></option>
-				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="bad"><?php esc_html_e( 'Sample','lsx-wetu-importer' ); ?></option>
-				<option <?php if ( in_array( 'personal', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="ok"><?php esc_html_e( 'Personal','lsx-wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="sample"><?php esc_html_e( 'Sample','lsx-wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'personal', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="personal"><?php esc_html_e( 'Personal','lsx-wetu-importer' ); ?></option>
 			</select>
 			<input class="button submit" type="submit" value="<?php esc_attr_e( 'Refresh', 'lsx-wetu-importer' ); ?>" />
 		</form>
@@ -297,7 +297,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			if ( false !== $tours ) {
 				$searched_items = false;
 				if ( isset( $_POST['keyword'] ) ) {
-					$keyphrases = sanitize_text_field( $_POST['keyword'] );
+					$keyphrases = array_map( 'sanitize_text_field', wp_unslash( $_POST['keyword'] ) );
 				} else {
 					$keyphrases = array( 0 );
 				}
@@ -517,9 +517,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
 			$id = wp_update_post( $post );
-			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
-			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
-
+			if ( isset( $data['last_modified'] ) ) {
+				$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
+				update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
+			}
 		} else {
 			// Set the name.
 			if ( isset( $data['name'] ) ) {
@@ -607,7 +608,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			// If the Nights are the same mount of days in the array,  then it isnt "By Destination".
-			if ( ( (1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
+			if ( ( ( 1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
 				foreach ( $leg['periods'] as $day ) {
 					$current_day = array();
 					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter;
