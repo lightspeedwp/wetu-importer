@@ -787,7 +787,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		// Price.
 		if ( isset( $data['price'] ) && '' !== $data['price'] ) {
 			$price = $data['price'];
-			if ( true !== apply_filters( 'lsx_wetu_importer_disable_tour_price_filter', true ) ) {
+			if ( false === apply_filters( 'lsx_wetu_importer_disable_tour_price_filter', false ) ) {
 				$price = preg_replace( '/[^0-9,.]/', '', $price );
 			}
 			$meta_key = apply_filters( 'lsx_wetu_importer_price_meta_key', 'price' );
