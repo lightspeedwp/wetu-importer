@@ -50,7 +50,7 @@ class LSX_WETU_Importer_Welcome {
 	public function display_page() {
 		?>
 		<div class="row section">
-			<h1><?php esc_html_e( 'Welcome to the LSX LSX Importer for Wetu', 'lsx-wetu-importer' ); ?></h1>
+			<h1><?php esc_html_e( 'Welcome to the LSX Importer for Wetu', 'lsx-wetu-importer' ); ?></h1>
 			<p><?php esc_html_e( 'If this is the first time running the import, please follow the steps below.', 'lsx-wetu-importer' ); ?></p>
 		</div>
 		<?php
