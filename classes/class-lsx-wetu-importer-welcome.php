@@ -67,16 +67,16 @@ class LSX_WETU_Importer_Welcome {
 		?>
 		<div class="row section postbox">
 			<div class="welcome-block-header">
-				<p class="heading"><?php esc_html_e( 'Import your tours', 'lsx-wetu-importer' ); ?></p>
-				<p class="value"><span>1</span></p>
+				<p class="heading"><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>"><?php esc_html_e( 'Import your tours', 'lsx-wetu-importer' ); ?></a></p>
+				<p class="value"><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>"><span>1</span></a></p>
 			</div>
 			<div class="welcome-block-header">
-				<p class="heading"><?php esc_html_e( 'Import accommodation', 'lsx-wetu-importer' ); ?></p>
-				<p class="value"><span>2</span></p>
+				<p class="heading"><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>"><?php esc_html_e( 'Import accommodation', 'lsx-wetu-importer' ); ?></a></p>
+				<p class="value"><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=accommodation' ); ?>"><span>2</span></a></p>
 			</div>
 			<div class="welcome-block-header">
-				<p class="heading"><?php esc_html_e( 'Import destination', 'lsx-wetu-importer' ); ?></p>
-				<p class="value"><span>3</span></p>
+				<p class="heading"><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>"><?php esc_html_e( 'Import destination', 'lsx-wetu-importer' ); ?></a></p>
+				<p class="value"><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=destination' ); ?>"><span>3</span></a></p>
 			</div>
 			<div class="welcome-block-header">
 				<p class="heading"><?php esc_html_e( 'Done', 'lsx-wetu-importer' ); ?></p>

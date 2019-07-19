@@ -32,6 +32,15 @@ body.tour-operator_page_lsx-wetu-importer {
 		width: calc(24% - 27px);
 		position: relative;
 		z-index: 2;
+
+		a:focus {
+			box-shadow:none;
+		}
+		.heading {
+			a {
+				text-decoration: none;
+			}
+		}
 		.value {
 			span {
 				display:block;
@@ -42,6 +51,11 @@ body.tour-operator_page_lsx-wetu-importer {
 				width: 20px;
 				height: 20px;
 				display: inline-block;
+			}
+			a:hover {
+				span {
+					background-color: #00a0d2;
+				}
 			}
 		}
 	}

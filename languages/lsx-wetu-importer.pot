@@ -1,4 +1,4 @@
-# Copyright (C) 2017 lsx-wetu-importer
+# Copyright (C) 2019 lsx-wetu-importer
 # This file is distributed under the same license as the lsx-wetu-importer package.
 msgid ""
 msgstr ""
@@ -14,107 +14,107 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: classes/class-lsx-wetu-importer-accommodation.php:111, classes/class-lsx-wetu-importer-accommodation.php:139, classes/class-lsx-wetu-importer-destination.php:109, classes/class-lsx-wetu-importer-destination.php:140, classes/class-lsx-wetu-importer-tours.php:137, classes/class-lsx-wetu-importer-tours.php:165
-msgid "Add to List"
-msgstr ""
-
-#: classes/class-lsx-wetu-importer-accommodation.php:112, classes/class-lsx-wetu-importer-accommodation.php:140, classes/class-lsx-wetu-importer-destination.php:111, classes/class-lsx-wetu-importer-destination.php:142, classes/class-lsx-wetu-importer-tours.php:138, classes/class-lsx-wetu-importer-tours.php:166
-msgid "Clear"
-msgstr ""
-
-#: classes/class-lsx-wetu-importer-accommodation.php:121, classes/class-lsx-wetu-importer-destination.php:121, classes/class-lsx-wetu-importer-tours.php:147
+#: classes/class-lsx-wetu-importer-accommodation.php:119, classes/class-lsx-wetu-importer-destination.php:110, classes/class-lsx-wetu-importer-tours.php:137
 msgid "Enter a title to search for and press enter"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:125, classes/class-lsx-wetu-importer-destination.php:125, classes/class-lsx-wetu-importer-tours.php:151
+#: classes/class-lsx-wetu-importer-accommodation.php:123, classes/class-lsx-wetu-importer-destination.php:114
 msgid "Enter a title to search for"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:152, classes/class-lsx-wetu-importer-destination.php:157, classes/class-lsx-wetu-importer-tours.php:178
+#: classes/class-lsx-wetu-importer-accommodation.php:137, classes/class-lsx-wetu-importer-destination.php:129, classes/class-lsx-wetu-importer-tours.php:151
+msgid "Add to List"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-accommodation.php:138, classes/class-lsx-wetu-importer-destination.php:131, classes/class-lsx-wetu-importer-tours.php:152
+msgid "Clear"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-accommodation.php:150, classes/class-lsx-wetu-importer-destination.php:146, classes/class-lsx-wetu-importer-tours.php:164, classes/class-lsx-wetu-importer-tours.php:1272, classes/class-lsx-wetu-importer-tours.php:1292
 msgid "Select All"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:154, classes/class-lsx-wetu-importer-destination.php:162, classes/class-lsx-wetu-importer-tours.php:181, classes/class-lsx-wetu-importer-tours.php:199
+#: classes/class-lsx-wetu-importer-accommodation.php:152, classes/class-lsx-wetu-importer-destination.php:151, classes/class-lsx-wetu-importer-tours.php:167, classes/class-lsx-wetu-importer-tours.php:182
 msgid "Description"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:157
+#: classes/class-lsx-wetu-importer-accommodation.php:155
 msgid "Excerpt"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:161, classes/class-lsx-wetu-importer-destination.php:168
+#: classes/class-lsx-wetu-importer-accommodation.php:159, classes/class-lsx-wetu-importer-destination.php:157
 msgid "Main Gallery"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:163, classes/class-lsx-wetu-importer-tours.php:187
+#: classes/class-lsx-wetu-importer-accommodation.php:161, classes/class-lsx-wetu-importer-tours.php:173
 msgid "Category"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:165, classes/class-lsx-wetu-importer-destination.php:173
+#: classes/class-lsx-wetu-importer-accommodation.php:163, classes/class-lsx-wetu-importer-destination.php:162
 msgid "Location"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:167
+#: classes/class-lsx-wetu-importer-accommodation.php:165
 msgid "Connect Destinations"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:168
+#: classes/class-lsx-wetu-importer-accommodation.php:166
 msgid "Rating"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:169
+#: classes/class-lsx-wetu-importer-accommodation.php:167
 msgid "Rooms"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:172
+#: classes/class-lsx-wetu-importer-accommodation.php:170
 msgid "Check In / Check Out"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:173
+#: classes/class-lsx-wetu-importer-accommodation.php:171
 msgid "Facilities"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:174
+#: classes/class-lsx-wetu-importer-accommodation.php:172
 msgid "Friendly"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:177
+#: classes/class-lsx-wetu-importer-accommodation.php:175
 msgid "Special Interests"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:178
+#: classes/class-lsx-wetu-importer-accommodation.php:176
 msgid "Spoken Languages"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:181, classes/class-lsx-wetu-importer-destination.php:180
+#: classes/class-lsx-wetu-importer-accommodation.php:179, classes/class-lsx-wetu-importer-destination.php:170
 msgid "Videos"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:186, classes/class-lsx-wetu-importer-destination.php:194
+#: classes/class-lsx-wetu-importer-accommodation.php:184, classes/class-lsx-wetu-importer-destination.php:188
 msgid "Set Featured Image"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:188, classes/class-lsx-wetu-importer-destination.php:200
+#: classes/class-lsx-wetu-importer-accommodation.php:186, classes/class-lsx-wetu-importer-destination.php:194
 msgid "Set Banner Image"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:209, classes/class-lsx-wetu-importer-accommodation.php:221, classes/class-lsx-wetu-importer-destination.php:264, classes/class-lsx-wetu-importer-destination.php:277, classes/class-lsx-wetu-importer-tours.php:223, classes/class-lsx-wetu-importer-tours.php:235
+#: classes/class-lsx-wetu-importer-accommodation.php:206, classes/class-lsx-wetu-importer-accommodation.php:218, classes/class-lsx-wetu-importer-destination.php:263, classes/class-lsx-wetu-importer-destination.php:276, classes/class-lsx-wetu-importer-tours.php:206, classes/class-lsx-wetu-importer-tours.php:218
 msgid "Sync"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:226, classes/class-lsx-wetu-importer-tours.php:240
+#: classes/class-lsx-wetu-importer-accommodation.php:223, classes/class-lsx-wetu-importer-tours.php:223
 msgid "Import your"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:226, classes/class-lsx-wetu-importer-tours.php:240
+#: classes/class-lsx-wetu-importer-accommodation.php:223, classes/class-lsx-wetu-importer-tours.php:223
 msgid "next"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:238, classes/class-lsx-wetu-importer-destination.php:731, classes/class-lsx-wetu-importer-tours.php:254
+#: classes/class-lsx-wetu-importer-accommodation.php:235, classes/class-lsx-wetu-importer-destination.php:745, classes/class-lsx-wetu-importer.php:584
 msgid "Wetu Status"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-accommodation.php:491
+#: classes/class-lsx-wetu-importer-accommodation.php:474
 msgid "There was a problem importing your accommodation, please try refreshing the page."
 msgstr ""
 
@@ -122,7 +122,7 @@ msgstr ""
 msgid "Download new banners straight from WETU"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-banner-integration.php:160
+#: classes/class-lsx-wetu-importer-banner-integration.php:159
 msgid "Download new Banners"
 msgstr ""
 
@@ -134,198 +134,378 @@ msgstr ""
 msgid "Below is a list of your accommodation that does not contain a WETU ID, but its Title matches a name in the WETU DB. Connecting it will all you to pull through information from WETU."
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-connect-accommodation.php:72, classes/class-lsx-wetu-importer-connect-accommodation.php:125
+#: classes/class-lsx-wetu-importer-connect-accommodation.php:72, classes/class-lsx-wetu-importer-connect-accommodation.php:124
 msgid "Connect"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:189
+#: classes/class-lsx-wetu-importer-destination.php:179
+msgid "Set Country"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-destination.php:183
 msgid "Set Continent"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:207
+#: classes/class-lsx-wetu-importer-destination.php:199
+msgid "Use the WETU banner field"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-destination.php:206
 msgid "Strip HTML from the description"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:216
+#: classes/class-lsx-wetu-importer-destination.php:215
 msgid "Electricity"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:220
+#: classes/class-lsx-wetu-importer-destination.php:219
 msgid "Banking"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:224
+#: classes/class-lsx-wetu-importer-destination.php:223
 msgid "Cuisine"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:228
+#: classes/class-lsx-wetu-importer-destination.php:227
 msgid "Climate"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:232
+#: classes/class-lsx-wetu-importer-destination.php:231
 msgid "Transport"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:235
+#: classes/class-lsx-wetu-importer-destination.php:234
 msgid "Dress"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:238
+#: classes/class-lsx-wetu-importer-destination.php:237
 msgid "Health"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:241
+#: classes/class-lsx-wetu-importer-destination.php:240
 msgid "Safety"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:244
+#: classes/class-lsx-wetu-importer-destination.php:243
 msgid "Visa"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:247
+#: classes/class-lsx-wetu-importer-destination.php:246, classes/class-lsx-wetu-importer-settings.php:90
 msgid "General"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-destination.php:521
+#: classes/class-lsx-wetu-importer-destination.php:515
 msgid "There was a problem importing your destination, please try refreshing the page."
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-settings.php:38
-msgid "Importer"
+#: classes/class-lsx-wetu-importer-post-columns.php:70, classes/class-lsx-wetu-importer-tours.php:1276, classes/class-lsx-wetu-importer-tours.php:1296
+msgid "Ref"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-settings.php:53
-msgid "WETU API"
+#: classes/class-lsx-wetu-importer-settings.php:95
+msgid "API Key"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-settings.php:58
-msgid "Key"
+#: classes/class-lsx-wetu-importer-settings.php:107
+msgid "Disable Tour Descriptions"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-settings.php:66
-msgid "Username"
+#: classes/class-lsx-wetu-importer-settings.php:118
+msgid "If you are going to manage your tour descriptions on this site and not on WETU then enable this setting."
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-settings.php:74
-msgid "Password"
+#: classes/class-lsx-wetu-importer-settings.php:123
+msgid "Disable Accommodation Descriptions"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:184
+#: classes/class-lsx-wetu-importer-settings.php:133
+msgid "If you are going to edit the accommodation descriptions imported then enable this setting."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:138
+msgid "Disable Accommodation Excerpts"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:148
+msgid "If you are going to edit the accommodation excerpts then enable this setting."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:153
+msgid "Disable Destinations Descriptions"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:163
+msgid "If you are going to edit the destination descriptions on this site then enable this setting."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:168
+msgid "Enable Reference Column"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:178
+msgid "Enables the use of the WETU Reference Column for better tours management."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:184
+msgid "Images"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:190
+msgid "Replace Images"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:200
+msgid "Do you want your images to be replaced on each import."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:205
+msgid "Limit the amount of images imported to the gallery"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:219
+msgid "Enable Image Scaling"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:233
+msgid "Width (px)"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:246
+msgid "Height (px)"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:260
+msgid "Scaling"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:269
+msgid "Get the Full size image, no cropping takes place."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:276
+msgid "Crop image to fit fully into the frame, Crop is taken from middle, preserving as much of the image as possible."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:283
+msgid "Crop image to fit fully into the frame, but resize to height first, then crop on width if needed"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:290
+msgid "Crop image to fit fully into the frame, but resize to width first, then crop on height if needed"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:297
+msgid "Resize the image to fit within the frame. but pad the image with white to ensure the resolution matches the frame"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:304
+msgid "Resize the image to fit within the frame. but do not upscale the image."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:311
+msgid "Resize the image to fit within the frame. Image will not exceed specified dimensions"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-settings.php:316
+msgid "Save Changes"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-tours.php:141
+msgid "Search for tours using the search form above"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-tours.php:170
 msgid "Price"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:185
+#: classes/class-lsx-wetu-importer-tours.php:171
 msgid "Duration"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:189
+#: classes/class-lsx-wetu-importer-tours.php:172
+msgid "Group Size"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-tours.php:174
+msgid "Tags"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-tours.php:176
 msgid "Itinerary Days"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:200
+#: classes/class-lsx-wetu-importer-tours.php:183
 msgid "Included"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:201
+#: classes/class-lsx-wetu-importer-tours.php:184
 msgid "Excluded"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:206
+#: classes/class-lsx-wetu-importer-tours.php:189
 msgid "Sync Accommodation"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:207
+#: classes/class-lsx-wetu-importer-tours.php:190
 msgid "Sync Destinations"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:208
+#: classes/class-lsx-wetu-importer-tours.php:191
 msgid "Featured Image"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:209
+#: classes/class-lsx-wetu-importer-tours.php:192
 msgid "Banner Image"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:240
+#: classes/class-lsx-wetu-importer-tours.php:223
 msgid "Completed"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:282
-msgid "Own Tours"
+#: classes/class-lsx-wetu-importer-tours.php:249
+msgid "All Itineraries"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:286
-msgid "All"
-msgstr ""
-
-#: classes/class-lsx-wetu-importer-tours.php:287
+#: classes/class-lsx-wetu-importer-tours.php:250
 msgid "Sample"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:288
+#: classes/class-lsx-wetu-importer-tours.php:251
 msgid "Personal"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer-tours.php:551
-msgid "There was a problem importing your tour, please try refreshing the page."
+#: classes/class-lsx-wetu-importer-tours.php:253
+msgid "Refresh"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:360, classes/class-lsx-wetu-importer.php:373
-msgid "LSX Importer for Wetu Plugin requires PHP 5.6 or higher."
+#: classes/class-lsx-wetu-importer-tours.php:467
+msgid "There was a problem importing your tour, please contact support."
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:443
-msgid "Welcome to the LSX LSX Importer for Wetu"
+#: classes/class-lsx-wetu-importer-tours.php:1275, classes/class-lsx-wetu-importer-tours.php:1295
+msgid "Title"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:446
-msgid "Tours"
+#: classes/class-lsx-wetu-importer-tours.php:1277, classes/class-lsx-wetu-importer-tours.php:1297
+msgid "Date"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:447
-msgid "accommodation"
+#: classes/class-lsx-wetu-importer-tours.php:1278, classes/class-lsx-wetu-importer-tours.php:1298
+msgid "WETU ID"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:448
-msgid "destinations"
+#: classes/class-lsx-wetu-importer-welcome.php:53
+msgid "Welcome to the LSX Importer for Wetu"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:474, classes/class-lsx-wetu-importer.php:479, classes/class-lsx-wetu-importer.php:485
-msgid "Search"
+#: classes/class-lsx-wetu-importer-welcome.php:54
+msgid "If this is the first time running the import, please follow the steps below."
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:483
-msgid "Enter several keywords, each on a new line."
+#: classes/class-lsx-wetu-importer-welcome.php:70
+msgid "Import your tours"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:489
-msgid "Bulk Search"
+#: classes/class-lsx-wetu-importer-welcome.php:74
+msgid "Import accommodation"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:490
+#: classes/class-lsx-wetu-importer-welcome.php:78
+msgid "Import destination"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:82
+msgid "Done"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:121
+msgid "Importing tours"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:122
+msgid "Search for tours, select the ones you want to import and choose the data you want to sync on import. All connected accommodadtions will be imported as drafts to be pubished after completing the tour import."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:123
+msgid "Import Tours"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:126, classes/class-lsx-wetu-importer-welcome.php:146, classes/class-lsx-wetu-importer-welcome.php:166, classes/class-lsx-wetu-importer.php:472
 msgid "Published"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:491
+#: classes/class-lsx-wetu-importer-welcome.php:127, classes/class-lsx-wetu-importer-welcome.php:147, classes/class-lsx-wetu-importer-welcome.php:167, classes/class-lsx-wetu-importer.php:473
 msgid "Pending"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:492
+#: classes/class-lsx-wetu-importer-welcome.php:128, classes/class-lsx-wetu-importer-welcome.php:148, classes/class-lsx-wetu-importer-welcome.php:168, classes/class-lsx-wetu-importer.php:474
 msgid "Draft"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:495
+#: classes/class-lsx-wetu-importer-welcome.php:140
+msgid "Import and publish accommodation"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:141
+msgid "All accommodations connnected to your tours have been imported as drafts. Review the imported accommodations, sync selected data and publish."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:142
+msgid "Sync accommodation"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:149, classes/class-lsx-wetu-importer-welcome.php:169
+msgid "Wetu Queue"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:161
+msgid "Import and publish destinations"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:162
+msgid "All destinations and regions connnected to your tours & accommodations have been imported as drafts. Review the imported accommodations, sync selected data and publish."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:163
+msgid "Sync destinations"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:181
+msgid "Done! Check out your imported content"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer-welcome.php:182
+msgid "If you’ve updated your content on Wetu then you can return to these steps at any stage to import and re-sync any updates"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer.php:364, classes/class-lsx-wetu-importer.php:377
+msgid "LSX Importer for Wetu Plugin requires PHP 5.6 or higher."
+msgstr ""
+
+#: classes/class-lsx-wetu-importer.php:471, classes/class-lsx-wetu-importer.php:496, classes/class-lsx-wetu-importer.php:501
+msgid "Search"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer.php:477
 msgid "WETU"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:497
+#: classes/class-lsx-wetu-importer.php:479
 msgid "WETU Queue"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:563
+#: classes/class-lsx-wetu-importer.php:512
+msgid "Bulk Search"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer.php:569
 msgid "Home"
 msgstr ""
 
-#: classes/class-lsx-wetu-importer.php:595, classes/class-lsx-wetu-importer.php:814
+#: classes/class-lsx-wetu-importer.php:575
+msgid "Settings"
+msgstr ""
+
+#: classes/class-lsx-wetu-importer.php:625, classes/class-lsx-wetu-importer.php:847
 msgid "None"
 msgstr ""

@@ -3,6 +3,7 @@
 ### 1.2.2 - In Development
 * Dev - Added the sortable Reference Column for tours.
 * Dev - Added in the reference field to be imported to tours.
+* Dev - Improved the styling of the Welcome page steps.
 
 ### 1.2.1
 * Fix - Fixed the problem with the empty API key.
