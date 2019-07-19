@@ -17,7 +17,7 @@ body.tour-operator_page_lsx-wetu-importer {
     body.tour-operator_page_lsx-wetu-importer .welcome-block-header:last-child, body.tour-operator_page_lsx-wetu-importer .welcome-block.postbox:last-child {
       margin-right: 0px; }
   body.tour-operator_page_lsx-wetu-importer .welcome-block-header {
-    color: #1098AD;
+    color: #0073aa;
     text-align: center;
     width: calc(24% - 27px);
     position: relative;
@@ -29,7 +29,7 @@ body.tour-operator_page_lsx-wetu-importer {
     body.tour-operator_page_lsx-wetu-importer .welcome-block-header .value span {
       display: block;
       color: white;
-      background-color: #1098AD;
+      background-color: #0073aa;
       padding: 10px;
       border-radius: 25px 25px 25px 25px;
       width: 20px;
