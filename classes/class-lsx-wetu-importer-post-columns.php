@@ -32,9 +32,9 @@ class LSX_WETU_Importer_Post_Columns {
 		add_filter( 'manage_tour_posts_columns', array( $this, 'register_tour_columns' ) );
 		add_action( 'manage_tour_posts_custom_column', array( $this, 'output_tour_ref_column' ), 10, 2 );
 
-		// Sortables Columns.
-		add_filter( 'manage_edit-tour_sortable_columns', array( $this, 'register_sortable_columns' ) );
-		add_action( 'pre_get_posts', array( $this, 'columns_posts_orderby' ) );
+		// Sortables Columns, sorting needs to be fixed
+		// add_filter( 'manage_edit-tour_sortable_columns', array( $this, 'register_sortable_columns' ) );
+		// add_action( 'pre_get_posts', array( $this, 'columns_posts_orderby' ) );
 	}
 
 	/**
@@ -116,7 +116,7 @@ class LSX_WETU_Importer_Post_Columns {
 			$query->set( 'orderby', 'meta_value' );
 			$query->set( 'meta_key', 'lsx_wetu_reference' );
 		}
-		if ( $query->is_search() && 'tour' === $query->get( 'post_type' ) ) {
+		/*if ( $query->is_search() && 'tour' === $query->get( 'post_type' ) ) {
 			$meta_query = array(
 				'relation' => 'OR',
 				array(
@@ -126,6 +126,6 @@ class LSX_WETU_Importer_Post_Columns {
 				),
 			);
 			$query->set( 'meta_query', $meta_query );
-		}
+		}*/
 	}
 }
