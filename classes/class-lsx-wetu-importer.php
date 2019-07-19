@@ -183,6 +183,13 @@ class LSX_WETU_Importer {
 	public $debug_enabled = false;
 
 	/**
+	 * Hold the post columns object
+	 *
+	 * @var object LSX_WETU_Importer_Post_Columns()
+	 */
+	public $post_columns = false;
+
+	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since 1.0.0
@@ -209,6 +216,10 @@ class LSX_WETU_Importer {
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-destination.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-tours.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-settings.php';
+		if ( isset( $this->options ) && isset( $this->options['enable_tour_ref_column'] ) && '' !== $this->options['enable_tour_ref_column'] ) {
+			require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-post-columns.php';
+			$this->post_columns = LSX_WETU_Importer_Post_Columns::get_instance();
+		}
 
 		add_action( 'init', array( $this, 'load_class' ) );
 

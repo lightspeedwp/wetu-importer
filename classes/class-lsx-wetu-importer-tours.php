@@ -517,10 +517,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
 			$id = wp_update_post( $post );
-			if ( isset( $data['last_modified'] ) ) {
-				$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
-				update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ), $prev_date );
-			}
 		} else {
 			// Set the name.
 			if ( isset( $data['name'] ) ) {
@@ -535,13 +531,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$post['post_title']  = $data['name'];
 			$post['post_status'] = 'publish';
 			$id = wp_insert_post( $post );
-
-			// Save the WETU ID and the Last date it was modified.
-			if ( false !== $id ) {
-				add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
-				add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ) );
-			}
 		}
+
+		// Set reference number.
+		$this->set_reference_number( $data, $id );
 
 		// Set the price.
 		if ( false !== $importable_content && in_array( 'price', $importable_content ) ) {
@@ -778,6 +771,15 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function set_itinerary_day( $day, $id ) {
 		$this->save_custom_field( $day, 'itinerary', $id, false, false );
+	}
+
+	/**
+	 * Set the ref number
+	 */
+	public function set_reference_number( $data, $id ) {
+		if ( isset( $data['reference_number'] ) && '' !== $data['reference_number'] ) {
+			$this->save_custom_field( $data['reference_number'], 'lsx_wetu_ref', $id );
+		}
 	}
 
 	/**

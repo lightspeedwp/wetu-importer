@@ -55,6 +55,7 @@ class LSX_WETU_Importer_Settings {
 			'width'                              => '800',
 			'height'                             => '600',
 			'scaling'                            => 'h',
+			'enable_tour_ref_column'             => '',
 		);
 		$this->fields   = array_keys( $this->defaults );
 		add_action( 'admin_init', array( $this, 'save_options' ) );
@@ -161,7 +162,22 @@ class LSX_WETU_Importer_Settings {
 								name="disable_destination_descriptions" />
 								<small><?php esc_html_e( 'If you are going to edit the destination descriptions on this site then enable this setting.', 'lsx-wetu-importer' ); ?></small>
 							</td>
-						</tr>					
+						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="enable_tour_ref_column"><?php esc_html_e( 'Enable Reference Column', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['enable_tour_ref_column'] ) && '' !== $options['enable_tour_ref_column'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="enable_tour_ref_column" />
+								<small><?php esc_html_e( 'Enables the use of the WETU Reference Column for better tours management.', 'lsx-wetu-importer' ); ?></small>
+							</td>
+						</tr>						
 					</tbody>
 				</table>
 
