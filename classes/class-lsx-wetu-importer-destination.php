@@ -180,7 +180,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'continent' ); ?>
 										   type="checkbox" name="content[]"
-										   value="continent"/> <?php esc_html_e( 'Set Continent', 'lsx-wetu-importer' ); ?></li>
+										   value="continent"/> <?php esc_html_e( 'Set Continent and region', 'lsx-wetu-importer' ); ?></li>
 
 								<li>
 									<input class="content" <?php $this->checked( $this->destination_options, 'featured_image' ); ?>
@@ -401,7 +401,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					$search_data = json_decode( $search_data['body'], true );
 					foreach ( $search_data as $sdata ) {
 
-						if ( 'Destination' !== trim( $sdata['type'] ) ) {
+						if ( isset( $sdata['type'] ) && 'Destination' !== trim( $sdata['type'] ) ) {
 							continue;
 						}
 
@@ -707,20 +707,35 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	 */
 	public function set_continent( $data, $id ) {
 
-		if ( isset( $data[0]['position']['country'] ) && $data[0]['map_object_id'] === $data[0]['position']['country_content_entity_id'] ) {
-			//get the continent code.
-			$continent_code = to_continent_label( to_continent_code( to_country_data( $data[0]['position']['country'], false ) ) );
+		if ( isset( $data[0]['position']['country'] ) /*&& $data[0]['map_object_id'] === $data[0]['position']['country_content_entity_id']*/ ) {
+			// Get the continent code.
+			$country_code    = to_country_data( $data[0]['position']['country'], false );
+			$continent_code  = to_continent_code( $country_code );
+			$continent_label = to_continent_label( $continent_code );
+			$region_label    = to_continent_region_label( $country_code );
 
-			if ( '' !== $continent_code ) {
-				$term = term_exists( trim( $continent_code ), 'continent' );
+			if ( '' !== $continent_label ) {
+				$term = term_exists( trim( $continent_label ), 'continent' );
 				if ( ! $term ) {
-					$term = wp_insert_term( trim( $continent_code ), 'continent' );
+					$term = wp_insert_term( trim( $continent_label ), 'continent' );
 
 					if ( is_wp_error( $term ) ) {
 						echo wp_kses_post( $term->get_error_message() );
 					}
 				} else {
-					wp_set_object_terms( $id, sanitize_title( $continent_code ), 'continent', true );
+					wp_set_object_terms( $id, sanitize_title( $continent_label ), 'continent', true );
+				}
+			}
+			if ( '' !== $region_label ) {
+				$term = term_exists( trim( $region_label ), 'region' );
+				if ( ! $term ) {
+					$term = wp_insert_term( trim( $region_label ), 'region' );
+
+					if ( is_wp_error( $term ) ) {
+						echo wp_kses_post( $term->get_error_message() );
+					}
+				} else {
+					wp_set_object_terms( $id, sanitize_title( $region_label ), 'region', true );
 				}
 			}
 		}

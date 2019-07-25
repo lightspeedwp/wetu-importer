@@ -932,7 +932,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			} else {
 				$destination_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
 
-				if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+				if ( ! empty( $destination_json ) && isset( $destination_json['response'] ) && isset( $destination_json['response']['code'] ) && 200 === $destination_json['response']['code'] ) {
 
 					$destination_data = json_decode( $destination_json['body'], true );
 

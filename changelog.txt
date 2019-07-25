@@ -4,6 +4,8 @@
 * Dev - Added the sortable Reference Column for tours.
 * Dev - Added in the reference field to be imported to tours.
 * Dev - Improved the styling of the Welcome page steps.
+* Fix - Fixed the Connecting of destinations during the tour import
+* Dev - Added in a function to capture the continent sub region
 
 ### 1.2.1
 * Fix - Fixed the problem with the empty API key.

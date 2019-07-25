@@ -147,7 +147,9 @@ var WETU_IMPORTER = {
         } )
         .fail( function( reason ) {
             // Handles errors only
-            $row.find('td.post-title strong').css('color','red');
+			$row.find('td.post-title strong').css('color','red');
+			$row.find('td.check-column input').attr('checked','').show();
+			$row.find('td.check-column img').remove();
         } );
 	},	
 
