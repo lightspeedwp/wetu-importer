@@ -428,8 +428,11 @@ class LSX_WETU_Importer {
 
 		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
 
+			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/datatables' . $min . '.css', LSX_WETU_IMPORTER_VER, true );
 			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/lsx-wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
-			wp_enqueue_script( 'lsx-wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/lsx-wetu-importer' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
+
+			wp_enqueue_script( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/js/datatables' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
+			wp_enqueue_script( 'lsx-wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/lsx-wetu-importer' . $min . '.js', array( 'jquery', 'datatables' ), LSX_WETU_IMPORTER_VER, true );
 
 			wp_localize_script(
 				'lsx-wetu-importers-script',
