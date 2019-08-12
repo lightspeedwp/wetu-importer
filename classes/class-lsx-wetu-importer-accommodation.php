@@ -443,13 +443,13 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			}
 
 			if ( isset( $_POST['team_members'] ) ) {
-				$team_members = sanitize_text_field( $_POST['team_members'] );
+				$team_members = array_map( 'sanitize_text_field', wp_unslash( $_POST['team_members'] ) );
 			} else {
 				$team_members = false;
 			}
 
 			if ( isset( $_POST['safari_brands'] ) ) {
-				$safari_brands = sanitize_text_field( $_POST['safari_brands'] );
+				$safari_brands = array_map( 'sanitize_text_field', wp_unslash( $_POST['safari_brands'] ) );
 			} else {
 				$safari_brands = false;
 			}

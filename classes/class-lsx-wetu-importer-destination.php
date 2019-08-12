@@ -488,7 +488,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			}
 
 			if ( isset( $_POST['team_members'] ) ) {
-				$team_members = sanitize_text_field( $_POST['team_members'] );
+				$team_members = array_map( 'sanitize_text_field', wp_unslash( $_POST['team_members'] ) );
 			} else {
 				$team_members = false;
 			}

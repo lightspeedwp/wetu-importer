@@ -647,7 +647,7 @@ class LSX_WETU_Importer {
 	 * @param $echo bool
 	 */
 	public function checked( $haystack = false, $needle = '', $echo = true ) {
-		$return = $this->itemd( $haystack,$needle, 'checked' );
+		$return = $this->itemd( $haystack, $needle, 'checked', false );
 
 		if ( '' !== $return ) {
 			if ( true === $echo ) {
@@ -1343,7 +1343,7 @@ class LSX_WETU_Importer {
 		if ( isset( $tours['error'] ) ) {
 			return $tours['error'];
 		} elseif ( isset( $tours['itineraries'] ) && ! empty( $tours['itineraries'] ) ) {
-			set_transient( 'lsx_ti_tours', $tours['itineraries'], 60 * 60 * 2 );
+			set_transient( 'lsx_ti_tours', $tours['itineraries'], 60 * 60 * 4 );
 			return true;
 		}
 	}
