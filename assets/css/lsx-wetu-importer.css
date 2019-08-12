@@ -4,17 +4,24 @@ body.tour-operator_page_lsx-wetu-importer {
   /* Tour / Accommodation / Destinations */ }
   body.tour-operator_page_lsx-wetu-importer #posts-filter {
     margin-top: 15px; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_info {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .manage-column {
+      cursor: pointer; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter td.post-title {
+      font-weight: 600;
+      font-size: 14px; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_info, body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_length {
       display: inline-block;
       width: 50%; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .top {
+      margin-bottom: 10px; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .bottom .dataTables_paginate {
+      margin-top: 10px; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_paginate {
       display: inline-block;
       width: 50%;
       height: 28px;
-      margin-top: 3px;
       cursor: default;
       color: #555;
-      margin-top: 10px;
       text-align: right; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button {
       height: 16px;
@@ -35,7 +42,7 @@ body.tour-operator_page_lsx-wetu-importer {
         border-color: #ddd;
         background: #f7f7f7;
         color: #a0a5aa; }
-      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button:hover {
+      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button:hover, body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button.current {
         border-color: #5b9dd9;
         color: #fff;
         background: #00a0d2;

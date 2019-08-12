@@ -57,7 +57,9 @@ var WETU_IMPORTER = {
 				console.log('destroying4');
 				WETU_IMPORTER.wp_list_table.destroy();
 			}
-			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
+
+			var column_count = jQuery('#posts-filter thead th').length;
+			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="' + column_count + '">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
 
 			var type = jQuery('#lsx-wetu-importer-search-form').attr('data-type');
 			var keywords = [];
@@ -85,7 +87,10 @@ var WETU_IMPORTER = {
 				function(response) {
 					jQuery('#posts-filter tbody').html(response);
 				}).done(function(){
-					WETU_IMPORTER.wp_list_table = jQuery('#posts-filter .wp-list-table').DataTable();
+					WETU_IMPORTER.wp_list_table = jQuery('#posts-filter .wp-list-table').DataTable({
+						searching: false,
+						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>'
+					});
 			});
 			return false;
 		});	

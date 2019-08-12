@@ -526,13 +526,13 @@ class LSX_WETU_Importer {
 		?>
 		<thead>
 		<tr>
-			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
-				<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+			<th style="" class="manage-column column-cb check-column no-sort" id="cb" scope="col">
+				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'lsx-wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col">Title</th>
-			<th style="" class="manage-column column-date" id="date" scope="col">Date</th>
-			<th style="" class="manage-column column-ssid" id="ssid" scope="col">WETU ID</th>
+			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-ssid" id="ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>
 		</thead>
 		<?php

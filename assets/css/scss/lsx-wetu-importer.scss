@@ -4,18 +4,35 @@ body.tour-operator_page_lsx-wetu-importer {
 	#posts-filter {
 		margin-top: 15px;
 
-		.dataTables_info {
+		.manage-column {
+			cursor: pointer;
+		}
+
+		td.post-title {
+			font-weight: 600;
+			font-size: 14px;
+		}
+
+		.dataTables_info, .dataTables_length {
 			display:inline-block;
 			width: 50%;
 		}
+
+		.top {
+			margin-bottom: 10px;
+		}
+		.bottom {
+			.dataTables_paginate {
+				margin-top: 10px;
+			}
+		}
+
 		.dataTables_paginate {
 			display:inline-block;
 			width: 50%;
 			height: 28px;
-			margin-top: 3px;
 			cursor: default;
 			color: #555;
-			margin-top: 10px;
 			text-align: right;
 		}
 
@@ -41,7 +58,7 @@ body.tour-operator_page_lsx-wetu-importer {
 				color: #a0a5aa;
 			}
 
-			&:hover {
+			&:hover, &.current {
 				border-color: #5b9dd9;
 				color: #fff;
 				background: #00a0d2;
