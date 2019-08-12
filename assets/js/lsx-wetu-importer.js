@@ -55,8 +55,7 @@ var WETU_IMPORTER = {
 			jQuery('.subsubsub li.searchform a').addClass('current');
 
 			if ( false !== WETU_IMPORTER.wp_list_table ) {
-				console.log('destroying4');
-				WETU_IMPORTER.wp_list_table.destroy();
+				WETU_IMPORTER.wp_list_table.clear().destroy();
 			}
 
 			var column_count = jQuery('#posts-filter thead th').length;
@@ -95,6 +94,7 @@ var WETU_IMPORTER = {
 						columnDefs: [ { "orderable": false, "targets": 0 } ]
 					});
 			});
+
 			return false;
 		});	
 	},
@@ -130,7 +130,7 @@ var WETU_IMPORTER = {
 
 			if ( false !== WETU_IMPORTER.import_list_table ) {
 				console.log('destroying5');
-				WETU_IMPORTER.import_list_table.destroy();
+				WETU_IMPORTER.import_list_table.clear().destroy();
 			}
 
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
