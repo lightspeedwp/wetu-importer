@@ -1,6 +1,8 @@
 var WETU_IMPORTER = {
+	data_table: false,
 
 	init : function() {
+
 		if(jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer')){
 			this.myAccommodationSearch();
 			this.watchSearch();
@@ -46,11 +48,17 @@ var WETU_IMPORTER = {
 
 		jQuery('#lsx-wetu-importer-search-form').on( 'submit', function(event) {
 			event.preventDefault();
+			var $this = this;
 			
 			jQuery('.subsubsub li a.current').removeClass('current');
 			jQuery('.subsubsub li.searchform a').addClass('current');
 
-			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
+			if ( false !== WETU_IMPORTER.data_table ) {
+				WETU_IMPORTER.data_table.destroy();
+			}
+
+			var column_count = jQuery('#posts-filter thead th').length;
+			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="' + column_count + '">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
 
 			var type = jQuery('#lsx-wetu-importer-search-form').attr('data-type');
 			var keywords = [];
@@ -67,16 +75,25 @@ var WETU_IMPORTER = {
 				}				
 			}
 
-			jQuery.post(lsx_tour_importer_params.ajax_url,
-	        {
-	            'action' 	: 			'lsx_tour_importer',
-	            'type'		: 			type,
-				'keyword' 	: 			keywords,
-				'security'  :			lsx_tour_importer_params.ajax_nonce
-	        },
-	        function(response) {
-	        	jQuery('#posts-filter tbody').html(response);
-	        });
+			jQuery.post(
+				lsx_tour_importer_params.ajax_url,
+				{
+					'action' 	: 			'lsx_tour_importer',
+					'type'		: 			type,
+					'keyword' 	: 			keywords,
+					'security'  :			lsx_tour_importer_params.ajax_nonce
+				},
+				function(response) {
+					jQuery('#posts-filter tbody').html(response);
+				}).done(function(){
+					WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
+						searching: false,
+						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
+						order: [[ 1, "asc" ]],
+						columnDefs: [ { "orderable": false, "targets": 0 } ]
+					});
+			});
+
 			return false;
 		});	
 	},
@@ -108,14 +125,26 @@ var WETU_IMPORTER = {
 		jQuery('#posts-filter input.button.add').on('click',function(event){
 			
 			event.preventDefault();
-			jQuery('.import-list-wrapper').fadeIn('fast');	
+			jQuery('.import-list-wrapper').fadeIn('fast');
+
+			if ( false !== WETU_IMPORTER.data_table ) {
+				console.log('destroying5');
+				WETU_IMPORTER.data_table.destroy();
+			}
 
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
 		        jQuery('#import-list tbody').append(jQuery(this).parent().parent());
 			});	
 
 			jQuery('#import-list tbody tr input:checked').each(function(){
-				jQuery(this).parent().parent().fadeIn('fast');
+				//jQuery(this).parent().parent().fadeIn('fast');
+			});
+
+			WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
+				searching: false,
+				dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
+				order: [[ 1, "asc" ]],
+				columnDefs: [ { "orderable": false, "targets": 0 } ]
 			});
 		});
 	},	

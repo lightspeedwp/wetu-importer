@@ -1,11 +1,12 @@
 ## Change log
 
-### 1.2.2 - In Development
+### 1.3.0 - In Development
 * Dev - Added the sortable Reference Column for tours.
 * Dev - Added in the reference field to be imported to tours.
 * Dev - Improved the styling of the Welcome page steps.
 * Fix - Fixed the Connecting of destinations during the tour import
 * Dev - Added in a function to capture the continent sub region
+* Dev - Added in datatables.net for pagination and sorting on the lists.
 
 ### 1.2.1
 * Fix - Fixed the problem with the empty API key.
