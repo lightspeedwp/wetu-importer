@@ -1,5 +1,6 @@
 var WETU_IMPORTER = {
 	wp_list_table: false,
+	import_list_table: false,
 
 	init : function() {
 
@@ -89,7 +90,9 @@ var WETU_IMPORTER = {
 				}).done(function(){
 					WETU_IMPORTER.wp_list_table = jQuery('#posts-filter .wp-list-table').DataTable({
 						searching: false,
-						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>'
+						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
+						order: [[ 1, "asc" ]],
+						columnDefs: [ { "orderable": false, "targets": 0 } ]
 					});
 			});
 			return false;
@@ -123,14 +126,26 @@ var WETU_IMPORTER = {
 		jQuery('#posts-filter input.button.add').on('click',function(event){
 			
 			event.preventDefault();
-			jQuery('.import-list-wrapper').fadeIn('fast');	
+			jQuery('.import-list-wrapper').fadeIn('fast');
+
+			if ( false !== WETU_IMPORTER.import_list_table ) {
+				console.log('destroying5');
+				WETU_IMPORTER.import_list_table.destroy();
+			}
 
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
 		        jQuery('#import-list tbody').append(jQuery(this).parent().parent());
 			});	
 
 			jQuery('#import-list tbody tr input:checked').each(function(){
-				jQuery(this).parent().parent().fadeIn('fast');
+				//jQuery(this).parent().parent().fadeIn('fast');
+			});
+
+			WETU_IMPORTER.import_list_table = jQuery('#import-list .wp-list-table').DataTable({
+				searching: false,
+				dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
+				order: [[ 1, "asc" ]],
+				columnDefs: [ { "orderable": false, "targets": 0 } ]
 			});
 		});
 	},	

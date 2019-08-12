@@ -2,28 +2,28 @@
 body.tour-operator_page_lsx-wetu-importer {
   /* Home Screen */
   /* Tour / Accommodation / Destinations */ }
-  body.tour-operator_page_lsx-wetu-importer #posts-filter {
+  body.tour-operator_page_lsx-wetu-importer #posts-filter, body.tour-operator_page_lsx-wetu-importer #import-list {
     margin-top: 15px; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .manage-column {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .manage-column, body.tour-operator_page_lsx-wetu-importer #import-list .manage-column {
       cursor: pointer; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter td.post-title {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter td.post-title, body.tour-operator_page_lsx-wetu-importer #import-list td.post-title {
       font-weight: 600;
       font-size: 14px; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_info, body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_length {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_info, body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_length, body.tour-operator_page_lsx-wetu-importer #import-list .dataTables_info, body.tour-operator_page_lsx-wetu-importer #import-list .dataTables_length {
       display: inline-block;
       width: 50%; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .top {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .top, body.tour-operator_page_lsx-wetu-importer #import-list .top {
       margin-bottom: 10px; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .bottom .dataTables_paginate {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .bottom .dataTables_paginate, body.tour-operator_page_lsx-wetu-importer #import-list .bottom .dataTables_paginate {
       margin-top: 10px; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_paginate {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .dataTables_paginate, body.tour-operator_page_lsx-wetu-importer #import-list .dataTables_paginate {
       display: inline-block;
       width: 50%;
       height: 28px;
       cursor: default;
       color: #555;
       text-align: right; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button {
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button, body.tour-operator_page_lsx-wetu-importer #import-list .paginate_button {
       height: 16px;
       display: inline-block;
       min-width: 17px;
@@ -37,18 +37,18 @@ body.tour-operator_page_lsx-wetu-importer {
       margin: 0px 2px;
       color: #0073aa;
       cursor: pointer; }
-      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button.disabled {
+      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button.disabled, body.tour-operator_page_lsx-wetu-importer #import-list .paginate_button.disabled {
         pointer-events: none;
         border-color: #ddd;
         background: #f7f7f7;
         color: #a0a5aa; }
-      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button:hover, body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button.current {
+      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button:hover, body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button.current, body.tour-operator_page_lsx-wetu-importer #import-list .paginate_button:hover, body.tour-operator_page_lsx-wetu-importer #import-list .paginate_button.current {
         border-color: #5b9dd9;
         color: #fff;
         background: #00a0d2;
         box-shadow: none;
         outline: none; }
-      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button::last-child {
+      body.tour-operator_page_lsx-wetu-importer #posts-filter .paginate_button::last-child, body.tour-operator_page_lsx-wetu-importer #import-list .paginate_button::last-child {
         margin-right: 0; }
   body.tour-operator_page_lsx-wetu-importer .row.section {
     margin-bottom: 25px; }
