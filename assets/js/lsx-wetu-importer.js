@@ -1,6 +1,5 @@
 var WETU_IMPORTER = {
-	wp_list_table: false,
-	import_list_table: false,
+	data_table: false,
 
 	init : function() {
 
@@ -54,8 +53,8 @@ var WETU_IMPORTER = {
 			jQuery('.subsubsub li a.current').removeClass('current');
 			jQuery('.subsubsub li.searchform a').addClass('current');
 
-			if ( false !== WETU_IMPORTER.wp_list_table ) {
-				WETU_IMPORTER.wp_list_table.clear().destroy();
+			if ( false !== WETU_IMPORTER.data_table ) {
+				WETU_IMPORTER.data_table.destroy();
 			}
 
 			var column_count = jQuery('#posts-filter thead th').length;
@@ -87,7 +86,7 @@ var WETU_IMPORTER = {
 				function(response) {
 					jQuery('#posts-filter tbody').html(response);
 				}).done(function(){
-					WETU_IMPORTER.wp_list_table = jQuery('#posts-filter .wp-list-table').DataTable({
+					WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
 						searching: false,
 						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
 						order: [[ 1, "asc" ]],
@@ -128,9 +127,9 @@ var WETU_IMPORTER = {
 			event.preventDefault();
 			jQuery('.import-list-wrapper').fadeIn('fast');
 
-			if ( false !== WETU_IMPORTER.import_list_table ) {
+			if ( false !== WETU_IMPORTER.data_table ) {
 				console.log('destroying5');
-				WETU_IMPORTER.import_list_table.clear().destroy();
+				WETU_IMPORTER.data_table.destroy();
 			}
 
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
@@ -141,7 +140,7 @@ var WETU_IMPORTER = {
 				//jQuery(this).parent().parent().fadeIn('fast');
 			});
 
-			WETU_IMPORTER.import_list_table = jQuery('#import-list .wp-list-table').DataTable({
+			WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
 				searching: false,
 				dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
 				order: [[ 1, "asc" ]],
