@@ -1,6 +1,8 @@
 var WETU_IMPORTER = {
+	wp_list_table: false,
 
 	init : function() {
+
 		if(jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer')){
 			this.myAccommodationSearch();
 			this.watchSearch();
@@ -46,10 +48,15 @@ var WETU_IMPORTER = {
 
 		jQuery('#lsx-wetu-importer-search-form').on( 'submit', function(event) {
 			event.preventDefault();
+			var $this = this;
 			
 			jQuery('.subsubsub li a.current').removeClass('current');
 			jQuery('.subsubsub li.searchform a').addClass('current');
 
+			if ( false !== WETU_IMPORTER.wp_list_table ) {
+				console.log('destroying4');
+				WETU_IMPORTER.wp_list_table.destroy();
+			}
 			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
 
 			var type = jQuery('#lsx-wetu-importer-search-form').attr('data-type');
@@ -67,16 +74,19 @@ var WETU_IMPORTER = {
 				}				
 			}
 
-			jQuery.post(lsx_tour_importer_params.ajax_url,
-	        {
-	            'action' 	: 			'lsx_tour_importer',
-	            'type'		: 			type,
-				'keyword' 	: 			keywords,
-				'security'  :			lsx_tour_importer_params.ajax_nonce
-	        },
-	        function(response) {
-	        	jQuery('#posts-filter tbody').html(response);
-	        });
+			jQuery.post(
+				lsx_tour_importer_params.ajax_url,
+				{
+					'action' 	: 			'lsx_tour_importer',
+					'type'		: 			type,
+					'keyword' 	: 			keywords,
+					'security'  :			lsx_tour_importer_params.ajax_nonce
+				},
+				function(response) {
+					jQuery('#posts-filter tbody').html(response);
+				}).done(function(){
+					WETU_IMPORTER.wp_list_table = jQuery('#posts-filter .wp-list-table').DataTable();
+			});
 			return false;
 		});	
 	},

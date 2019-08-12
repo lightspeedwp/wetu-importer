@@ -3,6 +3,56 @@ body.tour-operator_page_lsx-wetu-importer {
 
 	#posts-filter {
 		margin-top: 15px;
+
+		.dataTables_info {
+			display:inline-block;
+			width: 50%;
+		}
+		.dataTables_paginate {
+			display:inline-block;
+			width: 50%;
+			height: 28px;
+			margin-top: 3px;
+			cursor: default;
+			color: #555;
+			margin-top: 10px;
+			text-align: right;
+		}
+
+		.paginate_button {
+			height: 16px;
+			display: inline-block;
+			min-width: 17px;
+			border: 1px solid #ccc;
+			padding: 7px 4px 3px;
+			background: #e5e5e5;
+			font-size: 13px;
+			line-height: 1;
+			font-weight: 400;
+			text-align: center;
+			margin: 0px 2px;
+			color: #0073aa;
+			cursor: pointer;
+
+			&.disabled {
+				pointer-events: none;
+				border-color: #ddd;
+				background: #f7f7f7;
+				color: #a0a5aa;
+			}
+
+			&:hover {
+				border-color: #5b9dd9;
+				color: #fff;
+				background: #00a0d2;
+				box-shadow: none;
+				outline: none;
+			}
+
+			&::last-child {
+				margin-right: 0;
+			}
+		}
 	}
 
 	/* Home Screen */

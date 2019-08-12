@@ -428,20 +428,22 @@ class LSX_WETU_Importer {
 
 		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
 
-			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/datatables' . $min . '.css', LSX_WETU_IMPORTER_VER, true );
+			//wp_enqueue_style( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/css/datatables' . $min . '.css', LSX_WETU_IMPORTER_VER, true );
 			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/lsx-wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
 
-			wp_enqueue_script( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/js/datatables' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
-			wp_enqueue_script( 'lsx-wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/lsx-wetu-importer' . $min . '.js', array( 'jquery', 'datatables' ), LSX_WETU_IMPORTER_VER, true );
+			if ( isset( $_GET['tab'] ) ) {
+				wp_enqueue_script( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/js/datatables' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
+				wp_enqueue_script( 'lsx-wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/lsx-wetu-importer' . $min . '.js', array( 'jquery', 'datatables' ), LSX_WETU_IMPORTER_VER, true );
 
-			wp_localize_script(
-				'lsx-wetu-importers-script',
-				'lsx_tour_importer_params',
-				array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'ajax_nonce' => wp_create_nonce( 'lsx_wetu_ajax_action' ),
-				)
-			);
+				wp_localize_script(
+					'lsx-wetu-importers-script',
+					'lsx_tour_importer_params',
+					array(
+						'ajax_url' => admin_url( 'admin-ajax.php' ),
+						'ajax_nonce' => wp_create_nonce( 'lsx_wetu_ajax_action' ),
+					)
+				);
+			}
 		}
 	}
 
