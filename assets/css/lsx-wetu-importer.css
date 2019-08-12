@@ -6,6 +6,25 @@ body.tour-operator_page_lsx-wetu-importer {
     margin-top: 15px; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter .manage-column, body.tour-operator_page_lsx-wetu-importer #import-list .manage-column {
       cursor: pointer; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter thead .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter tfoot .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter tfoot .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #import-list thead .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #import-list thead .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #import-list tfoot .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #import-list tfoot .sorting_desc::after {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      line-height: 1;
+      font-family: dashicons;
+      text-decoration: inherit;
+      font-weight: normal;
+      font-style: normal;
+      vertical-align: top;
+      text-align: center;
+      transition: color .1s ease-in 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter tfoot .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #import-list thead .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #import-list tfoot .sorting_asc::after {
+      content: "\f140"; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter thead .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter tfoot .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #import-list thead .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #import-list tfoot .sorting_desc::after {
+      content: "\f142"; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter td.post-title, body.tour-operator_page_lsx-wetu-importer #import-list td.post-title {
       font-weight: 600;
       font-size: 14px; }
