@@ -92,7 +92,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 		?>
 		<div class="wrap">
 			<div class="tablenav top">
-				<div class="alignleft actions">
+				<div class="actions">
 					<?php $this->search_form(); ?>
 				</div>
 			</div>

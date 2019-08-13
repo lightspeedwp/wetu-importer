@@ -9,6 +9,7 @@
 * Dev - Added in datatables.net for pagination and sorting on the lists.
 * Fix - Fixed the assigning of team and safari brands
 * Dev - Added in the ability to define custom titles
+* Fix - Fixed the sorting of the search results by relevance
 
 ### 1.2.1
 * Fix - Fixed the problem with the empty API key.

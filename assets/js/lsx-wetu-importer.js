@@ -1,5 +1,6 @@
 var WETU_IMPORTER = {
 	data_table: false,
+	status_search: false,
 
 	init : function() {
 
@@ -33,10 +34,10 @@ var WETU_IMPORTER = {
             } else if ( jQuery(this).parent().hasClass('import' ) ) {
                 keyword = 'import';
 			}
-
+			WETU_IMPORTER.status_search = true;
             jQuery('#lsx-wetu-importer-search-form').find('input.keyword').val(keyword);
 			jQuery('#lsx-wetu-importer-search-form').submit();
-            jQuery('#lsx-wetu-importer-search-form').find('input.keyword').val('');
+			jQuery('#lsx-wetu-importer-search-form').find('input.keyword').val('');
 		});
 	},		
 	watchSearch: function() {
@@ -49,12 +50,17 @@ var WETU_IMPORTER = {
 		jQuery('#lsx-wetu-importer-search-form').on( 'submit', function(event) {
 			event.preventDefault();
 			var $this = this;
+			var order = [[ 1, "asc" ]];
 			
 			jQuery('.subsubsub li a.current').removeClass('current');
 			jQuery('.subsubsub li.searchform a').addClass('current');
 
 			if ( false !== WETU_IMPORTER.data_table ) {
 				WETU_IMPORTER.data_table.destroy();
+			}
+
+			if ( false !== WETU_IMPORTER.status_search ) {
+				order = [[ 2, "asc" ]];
 			}
 
 			var column_count = jQuery('#posts-filter thead th').length;
@@ -89,9 +95,10 @@ var WETU_IMPORTER = {
 					WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
 						searching: false,
 						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
-						order: [[ 1, "asc" ]],
+						order: order,
 						columnDefs: [ { "orderable": false, "targets": 0 } ]
 					});
+					WETU_IMPORTER.status_search = false;
 			});
 
 			return false;

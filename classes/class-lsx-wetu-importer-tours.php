@@ -122,7 +122,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				<div class="alignleft actions">
 					<?php $this->update_options_form(); ?>
 				</div>
-
+				<br clear="both" />
 			</div>
 
 			<form method="get" action="" id="posts-filter">

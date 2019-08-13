@@ -102,7 +102,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			<?php $this->update_options_form(); ?>
 
 			<div class="tablenav top">
-				<div class="alignleft actions">
+				<div class="actions">
 					<?php $this->search_form(); ?>
 				</div>
 			</div>
@@ -329,7 +329,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 									continue;
 								}
 							}
-							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row, $row_key );
 						}
 					}
 				}
@@ -339,7 +339,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				if ( ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
 
 					$search_data = json_decode( $search_data['body'], true );
-					foreach ( $search_data as $sdata ) {
+					foreach ( $search_data as $sdata_key => $sdata ) {
 
 						if ( 'Destination' === trim( $sdata['type'] ) || 'Activity' === trim( $sdata['type'] ) || 'Restaurant' === trim( $sdata['type'] ) || 'None' === trim( $sdata['type'] ) || 'Site / Attraction' === trim( $sdata['type'] ) || '' === trim( $sdata['type'] ) ) {
 							continue;
@@ -353,16 +353,14 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 							$sdata['post_id'] = $temp_id;
 							$sdata['post_title'] = get_the_title( $temp_id );
 						}
-						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata );
+						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata, $sdata_key );
 					}
 				}
 			}
 
 			if ( false !== $searched_items ) {
-				ksort( $searched_items );
 				$return = implode( $searched_items );
 			}
-
 			print_r( $return );
 		}
 
@@ -386,7 +384,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 * @param boolean $row the current row to format.
 	 * @return void
 	 */
-	public function format_row( $row = false ) {
+	public function format_row( $row = false, $row_key = '' ) {
 		if ( false !== $row ) {
 
 			$status = 'import';
@@ -400,6 +398,9 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 					<label for="cb-select-' . $row['id'] . '" class="screen-reader-text">' . $row['name'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
+				<td class="column-order">
+					' . ( $row_key + 1 ) . '
+				</td>
 				<td class="post-title page-title column-title">
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
