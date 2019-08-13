@@ -373,7 +373,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
 								$current_status = get_post_status( $row['post_id'] );
 								if ( 'draft' === $current_status ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row, $row_key );
 								}
 							} else {
 								continue;
@@ -388,7 +388,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 									continue;
 								}
 							}
-							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row, $row_key );
 						}
 					}
 				}
@@ -399,7 +399,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 				if ( ! is_wp_error( $search_data ) || ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
 					$search_data = json_decode( $search_data['body'], true );
-					foreach ( $search_data as $sdata ) {
+					foreach ( $search_data as $sdata_key => $sdata ) {
 
 						if ( isset( $sdata['type'] ) && 'Destination' !== trim( $sdata['type'] ) ) {
 							continue;
@@ -413,13 +413,12 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 							$sdata['post_id'] = $temp_id;
 							$sdata['post_title'] = get_the_title( $temp_id );
 						}
-						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata );
+						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata, $sdata_key );
 					}
 				}
 			}
 
 			if ( false !== $searched_items ) {
-				ksort( $searched_items );
 				$return = implode( $searched_items );
 			}
 			print_r( $return );
@@ -443,7 +442,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	/**
 	 * Formats the row for output on the screen.
 	 */
-	public function format_row( $row = false ) {
+	public function format_row( $row = false, $row_key = '' ) {
 		if ( false !== $row ) {
 
 			$status = 'import';
@@ -457,6 +456,9 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					<label for="cb-select-' . $row['id'] . '" class="screen-reader-text">' . $row['name'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
+				<td class="column-order">
+					' . ( $row_key + 1 ) . '
+				</td>
 				<td class="post-title page-title column-title">
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
