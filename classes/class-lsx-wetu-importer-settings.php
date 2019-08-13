@@ -48,8 +48,10 @@ class LSX_WETU_Importer_Settings {
 			'disable_tour_title'                 => '',
 			'disable_tour_descriptions'          => '',
 			'disable_tour_tags'                  => 'on',
+			'disable_accommodation_title'        => '',
 			'disable_accommodation_descriptions' => '',
 			'disable_accommodation_excerpts'     => '',
+			'disable_destination_title'          => '',
 			'disable_destination_descriptions'   => '',
 			'image_replacing'                    => 'on',
 			'image_limit'                        => '15',
@@ -110,7 +112,7 @@ class LSX_WETU_Importer_Settings {
 				<h1><?php esc_html_e( 'Tours', 'lsx-wetu-importer' ); ?></h1>
 				<table class="form-table">
 					<tbody>
-					<tr class="form-field -wrap">
+						<tr class="form-field -wrap">
 							<th scope="row">
 								<label for="disable_tour_title"><?php esc_html_e( 'Enable Custom Titles', 'lsx-wetu-importer' ); ?></label>
 							</th>
@@ -183,7 +185,23 @@ class LSX_WETU_Importer_Settings {
 					<tbody>
 						<tr class="form-field -wrap">
 							<th scope="row">
-								<label for="disable_accommodation_descriptions"><?php esc_html_e( 'Disable Accommodation Descriptions', 'lsx-wetu-importer' ); ?></label>
+								<label for="disable_accommodation_title"><?php esc_html_e( 'Enable Custom Titles', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['disable_accommodation_title'] ) && '' !== $options['disable_accommodation_title'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="disable_accommodation_title" />
+
+								<small><?php esc_html_e( 'If you are going to manage your tour descriptions on this site and not on WETU then enable this setting.', 'lsx-wetu-importer' ); ?></small>
+							</td>
+						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="disable_accommodation_descriptions"><?php esc_html_e( 'Disable Descriptions', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
 								<input type="checkbox"
@@ -198,7 +216,7 @@ class LSX_WETU_Importer_Settings {
 						</tr>
 						<tr class="form-field -wrap">
 							<th scope="row">
-								<label for="disable_accommodation_excerpts"><?php esc_html_e( 'Disable Accommodation Excerpts', 'lsx-wetu-importer' ); ?></label>
+								<label for="disable_accommodation_excerpts"><?php esc_html_e( 'Disable Excerpts', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
 								<input type="checkbox"
@@ -220,7 +238,23 @@ class LSX_WETU_Importer_Settings {
 					<tbody>
 						<tr class="form-field -wrap">
 							<th scope="row">
-								<label for="disable_destination_descriptions"><?php esc_html_e( 'Disable Destinations Descriptions', 'lsx-wetu-importer' ); ?></label>
+								<label for="disable_destination_title"><?php esc_html_e( 'Enable Custom Titles', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['disable_destination_title'] ) && '' !== $options['disable_destination_title'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="disable_destination_title" />
+
+								<small><?php esc_html_e( 'If you are going to manage your tour descriptions on this site and not on WETU then enable this setting.', 'lsx-wetu-importer' ); ?></small>
+							</td>
+						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="disable_destination_descriptions"><?php esc_html_e( 'Disable Descriptions', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
 								<input type="checkbox"

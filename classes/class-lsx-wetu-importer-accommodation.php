@@ -520,11 +520,12 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 
-			if ( isset( $data[0]['name'] ) ) {
+			if ( isset( $this->options ) && 'on' !== $this->options['disable_accommodation_title'] && isset( $data[0]['name'] ) ) {
 				$post['post_title'] = $data[0]['name'];
-				$post['post_status'] = 'publish';
 				$post['post_name'] = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'accommodation', 0 );
 			}
+
+			$post['post_status'] = 'publish';
 
 			$id = wp_update_post( $post );
 			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );

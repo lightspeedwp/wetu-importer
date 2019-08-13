@@ -517,7 +517,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
-			if ( isset( $this->options ) && ! isset( $this->options['disable_tour_title'] ) ) {
+			if ( isset( $this->options ) && 'on' !== $this->options['disable_accommodation_title'] ) {
 				$post['post_title'] = $data['name'];
 			}
 			$id = wp_update_post( $post );
