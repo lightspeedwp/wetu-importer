@@ -200,7 +200,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					</div>
 
 					<h3><?php esc_html_e( 'Your List' ); ?></h3>
-					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync','lsx-wetu-importer' ); ?>" /></p>
+					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?>" /></p>
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>
 
@@ -212,7 +212,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 					</table>
 
-					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync','lsx-wetu-importer' ); ?>" /></p>
+					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?>" /></p>
 				</form>
 			</div>
 
@@ -260,7 +260,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		$return = array();
 
 		$current_tours = $wpdb->get_results("
-			SELECT key1.post_id,key1.meta_value
+			SELECT key1.post_id,key1.meta_value,key2.post_title
 			FROM {$wpdb->postmeta} key1
 
 			INNER JOIN  {$wpdb->posts} key2
@@ -328,18 +328,16 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 							continue;
 						}
 
-						/*if('Sample' === $row['type']){
-							continue;
-						}*/
-
-						//If this is a current tour, add its ID to the row.
+						// If this is a current tour, add its ID to the row.
 						$row['post_id'] = 0;
+						$row['post_title'] = $row['name'];
 
 						if ( false !== $current_tours && array_key_exists( $row['identifier'], $current_tours ) ) {
 							$row['post_id'] = $current_tours[ $row['identifier'] ]->post_id;
+							$row['post_title'] = $current_tours[ $row['identifier'] ]->post_title;
 						}
 
-						//If we are searching for
+						// If we are searching for.
 						if ( false !== $post_status ) {
 							if ( 'import' === $post_status ) {
 
@@ -407,11 +405,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$row_html = '
 			<tr class="post-' . $row['post_id'] . ' type-tour" id="post-' . $row['post_id'] . '">
 				<th class="check-column" scope="row">
-					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['name'] . '</label>
+					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['post_title'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['identifier'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['identifier'] . '">
 				</th>
 				<td class="post-title page-title column-title">
-					' . $row['name'] . '
+					' . $row['post_title'] . ' - ' . $status . '
 				</td>
 				<td class="date column-date">
 					' . $row['reference_number'] . '
@@ -519,6 +517,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
+			if ( isset( $this->options ) && ! isset( $this->options['disable_tour_title'] ) ) {
+				$post['post_title'] = $data['name'];
+			}
 			$id = wp_update_post( $post );
 		} else {
 			// Set the name.

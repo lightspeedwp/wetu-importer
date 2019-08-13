@@ -368,8 +368,8 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				// Run through each accommodation and use it.
 				if ( ! empty( $accommodation ) ) {
 					foreach ( $accommodation as $row_key => $row ) {
+						$row['post_title'] = $row['name'];
 						if ( 'import' === $post_status ) {
-
 							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
 								$current_status = get_post_status( $row['post_id'] );
 								if ( 'draft' === $current_status ) {
@@ -408,8 +408,10 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 						$temp_id = $this->get_post_id_by_key_value( $sdata['id'] );
 						if ( false === $temp_id ) {
 							$sdata['post_id'] = 0;
+							$sdata['post_title'] = $sdata['name'];
 						} else {
 							$sdata['post_id'] = $temp_id;
+							$sdata['post_title'] = get_the_title( $temp_id );
 						}
 						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata );
 					}
@@ -456,7 +458,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
 				<td class="post-title page-title column-title">
-					<strong>' . $row['name'] . '</strong> - ' . $status . '
+					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
 					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
