@@ -618,9 +618,14 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			if ( ( ( 1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
 				foreach ( $leg['periods'] as $day ) {
 					$current_day = array();
+					$next_day_count = $day_counter + (int) $leg['nights'];
+					$day_count_label = $next_day_count - 1;
+
 					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter;
 
-					//print_r('<pre>');print_r($day['notes']);print_r('</pre>');
+					if ( 0 !== (int) $leg['nights'] ) {
+						$current_day['title'] .= ' - ' . $day_count_label;
+					}
 
 					// Description.
 					if ( false !== $importable_content && in_array( 'itinerary_description', $importable_content ) && isset( $day['notes'] ) ) {
@@ -679,11 +684,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					}
 
 					$this->set_itinerary_day( $current_day, $id );
-					$day_counter++;
+					$day_counter = $next_day_count;
 				}
 			} else {
 				// This is for the by destination.
-
 				$current_day = array();
 				$next_day_count = $day_counter + (int) $leg['nights'];
 				$day_count_label = $next_day_count - 1;
@@ -734,6 +738,20 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					$current_day['excluded'] = $leg['excluded'];
 				} else {
 					$current_day['excluded'] = '';
+				}
+
+				// Excluded.
+				if ( false !== $importable_content && in_array( 'room_basis', $importable_content ) && isset( $leg['room_basis'] ) && '' !== $leg['room_basis'] ) {
+					$current_day['room_basis'] = $leg['room_basis'];
+				} else {
+					$current_day['room_basis'] = '';
+				}
+
+				// Excluded.
+				if ( false !== $importable_content && in_array( 'drinks_basis', $importable_content ) && isset( $leg['drinks_basis'] ) && '' !== $leg['drinks_basis'] ) {
+					$current_day['drinks_basis'] = $leg['drinks_basis'];
+				} else {
+					$current_day['drinks_basis'] = '';
 				}
 
 				$this->set_itinerary_day( $current_day,$id );
