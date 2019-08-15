@@ -182,6 +182,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 								<li><input class="content" <?php $this->checked( $this->tour_options,'itinerary_description' ); ?> type="checkbox" name="content[]" value="itinerary_description" /> <?php esc_html_e( 'Description','lsx-wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'itinerary_included' ); ?> type="checkbox" name="content[]" value="itinerary_included" /> <?php esc_html_e( 'Included','lsx-wetu-importer' ); ?></li>
 								<li><input class="content" <?php $this->checked( $this->tour_options,'itinerary_excluded' ); ?> type="checkbox" name="content[]" value="itinerary_excluded" /> <?php esc_html_e( 'Excluded','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options,'room_basis' ); ?> type="checkbox" name="content[]" value="room_basis" /> <?php esc_html_e( 'Room Basis','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options,'drinks_basis' ); ?> type="checkbox" name="content[]" value="drinks_basis" /> <?php esc_html_e( 'Drink Bases','lsx-wetu-importer' ); ?></li>
 							</ul>
 
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
@@ -650,7 +652,21 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						$current_day['excluded'] = '';
 					}
 
-					$this->set_itinerary_day( $current_day,$id );
+					// Excluded.
+					if ( false !== $importable_content && in_array( 'room_basis', $importable_content ) && isset( $day['room_basis'] ) && '' !== $day['room_basis'] ) {
+						$current_day['room_basis'] = $day['room_basis'];
+					} else {
+						$current_day['room_basis'] = '';
+					}
+
+					// Excluded.
+					if ( false !== $importable_content && in_array( 'drinks_basis', $importable_content ) && isset( $day['drinks_basis'] ) && '' !== $day['drinks_basis'] ) {
+						$current_day['drinks_basis'] = $day['drinks_basis'];
+					} else {
+						$current_day['drinks_basis'] = '';
+					}
+
+					$this->set_itinerary_day( $current_day, $id );
 					$day_counter++;
 				}
 			} else {
