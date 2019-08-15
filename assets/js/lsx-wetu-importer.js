@@ -1,6 +1,9 @@
 var WETU_IMPORTER = {
+	data_table: false,
+	status_search: false,
 
 	init : function() {
+
 		if(jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer')){
 			this.myAccommodationSearch();
 			this.watchSearch();
@@ -31,10 +34,10 @@ var WETU_IMPORTER = {
             } else if ( jQuery(this).parent().hasClass('import' ) ) {
                 keyword = 'import';
 			}
-
+			WETU_IMPORTER.status_search = true;
             jQuery('#lsx-wetu-importer-search-form').find('input.keyword').val(keyword);
 			jQuery('#lsx-wetu-importer-search-form').submit();
-            jQuery('#lsx-wetu-importer-search-form').find('input.keyword').val('');
+			jQuery('#lsx-wetu-importer-search-form').find('input.keyword').val('');
 		});
 	},		
 	watchSearch: function() {
@@ -46,11 +49,22 @@ var WETU_IMPORTER = {
 
 		jQuery('#lsx-wetu-importer-search-form').on( 'submit', function(event) {
 			event.preventDefault();
+			var $this = this;
+			var order = [[ 1, "asc" ]];
 			
 			jQuery('.subsubsub li a.current').removeClass('current');
 			jQuery('.subsubsub li.searchform a').addClass('current');
 
-			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="4">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
+			if ( false !== WETU_IMPORTER.data_table ) {
+				WETU_IMPORTER.data_table.destroy();
+			}
+
+			if ( false !== WETU_IMPORTER.status_search ) {
+				order = [[ 2, "asc" ]];
+			}
+
+			var column_count = jQuery('#posts-filter thead th').length;
+			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="' + column_count + '">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
 
 			var type = jQuery('#lsx-wetu-importer-search-form').attr('data-type');
 			var keywords = [];
@@ -67,16 +81,26 @@ var WETU_IMPORTER = {
 				}				
 			}
 
-			jQuery.post(lsx_tour_importer_params.ajax_url,
-	        {
-	            'action' 	: 			'lsx_tour_importer',
-	            'type'		: 			type,
-				'keyword' 	: 			keywords,
-				'security'  :			lsx_tour_importer_params.ajax_nonce
-	        },
-	        function(response) {
-	        	jQuery('#posts-filter tbody').html(response);
-	        });
+			jQuery.post(
+				lsx_tour_importer_params.ajax_url,
+				{
+					'action' 	: 			'lsx_tour_importer',
+					'type'		: 			type,
+					'keyword' 	: 			keywords,
+					'security'  :			lsx_tour_importer_params.ajax_nonce
+				},
+				function(response) {
+					jQuery('#posts-filter tbody').html(response);
+				}).done(function(){
+					WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
+						searching: false,
+						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
+						order: order,
+						columnDefs: [ { "orderable": false, "targets": 0 } ]
+					});
+					WETU_IMPORTER.status_search = false;
+			});
+
 			return false;
 		});	
 	},
@@ -106,16 +130,26 @@ var WETU_IMPORTER = {
 	},	
 	watchAddToListButton: function() {
 		jQuery('#posts-filter input.button.add').on('click',function(event){
-			
 			event.preventDefault();
-			jQuery('.import-list-wrapper').fadeIn('fast');	
+			jQuery('.import-list-wrapper').fadeIn('fast');
+
+			if ( false !== WETU_IMPORTER.data_table ) {
+				WETU_IMPORTER.data_table.destroy();
+			}
 
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
 		        jQuery('#import-list tbody').append(jQuery(this).parent().parent());
 			});	
 
 			jQuery('#import-list tbody tr input:checked').each(function(){
-				jQuery(this).parent().parent().fadeIn('fast');
+				//jQuery(this).parent().parent().fadeIn('fast');
+			});
+
+			WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
+				searching: false,
+				dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
+				order: [[ 1, "asc" ]],
+				columnDefs: [ { "orderable": false, "targets": 0 } ]
 			});
 		});
 	},	
@@ -123,6 +157,8 @@ var WETU_IMPORTER = {
 	importRow: function(args,row) {
 		var $this = this;
 		var $row = row;
+
+		console.log(args);
 
         $row.find('td.post-title strong').css('color','#555');
 
@@ -142,12 +178,18 @@ var WETU_IMPORTER = {
             $row.fadeOut('fast',
                 function(here){
                     jQuery(this).fadeOut('fast').remove();
-                });
+				});
+				console.log('done');
 
         } )
         .fail( function( reason ) {
-            // Handles errors only
-            $row.find('td.post-title strong').css('color','red');
+			// Handles errors only
+			console.log($row.find('th.check-column'));
+			$row.find('td.post-title strong').css('color','red');
+			$row.find('th.check-column input').attr('checked','');
+			$row.find('th.check-column input').removeClass('importing');
+			$row.find('th.check-column input').removeClass('queued');
+			$row.find('th.check-column .ajax-loader-small').remove();
         } );
 	},	
 
@@ -162,9 +204,10 @@ var WETU_IMPORTER = {
 			var type = jQuery('#lsx-wetu-importer-search-form').attr('data-type');
 
 			var team_members = [];
+			
 			if('undefined' != jQuery('#import-list input.team').length){
 				jQuery('#import-list input.team').each(function(){
-					if(jQuery(this).attr('checked')){
+					if( true === jQuery(this).prop('checked') ){
 						team_members.push(jQuery(this).val());
 					}
 				});
@@ -172,7 +215,7 @@ var WETU_IMPORTER = {
 			var content = [];
 			if('undefined' != jQuery('#import-list input.content').length){
 				jQuery('#import-list input.content').each(function(){
-					if(jQuery(this).attr('checked')){
+					if( true === jQuery(this).prop('checked') ){
 						content.push(jQuery(this).val());
 					}
 				});
@@ -180,7 +223,7 @@ var WETU_IMPORTER = {
 			var safari_brands = [];
 			if('undefined' != jQuery('#import-list input.accommodation-brand').length){
 				jQuery('#import-list input.accommodation-brand').each(function(){
-					if(jQuery(this).attr('checked')){
+					if( true === jQuery(this).prop('checked') ){
 						safari_brands.push(jQuery(this).val());
 					}
 				});
@@ -286,40 +329,8 @@ var WETU_IMPORTER = {
 		});
 	},
     watchCheckBoxes: function() {
-        jQuery('form#import-list .settings-all input[type="checkbox"]').on('change',function(event){
-            var thisOBJ = jQuery(this);
-            if('all' === thisOBJ.val()){
-                thisOBJ.parents('form').find('.settings-all input[type="checkbox"]:not([value="all"])').each(function(){
-
-                	if('checked' === thisOBJ.attr('checked')) {
-                        jQuery(this).attr('checked', 'checked');
-                    }else{
-                        jQuery(this).removeAttr('checked');
-					}
-                });
-			}else{
-
-			}
-
-
-        });
-
-        var lastChecked = null;
-
-        jQuery('#the-list input[type="checkbox"], #import-list tbody input[type="checkbox"]').on('click',function(event){
-            if(!lastChecked) {
-                lastChecked = this;
-                return;
-            }
-
-            if(e.shiftKey) {
-                var start = $chkboxes.index(this);
-                var end = $chkboxes.index(lastChecked);
-
-                $chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1).prop('checked', lastChecked.checked);
-
-            }
-            lastChecked = this;
+        jQuery('.settings-all input').on('click', function( event ){
+			jQuery( this ).trigger('change');
         });
     },
 

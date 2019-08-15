@@ -102,7 +102,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			<?php $this->update_options_form(); ?>
 
 			<div class="tablenav top">
-				<div class="alignleft actions">
+				<div class="actions">
 					<?php $this->search_form(); ?>
 				</div>
 			</div>
@@ -310,6 +310,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				// Run through each accommodation and use it.
 				if ( ! empty( $accommodation ) ) {
 					foreach ( $accommodation as $row_key => $row ) {
+						$row['post_title'] = $row['name'];
 						if ( 'import' === $post_status ) {
 							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
 								$current_status = get_post_status( $row['post_id'] );
@@ -328,7 +329,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 									continue;
 								}
 							}
-							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row, $row_key );
 						}
 					}
 				}
@@ -338,7 +339,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				if ( ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
 
 					$search_data = json_decode( $search_data['body'], true );
-					foreach ( $search_data as $sdata ) {
+					foreach ( $search_data as $sdata_key => $sdata ) {
 
 						if ( 'Destination' === trim( $sdata['type'] ) || 'Activity' === trim( $sdata['type'] ) || 'Restaurant' === trim( $sdata['type'] ) || 'None' === trim( $sdata['type'] ) || 'Site / Attraction' === trim( $sdata['type'] ) || '' === trim( $sdata['type'] ) ) {
 							continue;
@@ -347,19 +348,19 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						$temp_id = $this->get_post_id_by_key_value( $sdata['id'] );
 						if ( false === $temp_id ) {
 							$sdata['post_id'] = 0;
+							$sdata['post_title'] = $sdata['name'];
 						} else {
 							$sdata['post_id'] = $temp_id;
+							$sdata['post_title'] = get_the_title( $temp_id );
 						}
-						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata );
+						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata, $sdata_key );
 					}
 				}
 			}
 
 			if ( false !== $searched_items ) {
-				ksort( $searched_items );
 				$return = implode( $searched_items );
 			}
-
 			print_r( $return );
 		}
 
@@ -383,7 +384,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 * @param boolean $row the current row to format.
 	 * @return void
 	 */
-	public function format_row( $row = false ) {
+	public function format_row( $row = false, $row_key = '' ) {
 		if ( false !== $row ) {
 
 			$status = 'import';
@@ -397,8 +398,11 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 					<label for="cb-select-' . $row['id'] . '" class="screen-reader-text">' . $row['name'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
+				<td class="column-order">
+					' . ( $row_key + 1 ) . '
+				</td>
 				<td class="post-title page-title column-title">
-					<strong>' . $row['name'] . '</strong> - ' . $status . '
+					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
 					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
@@ -443,13 +447,13 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			}
 
 			if ( isset( $_POST['team_members'] ) ) {
-				$team_members = sanitize_text_field( $_POST['team_members'] );
+				$team_members = array_map( 'sanitize_text_field', wp_unslash( $_POST['team_members'] ) );
 			} else {
 				$team_members = false;
 			}
 
 			if ( isset( $_POST['safari_brands'] ) ) {
-				$safari_brands = sanitize_text_field( $_POST['safari_brands'] );
+				$safari_brands = array_map( 'sanitize_text_field', wp_unslash( $_POST['safari_brands'] ) );
 			} else {
 				$safari_brands = false;
 			}
@@ -517,11 +521,12 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 
-			if ( isset( $data[0]['name'] ) ) {
+			if ( isset( $this->options ) && 'on' !== $this->options['disable_accommodation_title'] && isset( $data[0]['name'] ) ) {
 				$post['post_title'] = $data[0]['name'];
-				$post['post_status'] = 'publish';
 				$post['post_name'] = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'accommodation', 0 );
 			}
+
+			$post['post_status'] = 'publish';
 
 			$id = wp_update_post( $post );
 			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );

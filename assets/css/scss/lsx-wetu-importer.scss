@@ -1,8 +1,112 @@
 /** LSX Importer for Wetu Styles */
 body.tour-operator_page_lsx-wetu-importer {
 
-	#posts-filter {
+	.tablenav.top {
+		height:auto;
+	}
+
+	#posts-filter, #import-list {
 		margin-top: 15px;
+
+		.column-order {
+			display: none;
+		}
+
+		.manage-column {
+			cursor: pointer;
+		}
+
+		thead, tfoot {
+
+			.sorting_asc , .sorting_desc {
+				&::after {
+					display: inline-block;
+					width: 20px;
+					height: 20px;
+					font-size: 20px;
+					line-height: 1;
+					font-family: dashicons;
+					text-decoration: inherit;
+					font-weight: normal;
+					font-style: normal;
+					vertical-align: top;
+					text-align: center;
+					transition: color .1s ease-in 0;
+					-webkit-font-smoothing: antialiased;
+					-moz-osx-font-smoothing: grayscale;
+				}
+			}
+
+			.sorting_asc::after {
+				content: "\f140";
+			}
+			.sorting_desc::after {
+				content: "\f142";
+			}
+		}
+
+		td.post-title {
+			font-weight: 600;
+			font-size: 14px;
+		}
+
+		.dataTables_info, .dataTables_length {
+			display:inline-block;
+			width: 50%;
+		}
+
+		.top {
+			margin-bottom: 10px;
+		}
+		.bottom {
+			.dataTables_paginate {
+				margin-top: 10px;
+			}
+		}
+
+		.dataTables_paginate {
+			display:inline-block;
+			width: 50%;
+			height: 28px;
+			cursor: default;
+			color: #555;
+			text-align: right;
+		}
+
+		.paginate_button {
+			height: 16px;
+			display: inline-block;
+			min-width: 17px;
+			border: 1px solid #ccc;
+			padding: 7px 4px 3px;
+			background: #e5e5e5;
+			font-size: 13px;
+			line-height: 1;
+			font-weight: 400;
+			text-align: center;
+			margin: 0px 2px;
+			color: #0073aa;
+			cursor: pointer;
+
+			&.disabled {
+				pointer-events: none;
+				border-color: #ddd;
+				background: #f7f7f7;
+				color: #a0a5aa;
+			}
+
+			&:hover, &.current {
+				border-color: #5b9dd9;
+				color: #fff;
+				background: #00a0d2;
+				box-shadow: none;
+				outline: none;
+			}
+
+			&::last-child {
+				margin-right: 0;
+			}
+		}
 	}
 
 	/* Home Screen */

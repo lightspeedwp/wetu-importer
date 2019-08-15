@@ -92,7 +92,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 		?>
 		<div class="wrap">
 			<div class="tablenav top">
-				<div class="alignleft actions">
+				<div class="actions">
 					<?php $this->search_form(); ?>
 				</div>
 			</div>
@@ -368,12 +368,12 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				// Run through each accommodation and use it.
 				if ( ! empty( $accommodation ) ) {
 					foreach ( $accommodation as $row_key => $row ) {
+						$row['post_title'] = $row['name'];
 						if ( 'import' === $post_status ) {
-
 							if ( is_array( $this->queued_imports ) && in_array( $row['post_id'], $this->queued_imports ) ) {
 								$current_status = get_post_status( $row['post_id'] );
 								if ( 'draft' === $current_status ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row, $row_key );
 								}
 							} else {
 								continue;
@@ -388,7 +388,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 									continue;
 								}
 							}
-							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row );
+							$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['id'] ] = $this->format_row( $row, $row_key );
 						}
 					}
 				}
@@ -399,25 +399,26 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 				if ( ! is_wp_error( $search_data ) || ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
 					$search_data = json_decode( $search_data['body'], true );
-					foreach ( $search_data as $sdata ) {
+					foreach ( $search_data as $sdata_key => $sdata ) {
 
-						if ( 'Destination' !== trim( $sdata['type'] ) ) {
+						if ( isset( $sdata['type'] ) && 'Destination' !== trim( $sdata['type'] ) ) {
 							continue;
 						}
 
 						$temp_id = $this->get_post_id_by_key_value( $sdata['id'] );
 						if ( false === $temp_id ) {
 							$sdata['post_id'] = 0;
+							$sdata['post_title'] = $sdata['name'];
 						} else {
 							$sdata['post_id'] = $temp_id;
+							$sdata['post_title'] = get_the_title( $temp_id );
 						}
-						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata );
+						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata, $sdata_key );
 					}
 				}
 			}
 
 			if ( false !== $searched_items ) {
-				ksort( $searched_items );
 				$return = implode( $searched_items );
 			}
 			print_r( $return );
@@ -441,7 +442,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	/**
 	 * Formats the row for output on the screen.
 	 */
-	public function format_row( $row = false ) {
+	public function format_row( $row = false, $row_key = '' ) {
 		if ( false !== $row ) {
 
 			$status = 'import';
@@ -455,8 +456,11 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					<label for="cb-select-' . $row['id'] . '" class="screen-reader-text">' . $row['name'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
+				<td class="column-order">
+					' . ( $row_key + 1 ) . '
+				</td>
 				<td class="post-title page-title column-title">
-					<strong>' . $row['name'] . '</strong> - ' . $status . '
+					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
 					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
@@ -488,7 +492,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			}
 
 			if ( isset( $_POST['team_members'] ) ) {
-				$team_members = sanitize_text_field( $_POST['team_members'] );
+				$team_members = array_map( 'sanitize_text_field', wp_unslash( $_POST['team_members'] ) );
 			} else {
 				$team_members = false;
 			}
@@ -567,12 +571,11 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 			if ( false !== $id && '0' !== $id ) {
 				$post['ID'] = $id;
-
-				if ( isset( $data[0]['name'] ) ) {
+				if ( isset( $this->options ) && 'on' !== $this->options['disable_destination_title'] && isset( $data[0]['name'] ) ) {
 					$post['post_title'] = $data[0]['name'];
-					$post['post_status'] = 'publish';
 					$post['post_name'] = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'destination', 0 );
 				}
+				$post['post_status'] = 'publish';
 
 				$id = wp_update_post( $post );
 				$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
@@ -708,19 +711,25 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	public function set_continent( $data, $id ) {
 
 		if ( isset( $data[0]['position']['country'] ) && $data[0]['map_object_id'] === $data[0]['position']['country_content_entity_id'] ) {
-			//get the continent code.
-			$continent_code = to_continent_label( to_continent_code( to_country_data( $data[0]['position']['country'], false ) ) );
+			// Get the continent code.
+			$country_code    = to_country_data( $data[0]['position']['country'], false );
+			$continent_code  = to_continent_code( $country_code );
+			$continent_label = to_continent_label( $continent_code );
 
-			if ( '' !== $continent_code ) {
-				$term = term_exists( trim( $continent_code ), 'continent' );
+			if ( ! empty( tour_operator()->options['display']['enable_search_region_filter'] ) ) {
+				$continent_label = to_continent_region_label( $country_code );
+			}
+
+			if ( '' !== $continent_label ) {
+				$term = term_exists( trim( $continent_label ), 'continent' );
 				if ( ! $term ) {
-					$term = wp_insert_term( trim( $continent_code ), 'continent' );
+					$term = wp_insert_term( trim( $continent_label ), 'continent' );
 
 					if ( is_wp_error( $term ) ) {
 						echo wp_kses_post( $term->get_error_message() );
 					}
 				} else {
-					wp_set_object_terms( $id, sanitize_title( $continent_code ), 'continent', true );
+					wp_set_object_terms( $id, sanitize_title( $continent_label ), 'continent', true );
 				}
 			}
 		}

@@ -109,7 +109,7 @@ class LSX_WETU_Importer_Post_Columns {
 	 * @return void
 	 */
 	public function columns_posts_orderby( $query ) {
-		if( ! is_admin() || ! $query->is_main_query() ) {
+		if ( ! is_admin() || ! $query->is_main_query() ) {
 			return;
 		}
 		if ( 'wetu_ref' === $query->get( 'orderby' ) ) {

@@ -122,7 +122,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				<div class="alignleft actions">
 					<?php $this->update_options_form(); ?>
 				</div>
-
+				<br clear="both" />
 			</div>
 
 			<form method="get" action="" id="posts-filter">
@@ -133,10 +133,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 					<tbody id="the-list">
 						<tr class="post-0 type-tour status-none" id="post-0">
-							<th class="check-column" scope="row">
-								<label for="cb-select-0" class="screen-reader-text"><?php esc_html_e( 'Enter a title to search for and press enter','lsx-wetu-importer' ); ?></label>
-							</th>
-							<td class="date column-date column-ref" colspan="4">
+							<td class="date column-date column-ref" colspan="5">
 								<strong>
 									<?php esc_html_e( 'Search for tours using the search form above','lsx-wetu-importer' ); ?>
 								</strong>
@@ -161,19 +158,20 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
 							<ul>
-								<li><input class="content select-all" <?php $this->checked( $this->tour_options,'all' ); ?> type="checkbox"name="content[]"  value="all" /> <?php esc_html_e( 'Select All','lsx-wetu-importer' ); ?></li>
+								<li><input class="content select-all" <?php $this->checked( $this->tour_options, 'all' ); ?> type="checkbox"name="content[]"  value="all" /> <?php esc_html_e( 'Select All','lsx-wetu-importer' ); ?></li>
 
 								<?php if ( isset( $this->options ) && ! isset( $this->options['disable_tour_descriptions'] ) ) { ?>
-									<li><input class="content" <?php $this->checked( $this->tour_options,'description' ); ?> type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description','lsx-wetu-importer' ); ?></li>
+									<li><input class="content" <?php $this->checked( $this->tour_options, 'description' ); ?> type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description','lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
-								<li><input class="content" <?php $this->checked( $this->tour_options,'price' ); ?> type="checkbox" name="content[]" value="price" /> <?php esc_html_e( 'Price','lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'duration' ); ?> type="checkbox" name="content[]" value="duration" /> <?php esc_html_e( 'Duration','lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'group_size' ); ?> type="checkbox" name="content[]" value="group_size" /> <?php esc_html_e( 'Group Size','lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'category' ); ?> type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category','lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'tags' ); ?> type="checkbox" name="content[]" value="tags" /> <?php esc_html_e( 'Tags','lsx-wetu-importer' ); ?></li>
-
-								<li><input class="content" <?php $this->checked( $this->tour_options,'itineraries' ); ?> type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'price' ); ?> type="checkbox" name="content[]" value="price" /> <?php esc_html_e( 'Price','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'duration' ); ?> type="checkbox" name="content[]" value="duration" /> <?php esc_html_e( 'Duration','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'group_size' ); ?> type="checkbox" name="content[]" value="group_size" /> <?php esc_html_e( 'Group Size','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'category' ); ?> type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category','lsx-wetu-importer' ); ?></li>
+								<?php if ( isset( $this->options ) && ! isset( $this->options['disable_tour_tags'] ) ) { ?>
+									<li><input class="content" <?php $this->checked( $this->tour_options, 'tags' ); ?> type="checkbox" name="content[]" value="tags" /> <?php esc_html_e( 'Tags','lsx-wetu-importer' ); ?></li>
+								<?php } ?>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'itineraries' ); ?> type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','lsx-wetu-importer' ); ?></li>
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
@@ -188,10 +186,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
 							<ul>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'accommodation' ); ?> type="checkbox" name="content[]" value="accommodation" /> <?php esc_html_e( 'Sync Accommodation','lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'destination' ); ?> type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Sync Destinations','lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'featured_image' ); ?> type="checkbox" name="content[]" value="featured_image" /> <?php esc_html_e( 'Featured Image','lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->tour_options,'banner_image' ); ?> type="checkbox" name="content[]" value="banner_image" /> <?php esc_html_e( 'Banner Image','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'accommodation' ); ?> type="checkbox" name="content[]" value="accommodation" /> <?php esc_html_e( 'Sync Accommodation','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'destination' ); ?> type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Sync Destinations','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'featured_image' ); ?> type="checkbox" name="content[]" value="featured_image" /> <?php esc_html_e( 'Featured Image','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" <?php $this->checked( $this->tour_options, 'banner_image' ); ?> type="checkbox" name="content[]" value="banner_image" /> <?php esc_html_e( 'Banner Image','lsx-wetu-importer' ); ?></li>
 							</ul>
 						</div>
 						<?php if ( class_exists( 'LSX_TO_Team' ) ) { ?>
@@ -205,7 +203,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					</div>
 
 					<h3><?php esc_html_e( 'Your List' ); ?></h3>
-					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync','lsx-wetu-importer' ); ?>" /></p>
+					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?>" /></p>
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>
 
@@ -217,7 +215,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 					</table>
 
-					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync','lsx-wetu-importer' ); ?>" /></p>
+					<p><input class="button button-primary" type="submit" value="<?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?>" /></p>
 				</form>
 			</div>
 
@@ -265,7 +263,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		$return = array();
 
 		$current_tours = $wpdb->get_results("
-			SELECT key1.post_id,key1.meta_value
+			SELECT key1.post_id,key1.meta_value,key2.post_title
 			FROM {$wpdb->postmeta} key1
 
 			INNER JOIN  {$wpdb->posts} key2
@@ -333,25 +331,23 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 							continue;
 						}
 
-						/*if('Sample' === $row['type']){
-							continue;
-						}*/
-
-						//If this is a current tour, add its ID to the row.
+						// If this is a current tour, add its ID to the row.
 						$row['post_id'] = 0;
+						$row['post_title'] = $row['name'];
 
 						if ( false !== $current_tours && array_key_exists( $row['identifier'], $current_tours ) ) {
 							$row['post_id'] = $current_tours[ $row['identifier'] ]->post_id;
+							$row['post_title'] = $current_tours[ $row['identifier'] ]->post_title;
 						}
 
-						//If we are searching for
+						// If we are searching for.
 						if ( false !== $post_status ) {
 							if ( 'import' === $post_status ) {
 
 								if ( 0 !== $row['post_id'] ) {
 									continue;
 								} else {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 								}
 							} else {
 								if ( 0 === $row['post_id'] ) {
@@ -364,7 +360,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 									}
 								}
 
-								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 							}
 						} else {
 							// Search through each keyword.
@@ -377,11 +373,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 								}
 
 								if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 								} else if ( $this->multineedle_stripos( ltrim( rtrim( $row['reference_number'] ) ), $keywords ) !== false ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 								} else if ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row );
+									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 								}
 							}
 						}
@@ -389,7 +385,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				}
 
 				if ( false !== $searched_items ) {
-					ksort( $searched_items );
 					$return = implode( $searched_items );
 				}
 			}
@@ -401,7 +396,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	/**
 	 * Formats the row for output on the screen.
 	 */
-	public function format_row( $row = false ) {
+	public function format_row( $row = false, $row_key = '' ) {
 		if ( false !== $row ) {
 			$status = 'import';
 
@@ -412,11 +407,14 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$row_html = '
 			<tr class="post-' . $row['post_id'] . ' type-tour" id="post-' . $row['post_id'] . '">
 				<th class="check-column" scope="row">
-					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['name'] . '</label>
+					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['post_title'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['identifier'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['identifier'] . '">
-				</th>			
+				</th>
+				<td class="column-order">
+					' . ( $row_key + 1 ) . '
+				</td>
 				<td class="post-title page-title column-title">
-					<strong>' . $row['name'] . '</strong> - ' . $status . '
+					' . $row['post_title'] . ' - ' . $status . '
 				</td>
 				<td class="date column-date">
 					' . $row['reference_number'] . '
@@ -449,6 +447,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 			delete_option( 'lsx_wetu_importer_tour_settings' );
 
+			if ( isset( $_POST['team_members'] ) ) {
+				$team_members = array_map( 'sanitize_text_field', wp_unslash( $_POST['team_members'] ) );
+			} else {
+				$team_members = false;
+			}
+
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
 				$content = array_map( 'sanitize_text_field', wp_unslash( $_POST['content'] ) );
 				add_option( 'lsx_wetu_importer_tour_settings',$content );
@@ -459,7 +463,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$jdata = json_decode( $jdata['body'], true );
-				$return = $this->import_row( $jdata, $wetu_id, $post_id, $content );
+				$return = $this->import_row( $jdata, $wetu_id, $post_id, $team_members, $content );
 				$this->format_completed_row( $return );
 				$this->save_queue();
 				$this->cleanup_posts();
@@ -493,7 +497,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 * @param $data array
 	 * @param $wetu_id string
 	 */
-	public function import_row( $data, $wetu_id, $id = 0, $importable_content = array(), $old1 = false, $old2 = false ) {
+	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = array(), $old1 = false, $old2 = false ) {
 		$post_name = '';
 		$data_post_content = '';
 		$data_post_excerpt = '';
@@ -518,6 +522,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 			$post['post_status'] = 'publish';
+			if ( isset( $this->options ) && 'on' !== $this->options['disable_accommodation_title'] ) {
+				$post['post_title'] = $data['name'];
+			}
 			$id = wp_update_post( $post );
 		} else {
 			// Set the name.
@@ -537,6 +544,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 		// Set reference number.
 		$this->set_reference_number( $data, $id );
+
+		// Set the team member if it is there.
+		if ( post_type_exists( 'team' ) && false !== $team_members && '' !== $team_members ) {
+			$this->set_team_member( $id, $team_members );
+		}
 
 		// Set the price.
 		if ( false !== $importable_content && in_array( 'price', $importable_content ) ) {
@@ -948,7 +960,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			} else {
 				$destination_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
 
-				if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+				if ( ! empty( $destination_json ) && isset( $destination_json['response'] ) && isset( $destination_json['response']['code'] ) && 200 === $destination_json['response']['code'] ) {
 
 					$destination_data = json_decode( $destination_json['body'], true );
 
@@ -1284,12 +1296,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		?>
 		<thead>
 		<tr>
-			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+			<th style="" class="manage-column column-cb check-column no-sort" id="cb" scope="col">
 				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'lsx-wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-order " id="order"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-title " id="title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>
 			<th style="" class="manage-column column-date" id="date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
 			<th style="" class="manage-column column-ssid" id="ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>
@@ -1308,8 +1321,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'lsx-wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
+			<th style="" class="manage-column column-order " id="order"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
 			<th style="" class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-date" id="ref" style="width:10%;" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>			
+			<th style="" class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>			
 			<th style="" class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
 			<th style="" class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>

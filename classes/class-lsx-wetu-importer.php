@@ -230,6 +230,8 @@ class LSX_WETU_Importer {
 			add_action( 'wp_ajax_lsx_import_items', array( $this, 'process_ajax_import' ) );
 			add_action( 'wp_ajax_nopriv_lsx_import_items', array( $this, 'process_ajax_import' ) );
 		}
+
+		//delete_transient( 'lsx_ti_tours' );
 	}
 
 	// ACTIVATION FUNCTIONS.
@@ -428,17 +430,22 @@ class LSX_WETU_Importer {
 
 		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
 
+			//wp_enqueue_style( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/css/datatables' . $min . '.css', LSX_WETU_IMPORTER_VER, true );
 			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/lsx-wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
-			wp_enqueue_script( 'lsx-wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/lsx-wetu-importer' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
 
-			wp_localize_script(
-				'lsx-wetu-importers-script',
-				'lsx_tour_importer_params',
-				array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'ajax_nonce' => wp_create_nonce( 'lsx_wetu_ajax_action' ),
-				)
-			);
+			if ( isset( $_GET['tab'] ) ) {
+				wp_enqueue_script( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/js/datatables' . $min . '.js', array( 'jquery' ), LSX_WETU_IMPORTER_VER, true );
+				wp_enqueue_script( 'lsx-wetu-importers-script', LSX_WETU_IMPORTER_URL . 'assets/js/lsx-wetu-importer' . $min . '.js', array( 'jquery', 'datatables' ), LSX_WETU_IMPORTER_VER, true );
+
+				wp_localize_script(
+					'lsx-wetu-importers-script',
+					'lsx_tour_importer_params',
+					array(
+						'ajax_url' => admin_url( 'admin-ajax.php' ),
+						'ajax_nonce' => wp_create_nonce( 'lsx_wetu_ajax_action' ),
+					)
+				);
+			}
 		}
 	}
 
@@ -521,13 +528,14 @@ class LSX_WETU_Importer {
 		?>
 		<thead>
 		<tr>
-			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
-				<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+			<th style="" class="manage-column column-cb check-column no-sort" id="cb" scope="col">
+				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'lsx-wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col">Title</th>
-			<th style="" class="manage-column column-date" id="date" scope="col">Date</th>
-			<th style="" class="manage-column column-ssid" id="ssid" scope="col">WETU ID</th>
+			<th style="" class="manage-column column-order " id="order"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-title " id="title" style="width:50%;" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" id="date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-ssid" id="ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -541,12 +549,13 @@ class LSX_WETU_Importer {
 		<tfoot>
 		<tr>
 			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
-				<label for="cb-select-all-1" class="screen-reader-text">Select All</label>
+				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'lsx-wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-title" scope="col">Title</th>
-			<th style="" class="manage-column column-date" scope="col">Date</th>
-			<th style="" class="manage-column column-ssid" scope="col">WETU ID</th>
+			<th style="" class="manage-column column-order "><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
+			<th style="" class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>
 		</tfoot>
 		<?php
@@ -581,19 +590,19 @@ class LSX_WETU_Importer {
 	 */
 	public function wetu_status() {
 		$tours = get_transient( 'lsx_ti_tours' );
-		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status','lsx-wetu-importer' ) . ' - ';
+		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status', 'lsx-wetu-importer' ) . ' - ';
 
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
 
 			if ( true === $result ) {
-				echo '<span style="color:green;">' . esc_attr( 'Connected','lsx-wetu-importer' ) . '</span>';
-				echo ' - <small><a href="#">' . esc_attr( 'Refresh','lsx-wetu-importer' ) . '</a></small>';
+				echo '<span style="color:green;">' . esc_attr( 'Connected', 'lsx-wetu-importer' ) . '</span>';
+				echo ' - <small><a href="#">' . esc_attr( 'Refresh', 'lsx-wetu-importer' ) . '</a></small>';
 			} else {
 				echo '<span style="color:red;">' . wp_kses_post( $result ) . '</span>';
 			}
 		} else {
-			echo '<span style="color:green;">' . esc_attr( 'Connected','lsx-wetu-importer' ) . '</span> - <small><a href="#">' . esc_attr( 'Refresh','lsx-wetu-importer' ) . '</a></small>';
+			echo '<span style="color:green;">' . esc_attr( 'Connected', 'lsx-wetu-importer' ) . '</span> - <small><a href="#">' . esc_attr( 'Refresh', 'lsx-wetu-importer' ) . '</a></small>';
 		}
 		echo '</h3>';
 		echo '</div>';
@@ -640,7 +649,7 @@ class LSX_WETU_Importer {
 	 * @param $echo bool
 	 */
 	public function checked( $haystack = false, $needle = '', $echo = true ) {
-		$return = $this->itemd( $haystack,$needle, 'checked' );
+		$return = $this->itemd( $haystack, $needle, 'checked', false );
 
 		if ( '' !== $return ) {
 			if ( true === $echo ) {
@@ -1336,7 +1345,7 @@ class LSX_WETU_Importer {
 		if ( isset( $tours['error'] ) ) {
 			return $tours['error'];
 		} elseif ( isset( $tours['itineraries'] ) && ! empty( $tours['itineraries'] ) ) {
-			set_transient( 'lsx_ti_tours', $tours['itineraries'], 60 * 60 * 2 );
+			set_transient( 'lsx_ti_tours', $tours['itineraries'], 60 * 60 * 4 );
 			return true;
 		}
 	}
