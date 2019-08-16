@@ -406,10 +406,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 			$row_html = '
 			<tr class="post-' . $row['post_id'] . ' type-tour" id="post-' . $row['post_id'] . '">
-				<th class="check-column" scope="row">
+				<td class="check-column" style="width:10%;">
 					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['post_title'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['identifier'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['identifier'] . '">
-				</th>
+				</td>
 				<td class="column-order">
 					' . ( $row_key + 1 ) . '
 				</td>
@@ -461,7 +461,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
 
-			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+			if ( ! is_wp_error( $jdata ) && ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$jdata = json_decode( $jdata['body'], true );
 				$return = $this->import_row( $jdata, $wetu_id, $post_id, $team_members, $content );
 				$this->format_completed_row( $return );
@@ -616,9 +616,16 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 			// If the Nights are the same mount of days in the array,  then it isnt "By Destination".
 			if ( ( ( 1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
-				foreach ( $leg['periods'] as $day ) {
+				foreach ( $leg['periods'] as $day_key => $day ) {
 					$current_day = array();
-					$next_day_count = $day_counter + (int) $leg['nights'];
+
+					// If this is a moble tented solution.
+					if ( isset( $leg['stops'] ) ) {
+						$next_day_count = $day_counter + (int) $day['days'];
+					} else {
+						$next_day_count = $day_counter + (int) $leg['nights'];
+					}
+
 					$day_count_label = $next_day_count - 1;
 
 					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter;

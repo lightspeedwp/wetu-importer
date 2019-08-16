@@ -96,7 +96,7 @@ var WETU_IMPORTER = {
 						searching: false,
 						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
 						order: order,
-						columnDefs: [ { "orderable": false, "targets": 0 } ]
+						columnDefs: [ { "orderable": false, "targets": 0 }, { "width": "20%", "targets": 0 } ]
 					});
 					WETU_IMPORTER.status_search = false;
 			});
@@ -149,7 +149,7 @@ var WETU_IMPORTER = {
 				searching: false,
 				dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
 				order: [[ 1, "asc" ]],
-				columnDefs: [ { "orderable": false, "targets": 0 } ]
+				columnDefs: [ { "orderable": false, "targets": 0 }, { "width": "20%", "targets": 0 } ]
 			});
 		});
 	},	
@@ -185,11 +185,12 @@ var WETU_IMPORTER = {
         .fail( function( reason ) {
 			// Handles errors only
 			console.log($row.find('th.check-column'));
-			$row.find('td.post-title strong').css('color','red');
+			$row.find('td.post-title').css('color','red');
 			$row.find('th.check-column input').attr('checked','');
 			$row.find('th.check-column input').removeClass('importing');
 			$row.find('th.check-column input').removeClass('queued');
-			$row.find('th.check-column .ajax-loader-small').remove();
+			$row.find('th.check-column input').show();
+			$row.find('th.check-column img').remove();
         } );
 	},	
 
