@@ -55,8 +55,12 @@ var WETU_IMPORTER = {
 			jQuery('.subsubsub li a.current').removeClass('current');
 			jQuery('.subsubsub li.searchform a').addClass('current');
 
+			console.log( WETU_IMPORTER.data_table );
 			if ( false !== WETU_IMPORTER.data_table ) {
+				console.log('preserve_import3');
+				var preserve_import = jQuery('#import-list .wp-list-table').html();
 				WETU_IMPORTER.data_table.destroy();
+				jQuery('#import-list .wp-list-table').html(preserve_import);
 			}
 
 			if ( false !== WETU_IMPORTER.status_search ) {
@@ -106,7 +110,8 @@ var WETU_IMPORTER = {
 								"visible": false,
 								"searchable": false
 							}
-						]
+						],
+						destroy: true
 					});
 					WETU_IMPORTER.status_search = false;
 			});
