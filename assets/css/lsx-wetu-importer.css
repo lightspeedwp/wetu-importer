@@ -4,12 +4,14 @@ body.tour-operator_page_lsx-wetu-importer {
   /* Tour / Accommodation / Destinations */ }
   body.tour-operator_page_lsx-wetu-importer .tablenav.top {
     height: auto; }
+  body.tour-operator_page_lsx-wetu-importer #posts-filter .manage-column {
+    cursor: pointer; }
   body.tour-operator_page_lsx-wetu-importer #posts-filter, body.tour-operator_page_lsx-wetu-importer #import-list {
     margin-top: 15px; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter .column-order, body.tour-operator_page_lsx-wetu-importer #import-list .column-order {
       display: none; }
-    body.tour-operator_page_lsx-wetu-importer #posts-filter .manage-column, body.tour-operator_page_lsx-wetu-importer #import-list .manage-column {
-      cursor: pointer; }
+    body.tour-operator_page_lsx-wetu-importer #posts-filter .check-column input, body.tour-operator_page_lsx-wetu-importer #import-list .check-column input {
+      margin: 0 0 0 8px; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter thead .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter tfoot .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #posts-filter tfoot .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #import-list thead .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #import-list thead .sorting_desc::after, body.tour-operator_page_lsx-wetu-importer #import-list tfoot .sorting_asc::after, body.tour-operator_page_lsx-wetu-importer #import-list tfoot .sorting_desc::after {
       display: inline-block;
       width: 20px;

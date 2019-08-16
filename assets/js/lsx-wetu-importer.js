@@ -64,7 +64,7 @@ var WETU_IMPORTER = {
 			}
 
 			var column_count = jQuery('#posts-filter thead th').length;
-			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="' + column_count + '">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
+			jQuery('#posts-filter tbody').html('<tr><td style="text-align:center;" colspan="' + ( column_count - 1 ) + '">'+jQuery('#lsx-wetu-importer-search-form .ajax-loader').html()+'</td></tr>');
 
 			var type = jQuery('#lsx-wetu-importer-search-form').attr('data-type');
 			var keywords = [];
@@ -92,11 +92,21 @@ var WETU_IMPORTER = {
 				function(response) {
 					jQuery('#posts-filter tbody').html(response);
 				}).done(function(){
-					WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
+					WETU_IMPORTER.data_table = jQuery('#posts-filter .wp-list-table').DataTable({
 						searching: false,
 						dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
 						order: order,
-						columnDefs: [ { "orderable": false, "targets": 0 }, { "width": "20%", "targets": 0 } ]
+						columnDefs: [ 
+							{ 
+								"targets": 0,
+								"orderable": false,
+							},
+							{
+								"targets": 1,
+								"visible": false,
+								"searchable": false
+							}
+						]
 					});
 					WETU_IMPORTER.status_search = false;
 			});
@@ -133,23 +143,12 @@ var WETU_IMPORTER = {
 			event.preventDefault();
 			jQuery('.import-list-wrapper').fadeIn('fast');
 
-			if ( false !== WETU_IMPORTER.data_table ) {
-				WETU_IMPORTER.data_table.destroy();
-			}
-
 			jQuery('#posts-filter tbody tr input:checked').each(function(){
 		        jQuery('#import-list tbody').append(jQuery(this).parent().parent());
 			});	
 
 			jQuery('#import-list tbody tr input:checked').each(function(){
 				//jQuery(this).parent().parent().fadeIn('fast');
-			});
-
-			WETU_IMPORTER.data_table = jQuery('.wp-list-table').DataTable({
-				searching: false,
-				dom: '<"top"ip<"clear">>rt<"bottom"lp<"clear">>',
-				order: [[ 1, "asc" ]],
-				columnDefs: [ { "orderable": false, "targets": 0 }, { "width": "20%", "targets": 0 } ]
 			});
 		});
 	},	
@@ -184,13 +183,13 @@ var WETU_IMPORTER = {
         } )
         .fail( function( reason ) {
 			// Handles errors only
-			console.log($row.find('th.check-column'));
-			$row.find('td.post-title').css('color','red');
-			$row.find('th.check-column input').attr('checked','');
-			$row.find('th.check-column input').removeClass('importing');
-			$row.find('th.check-column input').removeClass('queued');
-			$row.find('th.check-column input').show();
-			$row.find('th.check-column img').remove();
+			console.log($row.find('.check-column'));
+			$row.find('.post-title').css('color','red');
+			$row.find('.check-column input').attr('checked','');
+			$row.find('.check-column input').removeClass('importing');
+			$row.find('.check-column input').removeClass('queued');
+			$row.find('.check-column input').show();
+			$row.find('.check-column img').remove();
         } );
 	},	
 

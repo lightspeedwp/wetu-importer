@@ -5,6 +5,12 @@ body.tour-operator_page_lsx-wetu-importer {
 		height:auto;
 	}
 
+	#posts-filter {
+		.manage-column {
+			cursor: pointer;
+		}
+	}
+
 	#posts-filter, #import-list {
 		margin-top: 15px;
 
@@ -12,8 +18,10 @@ body.tour-operator_page_lsx-wetu-importer {
 			display: none;
 		}
 
-		.manage-column {
-			cursor: pointer;
+		.check-column {
+			input {
+				margin:0 0 0 8px;
+			}
 		}
 
 		thead, tfoot {

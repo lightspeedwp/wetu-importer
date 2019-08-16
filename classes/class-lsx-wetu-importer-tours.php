@@ -406,7 +406,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 			$row_html = '
 			<tr class="post-' . $row['post_id'] . ' type-tour" id="post-' . $row['post_id'] . '">
-				<td class="check-column" style="width:10%;">
+				<td class="check-column">
 					<label for="cb-select-' . $row['identifier'] . '" class="screen-reader-text">' . $row['post_title'] . '</label>
 					<input type="checkbox" data-identifier="' . $row['identifier'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['identifier'] . '">
 				</td>
@@ -1321,15 +1321,15 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		?>
 		<thead>
 		<tr>
-			<th style="" class="manage-column column-cb check-column no-sort" id="cb" scope="col">
+			<th class="manage-column column-cb check-column" id="cb" scope="col">
 				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'lsx-wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-order " id="order"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-title " id="title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-date" id="date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-ssid" id="ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-order " id="order" scope="col"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-title " id="title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-date" id="date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-ssid" id="ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -1342,15 +1342,15 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		?>
 		<tfoot>
 		<tr>
-			<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
+			<th class="manage-column column-cb check-column" id="cb" scope="col">
 				<label for="cb-select-all-1" class="screen-reader-text"><?php esc_attr_e( 'Select All', 'lsx-wetu-importer' ); ?></label>
 				<input type="checkbox" id="cb-select-all-1">
 			</th>
-			<th style="" class="manage-column column-order " id="order"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>			
-			<th style="" class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
-			<th style="" class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-order " id="order" scope="col"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>			
+			<th class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
+			<th class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>
 		</tfoot>
 		<?php
