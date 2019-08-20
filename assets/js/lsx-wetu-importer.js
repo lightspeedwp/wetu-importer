@@ -14,7 +14,8 @@ var WETU_IMPORTER = {
 			this.watchBannerButton();
 			this.watchConnectButton();
             this.watchCheckBoxes();
-            this.watchTourUpdate();
+			this.watchTourUpdate();
+			this.watchSelectAll();
 		}
 	},
 	myAccommodationSearch: function() {
@@ -338,14 +339,12 @@ var WETU_IMPORTER = {
 			jQuery( this ).trigger('change');
         });
     },
-
     watchTourUpdate: function() {
         jQuery('.wetu-status.tour-wetu-status h3 a').on('click',function(event){
 			event.preventDefault();
 			jQuery('.wetu-status.tour-wetu-status').find('form').submit();
         });
-
-    }
+	},
 }
 jQuery(document).ready( function() {
 	WETU_IMPORTER.init();

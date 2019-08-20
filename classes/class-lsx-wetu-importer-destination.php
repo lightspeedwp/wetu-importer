@@ -140,24 +140,20 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
 							<ul>
-								<li>
-									<input class="content select-all" <?php $this->checked( $this->destination_options, 'all' ); ?>
-										   type="checkbox" name="content[]"
-										   value="all"/> <?php esc_html_e( 'Select All', 'lsx-wetu-importer' ); ?></li>
 								<?php if ( isset( $this->options ) && isset( $this->options['disable_destination_descriptions'] ) && 'on' !== $this->options['disable_destination_descriptions'] ) { ?>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'description' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="description"/> <?php esc_html_e( 'Description', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'gallery' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="gallery"/> <?php esc_html_e( 'Main Gallery', 'lsx-wetu-importer' ); ?></li>
 
 									<li>
-										<input class="content" <?php $this->checked( $this->destination_options, 'location' ); ?>
+										<input class="content" checked="checked"
 											   type="checkbox" name="content[]"
 											   value="location"/> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?>
 									</li>
@@ -165,7 +161,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 								<?php if ( class_exists( 'LSX_TO_Videos' ) ) { ?>
 									<li>
-										<input class="content" <?php $this->checked( $this->destination_options, 'videos' ); ?>
+										<input class="content" checked="checked"
 											   type="checkbox" name="content[]"
 											   value="videos"/> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
@@ -174,34 +170,34 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
 							<ul>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'country' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="country"/> <?php esc_html_e( 'Set Country', 'lsx-wetu-importer' ); ?></li>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'continent' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="continent"/> <?php esc_html_e( 'Set Continent', 'lsx-wetu-importer' ); ?></li>
 
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'featured_image' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="featured_image"/> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?>
 								</li>
 								<?php if ( class_exists( 'LSX_Banners' ) ) { ?>
 									<li>
-										<input class="content" <?php $this->checked( $this->destination_options, 'banner_image' ); ?>
+										<input class="content" checked="checked"
 											   type="checkbox" name="content[]"
 											   value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?>
 									</li>
 									<li>
-										<input class="content" <?php $this->checked( $this->destination_options, 'unique_banner_image' ); ?>
+										<input class="content" checked="checked"
 											   type="checkbox" name="content[]"
 											   value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'lsx-wetu-importer' ); ?>
 									</li>
 								<?php } ?>
 
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'strip_tags' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="strip_tags"/> <?php esc_html_e( 'Strip HTML from the description', 'lsx-wetu-importer' ); ?></li>
 							</ul>
@@ -210,38 +206,38 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 							<h3><?php esc_html_e( 'Travel Information' ); ?></h3>
 							<ul>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'electricity' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="electricity"/> <?php esc_html_e( 'Electricity', 'lsx-wetu-importer' ); ?></li>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'banking' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="banking"/> <?php esc_html_e( 'Banking', 'lsx-wetu-importer' ); ?></li>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'cuisine' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="cuisine"/> <?php esc_html_e( 'Cuisine', 'lsx-wetu-importer' ); ?></li>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'climate' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="climate"/> <?php esc_html_e( 'Climate', 'lsx-wetu-importer' ); ?></li>
 								<li>
-									<input class="content" <?php $this->checked( $this->destination_options, 'transport' ); ?>
+									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="transport"/> <?php esc_html_e( 'Transport', 'lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->destination_options, 'dress' ); ?>
+								<li><input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="dress"/> <?php esc_html_e( 'Dress', 'lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->destination_options, 'health' ); ?>
+								<li><input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="health"/> <?php esc_html_e( 'Health', 'lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->destination_options, 'safety' ); ?>
+								<li><input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="safety"/> <?php esc_html_e( 'Safety', 'lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->destination_options, 'visa' ); ?>
+								<li><input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="visa"/> <?php esc_html_e( 'Visa', 'lsx-wetu-importer' ); ?></li>
-								<li><input class="content" <?php $this->checked( $this->destination_options, 'additional_info' ); ?>
+								<li><input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="additional_info"/> <?php esc_html_e( 'General', 'lsx-wetu-importer' ); ?></li>
 							</ul>
