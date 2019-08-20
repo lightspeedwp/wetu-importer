@@ -619,22 +619,22 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			// If the Nights are the same mount of days in the array,  then it isnt "By Destination".
-			if ( ( ( 1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) ) || 0 === $leg['itinerary_leg_id'] ) {
+			if ( ( 1 <= (int) $leg['nights'] && isset( $leg['periods'] ) ) || 0 === $leg['itinerary_leg_id'] ) {
+
 				foreach ( $leg['periods'] as $day_key => $day ) {
 					$current_day = array();
 
 					// If this is a moble tented solution.
+					$next_day_count = $day_counter + (int) $day['days'];
 					if ( isset( $leg['stops'] ) ) {
-						$next_day_count = $day_counter + (int) $day['days'];
+						$day_count_label = $next_day_count - 1;
 					} else {
-						$next_day_count = $day_counter + (int) $leg['nights'];
+						$day_count_label = '';
 					}
-
-					$day_count_label = $next_day_count - 1;
 
 					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter;
 
-					if ( 0 !== (int) $leg['nights'] ) {
+					if ( isset( $leg['stops'] ) ) {
 						$current_day['title'] .= ' - ' . $day_count_label;
 					}
 
@@ -699,6 +699,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				}
 			} else {
 				// This is for the by destination.
+
 				$current_day = array();
 				$next_day_count = $day_counter + (int) $leg['nights'];
 				$day_count_label = $next_day_count - 1;
