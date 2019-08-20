@@ -626,7 +626,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 					// If this is a moble tented solution.
 					$next_day_count = $day_counter + (int) $day['days'];
-					if ( isset( $leg['stops'] ) || 1 < (int) $leg['nights'] ) {
+
+					if ( isset( $leg['stops'] ) || ( 1 < (int) $day['days'] ) ) {
 						$day_count_label = ' - ' . ( $next_day_count - 1 );
 					} else {
 						$day_count_label = '';
