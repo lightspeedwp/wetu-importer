@@ -540,6 +540,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$post['post_title']  = $data['name'];
 			$post['post_status'] = 'publish';
 			$id = wp_insert_post( $post );
+
+			// Save the WETU ID and the Last date it was modified.
+			if ( false !== $id ) {
+				add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
+				add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ) );
+			}
 		}
 
 		// Set reference number.
