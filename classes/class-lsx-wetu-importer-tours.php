@@ -626,17 +626,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 					// If this is a moble tented solution.
 					$next_day_count = $day_counter + (int) $day['days'];
-					if ( isset( $leg['stops'] ) ) {
-						$day_count_label = $next_day_count - 1;
+					if ( isset( $leg['stops'] ) || 1 < (int) $leg['nights'] ) {
+						$day_count_label = ' - ' . ( $next_day_count - 1 );
 					} else {
 						$day_count_label = '';
 					}
-
-					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter;
-
-					if ( isset( $leg['stops'] ) ) {
-						$current_day['title'] .= ' - ' . $day_count_label;
-					}
+					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter . $day_count_label;
 
 					// Description.
 					if ( false !== $importable_content && in_array( 'itinerary_description', $importable_content ) && isset( $day['notes'] ) ) {
