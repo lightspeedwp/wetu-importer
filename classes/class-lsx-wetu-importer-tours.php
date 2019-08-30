@@ -982,6 +982,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 				if ( false !== $country_wetu_id ) {
 					$country_id = $this->set_country( $country_wetu_id, $id );
+					$this->destination_images[ $id ][] = array( $id, $country_wetu_id );
 				}
 			} else {
 				$destination_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
@@ -1130,8 +1131,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				foreach ( $destinations as $destination ) {
 					if ( false === $image_set && false === $forced ) {
 						$url = 'https://wetu.com/API/Pins/' . $this->api_key;
-						$url_qs = '';
 
+						$url_qs = '';
 						$jdata = wp_remote_get( $url . '/Get?' . $url_qs . '&ids=' . $destination[1] );
 
 						if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
@@ -1140,7 +1141,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 							if ( ! empty( $adata ) && ! empty( $adata[0]['content']['images'] ) ) {
 								$this->find_attachments( $destination[0] );
 
-								//Set the featured image
+								// Set the featured image.
 								if ( false !== $importable_content && in_array( 'featured_image', $importable_content ) ) {
 									$image_set = $this->set_featured_image( $adata, $tour );
 									if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
