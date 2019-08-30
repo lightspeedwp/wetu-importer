@@ -892,7 +892,14 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 * @return void
 	 */
 	public function set_travel_styles( $id, $data ) {
+		print_r('<pre>');
+		print_r($data['tags']);
+		print_r('</pre>');
 		$tags = apply_filters( 'lsx_wet_importer_tour_travel_styles', $data['tags'] );
+		print_r('<pre>');
+		print_r($tags);
+		print_r('</pre>');
+		die();
 		if ( isset( $data['tags'] ) && ! empty( $tags ) ) {
 			foreach ( $tags as $tag ) {
 				$this->set_term( $id, $tag, 'travel-style' );
