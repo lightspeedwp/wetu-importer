@@ -158,7 +158,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
 							<ul>
-								<?php if ( isset( $this->options ) && ! isset( $this->options['disable_tour_descriptions'] ) ) { ?>
+								<?php if ( isset( $this->options ) && isset( $this->options['disable_tour_descriptions'] ) && 'on' !== $this->options['disable_tour_descriptions'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description','lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
@@ -166,7 +166,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="duration" /> <?php esc_html_e( 'Duration','lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="group_size" /> <?php esc_html_e( 'Group Size','lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category','lsx-wetu-importer' ); ?></li>
-								<?php if ( isset( $this->options ) && ! isset( $this->options['disable_tour_tags'] ) ) { ?>
+								<?php if ( isset( $this->options ) && isset( $this->options['disable_tour_tags'] ) && 'on' !== $this->options['disable_tour_tags'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="tags" /> <?php esc_html_e( 'Tags','lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','lsx-wetu-importer' ); ?></li>
@@ -892,14 +892,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 * @return void
 	 */
 	public function set_travel_styles( $id, $data ) {
-		print_r('<pre>');
-		print_r($data['tags']);
-		print_r('</pre>');
-		$tags = apply_filters( 'lsx_wet_importer_tour_travel_styles', $data['tags'] );
-		print_r('<pre>');
-		print_r($tags);
-		print_r('</pre>');
-		die();
+		$tags = apply_filters( 'lsx_wetu_importer_tour_travel_styles', $data['tags'] );
 		if ( isset( $data['tags'] ) && ! empty( $tags ) ) {
 			foreach ( $tags as $tag ) {
 				$this->set_term( $id, $tag, 'travel-style' );

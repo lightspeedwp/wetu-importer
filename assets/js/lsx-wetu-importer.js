@@ -15,7 +15,7 @@ var WETU_IMPORTER = {
 			this.watchConnectButton();
             this.watchCheckBoxes();
 			this.watchTourUpdate();
-			this.watchSelectAll();
+			//this.watchSelectAll();
 		}
 	},
 	myAccommodationSearch: function() {
