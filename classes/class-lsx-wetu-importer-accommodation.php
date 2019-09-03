@@ -99,7 +99,6 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<?php $this->update_options_form(); ?>
 
 			<div class="tablenav top">
 				<div class="actions">
@@ -225,37 +224,6 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			</div>
 		</div>
 		<?php
-	}
-
-	/**
-	 * search_form
-	 */
-	public function update_options_form() {
-		echo '<div style="display:none;" class="wetu-status"><h3>' . esc_html__( 'Wetu Status', 'lsx-wetu-importer' ) . '</h3>';
-
-		$accommodation = get_transient( 'lsx_ti_accommodation' );
-
-		//if ( '' === $accommodation || false === $accommodation || isset( $_GET['refresh_accommodation'] ) ) {
-			//$this->update_options();
-		//}
-
-		echo '</div>';
-	}
-
-	/**
-	 * Save the list of Accommodation into an option
-	 */
-	public function update_options() {
-		$data = wp_remote_get( $this->url . '/List?' . $this->url_qs );
-
-		$accommodation = json_decode( $data, true );
-
-		if ( isset( $accommodation['error'] ) ) {
-			return $accommodation['error'];
-		} elseif ( isset( $accommodation ) && ! empty( $accommodation ) ) {
-			set_transient( 'lsx_ti_accommodation',$accommodation,60 * 60 * 2 );
-			return true;
-		}
 	}
 
 	/**

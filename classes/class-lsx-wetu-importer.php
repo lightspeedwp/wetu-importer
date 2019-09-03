@@ -589,7 +589,7 @@ class LSX_WETU_Importer {
 	 * Wetu Status Bar.
 	 */
 	public function wetu_status() {
-		$tours = get_transient( 'lsx_ti_tours' );
+		$tours = false;
 		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status', 'lsx-wetu-importer' ) . ' - ';
 
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {

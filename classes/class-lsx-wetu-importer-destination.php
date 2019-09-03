@@ -734,33 +734,6 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	/**
 	 * Save the list of Accommodation into an option
 	 */
-	public function update_options() {
-		$data = wp_remote_get( $this->url . '/List?' . $this->url_qs );
-		if ( ! empty( $data ) && isset( $data['response'] ) && isset( $data['response']['code'] ) && 200 === $data['response']['code'] ) {
-			$accommodation = json_decode( $data['body'], true );
-			set_transient( 'lsx_ti_accommodation', $accommodation, 60 * 60 * 2 );
-			return true;
-		}
-	}
-
-	/**
-	 * search_form
-	 */
-	public function update_options_form() {
-		echo '<div style="display:none;" class="wetu-status"><h3>' . esc_html__( 'Wetu Status', 'lsx-wetu-importer' ) . '</h3>';
-
-		$accommodation = get_transient( 'lsx_ti_accommodation' );
-
-		if ( '' === $accommodation || false === $accommodation || isset( $_GET['refresh_accommodation'] ) ) {
-			$this->update_options();
-		}
-
-		echo '</div>';
-	}
-
-	/**
-	 * Save the list of Accommodation into an option
-	 */
 	public function check_for_parent( $data = array() ) {
 		global $wpdb;
 
