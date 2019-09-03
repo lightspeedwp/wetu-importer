@@ -51,6 +51,7 @@ class LSX_WETU_Importer_Settings {
 			'enable_tour_featured_random'        => '',
 			'disable_accommodation_title'        => '',
 			'disable_accommodation_descriptions' => '',
+			'disable_accommodation_filtering'    => '',
 			'disable_accommodation_excerpts'     => '',
 			'disable_destination_title'          => '',
 			'disable_destination_descriptions'   => '',
@@ -231,6 +232,22 @@ class LSX_WETU_Importer_Settings {
 								<small><?php esc_html_e( 'If you are going to edit the accommodation descriptions imported then enable this setting.', 'lsx-wetu-importer' ); ?></small>
 							</td>
 						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="disable_accommodation_filtering"><?php esc_html_e( 'Disable Description Filtering', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['disable_accommodation_filtering'] ) && '' !== $options['disable_accommodation_filtering'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="disable_accommodation_filtering" />
+								<small><?php esc_html_e( 'This will stop the HTML from being stripped out of the description.', 'lsx-wetu-importer' ); ?></small>
+							</td>
+						</tr>
+
 						<tr class="form-field -wrap">
 							<th scope="row">
 								<label for="disable_accommodation_excerpts"><?php esc_html_e( 'Disable Excerpts', 'lsx-wetu-importer' ); ?></label>

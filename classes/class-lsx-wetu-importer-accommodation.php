@@ -146,10 +146,10 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
 							<ul>
-								<?php if ( ! isset( $this->options['disable_accommodation_descriptions'] ) ) { ?>
+								<?php if ( isset( $this->options['disable_accommodation_descriptions'] ) && 'on' !== $this->options['disable_accommodation_descriptions']  ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
-								<?php if ( ! isset( $this->options['disable_accommodation_excerpts'] ) ) { ?>
+								<?php if ( isset( $this->options['disable_accommodation_excerpts'] ) && 'on' !== $this->options['disable_accommodation_excerpts']  ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="excerpt" /> <?php esc_html_e( 'Excerpt', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
@@ -471,7 +471,11 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				$data_post_content = $data[0]['content']['teaser_description'];
 			}
 
-			$post['post_content'] = wp_strip_all_tags( $data_post_content );
+			if ( isset( $this->options['disable_accommodation_filtering'] ) && 'on' === $this->options['disable_accommodation_filtering'] ) {
+				$post['post_content'] = $data_post_content;
+			} else {
+				$post['post_content'] = wp_strip_all_tags( $data_post_content );
+			}
 		}
 
 		// set the post_excerpt.
