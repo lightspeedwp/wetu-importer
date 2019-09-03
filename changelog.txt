@@ -10,6 +10,7 @@
 * Fix - Fixed the assigning of team and safari brands
 * Dev - Added in the ability to define custom titles
 * Fix - Fixed the sorting of the search results by relevance
+* Dev - Added in the option to randomize the featured image that is grabbed from the attached destinations.
 
 ### 1.2.1
 * Fix - Fixed the problem with the empty API key.

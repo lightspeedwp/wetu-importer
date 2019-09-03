@@ -48,6 +48,7 @@ class LSX_WETU_Importer_Settings {
 			'disable_tour_title'                 => '',
 			'disable_tour_descriptions'          => '',
 			'disable_tour_tags'                  => 'on',
+			'enable_tour_featured_random'        => '',
 			'disable_accommodation_title'        => '',
 			'disable_accommodation_descriptions' => '',
 			'disable_accommodation_excerpts'     => '',
@@ -175,7 +176,23 @@ class LSX_WETU_Importer_Settings {
 								name="enable_tour_ref_column" />
 								<small><?php esc_html_e( 'Enables the use of the WETU Reference Column for better tours management.', 'lsx-wetu-importer' ); ?></small>
 							</td>
-						</tr>						
+						</tr>
+						
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="enable_tour_featured_random"><?php esc_html_e( 'Randomize Featured Image', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['enable_tour_featured_random'] ) && '' !== $options['enable_tour_featured_random'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="enable_tour_featured_random" />
+								<small><?php esc_html_e( 'This will randomize the featured image from the destination gallery.', 'lsx-wetu-importer' ); ?></small>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 

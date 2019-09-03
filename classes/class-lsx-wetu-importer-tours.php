@@ -1172,10 +1172,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		$counter = 0;
 
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
-			foreach ( $data[0]['content']['images'] as $v ) {
-				/*print_r('<pre>');
-				print_r( $v );
-				print_r('</pre>');*/
+			$images_array = $data[0]['content']['images'];
+
+			if ( 'on' === $this->options['enable_tour_featured_random'] ) {
+				$images_array = array_rand( $images_array );
+			}
+
+			foreach ( $images_array as $v ) {
 
 				if ( true === $image_set ) {
 					$counter++;
