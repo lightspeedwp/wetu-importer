@@ -1336,6 +1336,7 @@ class LSX_WETU_Importer {
 		}
 
 		$url = str_replace( 'Pins', 'Itinerary', $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
+		$url .= '&results=2000';
 		add_option( 'lsx_ti_tours_api_options', $options );
 
 		$data = wp_remote_get( $url );
