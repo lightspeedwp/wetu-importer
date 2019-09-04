@@ -1136,7 +1136,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						$url_qs = '';
 						$jdata = wp_remote_get( $url . '/Get?' . $url_qs . '&ids=' . $destination[1] );
 
-						if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+						if ( ! is_wp_error( $jdata ) && ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 							$adata = json_decode( $jdata['body'], true );
 
 							if ( ! empty( $adata ) && ! empty( $adata[0]['content']['images'] ) ) {
@@ -1174,8 +1174,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
 			$images_array = $data[0]['content']['images'];
 
+
 			if ( 'on' === $this->options['enable_tour_featured_random'] ) {
-				$images_array = array_rand( $images_array );
+				shuffle( $images_array );
 			}
 
 			foreach ( $images_array as $v ) {
