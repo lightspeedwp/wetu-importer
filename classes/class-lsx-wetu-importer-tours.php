@@ -1121,11 +1121,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function attach_destination_images( $importable_content = array() ) {
 		if ( false !== $this->destination_images ) {
-			$this->shuffle_assoc( $this->destination_images );
 
 			foreach ( $this->destination_images as $tour => $destinations ) {
-				//$this->shuffle_assoc( $destinations );
-
+				shuffle( $destinations );
 				$image_set = false;
 				$forced = false;
 
@@ -1255,37 +1253,30 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function check_if_image_is_used( $v ) {
 		global $wpdb;
+		$return = false;
 
-		$temp_fragment = explode( '/', $v['url_fragment'] );
-		$url_filename = $temp_fragment[ count( $temp_fragment ) - 1 ];
-		$url_filename = str_replace( array( '.jpg', '.png', '.jpeg' ), '', $url_filename );
-		$url_filename = trim( $url_filename );
-		$url_filename = str_replace( ' ', '_', $url_filename );
-
-		if ( in_array( $url_filename, $this->found_attachments ) ) {
-			// check to see if there is a featured image set with this ID.
-			$found_id = array_search( $url_filename, $this->found_attachments );
-
-			$results = $wpdb->get_results( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value = '%s' AND meta_key = '_thumbnail_id'", array( $found_id ) ) );
-			if ( ! empty( $results ) ) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			$results = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_name = '%s'", array( $url_filename ) ) );
-
-			if ( ! empty( $results ) ) {
-				$results = $wpdb->get_results( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value = '%s' AND meta_key = '_thumbnail_id'", array( $results[0]->ID ) ) );
-				if ( ! empty( $results ) ) {
-					return true;
-				} else {
-					return false;
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT post_id
+				 FROM {$wpdb->postmeta}
+				 WHERE meta_value = '%s'
+				 AND meta_key = 'lsx_wetu_id'
+				",
+				array( $value )
+			)
+		);
+		$attached_tours = array();
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $result ) {
+				if ( 'tour' === get_post_type( $result['post_id'] ) ) {
+					$attached_tours[] = $result['post_id'];
 				}
-			} else {
-				return false;
 			}
 		}
+		if ( ! empty( $attached_tours ) ) {
+			$return = true;
+		}
+		return $return;
 	}
 
 	/**

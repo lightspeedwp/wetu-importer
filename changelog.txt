@@ -8,6 +8,7 @@
 * Dev - Added in datatables.net for pagination and sorting on the lists
 * Dev - Added in the ability to define custom titles
 * Dev - Added in the option to randomize the featured image that is grabbed from the attached destinations.
+* Dev - Added in a WETU ID for images which stores the URL fragment from WETU.
 * Fix - Fixed the sorting of the search results by relevance
 * Fix - Fixed the assigning of team and safari brands
 * Fix - Fixed the Connecting of destinations during the tour import

@@ -1068,15 +1068,15 @@ class LSX_WETU_Importer {
 	 */
 	public function attach_image( $v = false, $parent_id, $image_sizes = false, $banner = false ) {
 		if ( false !== $v ) {
-			$temp_fragment = explode( '/',$v['url_fragment'] );
-			$url_filename = $temp_fragment[ count( $temp_fragment ) -1 ];
-			$url_filename = str_replace( array( '.jpg', '.png', '.jpeg' ),'',$url_filename );
-			$url_filename = trim( $url_filename );
-			$title = $url_filename;
-			$url_filename = str_replace( ' ','_',$url_filename );
+			$temp_fragment = explode( '/', $v['url_fragment'] );
+			$url_filename  = $temp_fragment[ count( $temp_fragment ) -1 ];
+			$url_filename  = str_replace( array( '.jpg', '.png', '.jpeg' ), '', $url_filename );
+			$url_filename  = trim( $url_filename );
+			$title         = $url_filename;
+			$url_filename  = str_replace( ' ', '_', $url_filename );
 
 			if ( ! isset( $this->options['image_replacing'] ) && in_array( $url_filename, $this->found_attachments ) ) {
-				return array_search( $url_filename,$this->found_attachments );
+				return array_search( $url_filename, $this->found_attachments );
 			}
 
 			$postdata = array();
@@ -1100,20 +1100,17 @@ class LSX_WETU_Importer {
 			}
 
 			$attach_id = null;
-			//Resizor - add option to setting if required
-			$fragment = str_replace( ' ','%20',$v['url_fragment'] );
-			$url = $this->get_scaling_url( $image_sizes ) . $fragment;
-
-			$attach_id = $this->attach_external_image2( $url,$parent_id,'',$v['label'],$postdata );
-
-			$this->found_attachments[ $attach_id ] = $url_filename;
-
-			//echo($attach_id.' add image');
+			// Resizor - add option to setting if required.
+			$fragment  = str_replace( ' ', '%20', $v['url_fragment'] );
+			$url       = $this->get_scaling_url( $image_sizes ) . $fragment;
+			$attach_id = $this->attach_external_image2( $url, $parent_id, '', $v['label'], $postdata );
 			if ( ! empty( $attach_id ) ) {
+				$this->found_attachments[ $attach_id ] = $url_filename;
+				add_post_meta( $attach_id, 'lsx_wetu_id', $v['url_fragment'] , true );
 				return $attach_id;
 			}
 		}
-		return 	false;
+		return false;
 	}
 
 	public function attach_external_image2( $url = null, $post_id = null, $thumb = null, $filename = null, $post_data = array() ) {
