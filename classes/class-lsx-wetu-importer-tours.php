@@ -1121,7 +1121,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function attach_destination_images( $importable_content = array() ) {
 		if ( false !== $this->destination_images ) {
-
+			$this->shuffle_assoc( $this->destination_images );
 			foreach ( $this->destination_images as $tour => $destinations ) {
 				shuffle( $destinations );
 				$image_set = false;
