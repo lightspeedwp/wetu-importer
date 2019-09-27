@@ -378,7 +378,7 @@ class LSX_WETU_Importer_Settings {
 							</td>
 						</tr>
 
-						<tr class="form-field -wrap">
+						<tr class="form-field -wrap image-settings">
 							<th scope="row">
 								<label for="scaling"> <?php esc_html_e( 'Scaling', 'lsx-wetu-importer' ); ?></label>
 							</th>

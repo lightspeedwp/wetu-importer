@@ -6,6 +6,8 @@ body.tour-operator_page_lsx-wetu-importer {
     height: auto; }
   body.tour-operator_page_lsx-wetu-importer #posts-filter .manage-column {
     cursor: pointer; }
+  body.tour-operator_page_lsx-wetu-importer .image-settings td {
+    line-height: 1.5; }
   body.tour-operator_page_lsx-wetu-importer #posts-filter, body.tour-operator_page_lsx-wetu-importer #import-list {
     margin-top: 15px; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter .column-order, body.tour-operator_page_lsx-wetu-importer #import-list .column-order {
