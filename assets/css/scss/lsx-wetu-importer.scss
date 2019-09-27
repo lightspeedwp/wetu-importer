@@ -123,7 +123,7 @@ body.tour-operator_page_lsx-wetu-importer {
 
 		h1 {
 			padding: 0px 0 4px 0;
-		}		
+		}
 	}
 
 	.welcome-block-header, .welcome-block.postbox {
@@ -182,7 +182,7 @@ body.tour-operator_page_lsx-wetu-importer {
 		bottom: 40px;
 		left: 1%;
 		z-index: 1;
-	}	
+	}
 
     .welcome-block.postbox {
 
@@ -192,21 +192,21 @@ body.tour-operator_page_lsx-wetu-importer {
 		}
 		@media (max-width: 1272px) {
 			width: calc(24% - 27px);
-		}		
+		}
 		@media (max-width: 690px) {
 			width: calc(48% - 27px);
-		}		
+		}
 
         h2.title {
             height: 2em;
             line-height: 28px;
 			margin: 0 0 2em 0;
-			
+
 			@media (max-width: 910px) {
 				height: 3em;
-			}			
+			}
 		}
-		
+
 		.excerpt {
 			min-height: 100px;
 		}
@@ -224,7 +224,7 @@ body.tour-operator_page_lsx-wetu-importer {
             }
         }
 	}
-	
+
 	/* Tour / Accommodation / Destinations */
 	.wetu-status {
 		h3 {
@@ -233,6 +233,20 @@ body.tour-operator_page_lsx-wetu-importer {
 	}
 	.subsubsub {
 		margin-bottom: 10px;
+	}
+	.documentation {
+		list-style: none;
+		margin: 11px 0 0;
+		padding: 0;
+		font-size: 13px;
+		float: left;
+		text-decoration: none;
+		&:before {
+			content: "|";
+			color: #666;
+			margin-right: 6px;
+			margin-left: 6px;
+		}
 	}
 	#lsx-wetu-importer-search-form {
 		.normal-search {
@@ -243,7 +257,7 @@ body.tour-operator_page_lsx-wetu-importer {
 	.advanced-search-toggle {
 		display: inline-block;
 		margin-top: 0;
-		padding-bottom: 10px;	
+		padding-bottom: 10px;
 	}
 
 	.widefat {
@@ -255,7 +269,7 @@ body.tour-operator_page_lsx-wetu-importer {
 			.check-column {
 				vertical-align: top;
 				padding: 10px 0 6px;
-			}		
+			}
 		}
 	}
 	#import-list {

@@ -477,7 +477,7 @@ class LSX_WETU_Importer {
 		<ul class="subsubsub">
 			<li class="searchform"><a class="current" href="#search"><?php esc_attr_e( 'Search', 'lsx-wetu-importer' ); ?></a> | </li>
 			<li class="publish"><a href="#publish"><?php esc_attr_e( 'Published', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'publish ' ) ); ?>)</span></a> | </li>
-			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li> 
+			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li>
 			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'lsx-wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
 
 			<?php if ( 'tour' === $this->tab_slug ) { ?>
@@ -486,6 +486,7 @@ class LSX_WETU_Importer {
 				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
 			<?php } ?>
 		</ul>
+		<a class="documentation" target="_blank"href="https://tour-operator.lsdev.biz/documentation/extension/wetu-importer/"><?php esc_attr_e( 'Documentation', 'lsx-wetu-importer' ); ?></a>
 		<?php
 	}
 
