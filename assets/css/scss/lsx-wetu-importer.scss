@@ -26,16 +26,15 @@ body.tour-operator_page_lsx-wetu-importer {
 		outline: none;
 		.tooltip-inner {
 			display: none;
-		}
-		@media (max-width: 782px) {
-			&:focus, &:active {
-				.tooltip-inner {
+			@media (max-width: 782px) {
+				&.clicked {
 					display: block;
 					outline: none;
 					font-size: 14px;
 				}
 			}
 		}
+
 	}
 
 

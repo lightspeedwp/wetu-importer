@@ -106,7 +106,7 @@ class LSX_WETU_Importer_Settings {
 									echo esc_attr( $options['api_key'] );
 								}
 								?>" name="api_key" />
-								<button type="button" onclick="return false" title="The API key can be found on your My Account page of your WETU account." class="dashicons dashicons-editor-help tooltip">
+								<button type="button" onclick="return false;" title="The API key can be found on your My Account page of your WETU account." id="doc-tooltip" class="dashicons dashicons-editor-help tooltip">
 									<span class="tooltip-inner">The API key can be found on your My Account page of your WETU account.</span>
 								</button>
 							</td>
