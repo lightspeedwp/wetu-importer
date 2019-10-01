@@ -244,9 +244,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			<input class="content" type="hidden" name="own" value="true" />
 
 			<select name="type">
-				<option <?php if ( in_array( 'allitineraries', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?> value="allitineraries"><?php esc_html_e( 'All Itineraries','lsx-wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'personal', $form_options ) || empty( $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="personal"><?php esc_html_e( 'Personal','lsx-wetu-importer' ); ?></option>
 				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="sample"><?php esc_html_e( 'Sample','lsx-wetu-importer' ); ?></option>
-				<option <?php if ( in_array( 'personal', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="personal"><?php esc_html_e( 'Personal','lsx-wetu-importer' ); ?></option>
 			</select>
 			<input class="button submit" type="submit" value="<?php esc_attr_e( 'Refresh', 'lsx-wetu-importer' ); ?>" />
 		</form>
