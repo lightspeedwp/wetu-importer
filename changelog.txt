@@ -9,11 +9,13 @@
 * Dev - Added in the ability to define custom titles
 * Dev - Added in the option to randomize the featured image that is grabbed from the attached destinations.
 * Dev - Added in a WETU ID for images which stores the URL fragment from WETU.
+* Dev - Removed the "All Itineraries" Option from the Tour Importer and set "Personal" as the default.
 * Fix - Fixed the sorting of the search results by relevance
 * Fix - Fixed the assigning of team and safari brands
 * Fix - Fixed the Connecting of destinations during the tour import
 * Fix - Fixed the stripping of HTML from the accommodation description
 * Fix - Fixed the accommodation description and excerpt not importing
+
 
 ### 1.2.1
 * Fix - Fixed the problem with the empty API key.
