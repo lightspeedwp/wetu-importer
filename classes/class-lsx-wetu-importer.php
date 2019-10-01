@@ -595,7 +595,6 @@ class LSX_WETU_Importer {
 
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
-			var_dump($result);
 			if ( true === $result ) {
 				echo '<span style="color:green;">' . esc_attr( 'Connected', 'lsx-wetu-importer' ) . '</span>';
 				echo ' - <small><a href="#">' . esc_attr( 'Refresh', 'lsx-wetu-importer' ) . '</a></small>';
@@ -1331,6 +1330,9 @@ class LSX_WETU_Importer {
 		if ( isset( $_GET['type'] ) && 'allitineraries' !== $_GET['type'] ) {
 			$this->current_importer->url_qs .= '&type=' . $_GET['type'];
 			$options[] = $_GET['type'];
+		} else {
+			$options[] = 'sample';
+			$this->current_importer->url_qs .= '&type=sample';
 		}
 
 		$url = str_replace( 'Pins', 'Itinerary', $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
