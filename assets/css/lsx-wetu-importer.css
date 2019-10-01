@@ -8,6 +8,21 @@ body.tour-operator_page_lsx-wetu-importer {
     cursor: pointer; }
   body.tour-operator_page_lsx-wetu-importer .image-settings td {
     line-height: 1.5; }
+  body.tour-operator_page_lsx-wetu-importer .tooltip {
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    outline: none; }
+    body.tour-operator_page_lsx-wetu-importer .tooltip .tooltip-inner {
+      display: none; }
+    @media (max-width: 782px) {
+      body.tour-operator_page_lsx-wetu-importer .tooltip:focus .tooltip-inner {
+        display: block;
+        outline: none;
+        font-size: 14px; } }
   body.tour-operator_page_lsx-wetu-importer #posts-filter, body.tour-operator_page_lsx-wetu-importer #import-list {
     margin-top: 15px; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter .column-order, body.tour-operator_page_lsx-wetu-importer #import-list .column-order {
