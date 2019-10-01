@@ -590,12 +590,12 @@ class LSX_WETU_Importer {
 	 * Wetu Status Bar.
 	 */
 	public function wetu_status() {
-		$tours = false;
+		$tours = get_transient( 'lsx_ti_tours' );
 		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status', 'lsx-wetu-importer' ) . ' - ';
 
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
-
+			var_dump($result);
 			if ( true === $result ) {
 				echo '<span style="color:green;">' . esc_attr( 'Connected', 'lsx-wetu-importer' ) . '</span>';
 				echo ' - <small><a href="#">' . esc_attr( 'Refresh', 'lsx-wetu-importer' ) . '</a></small>';
@@ -1336,7 +1336,6 @@ class LSX_WETU_Importer {
 		$url = str_replace( 'Pins', 'Itinerary', $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
 		$url .= '&results=2000';
 		add_option( 'lsx_ti_tours_api_options', $options );
-
 		$data = wp_remote_get( $url );
 		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
 

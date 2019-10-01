@@ -42,6 +42,29 @@ function lsx_wetu_get_post_count( $post_type = '', $post_status = '' ) {
 	if ( '' !== $post_type && '' !== $post_status ) {
 		$result = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(`ID`) FROM $wpdb->posts WHERE `post_status` = '%s' AND `post_type` = '%s'", array( trim( $post_status ), $post_type ) ) );
 		if ( false !== $result && '' !== $result ) {
+			if ( 'tour' === $post_type ) {
+				$wetu_tours = get_transient( 'lsx_ti_tours' );
+				if ( false !== $wetu_tours ) {
+					$results = $wpdb->get_results( $wpdb->prepare( "SELECT `ID` FROM $wpdb->posts WHERE `post_status` = '%s' AND `post_type` = '%s'", array( trim( $post_status ), $post_type ) ) );
+					$result_count = 0;
+					$tour_wetu_ids = array();
+					foreach ( $wetu_tours as $wetu_tour ) {
+						$tour_wetu_ids[] = $wetu_tour['identifier'];
+					}
+
+					if ( ! empty( $results ) ) {
+						foreach ( $results as $tour ) {
+							$current_wetu_id = get_post_meta( $tour->ID, 'lsx_wetu_id', true );
+							if ( in_array( $current_wetu_id, $tour_wetu_ids ) ) {
+								$result_count++;
+							}
+						}
+					}
+					$result = $result_count;
+				} else {
+					$result = 0;
+				}
+			}
 			$count = $result;
 		}
 	}
