@@ -146,10 +146,10 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
 							<ul>
-								<?php if ( isset( $this->options['disable_accommodation_descriptions'] ) && 'on' !== $this->options['disable_accommodation_descriptions']  ) { ?>
+								<?php if ( isset( $this->options['disable_accommodation_descriptions'] ) && 'on' !== $this->options['disable_accommodation_descriptions'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
-								<?php if ( isset( $this->options['disable_accommodation_excerpts'] ) && 'on' !== $this->options['disable_accommodation_excerpts']  ) { ?>
+								<?php if ( isset( $this->options['disable_accommodation_excerpts'] ) && 'on' !== $this->options['disable_accommodation_excerpts'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="excerpt" /> <?php esc_html_e( 'Excerpt', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 

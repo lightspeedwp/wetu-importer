@@ -101,13 +101,13 @@ class LSX_WETU_Importer_Settings {
 								<label for="wetu_api_key"> <?php esc_html_e( 'API Key', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input type="text" value="<?php
+								<input data-toggle="tooltip" data-placement="top" title="The API key can be found on your My Account page of your WETU account." type="text" value="<?php
 								if ( isset( $options['api_key'] ) ) {
 									echo esc_attr( $options['api_key'] );
 								}
 								?>" name="api_key" />
 							</td>
-						</tr>					
+						</tr>
 					</tbody>
 				</table>
 
@@ -178,7 +178,7 @@ class LSX_WETU_Importer_Settings {
 								<small><?php esc_html_e( 'Enables the use of the WETU Reference Column for better tours management.', 'lsx-wetu-importer' ); ?></small>
 							</td>
 						</tr>
-						
+
 						<tr class="form-field -wrap">
 							<th scope="row">
 								<label for="enable_tour_featured_random"><?php esc_html_e( 'Randomize Featured Image', 'lsx-wetu-importer' ); ?></label>
@@ -262,7 +262,7 @@ class LSX_WETU_Importer_Settings {
 								name="disable_accommodation_excerpts" />
 								<small><?php esc_html_e( 'If you are going to edit the accommodation excerpts then enable this setting.', 'lsx-wetu-importer' ); ?></small>
 							</td>
-						</tr>					
+						</tr>
 					</tbody>
 				</table>
 
@@ -300,7 +300,7 @@ class LSX_WETU_Importer_Settings {
 								name="disable_destination_descriptions" />
 								<small><?php esc_html_e( 'If you are going to edit the destination descriptions on this site then enable this setting.', 'lsx-wetu-importer' ); ?></small>
 							</td>
-						</tr>						
+						</tr>
 					</tbody>
 				</table>
 
@@ -378,7 +378,7 @@ class LSX_WETU_Importer_Settings {
 							</td>
 						</tr>
 
-						<tr class="form-field -wrap">
+						<tr class="form-field -wrap image-settings">
 							<th scope="row">
 								<label for="scaling"> <?php esc_html_e( 'Scaling', 'lsx-wetu-importer' ); ?></label>
 							</th>

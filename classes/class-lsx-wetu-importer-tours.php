@@ -415,7 +415,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				</td>
 				<td class="date column-date">
 					' . $row['reference_number'] . '
-				</td>				
+				</td>
 				<td class="date column-date">
 					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
@@ -1171,7 +1171,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
 			$images_array = $data[0]['content']['images'];
 
-
 			if ( 'on' === $this->options['enable_tour_featured_random'] ) {
 				shuffle( $images_array );
 			}
@@ -1345,7 +1344,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			</th>
 			<th class="manage-column column-order " id="order" scope="col"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
 			<th class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
-			<th class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>			
+			<th class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>
 			<th class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
 			<th class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>
