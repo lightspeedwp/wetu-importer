@@ -28,7 +28,7 @@ body.tour-operator_page_lsx-wetu-importer {
 			display: none;
 		}
 		@media (max-width: 782px) {
-			&:focus {
+			&:focus, &:active {
 				.tooltip-inner {
 					display: block;
 					outline: none;

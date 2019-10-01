@@ -19,7 +19,7 @@ body.tour-operator_page_lsx-wetu-importer {
     body.tour-operator_page_lsx-wetu-importer .tooltip .tooltip-inner {
       display: none; }
     @media (max-width: 782px) {
-      body.tour-operator_page_lsx-wetu-importer .tooltip:focus .tooltip-inner {
+      body.tour-operator_page_lsx-wetu-importer .tooltip:focus .tooltip-inner, body.tour-operator_page_lsx-wetu-importer .tooltip:active .tooltip-inner {
         display: block;
         outline: none;
         font-size: 14px; } }
