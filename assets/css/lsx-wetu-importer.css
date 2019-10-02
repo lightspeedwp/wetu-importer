@@ -18,11 +18,11 @@ body.tour-operator_page_lsx-wetu-importer {
     outline: none; }
     body.tour-operator_page_lsx-wetu-importer .tooltip .tooltip-inner {
       display: none; }
-    @media (max-width: 782px) {
-      body.tour-operator_page_lsx-wetu-importer .tooltip:focus .tooltip-inner {
-        display: block;
-        outline: none;
-        font-size: 14px; } }
+      @media (max-width: 782px) {
+        body.tour-operator_page_lsx-wetu-importer .tooltip .tooltip-inner.clicked {
+          display: block;
+          outline: none;
+          font-size: 14px; } }
   body.tour-operator_page_lsx-wetu-importer #posts-filter, body.tour-operator_page_lsx-wetu-importer #import-list {
     margin-top: 15px; }
     body.tour-operator_page_lsx-wetu-importer #posts-filter .column-order, body.tour-operator_page_lsx-wetu-importer #import-list .column-order {
