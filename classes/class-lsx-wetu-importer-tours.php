@@ -605,16 +605,17 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		$ends_in = false;
 
 		foreach ( $data['legs'] as $leg ) {
+
 			// Itinerary Accommodation.
 			$current_accommodation = false;
-			if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
-				$current_accommodation = $this->set_accommodation( $leg, $id );
-			}
-
-			// Itinerary Destination.
 			$current_destination = false;
-			if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
-				$current_destination = $this->set_destination( $leg, $id, $leg_counter );
+			if ( 'Mobile' !== $leg['type'] ) {
+				if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
+					$current_accommodation = $this->set_accommodation( $leg, $id );
+				}
+				if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
+					$current_destination = $this->set_destination( $leg, $id, $leg_counter );
+				}
 			}
 
 			// If the Nights are the same mount of days in the array,  then it isnt "By Destination".
@@ -626,7 +627,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					// If this is a moble tented solution.
 					$next_day_count = $day_counter + (int) $day['days'];
 
-					if ( isset( $leg['stops'] ) || ( 1 < (int) $day['days'] ) ) {
+					if ( ( isset( $leg['stops'] ) && 'Mobile' !== $leg['type'] ) || ( 1 < (int) $day['days'] ) ) {
 						$day_count_label = ' - ' . ( $next_day_count - 1 );
 					} else {
 						$day_count_label = '';
@@ -645,6 +646,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						$current_day['featured_image'] = '';
 					} else {
 						$current_day['featured_image'] = '';
+					}
+
+					// If its a mobile safari, we need to get the destination and accommodation data from the stops.
+					if ( 'Mobile' === $leg['type'] ) {
+						$current_destination   = $this->get_mobile_destination( $day, $leg, $id );
+						$current_accommodation = $this->get_mobile_accommodation( $day, $leg, $id );
 					}
 
 					// Accommodation.
@@ -784,6 +791,50 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( false !== $ends_in ) {
 			add_post_meta( $id, 'ends_in', $ends_in, true );
 		}
+	}
+
+	/**
+	 * Gets the destination for the mobile camp.
+	 *
+	 * @param $day
+	 * @param $leg
+	 * @return void
+	 */
+	public function get_mobile_destination( $day, $leg, $id ) {
+		$current_destination = false;
+		$current_day = (int) $day['itinerary_start_day'] + 1;
+		if ( isset( $leg['stops'] ) ) {
+			foreach ( $leg['stops'] as $stop ) {
+				$arrival_day = (int) $stop['arrival_day'] + 1;
+				$departure_day = (int) $stop['departure_day'] + 1;
+				if ( $arrival_day <= $current_day && $current_day < $departure_day ) {
+					$current_destination = $this->set_destination( $stop, $id, 0 );
+				}
+			}
+		}
+		return $current_destination;
+	}
+
+	/**
+	 * Gets the accommodation for the mobile camp.
+	 *
+	 * @param $day
+	 * @param $leg
+	 * @return void
+	 */
+	public function get_mobile_accommodation( $day, $leg, $id ) {
+		$current_accommodation = false;
+		$current_day = (int) $day['itinerary_start_day'] + 1;
+		if ( isset( $leg['stops'] ) ) {
+			foreach ( $leg['stops'] as $stop ) {
+				$arrival_day = (int) $stop['arrival_day'] + 1;
+				$departure_day = (int) $stop['departure_day'] + 1;
+				if ( $arrival_day <= $current_day && $current_day < $departure_day ) {
+					$current_accommodation = $this->set_accommodation( $stop, $id, 0 );
+				}
+			}
+		}
+		return $current_accommodation;
 	}
 
 	/**

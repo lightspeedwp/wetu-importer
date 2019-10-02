@@ -4,6 +4,7 @@
 * Dev - Adding extra instructions on the importer.
 * Dev - Adding mobile tooltip for documentation.
 * Dev - Removing the conditional statements removing certain fields when the single template is disabled.
+* Dev - Added in support for Mobile Safaris.
 
 ### 1.3.0
 * Dev - Added the sortable Reference Column for tours
