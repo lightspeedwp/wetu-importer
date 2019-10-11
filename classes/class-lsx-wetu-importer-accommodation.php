@@ -599,17 +599,6 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	}
 
 	/**
-	 * Set the team memberon each item.
-	 */
-	public function set_team_member( $id, $team_members ) {
-		delete_post_meta( $id, 'team_to_' . $this->tab_slug );
-
-		foreach ( $team_members as $team ) {
-			add_post_meta( $id, 'team_to_' . $this->tab_slug, $team );
-		}
-	}
-
-	/**
 	 * Set the safari brand
 	 */
 	public function set_safari_brands( $id, $safari_brands ) {

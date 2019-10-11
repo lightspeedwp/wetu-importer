@@ -1366,6 +1366,16 @@ class LSX_WETU_Importer {
 		}
 		return $id;
 	}
+	/**
+	 * Set the team memberon each item.
+	 */
+	public function set_team_member( $id, $team_members ) {
+		delete_post_meta( $id, 'team_to_' . $this->tab_slug );
+
+		foreach ( $team_members as $team ) {
+			add_post_meta( $id, 'team_to_' . $this->tab_slug, $team );
+		}
+	}
 }
 
 $lsx_wetu_importer = new LSX_WETU_Importer();
