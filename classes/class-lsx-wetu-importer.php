@@ -1124,7 +1124,7 @@ class LSX_WETU_Importer {
 
 		$tmp   = tempnam( '/tmp', 'FOO' );
 		$image = wp_remote_get( $url );
-		if ( ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
+		if ( ! is_wp_error( $image ) && ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
 			file_put_contents( $tmp, $image['body'] );
 			chmod( $tmp,'777' );
 
