@@ -2,7 +2,7 @@
 
 ### 1.3.2 - In Development
 * Fix - Moved the 'set_team_member' function to the 'LSX_WETU_Importer()' class
-* Dev - Added in a 'sticky_archive' custom field set to 0 for menu ordering
+* Dev - Added in a 'sticky_order' custom field set to 0 for menu ordering
 
 ### 1.3.1 - 2 October 2019
 * Dev - Adding extra instructions on the importer.
