@@ -592,6 +592,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
 					add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ) );
 				}
+				add_post_meta( $id, 'sticky_archive', '0', true );
 			}
 
 			$this->find_attachments( $id );

@@ -543,6 +543,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
 				add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data['last_modified'] ) );
 			}
+			add_post_meta( $id, 'sticky_archive', '0', true );
 		}
 
 		// Set reference number.
@@ -971,8 +972,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			if ( '' !== $ac_id && false !== $ac_id ) {
-				$this->save_custom_field( $ac_id,'accommodation_to_tour',$id,false,false );
-				$this->save_custom_field( $id,'tour_to_accommodation',$ac_id,false,false );
+				$this->save_custom_field( $ac_id, 'accommodation_to_tour', $id, false, false );
+				$this->save_custom_field( $id, 'tour_to_accommodation', $ac_id, false, false );
+				$this->save_custom_field( '0', 'sticky_archive', $ac_id, false, true );
 				$this->queue_item( $ac_id );
 			}
 		}
@@ -1076,6 +1078,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						}
 
 						$this->save_custom_field( $day['destination_content_entity_id'], 'lsx_wetu_id', $dest_id );
+						$this->save_custom_field( '0', 'sticky_archive', $dest_id, false, true );
 					}
 				}
 			}
@@ -1147,6 +1150,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 				//Save the wetu field
 				$this->save_custom_field( $country_wetu_id, 'lsx_wetu_id', $country_id );
+				$this->save_custom_field( '0', 'sticky_archive', $country_id, false, true );
 			}
 		}
 
