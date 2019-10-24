@@ -514,7 +514,6 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				add_post_meta( $id, 'lsx_wetu_id', $wetu_id );
 				add_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ) );
 			}
-			add_post_meta( $id, 'sticky_order', '0', true );
 		}
 
 		// Setup some default for use in the import.
