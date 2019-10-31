@@ -146,34 +146,30 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
 							<ul>
-								<?php if ( isset( $this->options['disable_accommodation_descriptions'] ) && 'on' !== $this->options['disable_accommodation_descriptions']  ) { ?>
+								<?php if ( isset( $this->options['disable_accommodation_descriptions'] ) && 'on' !== $this->options['disable_accommodation_descriptions'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
-								<?php if ( isset( $this->options['disable_accommodation_excerpts'] ) && 'on' !== $this->options['disable_accommodation_excerpts']  ) { ?>
+								<?php if ( isset( $this->options['disable_accommodation_excerpts'] ) && 'on' !== $this->options['disable_accommodation_excerpts'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="excerpt" /> <?php esc_html_e( 'Excerpt', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 
-								<?php if ( ! isset( $this->accommodation_settings['disable_single'] ) ) { ?>
-									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="gallery" /> <?php esc_html_e( 'Main Gallery', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="gallery" /> <?php esc_html_e( 'Main Gallery', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category', 'lsx-wetu-importer' ); ?></li>
-								<?php if ( ! isset( $this->accommodation_settings['disable_single'] ) ) { ?>
-									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="location" /> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="location" /> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?></li>
+
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Connect Destinations', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="rating" /> <?php esc_html_e( 'Rating', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="rooms" /> <?php esc_html_e( 'Rooms', 'lsx-wetu-importer' ); ?></li>
 
-								<?php if ( ! isset( $this->accommodation_settings['disable_single'] ) ) { ?>
-									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="checkin" /> <?php esc_html_e( 'Check In / Check Out', 'lsx-wetu-importer' ); ?></li>
-									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="facilities" /> <?php esc_html_e( 'Facilities', 'lsx-wetu-importer' ); ?></li>
-									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="friendly" /> <?php esc_html_e( 'Friendly', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="checkin" /> <?php esc_html_e( 'Check In / Check Out', 'lsx-wetu-importer' ); ?></li>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="facilities" /> <?php esc_html_e( 'Facilities', 'lsx-wetu-importer' ); ?></li>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="friendly" /> <?php esc_html_e( 'Friendly', 'lsx-wetu-importer' ); ?></li>
+
 
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="special_interests" /> <?php esc_html_e( 'Special Interests', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="spoken_languages" /> <?php esc_html_e( 'Spoken Languages', 'lsx-wetu-importer' ); ?></li>
 
-								<?php if ( class_exists( 'LSX_TO_Videos' ) && ! isset( $this->accommodation_settings['disable_single'] ) ) { ?>
+								<?php if ( class_exists( 'LSX_TO_Videos' ) ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="videos" /> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 							</ul>
@@ -600,17 +596,6 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		}
 
 		return $id;
-	}
-
-	/**
-	 * Set the team memberon each item.
-	 */
-	public function set_team_member( $id, $team_members ) {
-		delete_post_meta( $id, 'team_to_' . $this->tab_slug );
-
-		foreach ( $team_members as $team ) {
-			add_post_meta( $id, 'team_to_' . $this->tab_slug, $team );
-		}
 	}
 
 	/**

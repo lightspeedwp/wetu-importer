@@ -244,9 +244,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			<input class="content" type="hidden" name="own" value="true" />
 
 			<select name="type">
-				<option <?php if ( in_array( 'allitineraries', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?> value="allitineraries"><?php esc_html_e( 'All Itineraries','lsx-wetu-importer' ); ?></option>
-				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="sample"><?php esc_html_e( 'Sample','lsx-wetu-importer' ); ?></option>
 				<option <?php if ( in_array( 'personal', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="personal"><?php esc_html_e( 'Personal','lsx-wetu-importer' ); ?></option>
+				<option <?php if ( in_array( 'sample', $form_options ) ) { echo esc_attr( 'selected="selected"' ); } ?>value="sample"><?php esc_html_e( 'Sample','lsx-wetu-importer' ); ?></option>
 			</select>
 			<input class="button submit" type="submit" value="<?php esc_attr_e( 'Refresh', 'lsx-wetu-importer' ); ?>" />
 		</form>
@@ -416,7 +415,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				</td>
 				<td class="date column-date">
 					' . $row['reference_number'] . '
-				</td>				
+				</td>
 				<td class="date column-date">
 					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
@@ -606,16 +605,17 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		$ends_in = false;
 
 		foreach ( $data['legs'] as $leg ) {
+
 			// Itinerary Accommodation.
 			$current_accommodation = false;
-			if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
-				$current_accommodation = $this->set_accommodation( $leg, $id );
-			}
-
-			// Itinerary Destination.
 			$current_destination = false;
-			if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
-				$current_destination = $this->set_destination( $leg, $id, $leg_counter );
+			if ( 'Mobile' !== $leg['type'] ) {
+				if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
+					$current_accommodation = $this->set_accommodation( $leg, $id );
+				}
+				if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
+					$current_destination = $this->set_destination( $leg, $id, $leg_counter );
+				}
 			}
 
 			// If the Nights are the same mount of days in the array,  then it isnt "By Destination".
@@ -627,7 +627,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					// If this is a moble tented solution.
 					$next_day_count = $day_counter + (int) $day['days'];
 
-					if ( isset( $leg['stops'] ) || ( 1 < (int) $day['days'] ) ) {
+					if ( ( isset( $leg['stops'] ) && 'Mobile' !== $leg['type'] ) || ( 1 < (int) $day['days'] ) ) {
 						$day_count_label = ' - ' . ( $next_day_count - 1 );
 					} else {
 						$day_count_label = '';
@@ -646,6 +646,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						$current_day['featured_image'] = '';
 					} else {
 						$current_day['featured_image'] = '';
+					}
+
+					// If its a mobile safari, we need to get the destination and accommodation data from the stops.
+					if ( 'Mobile' === $leg['type'] ) {
+						$current_destination   = $this->get_mobile_destination( $day, $leg, $id );
+						$current_accommodation = $this->get_mobile_accommodation( $day, $leg, $id );
 					}
 
 					// Accommodation.
@@ -788,6 +794,50 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	}
 
 	/**
+	 * Gets the destination for the mobile camp.
+	 *
+	 * @param $day
+	 * @param $leg
+	 * @return void
+	 */
+	public function get_mobile_destination( $day, $leg, $id ) {
+		$current_destination = false;
+		$current_day = (int) $day['itinerary_start_day'] + 1;
+		if ( isset( $leg['stops'] ) ) {
+			foreach ( $leg['stops'] as $stop ) {
+				$arrival_day = (int) $stop['arrival_day'] + 1;
+				$departure_day = (int) $stop['departure_day'] + 1;
+				if ( $arrival_day <= $current_day && $current_day < $departure_day ) {
+					$current_destination = $this->set_destination( $stop, $id, 0 );
+				}
+			}
+		}
+		return $current_destination;
+	}
+
+	/**
+	 * Gets the accommodation for the mobile camp.
+	 *
+	 * @param $day
+	 * @param $leg
+	 * @return void
+	 */
+	public function get_mobile_accommodation( $day, $leg, $id ) {
+		$current_accommodation = false;
+		$current_day = (int) $day['itinerary_start_day'] + 1;
+		if ( isset( $leg['stops'] ) ) {
+			foreach ( $leg['stops'] as $stop ) {
+				$arrival_day = (int) $stop['arrival_day'] + 1;
+				$departure_day = (int) $stop['departure_day'] + 1;
+				if ( $arrival_day <= $current_day && $current_day < $departure_day ) {
+					$current_accommodation = $this->set_accommodation( $stop, $id, 0 );
+				}
+			}
+		}
+		return $current_accommodation;
+	}
+
+	/**
 	 * Run through your routes and save the points as a KML file.
 	 */
 	public function set_map_data( $data, $id, $zoom = 9 ) {
@@ -921,8 +971,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			if ( '' !== $ac_id && false !== $ac_id ) {
-				$this->save_custom_field( $ac_id,'accommodation_to_tour',$id,false,false );
-				$this->save_custom_field( $id,'tour_to_accommodation',$ac_id,false,false );
+				$this->save_custom_field( $ac_id, 'accommodation_to_tour', $id, false, false );
+				$this->save_custom_field( $id, 'tour_to_accommodation', $ac_id, false, false );
 				$this->queue_item( $ac_id );
 			}
 		}
@@ -1172,7 +1222,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
 			$images_array = $data[0]['content']['images'];
 
-
 			if ( 'on' === $this->options['enable_tour_featured_random'] ) {
 				shuffle( $images_array );
 			}
@@ -1346,7 +1395,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			</th>
 			<th class="manage-column column-order " id="order" scope="col"><?php esc_attr_e( 'Order', 'lsx-wetu-importer' ); ?></th>
 			<th class="manage-column column-title" scope="col"><?php esc_attr_e( 'Title', 'lsx-wetu-importer' ); ?></th>
-			<th class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>			
+			<th class="manage-column column-date" id="ref" scope="col"><?php esc_attr_e( 'Ref', 'lsx-wetu-importer' ); ?></th>
 			<th class="manage-column column-date" scope="col"><?php esc_attr_e( 'Date', 'lsx-wetu-importer' ); ?></th>
 			<th class="manage-column column-ssid" scope="col"><?php esc_attr_e( 'WETU ID', 'lsx-wetu-importer' ); ?></th>
 		</tr>

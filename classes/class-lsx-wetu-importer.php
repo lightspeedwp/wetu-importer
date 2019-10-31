@@ -477,7 +477,7 @@ class LSX_WETU_Importer {
 		<ul class="subsubsub">
 			<li class="searchform"><a class="current" href="#search"><?php esc_attr_e( 'Search', 'lsx-wetu-importer' ); ?></a> | </li>
 			<li class="publish"><a href="#publish"><?php esc_attr_e( 'Published', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'publish ' ) ); ?>)</span></a> | </li>
-			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li> 
+			<li class="pending"><a href="#pending"><?php esc_attr_e( 'Pending', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'pending ' ) ); ?>)</span></a>| </li>
 			<li class="draft"><a href="#draft"><?php esc_attr_e( 'Draft', 'lsx-wetu-importer' ); ?></a> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_post_count( $this->tab_slug, 'draft ' ) ); ?>)</span></li>
 
 			<?php if ( 'tour' === $this->tab_slug ) { ?>
@@ -486,6 +486,7 @@ class LSX_WETU_Importer {
 				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
 			<?php } ?>
 		</ul>
+		<a class="documentation" target="_blank"href="https://tour-operator.lsdev.biz/documentation/extension/wetu-importer/"><?php esc_attr_e( 'Documentation', 'lsx-wetu-importer' ); ?></a>
 		<?php
 	}
 
@@ -589,12 +590,11 @@ class LSX_WETU_Importer {
 	 * Wetu Status Bar.
 	 */
 	public function wetu_status() {
-		$tours = false;
+		$tours = get_transient( 'lsx_ti_tours' );
 		echo '<div class="wetu-status tour-wetu-status"><h3>' . esc_html__( 'Wetu Status', 'lsx-wetu-importer' ) . ' - ';
 
 		if ( '' === $tours || false === $tours || isset( $_GET['refresh_tours'] ) ) {
 			$result = $this->update_options();
-
 			if ( true === $result ) {
 				echo '<span style="color:green;">' . esc_attr( 'Connected', 'lsx-wetu-importer' ) . '</span>';
 				echo ' - <small><a href="#">' . esc_attr( 'Refresh', 'lsx-wetu-importer' ) . '</a></small>';
@@ -1124,7 +1124,7 @@ class LSX_WETU_Importer {
 
 		$tmp   = tempnam( '/tmp', 'FOO' );
 		$image = wp_remote_get( $url );
-		if ( ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
+		if ( ! is_wp_error( $image ) && ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
 			file_put_contents( $tmp, $image['body'] );
 			chmod( $tmp,'777' );
 
@@ -1330,12 +1330,14 @@ class LSX_WETU_Importer {
 		if ( isset( $_GET['type'] ) && 'allitineraries' !== $_GET['type'] ) {
 			$this->current_importer->url_qs .= '&type=' . $_GET['type'];
 			$options[] = $_GET['type'];
+		} else {
+			$options[] = 'sample';
+			$this->current_importer->url_qs .= '&type=sample';
 		}
 
 		$url = str_replace( 'Pins', 'Itinerary', $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
 		$url .= '&results=2000';
 		add_option( 'lsx_ti_tours_api_options', $options );
-
 		$data = wp_remote_get( $url );
 		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
 
@@ -1363,6 +1365,16 @@ class LSX_WETU_Importer {
 			}
 		}
 		return $id;
+	}
+	/**
+	 * Set the team memberon each item.
+	 */
+	public function set_team_member( $id, $team_members ) {
+		delete_post_meta( $id, 'team_to_' . $this->tab_slug );
+
+		foreach ( $team_members as $team ) {
+			add_post_meta( $id, 'team_to_' . $this->tab_slug, $team );
+		}
 	}
 }
 
