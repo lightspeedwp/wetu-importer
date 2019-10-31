@@ -397,7 +397,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					$search_data = json_decode( $search_data['body'], true );
 					foreach ( $search_data as $sdata_key => $sdata ) {
 
-						if ( isset( $sdata['type'] ) && 'Destination' !== trim( $sdata['type'] ) ) {
+						if ( isset( $sdata['type'] ) && ( 'Destination' !== trim( $sdata['type'] ) || 'Area' !== trim( $sdata['type'] ) ) ) {
 							continue;
 						}
 
