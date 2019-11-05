@@ -25,6 +25,7 @@
 * Fix - Fixed the Connecting of destinations during the tour import
 * Fix - Fixed the stripping of HTML from the accommodation description
 * Fix - Fixed the accommodation description and excerpt not importing
+* Dev - Allowing the Destinations to import "Areas" from WETU as well.
 
 
 ### 1.2.1

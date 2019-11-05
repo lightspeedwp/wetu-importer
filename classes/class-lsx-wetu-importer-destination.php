@@ -537,7 +537,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	 * Connect to wetu
 	 */
 	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = array(), $safari_brands = false ) {
-		if ( 'Destination' === trim( $data[0]['type'] ) ) {
+		if ( 'Destination' === trim( $data[0]['type'] ) || 'Area' === trim( $data[0]['type'] ) ) {
 			$post_name = '';
 			$data_post_content = '';
 			$data_post_excerpt = '';
