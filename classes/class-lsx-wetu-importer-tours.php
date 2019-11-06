@@ -170,6 +170,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="tags" /> <?php esc_html_e( 'Tags','lsx-wetu-importer' ); ?></li>
 								<?php } ?>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="itineraries" /> <?php esc_html_e( 'Itinerary Days','lsx-wetu-importer' ); ?></li>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="start_end_point" /> <?php esc_html_e( 'Departs from / Ends in','lsx-wetu-importer' ); ?></li>
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
@@ -573,6 +574,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			$this->set_travel_styles( $id, $data );
 		}
 
+		// Set the Start and End Point Destinations.
+		if ( false !== $importable_content && in_array( 'start_end_point', $importable_content ) ) {
+			$this->set_start_end_point( $data, $id );
+		}
+
 		if ( false !== $importable_content && in_array( 'itineraries', $importable_content ) && isset( $data['legs'] ) && ! empty( $data['legs'] ) ) {
 			$this->process_itineraries( $data, $id, $importable_content );
 		}
@@ -596,13 +602,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
 			delete_post_meta( $id, 'accommodation_to_tour' );
 		}
-		if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
-			delete_post_meta( $id, 'departs_from' );
-			delete_post_meta( $id, 'ends_in' );
-		}
-
-		$departs_from = false;
-		$ends_in = false;
 
 		foreach ( $data['legs'] as $leg ) {
 
@@ -771,25 +770,49 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$this->set_itinerary_day( $current_day,$id );
 				$day_counter = $next_day_count;
 			}
-
-			// If we are in the first leg,  and the destination was attached then save it as the departure field.
-			if ( 0 === $leg_counter && false !== $current_destination ) {
-				$departs_from = $current_destination;
-			}
-
-			// If its the last leg then save it as the ends in.
-			if ( ( count( $data['legs'] ) - 2 ) === $leg_counter && false !== $current_destination ) {
-				$ends_in = $current_destination;
-			}
-
 			$leg_counter++;
 		}
+	}
 
-		if ( false !== $departs_from ) {
-			add_post_meta( $id, 'departs_from', $departs_from, true );
+	/**
+	 * Sets the departs from and ends in points on the tours.
+	 *
+	 * @param array $data
+	 * @param string $id
+	 * @return void
+	 */
+	public function set_start_end_point( $data, $id ) {
+		delete_post_meta( $id, 'departs_from' );
+		delete_post_meta( $id, 'ends_in' );
+		$points       = array();
+		$departs_from = false;
+		$ends_in      = false;
+
+		if ( isset( $data['legs'] ) && is_array( $data['legs'] ) ) {
+			$points = $data['legs'];
 		}
-		if ( false !== $ends_in ) {
-			add_post_meta( $id, 'ends_in', $ends_in, true );
+		$points = apply_filters( 'lsx_wetu_start_end_points_array', $points, $data );
+
+		if ( ! empty( $points ) && is_array( $points ) ) {
+			$leg_counter = 0;
+
+			foreach ( $points as $point ) {
+				// If we are in the first leg,  and the destination was attached then save it as the departure field.
+				if ( 0 === $leg_counter ) {
+					$departs_from_destination = $this->set_country( $point['destination_content_entity_id'], $id );
+					if ( false !== $departs_from_destination ) {
+						add_post_meta( $id, 'departs_from', $departs_from_destination, true );
+					}
+				}
+				// If its the last leg then save it as the ends in.
+				if ( ( count( $data['legs'] ) - 2 ) === $leg_counter ) {
+					$ends_in_destination = $this->set_country( $point['destination_content_entity_id'], $id );
+					if ( false !== $ends_in_destination ) {
+						add_post_meta( $id, 'ends_in', $ends_in_destination, true );
+					}
+				}
+				$leg_counter++;
+			}
 		}
 	}
 
@@ -1131,7 +1154,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					$country_title = $country_data[0]['name'];
 				}
 
-				$country_id = wp_insert_post(array(
+				$country_id = wp_insert_post( array(
 					'post_type' => 'destination',
 					'post_status' => 'draft',
 					'post_title' => $country_title,
@@ -1142,7 +1165,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 				// Check if there are images and save fore use later.
 				if ( isset( $country_data[0]['content']['images'] ) && ! empty( $country_data[0]['content']['images'] ) ) {
-					$this->destination_images[ $id ][] = array( $country_id,$country_wetu_id );
+					$this->destination_images[ $id ][] = array( $country_id, $country_wetu_id );
 				}
 
 				//Save the wetu field
