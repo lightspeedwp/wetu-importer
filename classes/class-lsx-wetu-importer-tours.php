@@ -802,17 +802,27 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				if ( $leg_counter === $args['start_index'] ) {
 					$departs_from_destination = $this->set_country( $point['destination_content_entity_id'], $id );
 					if ( false !== $departs_from_destination ) {
-						add_post_meta( $id, 'departs_from', $departs_from_destination, true );
+						$departs_from = $departs_from_destination;
 					}
 				}
 				// If its the last leg then save it as the ends in.
 				if ( $leg_counter === $args['end_index'] ) {
-					$ends_in_destination = $this->set_country( $point['destination_content_entity_id'], $id );
-					if ( false !== $ends_in_destination ) {
-						add_post_meta( $id, 'ends_in', $ends_in_destination, true );
-					}
+					$ends_in = $point['destination_content_entity_id'];
 				}
 				$leg_counter++;
+			}
+
+			$departs_from = apply_filters( 'lsx_wetu_departs_from_id', $departs_from, $data, $this );
+			if ( false !== $departs_from ) {
+				add_post_meta( $id, 'departs_from', $departs_from, true );
+			}
+
+			if ( false !== $ends_in ) {
+				$ends_in             = apply_filters( 'lsx_wetu_ends_in_id', $ends_in, $data, $this );
+				$ends_in_destination = $this->set_country( $ends_in, $id );
+				if ( false !== $ends_in_destination ) {
+					add_post_meta( $id, 'ends_in', $ends_in_destination, true );
+				}
 			}
 		}
 	}
