@@ -784,28 +784,29 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	public function set_start_end_point( $data, $id ) {
 		delete_post_meta( $id, 'departs_from' );
 		delete_post_meta( $id, 'ends_in' );
-		$points       = array();
 		$departs_from = false;
 		$ends_in      = false;
 
-		if ( isset( $data['legs'] ) && is_array( $data['legs'] ) ) {
-			$points = $data['legs'];
-		}
-		$points = apply_filters( 'lsx_wetu_start_end_points_array', $points, $data );
+		$args = array(
+			'points'      => $data['legs'],
+			'start_index' => 0,
+			'end_index'   => count( $data['legs'] ) - 2,
+		);
+		$args = apply_filters( 'lsx_wetu_start_end_args', $args, $data );
 
-		if ( ! empty( $points ) && is_array( $points ) ) {
+		if ( ! empty( $args['points'] ) && is_array( $args['points'] ) ) {
 			$leg_counter = 0;
 
-			foreach ( $points as $point ) {
+			foreach ( $args['points'] as $point ) {
 				// If we are in the first leg,  and the destination was attached then save it as the departure field.
-				if ( 0 === $leg_counter ) {
+				if ( $leg_counter === $args['start_index'] ) {
 					$departs_from_destination = $this->set_country( $point['destination_content_entity_id'], $id );
 					if ( false !== $departs_from_destination ) {
 						add_post_meta( $id, 'departs_from', $departs_from_destination, true );
 					}
 				}
 				// If its the last leg then save it as the ends in.
-				if ( ( count( $data['legs'] ) - 2 ) === $leg_counter ) {
+				if ( $leg_counter === $args['end_index'] ) {
 					$ends_in_destination = $this->set_country( $point['destination_content_entity_id'], $id );
 					if ( false !== $ends_in_destination ) {
 						add_post_meta( $id, 'ends_in', $ends_in_destination, true );
