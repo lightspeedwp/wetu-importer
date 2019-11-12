@@ -468,7 +468,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$this->attach_destination_images( $content );
 				$this->clean_attached_destinations( $return );
 			} else {
-				$this->format_error( esc_html__( 'There was a problem importing your tour, please contact support.', 'lsx-wetu-importer' ) );
+				$this->format_error( esc_html__( 'There was a problem importing your tour, please try again.', 'lsx-wetu-importer' ) );
 			}
 		}
 	}
