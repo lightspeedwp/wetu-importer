@@ -8,6 +8,11 @@ body.tour-operator_page_lsx-wetu-importer {
     cursor: pointer; }
   body.tour-operator_page_lsx-wetu-importer .image-settings td {
     line-height: 1.5; }
+  body.tour-operator_page_lsx-wetu-importer label[for="wetu_api_key"] {
+    display: flex;
+    align-items: center; }
+    body.tour-operator_page_lsx-wetu-importer label[for="wetu_api_key"] #doc-tooltip {
+      width: 25px; }
   body.tour-operator_page_lsx-wetu-importer .tooltip {
     cursor: pointer;
     border: none;

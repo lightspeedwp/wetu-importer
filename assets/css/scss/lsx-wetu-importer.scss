@@ -16,6 +16,13 @@ body.tour-operator_page_lsx-wetu-importer {
 			line-height: 1.5;
 		}
 	}
+	label[for="wetu_api_key"] {
+		display: flex;
+		align-items: center;
+		#doc-tooltip {
+			width: 25px;
+		}
+	}
 	.tooltip {
 		cursor: pointer;
 		border: none;
