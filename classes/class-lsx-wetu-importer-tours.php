@@ -1072,7 +1072,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			} else {
 				$destination_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
 
-				if ( ! empty( $destination_json ) && isset( $destination_json['response'] ) && isset( $destination_json['response']['code'] ) && 200 === $destination_json['response']['code'] ) {
+				if ( ! is_wp_error( $destination_json ) && ! empty( $destination_json ) && isset( $destination_json['response'] ) && isset( $destination_json['response']['code'] ) && 200 === $destination_json['response']['code'] ) {
 
 					$destination_data = json_decode( $destination_json['body'], true );
 
@@ -1155,7 +1155,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		} else {
 			$country_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
 
-			if ( ! empty( $country_json ) && isset( $country_json['response'] ) && isset( $country_json['response']['code'] ) && 200 === $country_json['response']['code'] ) {
+			if ( ! is_wp_error( $country_json ) && ! empty( $country_json ) && isset( $country_json['response'] ) && isset( $country_json['response']['code'] ) && 200 === $country_json['response']['code'] ) {
 				$country_data = json_decode( $country_json['body'], true );
 
 				// Format the title of the destination if its available,  otherwise default to the WETU ID.
