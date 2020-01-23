@@ -836,11 +836,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function get_mobile_destination( $day, $leg, $id ) {
 		$current_destination = false;
-		$current_day = (int) $day['itinerary_start_day'] + 1;
+		$current_day = (int) $day['period_start_day'];
 		if ( isset( $leg['stops'] ) ) {
 			foreach ( $leg['stops'] as $stop ) {
-				$arrival_day = (int) $stop['arrival_day'] + 1;
-				$departure_day = (int) $stop['departure_day'] + 1;
+				$arrival_day = (int) $stop['arrival_day'];
+				$departure_day = (int) $stop['departure_day'];
 				if ( $arrival_day <= $current_day && $current_day < $departure_day ) {
 					$current_destination = $this->set_destination( $stop, $id, 0 );
 				}
@@ -858,11 +858,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function get_mobile_accommodation( $day, $leg, $id ) {
 		$current_accommodation = false;
-		$current_day = (int) $day['itinerary_start_day'] + 1;
+		$current_day = (int) $day['period_start_day'];
 		if ( isset( $leg['stops'] ) ) {
 			foreach ( $leg['stops'] as $stop ) {
-				$arrival_day = (int) $stop['arrival_day'] + 1;
-				$departure_day = (int) $stop['departure_day'] + 1;
+				$arrival_day = (int) $stop['arrival_day'];
+				$departure_day = (int) $stop['departure_day'];
 				if ( $arrival_day <= $current_day && $current_day < $departure_day ) {
 					$current_accommodation = $this->set_accommodation( $stop, $id, 0 );
 				}
