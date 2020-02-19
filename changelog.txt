@@ -6,7 +6,7 @@
 * Dev - Separated the 'departs_from' and 'ends_in' fields into their own function.
 * Dev - Moving the API info tooltip to a better position.
 * Fix - Fixed an error in the set_country function prohibiting certain tours from completing.
-* Fix - Fixed the index of the itinerary accommodation and destinations when using a mobile safari.
+* Fix - Fixed the index key of the itinerary accommodation and destinations when importing a mobile safari.
 
 ### 1.3.1 - 2 October 2019
 * Dev - Adding extra instructions on the importer.
