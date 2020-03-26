@@ -285,13 +285,15 @@ body.tour-operator_page_lsx-wetu-importer {
 	#lsx-wetu-importer-search-form {
 		.normal-search {
 			display: inline-block;
+			input.keyword {
+				height: 30px;
+			}
 		}
 	}
 
 	.advanced-search-toggle {
 		display: inline-block;
 		margin-top: 0;
-		padding-bottom: 10px;
 	}
 
 	.widefat {

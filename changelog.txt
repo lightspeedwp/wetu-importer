@@ -1,63 +1,115 @@
-## Change log
-
-### 1.3.2 - 19 February 2019
-* Fix - Moved the 'set_team_member' function to the 'LSX_WETU_Importer()' class
-* Dev - Allowing the destinations to import and search for "Areas" as well. 
-* Dev - Separated the 'departs_from' and 'ends_in' fields into their own function.
-* Dev - Moving the API info tooltip to a better position.
-* Fix - Fixed an error in the set_country function prohibiting certain tours from completing.
-* Fix - Fixed the index key of the itinerary accommodation and destinations when importing a mobile safari.
-
-### 1.3.1 - 2 October 2019
-* Dev - Adding extra instructions on the importer.
-* Dev - Adding mobile tooltip for documentation.
-* Dev - Removing the conditional statements removing certain fields when the single template is disabled.
-* Dev - Added in support for Mobile Safaris.
-
-### 1.3.0 - 6 September 2019
-* Dev - Added the sortable Reference Column for tours
-* Dev - Added in the reference field to be imported to tours
-* Dev - Improved the styling of the Welcome page steps
-* Dev - Added in a function to capture the continent sub region
-* Dev - Added in datatables.net for pagination and sorting on the lists
-* Dev - Added in the ability to define custom titles
-* Dev - Added in the option to randomize the featured image that is grabbed from the attached destinations.
-* Dev - Added in a WETU ID for images which stores the URL fragment from WETU.
-* Dev - Removed the "All Itineraries" Option from the Tour Importer and set "Personal" as the default.
-* Fix - Fixed the sorting of the search results by relevance
-* Fix - Fixed the assigning of team and safari brands
-* Fix - Fixed the Connecting of destinations during the tour import
-* Fix - Fixed the stripping of HTML from the accommodation description
-* Fix - Fixed the accommodation description and excerpt not importing
-* Dev - Allowing the Destinations to import "Areas" from WETU as well.
+# Change log
 
 
-### 1.2.1 - 9 Jul 2019
-* Fix - Fixed the problem with the empty API key.
-* Fix - Fixed the WETU tour search.
-* Fix - Fixed the styling of the search on the accommodation and destination tabs.
-* Dev - Removed the TO Maps plugin dependancies.
+## [Unreleased] - Minor version 1.3.3
 
-### 1.2.0 - 18 Jun 2019
-* Dev - Upgraded Wetu API to V8.
-* Dev - Added in support for the group size and the tags fields.
-* Fix - Updated the 'file_get_contents()' call with 'wp_remote_get()'
-* Dev - Coding Standards Updates
-* Dev - Added UI enhancements for the Tour Importer Page
-* Dev - Moved the settings tab to the importer page.
+### Fixed
+- Importer input filter styling.
 
-### 1.1.2
-* Dev - Removing the need to index the accommodation and destination items from WETU.
-* Dev - Changed the Accommodation and Destination search to use the WETU API Search.
+### Security
+- General testing to ensure compatibility with latest WordPress version (5.4).
+- General testing to ensure compatibility with latest LSX Theme version (2.7).
 
-### 1.1.1
-* Fix - Tours no longer use the same destination for the featured and the banner image
-* Dev - Added in a destination search which searches the cached "List" from the WETU content API
-* Dev - Changed the continents taxonomy to only apply to the countries and not the regions
 
-### 1.1.0 - 18 Jun 2019
-* Added compatibility with Tour Operator 1.1
-* Fix - Fixed small issues
+## [[1.3.2]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.2) - 2020-02-19
 
-### 1.0.0
-* First Version
+### Added
+- Allowing the destinations to import and search for "Areas" as well. 
+- Separated the `departs_from` and `ends_in` fields into their own function.
+- Moving the API info tooltip to a better position.
+
+### Changed
+- Moved the `set_team_member` function to the `LSX_WETU_Importer()` class.
+
+### Fixed
+- Fixed an error in the set_country function prohibiting certain tours from completing.
+- Fixed the index key of the itinerary accommodation and destinations when importing a mobile safari.
+
+
+## [[1.3.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.1) - 2019-10-02
+
+### Added
+- Adding extra instructions on the importer.
+- Adding mobile tooltip for documentation.
+- Removing the conditional statements removing certain fields when the single template is disabled.
+- Added in support for Mobile Safaris.
+
+
+## [[1.3.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.0) - 2019-09-06
+
+### Added
+- Added the sortable Reference Column for tours.
+*- Added in the reference field to be imported to tours.
+- Improved the styling of the Welcome page steps.
+- Added in a function to capture the continent sub region.
+- Added in datatables.net for pagination and sorting on the lists.
+- Added in the ability to define custom titles.
+- Added in the option to randomize the featured image that is grabbed from the attached destinations.
+- Added in a WETU ID for images which stores the URL fragment from WETU.
+- Removed the "All Itineraries" Option from the Tour Importer and set "Personal" as the default.
+- Allowing the Destinations to import "Areas" from WETU as well.
+
+### Fixed
+- Fixed the sorting of the search results by relevance.
+- Fixed the assigning of team and safari brands.
+- Fixed the Connecting of destinations during the tour import.
+- Fixed the stripping of HTML from the accommodation description.
+- Fixed the accommodation description and excerpt not importing.
+
+
+## [[1.2.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.2.1) - 2019-07-09
+
+### Added
+- Removed the TO Maps plugin dependencies.
+
+### Fixed
+- Fixed the problem with the empty API key.
+- Fixed the WETU tour search.
+- Fixed the styling of the search on the accommodation and destination tabs.
+
+
+## [[1.2.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.2.0) - 2019-06-18
+
+### Added
+- Upgraded Wetu API to V8.
+- Added in support for the group size and the tags fields.
+- Coding Standards Updates
+- Added UI enhancements for the Tour Importer Page
+- Moved the settings tab to the importer page.
+
+### Fixed
+- Updated the 'file_get_contents()' call with 'wp_remote_get()'
+
+
+## [[1.1.2]]()
+
+### Changed
+- Removing the need to index the accommodation and destination items from WETU.
+- Changed the Accommodation and Destination search to use the WETU API Search.
+
+
+## [[1.1.1]]()
+
+### Added
+- Added in a destination search which searches the cached "List" from the WETU content API.
+
+### Changed
+- Changed the continents taxonomy to only apply to the countries and not the regions.
+
+### Fixed
+- Tours no longer use the same destination for the featured and the banner image.
+
+
+## [[1.1.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/v1.1.0) - 2019-06-18
+
+### Added
+- Added compatibility with Tour Operator 1.1.
+
+### Fixed
+- Fixed small issues.
+
+
+## [[1.0.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/v1.0.1) - 2016-12-16
+
+### Added
+- First Version.
