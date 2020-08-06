@@ -22,7 +22,7 @@
   "homepage": "https://www.lsdev.biz/product/lsx-wetu-importer/#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-rtlcss": "^1.0.0",
+    "gulp-rtlcss": "^1.4.1",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-gettext": "^0.3.0",
