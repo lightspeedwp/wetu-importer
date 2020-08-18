@@ -14,3 +14,10 @@ updates:
     time: "03:00"
     timezone: Africa/Johannesburg
   open-pull-requests-limit: 99
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+    timezone: Africa/Johannesburg
+  open-pull-requests-limit: 99
