@@ -459,7 +459,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
-					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
+					<abbr title="' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
 					' . $row['id'] . '

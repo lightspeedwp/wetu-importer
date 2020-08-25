@@ -498,7 +498,7 @@ class LSX_WETU_Importer {
 		<form class="ajax-form" id="<?php echo esc_attr( $this->plugin_slug ); ?>-search-form" method="get" action="tools.php" data-type="<?php echo esc_attr( $this->tab_slug ); ?>">
 			<input type="hidden" name="page" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
 
-			<?php do_action( 'lsx_wetu_importer_search_form',$this ); ?>
+			<?php do_action( 'lsx_wetu_importer_search_form', $this ); ?>
 
 			<div class="normal-search">
 				<input pattern=".{3,}" placeholder="3 characters minimum" class="keyword" name="keyword" value=""> <input class="button button-primary submit" type="submit" value="<?php esc_html_e( 'Search', 'lsx-wetu-importer' ); ?>" />
@@ -612,11 +612,12 @@ class LSX_WETU_Importer {
 	 * Set_taxonomy with some terms
 	 */
 	public function team_member_checkboxes( $selected = array() ) {
-		if ( post_type_exists( 'team' ) ) { ?>
+		if ( post_type_exists( 'team' ) ) { 
+        ?>
 			<ul>
 				<?php
 					$team_args = array(
-						'post_type'	=> 'team',
+						'post_type' => 'team',
 						'post_status' => 'publish',
 						'nopagin' => true,
 						'fields' => 'ids',
@@ -630,12 +631,15 @@ class LSX_WETU_Importer {
 							<li><input class="team" <?php $this->checked( $selected, $member ); ?> type="checkbox" value="<?php echo esc_attr( $member ); ?>" /> <?php echo wp_kses_post( get_the_title( $member ) ); ?></li>
 							<?php
 						}
-					} else { ?>
+					} else { 
+                    ?>
 						<li><input class="team" type="checkbox" value="0" /> <?php esc_html_e( 'None', 'lsx-wetu-importer' ); ?></li>
-					<?php }
+					<?php 
+                    }
 				?>
 			</ul>
-		<?php }
+		<?php 
+        }
 	}
 
 
@@ -791,10 +795,10 @@ class LSX_WETU_Importer {
 						if ( is_wp_error( $term ) ) {
 							echo wp_kses_post( $term->get_error_message() );
 						} else {
-							wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy,true );
+							wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy, true );
 						}
 					} else {
-						wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy,true );
+						wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy, true );
 					}
 				} else {
 					$result[] = trim( $k );
@@ -821,15 +825,15 @@ class LSX_WETU_Importer {
 					'parent' => $parent,
 				);
 			}
-			$term = wp_insert_term( trim( $name ), $taxonomy,$parent );
+			$term = wp_insert_term( trim( $name ), $taxonomy, $parent );
 
 			if ( is_wp_error( $term ) ) {
 				echo wp_kses_post( $term->get_error_message() );
 			} else {
-				wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy,true );
+				wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy, true );
 			}
 		} else {
-			wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy,true );
+			wp_set_object_terms( $id, intval( $term['term_id'] ), $taxonomy, true );
 		}
 
 		return $term['term_id'];
@@ -850,7 +854,7 @@ class LSX_WETU_Importer {
 
 			if ( ! is_wp_error( $terms ) ) {
 				foreach ( $terms as $term ) {
-					$return .= '<li><input class="' . $taxonomy . '" ' . $this->checked( $selected,$term->term_id,false ) . ' type="checkbox" value="' . $term->term_id . '" /> ' . $term->name . '</li>';
+					$return .= '<li><input class="' . $taxonomy . '" ' . $this->checked( $selected, $term->term_id, false ) . ' type="checkbox" value="' . $term->term_id . '" /> ' . $term->name . '</li>';
 				}
 			} else {
 				$return .= '<li><input type="checkbox" value="" /> ' . __( 'None', 'lsx-wetu-importer' ) . '</li>';
@@ -899,25 +903,25 @@ class LSX_WETU_Importer {
 					}
 				}
 
-				$address = implode( ', ',$address );
+				$address = implode( ', ', $address );
 				$address = str_replace( ', , ', ', ', $address );
 			}
 		}
 
 		if ( false !== $longitude ) {
 			$location_data = array(
-				'address'	=> (string) $address,
-				'lat'		=> (string) $latitude,
-				'long'		=> (string) $longitude,
-				'zoom'		=> (string) $zoom,
-				'elevation'	=> '',
+				'address'   => (string) $address,
+				'lat'       => (string) $latitude,
+				'long'      => (string) $longitude,
+				'zoom'      => (string) $zoom,
+				'elevation' => '',
 			);
 
 			if ( false !== $id && '0' !== $id ) {
-				$prev = get_post_meta( $id,'location',true );
-				update_post_meta( $id,'location',$location_data,$prev );
+				$prev = get_post_meta( $id, 'location', true );
+				update_post_meta( $id, 'location', $location_data, $prev );
 			} else {
-				add_post_meta( $id,'location',$location_data,true );
+				add_post_meta( $id, 'location', $location_data, true );
 			}
 		}
 	}
@@ -936,8 +940,8 @@ class LSX_WETU_Importer {
 			) );
 
 			if ( false !== $this->featured_image ) {
-				delete_post_meta( $id,'_thumbnail_id' );
-				add_post_meta( $id,'_thumbnail_id',$this->featured_image,true );
+				delete_post_meta( $id, '_thumbnail_id' );
+				add_post_meta( $id, '_thumbnail_id', $this->featured_image, true );
 			}
 		}
 	}
@@ -964,7 +968,7 @@ class LSX_WETU_Importer {
 			if ( false !== $temp_banner ) {
 				$this->banner_image = $temp_banner;
 
-				delete_post_meta( $id,'image_group' );
+				delete_post_meta( $id, 'image_group' );
 
 				$new_banner = array(
 					'banner_image' => array(
@@ -972,7 +976,7 @@ class LSX_WETU_Importer {
 					),
 				);
 
-				add_post_meta( $id,'image_group',$new_banner,true );
+				add_post_meta( $id, 'image_group', $new_banner, true );
 			}
 		}
 	}
@@ -987,7 +991,7 @@ class LSX_WETU_Importer {
 
 				if ( false !== $current_gallery && ! empty( $current_gallery ) ) {
 					foreach ( $current_gallery as $g ) {
-						delete_post_meta( $id,'gallery', $g );
+						delete_post_meta( $id, 'gallery', $g );
 
 						if ( 'attachment' === get_post_type( $g ) ) {
 							wp_delete_attachment( $g, true );
@@ -1013,17 +1017,17 @@ class LSX_WETU_Importer {
 					continue;
 				}
 
-				$this->gallery_meta[] = $this->attach_image( $image_data,$id );
+				$this->gallery_meta[] = $this->attach_image( $image_data, $id );
 				$counter++;
 			}
 
 			if ( ! empty( $this->gallery_meta ) ) {
-				delete_post_meta( $id,'gallery' );
+				delete_post_meta( $id, 'gallery' );
 				$this->gallery_meta = array_unique( $this->gallery_meta );
 
 				foreach ( $this->gallery_meta as $gallery_id ) {
 					if ( false !== $gallery_id && '' !== $gallery_id && ! is_array( $gallery_id ) ) {
-						add_post_meta( $id,'gallery',$gallery_id,false );
+						add_post_meta( $id, 'gallery', $gallery_id, false );
 					}
 				}
 			}
@@ -1069,7 +1073,7 @@ class LSX_WETU_Importer {
 	public function attach_image( $v = false, $parent_id, $image_sizes = false, $banner = false ) {
 		if ( false !== $v ) {
 			$temp_fragment = explode( '/', $v['url_fragment'] );
-			$url_filename  = $temp_fragment[ count( $temp_fragment ) -1 ];
+			$url_filename  = $temp_fragment[ count( $temp_fragment ) - 1 ];
 			$url_filename  = str_replace( array( '.jpg', '.png', '.jpeg' ), '', $url_filename );
 			$url_filename  = trim( $url_filename );
 			$title         = $url_filename;
@@ -1106,7 +1110,7 @@ class LSX_WETU_Importer {
 			$attach_id = $this->attach_external_image2( $url, $parent_id, '', $v['label'], $postdata );
 			if ( ! empty( $attach_id ) ) {
 				$this->found_attachments[ $attach_id ] = $url_filename;
-				add_post_meta( $attach_id, 'lsx_wetu_id', $v['url_fragment'] , true );
+				add_post_meta( $attach_id, 'lsx_wetu_id', $v['url_fragment'], true );
 				return $attach_id;
 			}
 		}
@@ -1114,7 +1118,8 @@ class LSX_WETU_Importer {
 	}
 
 	public function attach_external_image2( $url = null, $post_id = null, $thumb = null, $filename = null, $post_data = array() ) {
-		if ( ! $url || ! $post_id ) { return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
+		if ( ! $url || ! $post_id ) {
+return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 		$att_id = false;
 
 		require_once( ABSPATH . 'wp-admin/includes/file.php' );
@@ -1126,11 +1131,11 @@ class LSX_WETU_Importer {
 		$image = wp_remote_get( $url );
 		if ( ! is_wp_error( $image ) && ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
 			file_put_contents( $tmp, $image['body'] );
-			chmod( $tmp,'777' );
+			chmod( $tmp, '777' );
 
 			preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );    // fix file filename for query strings
 			$url_filename = basename( $matches[0] );
-			$url_filename = str_replace( '%20','_',$url_filename );
+			$url_filename = str_replace( '%20', '_', $url_filename );
 			// extract filename from url for title
 			$url_type = wp_check_filetype( $url_filename );                                           // determine file type (ext and mime/type)
 
@@ -1161,7 +1166,7 @@ class LSX_WETU_Importer {
 			// set additional wp_posts columns.
 			if ( empty( $post_data['post_title'] ) ) {
 
-				$url_filename = str_replace( '%20',' ', $url_filename );
+				$url_filename = str_replace( '%20', ' ', $url_filename );
 
 				$post_data['post_title'] = basename( $url_filename, '.' . $url_type['ext'] );         // just use the original filename (no extension)
 			}
@@ -1294,7 +1299,7 @@ class LSX_WETU_Importer {
 			}
 
 			foreach ( $videos as $video ) {
-				add_post_meta( $id,'videos',$video,false );
+				add_post_meta( $id, 'videos', $video, false );
 			}
 		}
 	}

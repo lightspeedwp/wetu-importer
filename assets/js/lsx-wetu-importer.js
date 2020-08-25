@@ -4,7 +4,7 @@ var WETU_IMPORTER = {
 
 	init : function() {
 
-		if(jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer')){
+		if (jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer')) {
 			this.myAccommodationSearch();
 			this.watchSearch();
 			this.watchAdvancedSearch();
@@ -26,7 +26,7 @@ var WETU_IMPORTER = {
 			jQuery(this).addClass('current');
 
 			var keyword = '';
-			if( jQuery(this).parent().hasClass('publish' ) ) {
+			if ( jQuery(this).parent().hasClass('publish' ) ) {
                 keyword = 'publish';
 			} else if ( jQuery(this).parent().hasClass('pending' ) ) {
                 keyword = 'pending';
@@ -74,11 +74,11 @@ var WETU_IMPORTER = {
 			var type = jQuery('#lsx-wetu-importer-search-form').attr('data-type');
 			var keywords = [];
 
-			if('' != jQuery('#lsx-wetu-importer-search-form input.keyword').val()){
+			if ('' != jQuery('#lsx-wetu-importer-search-form input.keyword').val()) {
 				keywords.push(jQuery('#lsx-wetu-importer-search-form input.keyword').val());
 			}
 
-			if(undefined != jQuery('#lsx-wetu-importer-search-form .advanced-search textarea').val()){
+			if (undefined != jQuery('#lsx-wetu-importer-search-form .advanced-search textarea').val()) {
 				var bulk_keywords = jQuery('#lsx-wetu-importer-search-form .advanced-search textarea').val().split('\n');
 				var arrayLength = bulk_keywords.length;
 				for (var i = 0; i < arrayLength; i++) {
@@ -123,13 +123,13 @@ var WETU_IMPORTER = {
 	watchAdvancedSearch: function() {
 		jQuery('#lsx-wetu-importer-search-form .advanced-search-toggle').on( 'click', function(event) {
 			event.preventDefault();
-			if(jQuery('#lsx-wetu-importer-search-form .advanced-search').hasClass('hidden')){
+			if (jQuery('#lsx-wetu-importer-search-form .advanced-search').hasClass('hidden')) {
 				jQuery('#lsx-wetu-importer-search-form .advanced-search').fadeIn('fast').css( 'display', 'inline-block' ).removeClass('hidden');
 				jQuery('#lsx-wetu-importer-search-form .normal-search').hide('fast');
 				jQuery('#lsx-wetu-importer-search-form .normal-search input.keyword').val('');
 				jQuery( this ).html('Simple Search');
 
-			}else{
+			} else {
 				jQuery('#lsx-wetu-importer-search-form .advanced-search').fadeOut('fast').addClass('hidden');
 				jQuery('#lsx-wetu-importer-search-form .advanced-search textarea').val('');
 				jQuery('#lsx-wetu-importer-search-form .normal-search').fadeIn('fast');
@@ -176,7 +176,7 @@ var WETU_IMPORTER = {
             $this.importNext();
         } )
         .done( function( data ) {
-            if('none' == jQuery('.completed-list-wrapper').css('display')){
+            if ('none' == jQuery('.completed-list-wrapper').css('display')) {
                 jQuery('.completed-list-wrapper').fadeIn('fast');
             }
             jQuery('.completed-list-wrapper ul').append(data);
@@ -202,7 +202,7 @@ var WETU_IMPORTER = {
 	importNext: function() {
 		var checkbox = 	jQuery('#import-list tr input.queued:checked:not(.importing):first');
 
-		if(1 == checkbox.length){
+		if (1 == checkbox.length) {
 			checkbox.addClass('importing');
 
 			var post_type = jQuery('.post_type').val();
@@ -211,25 +211,25 @@ var WETU_IMPORTER = {
 
 			var team_members = [];
 
-			if('undefined' != jQuery('#import-list input.team').length){
+			if ('undefined' != jQuery('#import-list input.team').length) {
 				jQuery('#import-list input.team').each(function(){
-					if( true === jQuery(this).prop('checked') ){
+					if ( true === jQuery(this).prop('checked') ) {
 						team_members.push(jQuery(this).val());
 					}
 				});
 			}
 			var content = [];
-			if('undefined' != jQuery('#import-list input.content').length){
+			if ('undefined' != jQuery('#import-list input.content').length) {
 				jQuery('#import-list input.content').each(function(){
-					if( true === jQuery(this).prop('checked') ){
+					if ( true === jQuery(this).prop('checked') ) {
 						content.push(jQuery(this).val());
 					}
 				});
 			}
 			var safari_brands = [];
-			if('undefined' != jQuery('#import-list input.accommodation-brand').length){
+			if ('undefined' != jQuery('#import-list input.accommodation-brand').length) {
 				jQuery('#import-list input.accommodation-brand').each(function(){
-					if( true === jQuery(this).prop('checked') ){
+					if ( true === jQuery(this).prop('checked') ) {
 						safari_brands.push(jQuery(this).val());
 					}
 				});
@@ -266,9 +266,9 @@ var WETU_IMPORTER = {
 				false_click = false;
 			});
 
-			if(true != false_click){
+			if (true != false_click) {
 				$this.importNext();
-			}else{
+			} else {
 				alert('Make sure you have some items selected.');
 			}
 		});
@@ -322,7 +322,7 @@ var WETU_IMPORTER = {
 					'security'  :			lsx_tour_importer_params.ajax_nonce
 		        },
 		        function(response) {
-					if('none' == jQuery('.completed-list-wrapper').css('display')){
+					if ('none' == jQuery('.completed-list-wrapper').css('display')) {
 						jQuery('.completed-list-wrapper').fadeIn('fast');
 					}
 					jQuery('.completed-list-wrapper ul').append(response);

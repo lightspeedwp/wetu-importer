@@ -35,7 +35,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 	 * @access private
 	 */
 	public function __construct() {
-		$temp_options = get_option( '_lsx-to_settings',false );
+		$temp_options = get_option( '_lsx-to_settings', false );
 
 		if ( false !== $temp_options && isset( $temp_options[ $this->plugin_slug ] ) && ! empty( $temp_options[ $this->plugin_slug ] ) ) {
 			$this->options = $temp_options[ $this->plugin_slug ];
@@ -44,8 +44,8 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 		$this->url = 'http://wetu.com/API/Pins/' . $this->options['api_key'] . '/List';
 
 		add_action( 'lsx_tour_importer_admin_tab_' . $this->tab_slug, array( $this, 'display_page' ) );
-		add_action( 'wp_ajax_lsx_import_connect_accommodation',array( $this, 'process_connection' ) );
-		add_action( 'wp_ajax_nopriv_lsx_import_connect_accommodation',array( $this, 'process_connection' ) );
+		add_action( 'wp_ajax_lsx_import_connect_accommodation', array( $this, 'process_connection' ) );
+		add_action( 'wp_ajax_nopriv_lsx_import_connect_accommodation', array( $this, 'process_connection' ) );
 	}
 
 	/**
@@ -55,12 +55,12 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 		global $post;
 		?>
 		<div class="wrap">
-			<h3><span class="dashicons dashicons-admin-multisite"></span> <?php esc_html_e( 'Connect your Accommodation','lsx-wetu-importer' ); ?></h3>
+			<h3><span class="dashicons dashicons-admin-multisite"></span> <?php esc_html_e( 'Connect your Accommodation', 'lsx-wetu-importer' ); ?></h3>
 
 			<form method="get" action="" id="connect-accommodation-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
 
-				<p><?php esc_html_e( 'Below is a list of your accommodation that does not contain a WETU ID, but its Title matches a name in the WETU DB. Connecting it will all you to pull through information from WETU.','lsx-wetu-importer' ); ?></p>
+				<p><?php esc_html_e( 'Below is a list of your accommodation that does not contain a WETU ID, but its Title matches a name in the WETU DB. Connecting it will all you to pull through information from WETU.', 'lsx-wetu-importer' ); ?></p>
 
 				<div class="ajax-loader-small" style="display:none;width:100%;text-align:center;">
 					<img style="width:32px;" src="<?php echo esc_url( LSX_WETU_IMPORTER_URL . 'assets/images/ajaxloader.gif' ); ?>" />
@@ -69,16 +69,17 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 				<?php
 					$loose_accommodation = $this->find_current_accommodation();
 				?>
-				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect','lsx-wetu-importer' ); ?>" /></p>
+				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect', 'lsx-wetu-importer' ); ?>" /></p>
 				<table class="wp-list-table widefat fixed posts">
 					<?php $this->table_header(); ?>
 
 					<tbody>
-						<?php if ( false !== $loose_accommodation ) {
+						<?php 
+                        if ( false !== $loose_accommodation ) {
 
 							$loose_args = array(
 								'post_type' => 'accommodation',
-								'post_status' => array( 'publish','pending' ),
+								'post_status' => array( 'publish', 'pending' ),
 								'nopagin' => true,
 								'post__in' => $loose_accommodation,
 							);
@@ -112,16 +113,18 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 											?>
 										</td>
 									</tr>
-						<?php 	}
+						<?php 
+                          }
 							}
-						} ?>
+						} 
+                        ?>
 					</tbody>
 
 					<?php $this->table_footer(); ?>
 
 				</table>
 
-				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect','lsx-wetu-importer' ); ?>" /></p>
+				<p><input class="button button-primary connect" type="button" value="<?php esc_html_e( 'Connect', 'lsx-wetu-importer' ); ?>" /></p>
 
 			</form>
 
@@ -182,7 +185,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 			FROM {$wpdb->posts}
 			WHERE post_type = 'accommodation'
 			LIMIT 0,500
-		",ARRAY_A);
+		", ARRAY_A);
 
 		$current_accommodation = $wpdb->get_results("
 			SELECT key1.post_id
@@ -195,14 +198,14 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 			AND key2.post_type = 'accommodation'
 
 			LIMIT 0,500
-		",ARRAY_A);
+		", ARRAY_A);
 
 		if ( null !== $all_accommodation && ! empty( $all_accommodation ) ) {
 			//remove the extra accommodation
 			if ( null !== $current_accommodation && ! empty( $current_accommodation ) ) {
-				$all_accommodation = array_diff( $this->format_array( $all_accommodation,'ID' ), $this->format_array( $current_accommodation,'post_id' ) );
+				$all_accommodation = array_diff( $this->format_array( $all_accommodation, 'ID' ), $this->format_array( $current_accommodation, 'post_id' ) );
 			} elseif ( null !== $current_accommodation && empty( $current_accommodation ) ) {
-				$all_accommodation = $this->format_array( $current_accommodation,'post_id' );
+				$all_accommodation = $this->format_array( $current_accommodation, 'post_id' );
 			}
 
 			$return = $all_accommodation;

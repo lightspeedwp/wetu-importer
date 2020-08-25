@@ -26,8 +26,8 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 	 * @access private
 	 */
 	public function __construct() {
-		add_action( 'wp_ajax_lsx_import_sync_banners',array( $this, 'sync_new_banner' ) );
-		add_action( 'wp_ajax_nopriv_lsx_import_sync_banners',array( $this, 'sync_new_banner' ) );
+		add_action( 'wp_ajax_lsx_import_sync_banners', array( $this, 'sync_new_banner' ) );
+		add_action( 'wp_ajax_nopriv_lsx_import_sync_banners', array( $this, 'sync_new_banner' ) );
 	}
 
 	/**
@@ -36,7 +36,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 	public function display_page() {
 		?>
 		<div class="wrap">
-			<h2><?php esc_html_e( 'Download new banners straight from WETU','lsx-wetu-importer' ); ?></h2>
+			<h2><?php esc_html_e( 'Download new banners straight from WETU', 'lsx-wetu-importer' ); ?></h2>
 
 			<form method="get" action="" id="banners-filter">
 				<input type="hidden" name="post_type" class="post_type" value="<?php echo esc_attr( $this->tab_slug ); ?>" />
@@ -60,7 +60,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 					<?php
 						$accommodation_args = array(
 							'post_type' => 'accommodation',
-							'post_status' => array( 'publish','pending','draft','future','private' ),
+							'post_status' => array( 'publish', 'pending', 'draft', 'future', 'private' ),
 							'nopagin' => 'true',
 							'posts_per_page' => '1000',
 							'meta_query' => array(
@@ -95,13 +95,13 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 									$min_width = '1920';
 									$min_height = '500';
 
-									$img_group = get_post_meta( get_the_ID(),'image_group',true );
+									$img_group = get_post_meta( get_the_ID(), 'image_group', true );
 
 									$thumbnails_html = false;
 
 									if ( false !== $img_group ) {
 										foreach ( $img_group['banner_image'] as $banner_image ) {
-											$large = wp_get_attachment_image_src( $banner_image,'full' );
+											$large = wp_get_attachment_image_src( $banner_image, 'full' );
 											$real_width = $large[1];
 											$real_height = $large[2];
 
@@ -110,7 +110,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 												$status = 'width not enough.';
 												}
 
-											$thumbnail = wp_get_attachment_image_src( $banner_image,'thumbnail' );
+											$thumbnail = wp_get_attachment_image_src( $banner_image, 'thumbnail' );
 											$thumbnails_html[] = '
 													<div style="display:block;float:left;">
 														<img src="' . $thumbnail[0] . '" />
@@ -124,9 +124,13 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 										<input type="checkbox" data-identifier="<?php the_ID(); ?>" value="<?php the_ID(); ?>" name="post[]" id="cb-select-<?php the_ID(); ?>">
 										</th>
 
-										<td class="post-title page-title column-title"><?php echo '<a href="' . esc_url( admin_url( '/post.php?post=' . get_the_ID() . '&action=edit' ) ) . '" target="_blank">';
+										<td class="post-title page-title column-title">
+                                        <?php 
+                                        echo '<a href="' . esc_url( admin_url( '/post.php?post=' . get_the_ID() . '&action=edit' ) ) . '" target="_blank">';
 										the_title();
-										echo '</a>'; ?></td>
+										echo '</a>'; 
+                                        ?>
+                                        </td>
 
 										<td colspan="2" class="thumbnails column-thumbnails">
 										<?php
@@ -138,7 +142,8 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 										?>
 										</td>
 									</tr>
-							<?php 	}
+							<?php 
+                              }
 							}
 						?>
 					</tbody>
@@ -156,7 +161,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 				</table>
 
-				<p><input class="button button-primary download" type="button" value="<?php esc_html_e( 'Download new Banners','lsx-wetu-importer' ); ?>" />
+				<p><input class="button button-primary download" type="button" value="<?php esc_html_e( 'Download new Banners', 'lsx-wetu-importer' ); ?>" />
 				</p>
 			</form>
 		</div>
@@ -210,7 +215,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 	 * formats the filename
 	 */
 	public function format_filename( $post_id ) {
-		$base = str_replace( '_',' ',get_the_title( $post_id ) );
+		$base = str_replace( '_', ' ', get_the_title( $post_id ) );
 		$base = rawurlencode( $base );
 		$type = get_post_mime_type( $post_id );
 
@@ -230,7 +235,8 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 	}
 
 	public function attach_external_image2( $url = null, $post_data = array(), $post_id = '' ) {
-		if ( ! $url ) { return new WP_Error( 'missing', 'Need a valid URL' ); }
+		if ( ! $url ) {
+return new WP_Error( 'missing', 'Need a valid URL' ); }
 		$att_id = false;
 
 		require_once( ABSPATH . 'wp-admin/includes/file.php' );
@@ -246,7 +252,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 			preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );
 			$url_filename = basename( $matches[0] );
-			$url_filename = str_replace( '%20','_', $url_filename );
+			$url_filename = str_replace( '%20', '_', $url_filename );
 			// extract filename from url for title.
 			$url_type = wp_check_filetype( $url_filename );
 

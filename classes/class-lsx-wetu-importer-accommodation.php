@@ -86,7 +86,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			$this->options = $temp_options[ $this->plugin_slug ];
 		}
 
-		$accommodation_options = get_option( 'lsx_wetu_importer_accommodation_settings',false );
+		$accommodation_options = get_option( 'lsx_wetu_importer_accommodation_settings', false );
 
 		if ( false !== $accommodation_options ) {
 			$this->accommodation_options = $accommodation_options;
@@ -368,7 +368,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
-					<abbr title="' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d',strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
+					<abbr title="' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
 					' . $row['id'] . '
@@ -424,7 +424,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 			if ( isset( $_POST['content'] ) && is_array( $_POST['content'] ) && ! empty( $_POST['content'] ) ) {
 				$content = array_map( 'sanitize_text_field', wp_unslash( $_POST['content'] ) );
-				add_option( 'lsx_wetu_importer_accommodation_settings',$content );
+				add_option( 'lsx_wetu_importer_accommodation_settings', $content );
 			} else {
 				$content = false;
 			}
