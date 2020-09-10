@@ -33,8 +33,10 @@ class Cron {
 	 * @access private
 	 */
 	public function __construct() {
+		add_filter( 'cron_schedules', array( $this, 'register_schedule' ), 10, 1 );
 		add_action( 'lsx_wetu_importer_settings_before', array( $this, 'watch_for_trigger' ), 200 );
 		add_action( 'lsx_wetu_accommodation_images_cron', array( $this, 'process' ), 10, 1 );
+		add_action( 'lsx_wetu_accommodation_images_sync', array( $this, 'cron_callback' ), 10 );
 	}
 
 	/**
@@ -50,6 +52,20 @@ class Cron {
 			self::$instance = new self();
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * Registers a 5 min schedule for us to use.
+	 *
+	 * @param  array $schedules
+	 * @return array
+	 */
+	public function register_schedule( $schedules ) {
+		$schedules['wetu-5-minutes'] = array(
+			'interval' => 5 * MINUTE_IN_SECONDS,
+			'display'  => __( 'Every 5 minutes', 'lsx-wetu-importer' ),
+		);
+		return $schedules;
 	}
 
 	/**
@@ -116,7 +132,7 @@ class Cron {
 	public function process( $task = '' ) {
 		switch ( $task ) {
 			case 'lsx_wetu_accommodation_images_cron':
-
+					$this->register_accommodation_images_sync();
 				break;
 
 			default:
@@ -129,14 +145,46 @@ class Cron {
 	 *
 	 * @return void
 	 */
-	public function sync_accommodation_images() {
+	public function register_accommodation_images_sync() {
+		$time = strtotime( '+1 min' );
+		if ( ! wp_next_scheduled( 'lsx_wetu_accommodation_images_sync' ) ) {
+			$this->load_items_to_sync( 'accommodation_images' );
+			$this->schedule( 'lsx_wetu_accommodation_images_sync', 'wetu-5-minutes', $time );
+		}
+	}
+
+	/**
+	 * This is the function that will be triggered by the cron event.
+	 *
+	 * @return void
+	 */
+	public function cron_callback() {
+	}
+
+	/**
+	 * This will grab the accommodation ids and load them up into an option field.
+	 *
+	 * @param  string $task
+	 * @return void
+	 */
+	public function load_items_to_sync( $task = 'accommodation_images' ) {
+		$args = array(
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'nopagin'        => true,
+			'fields'         => 'ids',
+		);
 		switch ( $task ) {
-			case 'lsx_wetu_accommodation_images_cron':
-				
+			case 'accommodation_images':
+					$args['post_type'] = 'accommodation';
 				break;
 
 			default:
 				break;
+		}
+		$items = new \WP_Query( $args );
+		if ( $items->have_posts() ) {
+			add_option( 'lsx_wetu_' . $task . '_sync', $items->posts );
 		}
 	}
 }
