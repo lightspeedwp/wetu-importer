@@ -34,6 +34,7 @@ class Cron {
 	 */
 	public function __construct() {
 		add_action( 'lsx_wetu_importer_settings_before', array( $this, 'watch_for_trigger' ), 200 );
+		add_action( 'lsx_wetu_accommodation_images_cron', array( $this, 'process' ), 10, 1 );
 	}
 
 	/**
@@ -75,7 +76,8 @@ class Cron {
 
 			// If activate and its not running.
 			if ( false === $schedule && 'activate' === $accommodation_cron ) {
-				$this->schedule();
+				$schedule = 'daily';
+				$this->schedule( 'lsx_wetu_accommodation_images_cron', $schedule );
 			} elseif ( true === $schedule && 'deactivate' === $accommodation_cron ) {
 				$this->deactivate();
 			}
@@ -95,13 +97,15 @@ class Cron {
 	 * This function will schedule the cron event.
 	 *
 	 * @param string $task
+	 * @param string $schedule
+	 * @param string $time
 	 * @return void
 	 */
-	public function schedule( $task = 'lsx_wetu_accommodation_images_cron' ) {
-		add_action( $task, array( $this, 'process' ) );
-		add_action( $task, 'lsx_wetu_accommodation_images_callback' );
-		add_action( 'lsx_wetu_accommodation_images_cron', 'lsx_wetu_accommodation_images_callback' );
-		wp_schedule_event( time(), 'daily', 'lsx_wetu_accommodation_images_cron' );
+	public function schedule( $task = 'lsx_wetu_accommodation_images_cron', $schedule = 'daily', $time = '' ) {
+		if ( '' === $time ) {
+			$time = time();
+		}
+		wp_schedule_event( $time, $schedule, $task, array( $task ) );
 	}
 
 	/**
@@ -109,12 +113,31 @@ class Cron {
 	 *
 	 * @return void
 	 */
-	public function process() {
-		// do your stuff.
+	public function process( $task = '' ) {
+		switch ( $task ) {
+			case 'lsx_wetu_accommodation_images_cron':
+
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * This is the function that will be triggered by the cron event.
+	 *
+	 * @return void
+	 */
+	public function sync_accommodation_images() {
+		switch ( $task ) {
+			case 'lsx_wetu_accommodation_images_cron':
+				
+				break;
+
+			default:
+				break;
+		}
 	}
 }
 Cron::get_instance();
-
-function lsx_wetu_accommodation_images_callback() {
-
-}
