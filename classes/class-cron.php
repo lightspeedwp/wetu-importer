@@ -36,7 +36,7 @@ class Cron {
 		add_filter( 'cron_schedules', array( $this, 'register_schedule' ), 10, 1 );
 		add_action( 'lsx_wetu_importer_settings_before', array( $this, 'watch_for_trigger' ), 200 );
 		add_action( 'lsx_wetu_accommodation_images_cron', array( $this, 'process' ), 10, 1 );
-		add_action( 'lsx_wetu_accommodation_images_sync', array( $this, 'cron_callback' ), 10 );
+		add_action( 'lsx_wetu_accommodation_images_sync', array( $this, 'cron_callback' ), 10, 1 );
 	}
 
 	/**
@@ -158,7 +158,23 @@ class Cron {
 	 *
 	 * @return void
 	 */
-	public function cron_callback() {
+	public function cron_callback( $task = '' ) {
+		$has_accommodation = get_option( $task );
+		if ( false !== $has_accommodation && ! empty( $has_accommodation ) ) {
+			$next_time = array_slice( $has_accommodation, 5 );      // returns "c", "d", and "e"
+			$output    = array_slice( $has_accommodation, 0, 4 );   // returns "a", "b", and "c"
+
+			// Run through the current items.
+
+			// Save the values for next time.
+			if ( ! empty( $next_time ) ) {
+				update_option( $task, $next_time );
+			} else {
+				$this->deactivate( $task );
+			}
+		} else {
+			$this->deactivate( $task );
+		}
 	}
 
 	/**
@@ -184,7 +200,7 @@ class Cron {
 		}
 		$items = new \WP_Query( $args );
 		if ( $items->have_posts() ) {
-			add_option( 'lsx_wetu_' . $task . '_sync', $items->posts );
+			update_option( 'lsx_wetu_' . $task . '_sync', $items->posts );
 		}
 	}
 }
