@@ -161,11 +161,38 @@ class Cron {
 	public function cron_callback( $task = '' ) {
 		$has_accommodation = get_option( $task );
 		if ( false !== $has_accommodation && ! empty( $has_accommodation ) ) {
-			$next_time = array_slice( $has_accommodation, 5 );      // returns "c", "d", and "e"
-			$output    = array_slice( $has_accommodation, 0, 4 );   // returns "a", "b", and "c"
+			$next_time = array_slice( $has_accommodation, 5 );
+			$this_time = array_slice( $has_accommodation, 0, 4 );
+
+			$api_key = $this->get_api_key();
+			$url     = 'https://wetu.com/API/Pins/' . $api_key . '/Get?all=include&ids=';
 
 			// Run through the current items.
-			update_option( 'lsx_wetu_nexttime', $next_time );
+			foreach ( $this_time as $accommodation ) {
+				$wetu_id   = get_post_meta( $accommodation, 'lsx_wetu_id', true );
+				$last_date = get_post_meta( $accommodation, 'lsx_wetu_modified_date', true );
+
+				$accommodation_info = wp_remote_get( $url . $wetu_id );
+				if ( ! empty( $accommodation_info ) && isset( $accommodation_info['response'] ) && isset( $accommodation_info['response']['code'] ) && 200 === $accommodation_info['response']['code'] ) {
+					$adata = json_decode( $accommodation_info['body'], true );
+
+					if ( isset( $adata[0] ) && isset( $adata[0]['last_modified'] ) && '' !== $adata[0]['last_modified'] ) {
+						$modified_time = strtotime( $adata[0]['last_modified'] );
+						if ( $modified_time > $last_date ) {
+							/*print_r('<pre>');
+							print_r( $wetu_id );
+							print_r('</pre>');
+							print_r('<pre>');
+							print_r( $last_date );
+							print_r('</pre>');
+							print_r('<pre>');
+							print_r( $modified_time );
+							print_r('</pre>');
+							die();*/
+						}
+					}
+				}
+			}
 
 			// Save the values for next time.
 			if ( ! empty( $next_time ) ) {
@@ -205,6 +232,25 @@ class Cron {
 		if ( $items->have_posts() ) {
 			update_option( 'lsx_wetu_' . $task . '_sync', $items->posts );
 		}
+	}
+
+	/**
+	 * Gets the API key stored in the options table.
+	 *
+	 * @return string
+	 */
+	public function get_api_key() {
+		$api_key = false;
+		$options = lsx_wetu_get_options();
+
+		if ( ! defined( 'WETU_API_KEY' ) ) {
+			if ( isset( $options['api_key'] ) && '' !== $options['api_key'] ) {
+				$api_key = $options['api_key'];
+			}
+		} else {
+			$api_key = WETU_API_KEY;
+		}
+		return $api_key;
 	}
 }
 Cron::get_instance();
