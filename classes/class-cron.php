@@ -179,16 +179,9 @@ class Cron {
 					if ( isset( $adata[0] ) && isset( $adata[0]['last_modified'] ) && '' !== $adata[0]['last_modified'] ) {
 						$modified_time = strtotime( $adata[0]['last_modified'] );
 						if ( $modified_time > $last_date ) {
-							/*print_r('<pre>');
-							print_r( $wetu_id );
-							print_r('</pre>');
-							print_r('<pre>');
-							print_r( $last_date );
-							print_r('</pre>');
-							print_r('<pre>');
-							print_r( $modified_time );
-							print_r('</pre>');
-							die();*/
+							$accommodation_importer = new \LSX_WETU_Importer_Accommodation();
+							$accommodation_importer->create_main_gallery( $adata, $accommodation );
+							update_post_meta( $accommodation, 'lsx_wetu_modified_date', $modified_time, $last_date );
 						}
 					}
 				}
