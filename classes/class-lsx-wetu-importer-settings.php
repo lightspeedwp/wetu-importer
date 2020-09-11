@@ -62,6 +62,8 @@ class LSX_WETU_Importer_Settings {
 			'height'                             => '600',
 			'scaling'                            => 'h',
 			'enable_tour_ref_column'             => '',
+			'cron_schedule'                      => 'daily',
+			'accommodation_images_cron'          => '',
 		);
 		$this->fields   = array_keys( $this->defaults );
 		add_action( 'admin_init', array( $this, 'save_options' ) );
@@ -93,6 +95,7 @@ class LSX_WETU_Importer_Settings {
 		<div class="wrap">
 			<form method="post" class="">
 				<?php wp_nonce_field( 'lsx_wetu_importer_save', 'lsx_wetu_importer_save_options' ); ?>
+				<?php do_action( 'lsx_wetu_importer_settings_before' ); ?>
 				<h1><?php esc_html_e( 'General', 'lsx-wetu-importer' ); ?></h1>
 				<table class="form-table">
 					<tbody>
@@ -444,6 +447,61 @@ class LSX_WETU_Importer_Settings {
 						</tr>
 					</tbody>
 				</table>
+
+				<h1><?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?></h1>
+
+				<table class="form-table">
+					<tbody>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="cron_schedule"><?php esc_html_e( 'Schedule', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<select name="cron_schedule" id="cron_schedule"	class="widefat layout">
+									<?php
+									if ( isset( $options['cron_schedule'] ) && '' !== $options['cron_schedule'] ) {
+										$schedule = $options['cron_schedule'];
+									} else {
+										$schedule = 'daily';
+									}
+									$timeslots = array(
+										'daily'      => __( 'Daily', 'lsx-wetu-importer' ),
+										'weekly-mon' => __( 'Weekly (Monday)', 'lsx-wetu-importer' ),
+										'weekly-tue' => __( 'Weekly (Tuesday)', 'lsx-wetu-importer' ),
+										'weekly-wed' => __( 'Weekly (Wednesday)', 'lsx-wetu-importer' ),
+										'weekly-thu' => __( 'Weekly (Thursday)', 'lsx-wetu-importer' ),
+										'weekly-fri' => __( 'Weekly (Friday)', 'lsx-wetu-importer' ),
+										'weekly-sat' => __( 'Weekly (Saturday)', 'lsx-wetu-importer' ),
+										'weekly-sun' => __( 'Weekly (Sunday)', 'lsx-wetu-importer' ),
+									);
+									foreach ( $timeslots as $key => $name ) {
+										$selected = ( $schedule == $key ) ? ' selected="selected"' : '';
+										?>
+										<option value="<?php echo wp_kses_post( $key ); ?>" id="<?php echo wp_kses_post( $key ); ?>" <?php echo wp_kses_post( $selected ); ?>><?php echo wp_kses_post( $name ); ?></option>
+										<?php
+									}
+									?>
+								</select>
+							</td>
+						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="accommodation_images_cron"><?php esc_html_e( 'Accommodation Images', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['accommodation_images_cron'] ) && '' !== $options['accommodation_images_cron'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="accommodation_images_cron" />
+								<p><?php esc_html_e( 'Update the accommodation images accodring to the schedule above.', 'lsx-wetu-importer' ); ?></p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
 				<p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'lsx-wetu-importer' ); ?>"></p>
 			</form>
 		</div>

@@ -216,6 +216,8 @@ class LSX_WETU_Importer {
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-destination.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-tours.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-settings.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-cron.php';
+
 		if ( isset( $this->options ) && isset( $this->options['enable_tour_ref_column'] ) && '' !== $this->options['enable_tour_ref_column'] ) {
 			require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-post-columns.php';
 			$this->post_columns = LSX_WETU_Importer_Post_Columns::get_instance();
@@ -230,11 +232,7 @@ class LSX_WETU_Importer {
 			add_action( 'wp_ajax_lsx_import_items', array( $this, 'process_ajax_import' ) );
 			add_action( 'wp_ajax_nopriv_lsx_import_items', array( $this, 'process_ajax_import' ) );
 		}
-
-		//delete_transient( 'lsx_ti_tours' );
 	}
-
-	// ACTIVATION FUNCTIONS.
 
 	/**
 	 * Load the plugin text domain for translation.
