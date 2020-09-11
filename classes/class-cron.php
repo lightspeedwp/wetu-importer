@@ -106,7 +106,7 @@ class Cron {
 	 * @return void
 	 */
 	public function deactivate( $task = 'lsx_wetu_accommodation_images_cron' ) {
-		wp_clear_scheduled_hook( $task );
+		wp_clear_scheduled_hook( $task, array( $task ) );
 	}
 
 	/**
@@ -165,15 +165,18 @@ class Cron {
 			$output    = array_slice( $has_accommodation, 0, 4 );   // returns "a", "b", and "c"
 
 			// Run through the current items.
+			update_option( 'lsx_wetu_nexttime', $next_time );
 
 			// Save the values for next time.
 			if ( ! empty( $next_time ) ) {
 				update_option( $task, $next_time );
 			} else {
+				delete_option( $task );
 				$this->deactivate( $task );
 			}
 		} else {
 			$this->deactivate( $task );
+			update_option( 'lsx_wetu_nexttime', $task );
 		}
 	}
 
