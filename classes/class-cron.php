@@ -161,8 +161,8 @@ class Cron {
 	public function cron_callback( $task = '' ) {
 		$has_accommodation = get_option( $task );
 		if ( false !== $has_accommodation && ! empty( $has_accommodation ) ) {
-			$next_time = array_slice( $has_accommodation, 5 );
-			$this_time = array_slice( $has_accommodation, 0, 4 );
+			$next_time = array_slice( $has_accommodation, 10 );
+			$this_time = array_slice( $has_accommodation, 0, 9 );
 
 			$api_key = $this->get_api_key();
 			$url     = 'https://wetu.com/API/Pins/' . $api_key . '/Get?all=include&ids=';
