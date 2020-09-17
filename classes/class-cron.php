@@ -85,16 +85,16 @@ class Cron {
 			}
 
 			// Check what state the cron is in.
-			$schedule = false;
+			$scheduled = false;
 			if ( wp_next_scheduled( 'lsx_wetu_accommodation_images_cron' ) ) {
-				$schedule = true;
+				$scheduled = true;
 			}
 
 			// If activate and its not running.
-			if ( false === $schedule && 'activate' === $accommodation_cron ) {
-				$schedule = 'daily';
+			if ( false === $scheduled && 'activate' === $accommodation_cron ) {
+				$schedule = 'weekly';
 				$this->schedule( 'lsx_wetu_accommodation_images_cron', $schedule );
-			} elseif ( true === $schedule && 'deactivate' === $accommodation_cron ) {
+			} elseif ( true === $scheduled && 'deactivate' === $accommodation_cron ) {
 				$this->deactivate();
 			}
 		}
@@ -117,7 +117,7 @@ class Cron {
 	 * @param string $time
 	 * @return void
 	 */
-	public function schedule( $task = 'lsx_wetu_accommodation_images_cron', $schedule = 'daily', $time = '' ) {
+	public function schedule( $task = 'lsx_wetu_accommodation_images_cron', $schedule = 'weekly', $time = 'Sunday 10pm' ) {
 		if ( '' === $time ) {
 			$time = time();
 		}
@@ -146,7 +146,7 @@ class Cron {
 	 * @return void
 	 */
 	public function register_accommodation_images_sync() {
-		$time = strtotime( '+1 min' );
+		$time = strtotime( '+5 min' );
 		if ( ! wp_next_scheduled( 'lsx_wetu_accommodation_images_sync' ) ) {
 			$this->load_items_to_sync( 'accommodation_images' );
 			$this->schedule( 'lsx_wetu_accommodation_images_sync', 'wetu-5-minutes', $time );
