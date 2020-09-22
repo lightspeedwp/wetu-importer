@@ -118,10 +118,15 @@ class Cron {
 	 * @return void
 	 */
 	public function schedule( $task = 'lsx_wetu_accommodation_images_cron', $schedule = 'weekly', $time = 'Sunday 10pm' ) {
+		$args = array( $task );
 		if ( '' === $time ) {
 			$time = time();
 		}
-		wp_schedule_event( $time, $schedule, $task, array( $task ) );
+
+		if ( isset( $_GET['accommodation_images_cron_featured'] ) && '' !== $_GET['accommodation_images_cron_featured'] ) {
+			$args[] = 'featured_image';
+		}
+		wp_schedule_event( $time, $schedule, $task, $args );
 	}
 
 	/**
@@ -158,7 +163,7 @@ class Cron {
 	 *
 	 * @return void
 	 */
-	public function cron_callback( $task = '' ) {
+	public function cron_callback( $task = '', $featured_image = '' ) {
 		$has_accommodation = get_option( $task );
 		if ( false !== $has_accommodation && ! empty( $has_accommodation ) ) {
 			$next_time = array_slice( $has_accommodation, 10 );
@@ -181,6 +186,9 @@ class Cron {
 						if ( $modified_time > $last_date ) {
 							$accommodation_importer = new \LSX_WETU_Importer_Accommodation();
 							$accommodation_importer->create_main_gallery( $adata, $accommodation );
+							if ( '' !== $featured_image ) {
+								$accommodation_importer->set_featured_image( $adata, $accommodation );
+							}
 							update_post_meta( $accommodation, 'lsx_wetu_modified_date', $modified_time, $last_date );
 						}
 					}

@@ -64,6 +64,7 @@ class LSX_WETU_Importer_Settings {
 			'enable_tour_ref_column'             => '',
 			'cron_schedule'                      => 'daily',
 			'accommodation_images_cron'          => '',
+			'accommodation_images_cron_featured' => '',
 		);
 		$this->fields   = array_keys( $this->defaults );
 		add_action( 'admin_init', array( $this, 'save_options' ) );
@@ -497,6 +498,21 @@ class LSX_WETU_Importer_Settings {
 								?>
 								name="accommodation_images_cron" />
 								<p><?php esc_html_e( 'Update the accommodation images accodring to the schedule above.', 'lsx-wetu-importer' ); ?></p>
+							</td>
+						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="accommodation_images_cron_featured"><?php esc_html_e( 'Featured Images', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['accommodation_images_cron_featured'] ) && '' !== $options['accommodation_images_cron_featured'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="accommodation_images_cron_featured" />
+								<p><?php esc_html_e( 'Set the featured image when the gallery is created.', 'lsx-wetu-importer' ); ?></p>
 							</td>
 						</tr>
 					</tbody>
