@@ -5,8 +5,10 @@
 <p align="center">
 	<a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://poser.pugx.org/woocommerce/woocommerce/license" alt="license"></a>
     <a href="http://gulpjs.com/"><img src="https://img.shields.io/badge/built%20with-gulp.js-green.svg" alt="Built with gulp.js"></a>
-  	<a href="https://travis-ci.org/lightspeeddevelopment/lsx-wetu-importer/"><img src="https://travis-ci.org/lightspeeddevelopment/lsx-wetu-importer.svg?branch=master" alt="Build Status"></a>
+  	<a href="https://travis-ci.org/github/lightspeeddevelopment/wetu-importer/"><img src="https://travis-ci.org/lightspeeddevelopment/wetu-importer.svg?branch=master" alt="Build Status"></a>
     <a href="https://codeclimate.com/github/lightspeeddevelopment/wetu-importer/"><img src="https://codeclimate.com/github/lightspeeddevelopment/wetu-importer/badges/gpa.svg" alt="Code Climate"></a>
+	<a href="https://lsdev.biz/lsx/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2019/06/Designed-for-LSX-Theme-blue.png" alt="Made for LSX Theme"></a>
+	<a href="https://lsdev.biz/lsx/extensions/tour-operator/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2019/06/Designed-for-Tour-Operator-plugin-1098ad.png" alt="LSX Tour Operator"></a>
 </p>
 
 Welcome to the [LSX Importer for Wetu](https://www.lsdev.biz/lsx/extensions/wetu-importer/). This WordPress plugin allows destination, accommodation and tour content to be imported via the Wetu.com API.
