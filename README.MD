@@ -2,9 +2,13 @@
 </p>
 <h1 align="center">LSX Importer for Wetu</h1>
 
+
+
 <p align="center">
-	<a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://poser.pugx.org/woocommerce/woocommerce/license" alt="license"></a>
-    <a href="http://gulpjs.com/"><img src="https://img.shields.io/badge/built%20with-gulp.js-green.svg" alt="Built with gulp.js"></a>
+  <a href="https://lsdev.biz/lsx/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2019/06/Designed-for-LSX-Theme-blue.png" alt="Made for LSX Theme"></a>
+	<a href="https://lsdev.biz/lsx/extensions/tour-operator/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2019/06/Designed-for-Tour-Operator-plugin-1098ad.png" alt="LSX Tour Operator"></a>
+  <a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://poser.pugx.org/woocommerce/woocommerce/license" alt="license"></a>
+  <a href="http://gulpjs.com/"><img src="https://img.shields.io/badge/built%20with-gulp.js-green.svg" alt="Built with gulp.js"></a> 
   	<a href="https://travis-ci.org/github/lightspeeddevelopment/wetu-importer/"><img src="https://travis-ci.org/lightspeeddevelopment/wetu-importer.svg?branch=master" alt="Build Status"></a>
     <a href="https://codeclimate.com/github/lightspeeddevelopment/wetu-importer/"><img src="https://codeclimate.com/github/lightspeeddevelopment/wetu-importer/badges/gpa.svg" alt="Code Climate"></a>
 	<a href="https://lsdev.biz/lsx/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2019/06/Designed-for-LSX-Theme-blue.png" alt="Made for LSX Theme"></a>
@@ -35,5 +39,22 @@ If you are experiencing issues with the LSX Importer for Wetu Plugin & have expe
 
 If you're a developer who's spotted a bug issue and have a fix, or simply have functionality you think would extend our core theme, we are always happy to accept your contribution! Visit the [LSX Importer for Wetu Plugin on Github](https://github.com/lightspeeddevelopment/wetu-importer/) and submit a Pull Request with your updates.
 
-## Like what you see?
-<a href="https://www.lsdev.biz/contact/"><img src="https://www.lsdev.biz/wp-content/uploads/2020/02/work-with-lightspeed.png" width="850" alt="Work with us at LightSpeed"></a>
+
+
+---
+<p align="center">
+  <a href="https://www.lsdev.biz/contact/"><img src="https://www.lsdev.biz/wp-content/uploads/2020/02/work-with-lightspeed.png" width="850" alt="Work with us at LightSpeed"></a>
+</p>
+<p align="center">
+  <a href="https://www.lsdev.biz">LightSpeed's Company Website</a> &nbsp;&middot;&nbsp;
+  <a href="https://www.lsdev.biz/lsx/">LSX Product Website</a>
+</p>
+<p align="center">
+  <a href="https://github.com/lightspeeddevelopment">GitHub</a> &nbsp;&middot;&nbsp;
+  <a href="https://facebook.com/lightspeedwordpressdevelopment">Facebook</a> &nbsp;&middot;&nbsp;
+  <a href="https://twitter.com/lightspeedwp">Twitter</a>
+</p>
+<p align="center">
+  Copyright © 2020 LightSpeed WordPress Development. All Rights Reserved.
+</p>
+
