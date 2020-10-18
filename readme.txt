@@ -9,15 +9,18 @@ Stable tag: 1.3.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-This plugin allows users to destination, accommodation and tour content to be imported via the Wetu.com content API into the LSX Tour Operator plugin. 
+This plugin allows website owners to import destination, accommodation and tour content into the LSX Tour Operator plugin via the Wetu.com content API. 
 
 == Description ==
+
 Building your [LSX Tour Operator](https://www.lsdev.biz/lsx/extensions/tour-operator/) site but looking for content? The Wetu directory is packed with amazing content and images to use across your website!
 
 = Works with the LSX Theme & LSX Tour Operators plugin =
+
 The [LSX theme](https://www.lsdev.biz/lsx/) works perfectly with the LSX Importer for Wetu Extension, improving internal linking, website SEO and user experience! 
 
 = It's free, and always will be. =
+
 We’re firm believers in open source - that’s why the [LSX Importer for Wetu plugin](https://www.lsdev.biz/lsx/extensions/tour-operator/wetu-importer/) is free, and that won't change. We are constantly maintaining and updating our extension so you have the latest and greatest abilities on your LSX Theme powered site. 
 
 = Documentation =
