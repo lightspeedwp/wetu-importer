@@ -37,6 +37,7 @@ class Cron {
 		add_action( 'lsx_wetu_importer_settings_before', array( $this, 'watch_for_trigger' ), 200 );
 		add_action( 'lsx_wetu_accommodation_images_cron', array( $this, 'process' ), 10, 1 );
 		add_action( 'lsx_wetu_accommodation_images_sync', array( $this, 'cron_callback' ), 10, 1 );
+		add_filter( 'cmb_meta_boxes', array( $this, 'custom_image_metabox' ), 10, 1 );
 	}
 
 	/**
@@ -52,6 +53,29 @@ class Cron {
 			self::$instance = new self();
 		}
 		return self::$instance;
+	}
+
+	public function custom_image_metabox( &$meta_boxes ) {
+
+		$fields = array(
+			/**
+			 * Single Checkbox Field.
+			 */
+			array(
+				'id'    => 'field-checkbox',
+				'name' => 'Checkbox field',
+				'type' => 'checkbox',
+			),
+		);
+		/**
+		 * Metabox instantiation.
+		 */
+		$meta_boxes[] = array(
+			'title' => __( 'WETU Settings', 'lsx-wetu-importer' ),
+			'pages' => 'accommodation',
+			'fields' => $fields,
+		);
+		return $meta_boxes;
 	}
 
 	/**
