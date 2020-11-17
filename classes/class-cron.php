@@ -67,11 +67,11 @@ class Cron {
 
 		$fields = array();
 
-		/*$fields[] = array(
+		$fields[] = array(
 			'id'   => 'wetu_skip_banner',
 			'name' => esc_html__( 'Skip Banner Image', 'lsx-banners' ),
 			'type' => 'checkbox',
-		);*/
+		);
 
 		$fields[] = array(
 			'id'   => 'wetu_skip_featured',
@@ -215,6 +215,7 @@ class Cron {
 
 				// Grabbing the image sync.
 				$featured_image = get_post_meta( $accommodation, 'wetu_skip_featured', true );
+				$banner_image   = get_post_meta( $accommodation, 'wetu_skip_banner', true );
 
 				$accommodation_info = wp_remote_get( $url . $wetu_id );
 				if ( ! empty( $accommodation_info ) && isset( $accommodation_info['response'] ) && isset( $accommodation_info['response']['code'] ) && 200 === $accommodation_info['response']['code'] ) {
@@ -225,7 +226,11 @@ class Cron {
 						if ( $modified_time > $last_date ) {
 							$accommodation_importer = new \LSX_WETU_Importer_Accommodation();
 
-							if ( false !== $featured_image && '' !== $featured_image ) {
+							if ( false === $banner_image || '' === $banner_image ) {
+								$accommodation_importer->set_banner_image( $adata, $accommodation );
+							}
+
+							if ( false === $featured_image || '' === $featured_image ) {
 								$accommodation_importer->set_featured_image( $adata, $accommodation );
 							}
 
