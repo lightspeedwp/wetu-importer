@@ -980,6 +980,22 @@ class LSX_WETU_Importer {
 	}
 
 	/**
+	 * Checks if the current image is being used as a thumbnail somewhere else.
+	 */
+	public function is_image_being_used( $image_id = '', $post_id = '' ) {
+		global $wpdb;
+		$being_used = false;
+		if ( '' !== $image_id ) {
+			$sql = "SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != {$post_id} `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE '{$image_id}'";
+			$results = $wpdb->query( $sql );
+			if ( ! empty( $results ) ) {
+				$being_used = true;
+			}
+		}
+		return $being_used;
+	}
+
+	/**
 	 * Creates the main gallery data
 	 */
 	public function create_main_gallery( $data, $id ) {
@@ -991,7 +1007,7 @@ class LSX_WETU_Importer {
 					foreach ( $current_gallery as $g ) {
 						delete_post_meta( $id, 'gallery', $g );
 
-						if ( 'attachment' === get_post_type( $g ) ) {
+						if ( 'attachment' === get_post_type( $g ) && false === $this->is_image_being_used( $g, $id ) ) {
 							wp_delete_attachment( $g, true );
 						}
 					}
