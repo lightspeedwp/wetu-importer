@@ -37,7 +37,7 @@ class Cron {
 		add_action( 'lsx_wetu_importer_settings_before', array( $this, 'watch_for_trigger' ), 200 );
 		add_action( 'lsx_wetu_accommodation_images_cron', array( $this, 'process' ), 10, 1 );
 		add_action( 'lsx_wetu_accommodation_images_sync', array( $this, 'cron_callback' ), 10, 1 );
-		add_filter( 'cmb_meta_boxes', array( $this, 'custom_image_metabox' ), 10, 1 );
+		add_filter( 'cmb_meta_boxes', array( $this, 'metaboxes' ) );
 	}
 
 	/**
@@ -55,26 +55,38 @@ class Cron {
 		return self::$instance;
 	}
 
-	public function custom_image_metabox( &$meta_boxes ) {
+	/**
+	 * Define the metabox and field configurations.
+	 *
+	 * @param  array $meta_boxes
+	 * @return array
+	 */
+	public function metaboxes( array $meta_boxes ) {
+		// Allowed post types.
+		$allowed_post_types = array( 'accommodation' );
 
-		$fields = array(
-			/**
-			 * Single Checkbox Field.
-			 */
-			array(
-				'id'    => 'field-checkbox',
-				'name' => 'Checkbox field',
-				'type' => 'checkbox',
-			),
+		$fields = array();
+
+		$fields[] = array(
+			'id'   => 'wetu_skip_banner',
+			'name' => esc_html__( 'Skip Banner Image', 'lsx-banners' ),
+			'type' => 'checkbox',
 		);
-		/**
-		 * Metabox instantiation.
-		 */
+
+		$fields[] = array(
+			'id'   => 'wetu_skip_featured',
+			'name' => esc_html__( 'Skip Featured Image', 'lsx-banners' ),
+			'type' => 'checkbox',
+		);
+
 		$meta_boxes[] = array(
-			'title' => __( 'WETU Settings', 'lsx-wetu-importer' ),
-			'pages' => 'accommodation',
+			'title'  => esc_html__( 'WETU Settings', 'lsx-banners' ),
+			'pages'  => $allowed_post_types,
 			'fields' => $fields,
+			'context'    => 'side',
+			'priority'   => 'low',
 		);
+
 		return $meta_boxes;
 	}
 
@@ -190,8 +202,8 @@ class Cron {
 	public function cron_callback( $task = '', $featured_image = '' ) {
 		$has_accommodation = get_option( $task );
 		if ( false !== $has_accommodation && ! empty( $has_accommodation ) ) {
-			$next_time = array_slice( $has_accommodation, 5 );
-			$this_time = array_slice( $has_accommodation, 0, 4 );
+			$next_time = array_slice( $has_accommodation, 3 );
+			$this_time = array_slice( $has_accommodation, 0, 2 );
 
 			$api_key = $this->get_api_key();
 			$url     = 'https://wetu.com/API/Pins/' . $api_key . '/Get?all=include&ids=';
@@ -201,6 +213,10 @@ class Cron {
 				$wetu_id   = get_post_meta( $accommodation, 'lsx_wetu_id', true );
 				$last_date = get_post_meta( $accommodation, 'lsx_wetu_modified_date', true );
 
+				// Grabbing the image sync.
+				$featured_image = get_post_meta( $accommodation, 'wetu_skip_featured', true );
+				$banner_image   = get_post_meta( $accommodation, 'wetu_skip_banner', true );
+
 				$accommodation_info = wp_remote_get( $url . $wetu_id );
 				if ( ! empty( $accommodation_info ) && isset( $accommodation_info['response'] ) && isset( $accommodation_info['response']['code'] ) && 200 === $accommodation_info['response']['code'] ) {
 					$adata = json_decode( $accommodation_info['body'], true );
@@ -209,10 +225,16 @@ class Cron {
 						$modified_time = strtotime( $adata[0]['last_modified'] );
 						if ( $modified_time > $last_date ) {
 							$accommodation_importer = new \LSX_WETU_Importer_Accommodation();
-							$accommodation_importer->create_main_gallery( $adata, $accommodation );
-							if ( '' !== $featured_image ) {
+
+							if ( false === $banner_image || '' === $banner_image ) {
+								$accommodation_importer->set_banner_image( $adata, $accommodation );
+							}
+
+							if ( false === $featured_image || '' === $featured_image ) {
 								$accommodation_importer->set_featured_image( $adata, $accommodation );
 							}
+
+							$accommodation_importer->create_main_gallery( $adata, $accommodation );
 							update_post_meta( $accommodation, 'lsx_wetu_modified_date', $modified_time, $last_date );
 						}
 					}
