@@ -986,9 +986,9 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$being_used = false;
 		if ( '' !== $image_id ) {
-			$sql = "SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != {$post_id} `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE '{$image_id}'";
+			$sql = "SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != {$post_id} AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE '{$image_id}'";
 			$results = $wpdb->query( $sql );
-			if ( ! empty( $results ) ) {
+			if ( false !== $results && ! empty( $results ) ) {
 				$being_used = true;
 			}
 		}
