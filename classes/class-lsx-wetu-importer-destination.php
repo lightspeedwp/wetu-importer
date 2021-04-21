@@ -656,9 +656,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				if ( false !== $importable_content && in_array( 'featured_image', $importable_content ) ) {
 					$this->set_featured_image( $data, $id );
 				}
-				var_dump($importable_content);
 				if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
-					var_dump($id);
 					$this->set_banner_image( $data, $id, $importable_content );
 				}
 				// Import the main gallery.
