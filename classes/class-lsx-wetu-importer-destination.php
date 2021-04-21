@@ -183,18 +183,17 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 										   type="checkbox" name="content[]"
 										   value="featured_image"/> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?>
 								</li>
-								<?php if ( class_exists( 'LSX_Banners' ) ) { ?>
-									<li>
-										<input class="content" checked="checked"
-											   type="checkbox" name="content[]"
-											   value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?>
-									</li>
-									<li>
-										<input class="content" checked="checked"
-											   type="checkbox" name="content[]"
-											   value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'lsx-wetu-importer' ); ?>
-									</li>
-								<?php } ?>
+
+								<li>
+									<input class="content" checked="checked"
+											type="checkbox" name="content[]"
+											value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?>
+								</li>
+								<?php /*<li>
+									<input class="content"
+											type="checkbox" name="content[]"
+											value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'lsx-wetu-importer' ); ?>
+								</li>*/ ?>
 
 								<li>
 									<input class="content" checked="checked"
@@ -657,7 +656,9 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				if ( false !== $importable_content && in_array( 'featured_image', $importable_content ) ) {
 					$this->set_featured_image( $data, $id );
 				}
+				var_dump($importable_content);
 				if ( false !== $importable_content && in_array( 'banner_image', $importable_content ) ) {
+					var_dump($id);
 					$this->set_banner_image( $data, $id, $importable_content );
 				}
 				// Import the main gallery.
