@@ -74,18 +74,18 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 					<?php $this->table_header(); ?>
 
 					<tbody>
-						<?php 
-                        if ( false !== $loose_accommodation ) {
+						<?php
+						if ( false !== $loose_accommodation ) {
 
-							$loose_args = array(
-								'post_type' => 'accommodation',
+							$loose_args                = array(
+								'post_type'   => 'accommodation',
 								'post_status' => array( 'publish', 'pending' ),
-								'nopagin' => true,
-								'post__in' => $loose_accommodation,
+								'nopagin'     => true,
+								'post__in'    => $loose_accommodation,
 							);
 							$loose_accommodation_query = new WP_Query( $loose_args );
-							$accommodation = get_transient( 'lsx_ti_accommodation' );
-							$identifier = '';
+							$accommodation             = get_transient( 'lsx_ti_accommodation' );
+							$identifier                = '';
 
 							if ( $loose_accommodation_query->have_posts() && false !== $accommodation ) {
 								while ( $loose_accommodation_query->have_posts() ) {
@@ -113,11 +113,11 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 											?>
 										</td>
 									</tr>
-						<?php 
-                          }
+									<?php
+								}
 							}
-						} 
-                        ?>
+						}
+						?>
 					</tbody>
 
 					<?php $this->table_footer(); ?>
@@ -141,7 +141,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 	 * The header of the item list
 	 */
 	public function table_header() {
-	?>
+		?>
 		<thead>
 			<tr>
 				<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
@@ -152,14 +152,14 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 				<th style="width:40%;" class="manage-column column-date" id="date" style="width:49%;" scope="col">Excerpt</th>
 			</tr>
 		</thead>
-	<?php
+		<?php
 	}
 
 	/**
 	 * The footer of the item list
 	 */
 	public function table_footer() {
-	?>
+		?>
 		<tfoot>
 			<tr>
 				<th style="" class="manage-column column-cb check-column" id="cb" scope="col">
@@ -170,7 +170,7 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 				<th style="width:40%;" class="manage-column column-date" id="date" style="width:49%;" scope="col">Excerpt</th>
 			</tr>
 		</tfoot>
-	<?php
+		<?php
 	}
 
 	/**
@@ -180,14 +180,18 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 		global $wpdb;
 		$return = false;
 
-		$all_accommodation = $wpdb->get_results("
+		$all_accommodation = $wpdb->get_results(
+			"
 			SELECT ID
 			FROM {$wpdb->posts}
 			WHERE post_type = 'accommodation'
 			LIMIT 0,500
-		", ARRAY_A);
+		",
+			ARRAY_A
+		);
 
-		$current_accommodation = $wpdb->get_results("
+		$current_accommodation = $wpdb->get_results(
+			"
 			SELECT key1.post_id
 			FROM {$wpdb->postmeta} key1
 
@@ -198,10 +202,12 @@ class LSX_WETU_Importer_Connect_Accommodation extends LSX_WETU_Importer_Admin {
 			AND key2.post_type = 'accommodation'
 
 			LIMIT 0,500
-		", ARRAY_A);
+		",
+			ARRAY_A
+		);
 
 		if ( null !== $all_accommodation && ! empty( $all_accommodation ) ) {
-			//remove the extra accommodation
+			// remove the extra accommodation
 			if ( null !== $current_accommodation && ! empty( $current_accommodation ) ) {
 				$all_accommodation = array_diff( $this->format_array( $all_accommodation, 'ID' ), $this->format_array( $current_accommodation, 'post_id' ) );
 			} elseif ( null !== $current_accommodation && empty( $current_accommodation ) ) {

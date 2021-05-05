@@ -116,7 +116,8 @@ class LSX_WETU_Importer_Post_Columns {
 			$query->set( 'orderby', 'meta_value' );
 			$query->set( 'meta_key', 'lsx_wetu_reference' );
 		}
-		/*if ( $query->is_search() && 'tour' === $query->get( 'post_type' ) ) {
+		/*
+		if ( $query->is_search() && 'tour' === $query->get( 'post_type' ) ) {
 			$meta_query = array(
 				'relation' => 'OR',
 				array(

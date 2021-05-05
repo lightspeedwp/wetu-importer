@@ -59,41 +59,41 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 					<?php
 						$accommodation_args = array(
-							'post_type' => 'accommodation',
-							'post_status' => array( 'publish', 'pending', 'draft', 'future', 'private' ),
-							'nopagin' => 'true',
+							'post_type'      => 'accommodation',
+							'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' ),
+							'nopagin'        => 'true',
 							'posts_per_page' => '1000',
-							'meta_query' => array(
+							'meta_query'     => array(
 								'relation' => 'AND',
 								array(
-									'key' => 'lsx_wetu_id',
+									'key'     => 'lsx_wetu_id',
 									'compare' => 'EXISTS',
 								),
 								array(
-									'key' => 'image_group',
+									'key'     => 'image_group',
 									'compare' => 'EXISTS',
 								),
 								array(
-									'key' => 'image_group',
-									'value' => 'a:1:{s:12:"banner_image";a:0:{}}',
+									'key'     => 'image_group',
+									'value'   => 'a:1:{s:12:"banner_image";a:0:{}}',
 									'compare' => '!=',
 								),
 							),
 						);
-						$accommodation = new WP_Query( $accommodation_args );
-					?>
+						$accommodation      = new WP_Query( $accommodation_args );
+						?>
 
 					<tbody id="the-list">
 						<?php
-							if ( $accommodation->have_posts() ) {
-								while ( $accommodation->have_posts() ) {
-									$accommodation->the_post();
-									?>
+						if ( $accommodation->have_posts() ) {
+							while ( $accommodation->have_posts() ) {
+								$accommodation->the_post();
+								?>
 									<tr class="post-<?php the_ID(); ?> type-tour status-none" id="post-<?php the_ID(); ?>">
 									<?php
 									$banner_size_appropriate = false;
-									$min_width = '1920';
-									$min_height = '500';
+									$min_width               = '1920';
+									$min_height              = '500';
 
 									$img_group = get_post_meta( get_the_ID(), 'image_group', true );
 
@@ -101,23 +101,23 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 									if ( false !== $img_group ) {
 										foreach ( $img_group['banner_image'] as $banner_image ) {
-											$large = wp_get_attachment_image_src( $banner_image, 'full' );
-											$real_width = $large[1];
+											$large       = wp_get_attachment_image_src( $banner_image, 'full' );
+											$real_width  = $large[1];
 											$real_height = $large[2];
 
 											$status = 'optimized';
 											if ( $real_width < intval( $real_width ) ) {
 												$status = 'width not enough.';
-												}
+											}
 
-											$thumbnail = wp_get_attachment_image_src( $banner_image, 'thumbnail' );
+											$thumbnail         = wp_get_attachment_image_src( $banner_image, 'thumbnail' );
 											$thumbnails_html[] = '
 													<div style="display:block;float:left;">
 														<img src="' . $thumbnail[0] . '" />
 														<p style="text-align:center;">' . $real_width . 'px by ' . $real_height . 'px</p>
 													</div>';
-											}
 										}
+									}
 									?>
 									<th class="check-column" scope="row">
 										<label for="cb-select-<?php the_ID(); ?>" class="screen-reader-text"></label>
@@ -125,26 +125,26 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 										</th>
 
 										<td class="post-title page-title column-title">
-                                        <?php 
-                                        echo '<a href="' . esc_url( admin_url( '/post.php?post=' . get_the_ID() . '&action=edit' ) ) . '" target="_blank">';
-										the_title();
-										echo '</a>'; 
-                                        ?>
-                                        </td>
+									<?php
+									echo '<a href="' . esc_url( admin_url( '/post.php?post=' . get_the_ID() . '&action=edit' ) ) . '" target="_blank">';
+									the_title();
+									echo '</a>';
+									?>
+										</td>
 
 										<td colspan="2" class="thumbnails column-thumbnails">
-										<?php
-											if ( false !== $thumbnails_html ) {
-												echo wp_kses_post( implode( '', $thumbnails_html ) );
-											} else {
-												echo '<p>There was an error retrieving your images.</p>';
-											}
-										?>
+									<?php
+									if ( false !== $thumbnails_html ) {
+										echo wp_kses_post( implode( '', $thumbnails_html ) );
+									} else {
+										echo '<p>There was an error retrieving your images.</p>';
+									}
+									?>
 										</td>
 									</tr>
-							<?php 
-                              }
+								<?php
 							}
+						}
 						?>
 					</tbody>
 
@@ -175,12 +175,12 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 		check_ajax_referer( 'lsx_wetu_ajax_action', 'security' );
 		if ( isset( $_POST['action'] ) && 'lsx_import_sync_banners' === $_POST['action'] && isset( $_POST['post_id'] ) ) {
 
-			$post_id = sanitize_text_field( $_POST['post_id'] );
+			$post_id       = sanitize_text_field( $_POST['post_id'] );
 			$banners       = get_post_meta( $post_id, 'image_group', true );
 			$this->wetu_id = get_post_meta( $post_id, 'lsx_wetu_id', true );
 
 			$new_banner_array = false;
-			$array_index = 0;
+			$array_index      = 0;
 
 			foreach ( $banners['banner_image'] as $banner_image ) {
 				$image_id = $this->attach_external_image2( $this->format_wetu_url( $banner_image ), array(), $post_id );
@@ -236,12 +236,12 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 
 	public function attach_external_image2( $url = null, $post_data = array(), $post_id = '' ) {
 		if ( ! $url ) {
-return new WP_Error( 'missing', 'Need a valid URL' ); }
+			return new WP_Error( 'missing', 'Need a valid URL' ); }
 		$att_id = false;
 
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		require_once( ABSPATH . 'wp-admin/includes/media.php' );
-		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 
 		$tmp   = tempnam( '/tmp', 'FOO' );
 		$image = wp_remote_get( $url );
@@ -267,7 +267,7 @@ return new WP_Error( 'missing', 'Need a valid URL' ); }
 
 			// set additional wp_posts columns.
 			if ( empty( $post_data['post_title'] ) ) {
-				$url_filename = str_replace( '%20', ' ', $url_filename );
+				$url_filename            = str_replace( '%20', ' ', $url_filename );
 				$post_data['post_title'] = basename( $url_filename, '.' . $url_type['ext'] );
 			}
 

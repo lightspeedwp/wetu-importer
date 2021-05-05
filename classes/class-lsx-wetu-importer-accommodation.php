@@ -72,13 +72,13 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		parent::set_variables();
 
 		// ** This request only works with API KEY **
-		//if ( false !== $this->api_username && false !== $this->api_password ) {
-		//	$this->url    = 'https://wetu.com/API/Pins/';
-		//	$this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
-		//} elseif ( false !== $this->api_key ) {
+		// if ( false !== $this->api_username && false !== $this->api_password ) {
+		// $this->url    = 'https://wetu.com/API/Pins/';
+		// $this->url_qs = 'username=' . $this->api_username . '&password=' . $this->api_password;
+		// } elseif ( false !== $this->api_key ) {
 			$this->url    = 'https://wetu.com/API/Pins/' . $this->api_key;
 			$this->url_qs = 'all=include';
-		//}
+		// }
 
 		$temp_options = get_option( '_lsx-to_settings', false );
 
@@ -260,7 +260,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			// If there is a post status use it.
 			if ( false !== $post_status ) {
 
-				$accommodation = array();
+				$accommodation         = array();
 				$current_accommodation = $this->find_current_accommodation();
 				if ( ! empty( $current_accommodation ) ) {
 					foreach ( $current_accommodation as $cs_key => $ccs_id ) {
@@ -308,10 +308,10 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 						$temp_id = $this->get_post_id_by_key_value( $sdata['id'] );
 						if ( false === $temp_id ) {
-							$sdata['post_id'] = 0;
+							$sdata['post_id']    = 0;
 							$sdata['post_title'] = $sdata['name'];
 						} else {
-							$sdata['post_id'] = $temp_id;
+							$sdata['post_id']    = $temp_id;
 							$sdata['post_title'] = get_the_title( $temp_id );
 						}
 						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata, $sdata_key );
@@ -330,11 +330,11 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
 		$row_item = array(
-			'id' => $cs_key,
-			'type' => 'Accommodation',
-			'name' => get_the_title( $ccs_id ),
+			'id'            => $cs_key,
+			'type'          => 'Accommodation',
+			'name'          => get_the_title( $ccs_id ),
 			'last_modified' => date( 'Y-m-d', strtotime( 'now' ) ),
-			'post_id' => $ccs_id,
+			'post_id'       => $ccs_id,
 		);
 		return $row_item;
 	}
@@ -430,7 +430,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
 
 			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
-				$adata = json_decode( $jdata['body'], true );
+				$adata  = json_decode( $jdata['body'], true );
 				$return = $this->import_row( $adata, $wetu_id, $post_id, $team_members, $content, $safari_brands );
 				$this->format_completed_row( $return );
 				$this->remove_from_queue( $return );
@@ -445,11 +445,11 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 * Connect to wetu
 	 */
 	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = array(), $safari_brands = false ) {
-		$post_name = '';
+		$post_name         = '';
 		$data_post_content = '';
 		$data_post_excerpt = '';
 
-		$post = array(
+		$post                             = array(
 			'post_type' => 'accommodation',
 		);
 		$content_used_general_description = false;
@@ -459,7 +459,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			if ( isset( $data[0]['content']['extended_description'] ) ) {
 				$data_post_content = $data[0]['content']['extended_description'];
 			} elseif ( isset( $data[0]['content']['general_description'] ) ) {
-				$data_post_content = $data[0]['content']['general_description'];
+				$data_post_content                = $data[0]['content']['general_description'];
 				$content_used_general_description = true;
 			} elseif ( isset( $data[0]['content']['teaser_description'] ) ) {
 				$data_post_content = $data[0]['content']['teaser_description'];
@@ -488,12 +488,12 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 			if ( isset( $this->options ) && 'on' !== $this->options['disable_accommodation_title'] && isset( $data[0]['name'] ) ) {
 				$post['post_title'] = $data[0]['name'];
-				$post['post_name'] = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'accommodation', 0 );
+				$post['post_name']  = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'accommodation', 0 );
 			}
 
 			$post['post_status'] = 'publish';
 
-			$id = wp_update_post( $post );
+			$id        = wp_update_post( $post );
 			$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
 			update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ), $prev_date );
 		} else {
@@ -688,7 +688,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				$temp_room['type']  = 'room';
 
 				if ( ! empty( $room['images'] ) && is_array( $room['images'] ) ) {
-					$temp_room['gallery'] = array();
+					$temp_room['gallery']   = array();
 					$temp_room['gallery'][] = $this->attach_image( $room['images'][0], $id );
 				}
 				$rooms[] = $temp_room;
@@ -807,10 +807,10 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function set_facilities( $data, $id ) {
 		$parent_facilities = array(
-			'available_services' => 'Available Services',
+			'available_services'  => 'Available Services',
 			'property_facilities' => 'Property Facilities',
-			'room_facilities' => 'Room Facilities',
-			'activities_on_site' => 'Activities on Site',
+			'room_facilities'     => 'Room Facilities',
+			'activities_on_site'  => 'Activities on Site',
 		);
 
 		foreach ( $parent_facilities as $key => $label ) {

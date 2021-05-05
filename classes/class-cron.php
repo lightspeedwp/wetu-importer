@@ -80,11 +80,11 @@ class Cron {
 		);
 
 		$meta_boxes[] = array(
-			'title'  => esc_html__( 'WETU Settings', 'lsx-banners' ),
-			'pages'  => $allowed_post_types,
-			'fields' => $fields,
-			'context'    => 'side',
-			'priority'   => 'low',
+			'title'    => esc_html__( 'WETU Settings', 'lsx-banners' ),
+			'pages'    => $allowed_post_types,
+			'fields'   => $fields,
+			'context'  => 'side',
+			'priority' => 'low',
 		);
 
 		return $meta_boxes;

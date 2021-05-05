@@ -248,7 +248,7 @@ class LSX_WETU_Importer {
 	 */
 	public function set_variables() {
 		$this->post_types = array( 'accommodation', 'destination', 'tour' );
-		$options = lsx_wetu_get_options();
+		$options          = lsx_wetu_get_options();
 
 		// Set the options.
 		$this->options = $options;
@@ -360,7 +360,7 @@ class LSX_WETU_Importer {
 	 * @since 1.0.0
 	 */
 	public function compatible_version_notice() {
-		$class = 'notice notice-error';
+		$class   = 'notice notice-error';
 		$message = esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'lsx-wetu-importer' );
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_html( $class ), esc_html( $message ) );
 	}
@@ -428,7 +428,7 @@ class LSX_WETU_Importer {
 
 		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
 
-			//wp_enqueue_style( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/css/datatables' . $min . '.css', LSX_WETU_IMPORTER_VER, true );
+			// wp_enqueue_style( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/css/datatables' . $min . '.css', LSX_WETU_IMPORTER_VER, true );
 			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/lsx-wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
 
 			if ( isset( $_GET['tab'] ) ) {
@@ -439,7 +439,7 @@ class LSX_WETU_Importer {
 					'lsx-wetu-importers-script',
 					'lsx_tour_importer_params',
 					array(
-						'ajax_url' => admin_url( 'admin-ajax.php' ),
+						'ajax_url'   => admin_url( 'admin-ajax.php' ),
 						'ajax_nonce' => wp_create_nonce( 'lsx_wetu_ajax_action' ),
 					)
 				);
@@ -480,7 +480,7 @@ class LSX_WETU_Importer {
 
 			<?php if ( 'tour' === $this->tab_slug ) { ?>
 				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_tour_count() ); ?>)</span></a></li>
-			<?php } else if ( ! empty( $this->queued_imports ) ) { ?>
+			<?php } elseif ( ! empty( $this->queued_imports ) ) { ?>
 				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
 			<?php } ?>
 		</ul>
@@ -610,15 +610,15 @@ class LSX_WETU_Importer {
 	 * Set_taxonomy with some terms
 	 */
 	public function team_member_checkboxes( $selected = array() ) {
-		if ( post_type_exists( 'team' ) ) { 
-        ?>
+		if ( post_type_exists( 'team' ) ) {
+			?>
 			<ul>
 				<?php
 					$team_args = array(
-						'post_type' => 'team',
+						'post_type'   => 'team',
 						'post_status' => 'publish',
-						'nopagin' => true,
-						'fields' => 'ids',
+						'nopagin'     => true,
+						'fields'      => 'ids',
 					);
 
 					$team_members = new WP_Query( $team_args );
@@ -629,15 +629,15 @@ class LSX_WETU_Importer {
 							<li><input class="team" <?php $this->checked( $selected, $member ); ?> type="checkbox" value="<?php echo esc_attr( $member ); ?>" /> <?php echo wp_kses_post( get_the_title( $member ) ); ?></li>
 							<?php
 						}
-					} else { 
-                    ?>
+					} else {
+						?>
 						<li><input class="team" type="checkbox" value="0" /> <?php esc_html_e( 'None', 'lsx-wetu-importer' ); ?></li>
-					<?php 
-                    }
-				?>
+						<?php
+					}
+					?>
 			</ul>
-		<?php 
-        }
+			<?php
+		}
 	}
 
 
@@ -716,11 +716,11 @@ class LSX_WETU_Importer {
 		if ( false !== $id ) {
 			if ( empty( $this->found_attachments ) ) {
 				$attachments_args = array(
-					'post_parent' => $id,
-					'post_status' => 'inherit',
-					'post_type' => 'attachment',
-					'order' => 'ASC',
-					'nopagin' => 'true',
+					'post_parent'    => $id,
+					'post_status'    => 'inherit',
+					'post_type'      => 'attachment',
+					'order'          => 'ASC',
+					'nopagin'        => 'true',
 					'posts_per_page' => '-1',
 				);
 
@@ -765,7 +765,7 @@ class LSX_WETU_Importer {
 
 			foreach ( $this->cleanup_posts as $id => $key ) {
 				$prev_items = get_post_meta( $id, $key, false );
-				$new_items = array_unique( $prev_items );
+				$new_items  = array_unique( $prev_items );
 				delete_post_meta( $id, $key );
 
 				foreach ( $new_items as $new_item ) {
@@ -845,10 +845,12 @@ class LSX_WETU_Importer {
 
 		if ( false !== $taxonomy ) {
 			$return .= '<ul>';
-			$terms = get_terms( array(
-				'taxonomy' => $taxonomy,
-				'hide_empty' => false,
-			) );
+			$terms   = get_terms(
+				array(
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => false,
+				)
+			);
 
 			if ( ! is_wp_error( $terms ) ) {
 				foreach ( $terms as $term ) {
@@ -871,8 +873,8 @@ class LSX_WETU_Importer {
 	 */
 	public function set_map_data( $data, $id, $zoom = '10' ) {
 		$longitude = false;
-		$latitude = false;
-		$address = false;
+		$latitude  = false;
+		$address   = false;
 
 		if ( isset( $data[0]['position'] ) ) {
 			if ( isset( $data[0]['position']['driving_latitude'] ) ) {
@@ -931,11 +933,15 @@ class LSX_WETU_Importer {
 	 */
 	public function set_featured_image( $data, $id ) {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
-			$this->featured_image = $this->attach_image( $data[0]['content']['images'][0], $id,  array(
-				'width' => '800',
-				'height' => '600',
-				'cropping' => 'h',
-			) );
+			$this->featured_image = $this->attach_image(
+				$data[0]['content']['images'][0],
+				$id,
+				array(
+					'width'    => '800',
+					'height'   => '600',
+					'cropping' => 'h',
+				)
+			);
 
 			if ( false !== $this->featured_image ) {
 				delete_post_meta( $id, '_thumbnail_id' );
@@ -950,17 +956,25 @@ class LSX_WETU_Importer {
 	public function set_banner_image( $data, $id, $content = array( 'none' ) ) {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
 			if ( in_array( 'unique_banner_image', $content ) && isset( $data[0]['destination_image'] ) && is_array( $data[0]['destination_image'] ) ) {
-				$temp_banner = $this->attach_image( $data[0]['destination_image'], $id, array(
-					'width' => '1920',
-					'height' => '600',
-					'cropping' => 'c',
-				));
+				$temp_banner = $this->attach_image(
+					$data[0]['destination_image'],
+					$id,
+					array(
+						'width'    => '1920',
+						'height'   => '600',
+						'cropping' => 'c',
+					)
+				);
 			} else {
-				$temp_banner = $this->attach_image( $data[0]['content']['images'][1], $id, array(
-					'width' => '1920',
-					'height' => '600',
-					'cropping' => 'c',
-				));
+				$temp_banner = $this->attach_image(
+					$data[0]['content']['images'][1],
+					$id,
+					array(
+						'width'    => '1920',
+						'height'   => '600',
+						'cropping' => 'c',
+					)
+				);
 			}
 
 			if ( false !== $temp_banner ) {
@@ -986,7 +1000,7 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$being_used = false;
 		if ( '' !== $image_id ) {
-			$sql = "SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != {$post_id} AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE '{$image_id}'";
+			$sql     = "SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != {$post_id} AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE '{$image_id}'";
 			$results = $wpdb->query( $sql );
 			if ( false !== $results && ! empty( $results ) ) {
 				$being_used = true;
@@ -1053,9 +1067,9 @@ class LSX_WETU_Importer {
 	 */
 	public function get_scaling_url( $args = array() ) {
 		$defaults = array(
-			'width' => '1024',
-			'height' => '768',
-			//'cropping' => 'w',
+			'width'    => '1024',
+			'height'   => '768',
+			// 'cropping' => 'w',
 			'cropping' => 'h',
 		);
 
@@ -1073,10 +1087,10 @@ class LSX_WETU_Importer {
 			}
 		}
 
-		$args = wp_parse_args( $args, $defaults );
+		$args     = wp_parse_args( $args, $defaults );
 		$cropping = $args['cropping'];
-		$width = $args['width'];
-		$height = $args['height'];
+		$width    = $args['width'];
+		$height   = $args['height'];
 
 		return 'https://wetu.com/ImageHandler/' . $cropping . $width . 'x' . $height . '/';
 	}
@@ -1104,14 +1118,14 @@ class LSX_WETU_Importer {
 			}
 
 			if ( ! empty( $v['description'] ) ) {
-				$desc = wp_strip_all_tags( $v['description'] );
+				$desc    = wp_strip_all_tags( $v['description'] );
 				$posdata = array(
 					'post_excerpt' => $desc,
 				);
 			}
 
 			if ( ! empty( $v['section'] ) ) {
-				$desc = wp_strip_all_tags( $v['section'] );
+				$desc    = wp_strip_all_tags( $v['section'] );
 				$posdata = array(
 					'post_excerpt' => $desc,
 				);
@@ -1133,12 +1147,12 @@ class LSX_WETU_Importer {
 
 	public function attach_external_image2( $url = null, $post_id = null, $thumb = null, $filename = null, $post_data = array() ) {
 		if ( ! $url || ! $post_id ) {
-return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
+			return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 		$att_id = false;
 
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		require_once( ABSPATH . 'wp-admin/includes/media.php' );
-		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
 		// Download file to temp location, returns full server path to temp file.
 
 		$tmp   = tempnam( '/tmp', 'FOO' );
@@ -1156,7 +1170,7 @@ return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 			// override filename if given, reconstruct server path.
 			if ( ! empty( $filename ) && ' ' != $filename ) {
 				$filename = sanitize_file_name( $filename );
-				$tmppath = pathinfo( $tmp );
+				$tmppath  = pathinfo( $tmp );
 
 				$extension = '';
 				if ( isset( $tmppath['extension'] ) ) {
@@ -1237,7 +1251,7 @@ return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 	 * Does a multine search
 	 */
 	public function multineedle_stripos( $haystack, $needles, $offset = 0 ) {
-		$found = false;
+		$found        = false;
 		$needle_count = count( $needles );
 
 		foreach ( $needles as $needle ) {
@@ -1305,7 +1319,7 @@ return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 				}
 
 				$temp_video['thumbnail'] = '';
-				$videos[] = $temp_video;
+				$videos[]                = $temp_video;
 			}
 
 			if ( false !== $id && '0' !== $id ) {
@@ -1319,7 +1333,7 @@ return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 	}
 
 	public function shuffle_assoc( &$array ) {
-		$new = array();
+		$new  = array();
 		$keys = array_keys( $array );
 
 		shuffle( $keys );
@@ -1337,27 +1351,27 @@ return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 	 * Save the list of Tours into an option
 	 */
 	public function update_options() {
-		$own = '';
+		$own     = '';
 		$options = array();
 		delete_option( 'lsx_ti_tours_api_options' );
 
 		if ( isset( $_GET['own'] ) ) {
 			$this->current_importer->url_qs .= '&own=true';
-			$options[] = 'own';
+			$options[]                       = 'own';
 		}
 
 		if ( isset( $_GET['type'] ) && 'allitineraries' !== $_GET['type'] ) {
 			$this->current_importer->url_qs .= '&type=' . $_GET['type'];
-			$options[] = $_GET['type'];
+			$options[]                       = $_GET['type'];
 		} else {
-			$options[] = 'sample';
+			$options[]                       = 'sample';
 			$this->current_importer->url_qs .= '&type=sample';
 		}
 
-		$url = str_replace( 'Pins', 'Itinerary', $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
+		$url  = str_replace( 'Pins', 'Itinerary', $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
 		$url .= '&results=2000';
 		add_option( 'lsx_ti_tours_api_options', $options );
-		$data = wp_remote_get( $url );
+		$data  = wp_remote_get( $url );
 		$tours = json_decode( wp_remote_retrieve_body( $data ), true );
 
 		if ( isset( $tours['error'] ) ) {

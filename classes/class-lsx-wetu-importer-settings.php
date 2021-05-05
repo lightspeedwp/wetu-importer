@@ -106,12 +106,12 @@ class LSX_WETU_Importer_Settings {
 							</th>
 							<td>
 								<input data-toggle="tooltip" data-placement="top" title="The API key can be found on your My Account page of your WETU account." type="text" value="
-                                <?php
+								<?php
 								if ( isset( $options['api_key'] ) ) {
 									echo esc_attr( $options['api_key'] );
 								}
 								?>
-                                " name="api_key" />
+								" name="api_key" />
 							</td>
 						</tr>
 					</tbody>
@@ -335,12 +335,12 @@ class LSX_WETU_Importer_Settings {
 							</th>
 							<td>
 								<input placeholder="" type="text" value="
-                                <?php
+								<?php
 								if ( isset( $options['image_limit'] ) && '' !== $options['image_limit'] ) {
 									echo esc_attr( $options['image_limit'] );
 								}
 								?>
-                                "
+								"
 								name="image_limit" />
 							</td>
 						</tr>
@@ -365,12 +365,12 @@ class LSX_WETU_Importer_Settings {
 							</th>
 							<td>
 								<input placeholder="800" type="text" value="
-                                <?php
+								<?php
 								if ( isset( $options['width'] ) && '' !== $options['width'] ) {
 									echo esc_attr( $options['width'] );
 								}
 								?>
-                                "
+								"
 								name="width" />
 							</td>
 						</tr>
@@ -380,12 +380,12 @@ class LSX_WETU_Importer_Settings {
 							</th>
 							<td>
 								<input placeholder="600" type="text" value="
-                                <?php
+								<?php
 								if ( isset( $options['height'] ) && '' !== $options['height'] ) {
 									echo esc_attr( $options['height'] );
 								}
 								?>
-                                "
+								"
 								name="height" />
 							</td>
 						</tr>

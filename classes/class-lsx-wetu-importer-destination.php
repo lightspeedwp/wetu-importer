@@ -189,11 +189,14 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 											type="checkbox" name="content[]"
 											value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?>
 								</li>
-								<?php /*<li>
+								<?php
+								/*
+								<li>
 									<input class="content"
 											type="checkbox" name="content[]"
 											value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'lsx-wetu-importer' ); ?>
-								</li>*/ ?>
+								</li>*/
+								?>
 
 								<li>
 									<input class="content" checked="checked"
@@ -352,7 +355,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			// If there is a post status use it.
 			if ( false !== $post_status ) {
 
-				$accommodation = array();
+				$accommodation         = array();
 				$current_accommodation = $this->find_current_accommodation( 'destination' );
 				if ( ! empty( $current_accommodation ) ) {
 					foreach ( $current_accommodation as $cs_key => $ccs_id ) {
@@ -402,10 +405,10 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 						$temp_id = $this->get_post_id_by_key_value( $sdata['id'] );
 						if ( false === $temp_id ) {
-							$sdata['post_id'] = 0;
+							$sdata['post_id']    = 0;
 							$sdata['post_title'] = $sdata['name'];
 						} else {
-							$sdata['post_id'] = $temp_id;
+							$sdata['post_id']    = $temp_id;
 							$sdata['post_title'] = get_the_title( $temp_id );
 						}
 						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata, $sdata_key );
@@ -425,11 +428,11 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 	public function prepare_row_attributes( $cs_key, $ccs_id ) {
 		$row_item = array(
-			'id' => $cs_key,
-			'type' => 'Destination',
-			'name' => get_the_title( $ccs_id ),
+			'id'            => $cs_key,
+			'type'          => 'Destination',
+			'name'          => get_the_title( $ccs_id ),
 			'last_modified' => date( 'Y-m-d', strtotime( 'now' ) ),
-			'post_id' => $ccs_id,
+			'post_id'       => $ccs_id,
 		);
 		return $row_item;
 	}
@@ -480,7 +483,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			$wetu_id = sanitize_text_field( $_POST['wetu_id'] );
 
 			if ( isset( $_POST['post_id'] ) ) {
-				$post_id = sanitize_text_field( $_POST['post_id'] );
+				$post_id            = sanitize_text_field( $_POST['post_id'] );
 				$this->current_post = get_post( $post_id );
 			} else {
 				$post_id = 0;
@@ -537,7 +540,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	 */
 	public function import_row( $data, $wetu_id, $id = 0, $team_members = false, $importable_content = array(), $safari_brands = false ) {
 		if ( 'Destination' === trim( $data[0]['type'] ) || 'Area' === trim( $data[0]['type'] ) ) {
-			$post_name = '';
+			$post_name         = '';
 			$data_post_content = '';
 			$data_post_excerpt = '';
 
@@ -568,11 +571,11 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				$post['ID'] = $id;
 				if ( isset( $this->options ) && 'on' !== $this->options['disable_destination_title'] && isset( $data[0]['name'] ) ) {
 					$post['post_title'] = $data[0]['name'];
-					$post['post_name'] = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'destination', 0 );
+					$post['post_name']  = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'destination', 0 );
 				}
 				$post['post_status'] = 'publish';
 
-				$id = wp_update_post( $post );
+				$id        = wp_update_post( $post );
 				$prev_date = get_post_meta( $id, 'lsx_wetu_modified_date', true );
 				update_post_meta( $id, 'lsx_wetu_modified_date', strtotime( $data[0]['last_modified'] ), $prev_date );
 			} else {
@@ -581,10 +584,10 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					$post_name = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'destination', 0 );
 				}
 
-				$post['post_name'] = $post_name;
-				$post['post_title'] = $data[0]['name'];
+				$post['post_name']   = $post_name;
+				$post['post_title']  = $data[0]['name'];
 				$post['post_status'] = 'publish';
-				$id = wp_insert_post( $post );
+				$id                  = wp_insert_post( $post );
 
 				// Save the WETU ID and the Last date it was modified.
 				if ( false !== $id ) {
@@ -649,7 +652,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			}
 
 			// Setup some default for use in the import.
-			if ( false !== $importable_content && (in_array( 'gallery', $importable_content ) || in_array( 'banner_image', $importable_content ) || in_array( 'featured_image', $importable_content )) ) {
+			if ( false !== $importable_content && ( in_array( 'gallery', $importable_content ) || in_array( 'banner_image', $importable_content ) || in_array( 'featured_image', $importable_content ) ) ) {
 				$this->find_attachments( $id );
 
 				// Set the featured image.
