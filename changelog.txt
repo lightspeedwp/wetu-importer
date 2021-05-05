@@ -1,5 +1,13 @@
 # Change log
 
+## [[1.3.5]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.5) - 2021-04-21
+
+### Fixed 
+- Removed the conditional statements checking for the LSX Banners plugin.
+
+### Security
+- General testing to ensure compatibility with latest WordPress version (5.7).
+
 ## [[1.3.4]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.4) - 2021-01-15
 
 ### Updated
