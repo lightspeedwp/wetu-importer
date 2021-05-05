@@ -5,6 +5,9 @@
 ### Fixed 
 - Fixing the importing of the accommodation banner.
 
+### Code Quality
+- Updating the code structure using PHPCS and PHPCBF
+
 ## [[1.3.5]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.5) - 2021-04-21
 
 ### Fixed 
