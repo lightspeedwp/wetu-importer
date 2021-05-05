@@ -176,9 +176,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
 							<ul>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="featured_image" /> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?></li>
-								<?php if ( class_exists( 'LSX_Banners' ) && ! isset( $this->accommodation_settings['disable_single'] ) ) { ?>
-									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="banner_image" /> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="banner_image" /> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?></li>
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
