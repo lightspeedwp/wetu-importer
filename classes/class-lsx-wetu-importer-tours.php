@@ -1003,7 +1003,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 		$ac_id                       = false;
 		$this->current_accommodation = $this->find_current_accommodation();
 
-		if ( isset( $day['content_entity_id'] ) && ! empty( $day['content_entity_id'] ) ) {
+		if ( isset( $day['content_entity_id'] ) && ! empty( $day['content_entity_id'] ) && ! in_array( (int) $day['content_entity_id'], array( 25862 ) ) ) {
 			if ( false !== $this->current_accommodation && ! empty( $this->current_accommodation ) && array_key_exists( $day['content_entity_id'], $this->current_accommodation ) ) {
 				$ac_id = $this->current_accommodation[ $day['content_entity_id'] ];
 			} else {
