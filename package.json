@@ -22,8 +22,8 @@
   "homepage": "https://www.lsdev.biz/product/lsx-wetu-importer/#readme",
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-rtlcss": "^1.4.1",
-    "gulp-autoprefixer": "^7.0.1",
+    "gulp-rtlcss": "^1.4.2",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-gettext": "^0.3.0",
     "gulp-jshint": "^2.0.4",
@@ -35,7 +35,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-wp-pot": "^2.5.0",
-    "jshint": "^2.12.0",
+    "jshint": "^2.13.0",
     "map-stream": "^0.0.7"
   }
 }
