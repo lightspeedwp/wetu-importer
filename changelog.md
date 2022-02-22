@@ -7,6 +7,7 @@
 
 ### Security
 - General testing to ensure compatibility with latest WordPress version (5.9).
+- Converted the changelog.txt to changelog.md
 
 ## [[1.3.7]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.7) - 2021-06-23
 
