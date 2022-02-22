@@ -349,7 +349,7 @@ var WETU_IMPORTER = {
 jQuery(document).ready( function() {
 	WETU_IMPORTER.init();
 
-	$("#doc-tooltip").click(function(){
-		$(".tooltip-inner").addClass("clicked");
+	jQuery("#doc-tooltip").click(function(){
+		jQuery(".tooltip-inner").addClass("clicked");
 	});
 });
