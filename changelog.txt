@@ -5,6 +5,9 @@
 ### Updated
 - Updated the https://datatables.net/ JS an CSS to the latest version.
 
+### Security
+- General testing to ensure compatibility with latest WordPress version (5.9).
+
 ## [[1.3.7]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.7) - 2021-06-23
 
 ### Added 
