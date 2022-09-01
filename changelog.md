@@ -1,5 +1,10 @@
 # Change log
 
+## [[1.3.9]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.9) - In Development
+
+### Updated
+- Passing the `lsx_wetu_importer_tour_travel_styles` filter with the current tour ID and WETU Importer object.
+
 ## [[1.3.8]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.8) - 2022-02-02
 
 ### Updated

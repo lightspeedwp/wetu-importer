@@ -988,7 +988,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 	 * @return void
 	 */
 	public function set_travel_styles( $id, $data ) {
-		$tags = apply_filters( 'lsx_wetu_importer_tour_travel_styles', $data['tags'] );
+		$tags = apply_filters( 'lsx_wetu_importer_tour_travel_styles', $data['tags'], $id, $this );
 		if ( isset( $data['tags'] ) && ! empty( $tags ) ) {
 			foreach ( $tags as $tag ) {
 				$this->set_term( $id, $tag, 'travel-style' );
