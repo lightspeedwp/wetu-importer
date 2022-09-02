@@ -582,7 +582,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 		}
 
 		// Set the Group Size.
-		if ( false !== $importable_content && in_array( 'tags', $importable_content ) ) {
+		if ( false !== $importable_content && in_array( 'category', $importable_content ) ) {
 			$this->set_travel_styles( $id, $data );
 		}
 
