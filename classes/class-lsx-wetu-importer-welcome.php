@@ -120,7 +120,7 @@ class LSX_WETU_Importer_Welcome {
 		?>
 			<h2 class="title"><?php esc_html_e( 'Importing tours', 'lsx-wetu-importer' ); ?></h2>
 			<p class="excerpt"><?php esc_html_e( 'Search for tours, select the ones you want to import and choose the data you want to sync on import. All connected accommodadtions will be imported as drafts to be pubished after completing the tour import.', 'lsx-wetu-importer' ); ?></p>
-			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync Tours', 'lsx-wetu-importer' ); ?></a></p>
+			<p><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>" class="button button-primary"><?php esc_html_e( 'Sync tours', 'lsx-wetu-importer' ); ?></a></p>
 			<p>
 				<ul class="link-list">
 					<li><a href="<?php echo esc_attr( admin_url( 'admin.php' ) . '?page=lsx-wetu-importer&tab=tour' ); ?>#publish"><?php esc_html_e( 'Published', 'lsx-wetu-importer' ); ?>  (<?php echo esc_attr( lsx_wetu_get_post_count( 'tour', 'publish ' ) ); ?>)</a></li>
