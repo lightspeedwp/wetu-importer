@@ -1031,6 +1031,9 @@ class LSX_WETU_Importer {
 			$counter = 0;
 
 			foreach ( $data[0]['content']['images'] as $image_data ) {
+				//disable_destination_image_featured
+				//disable_destination_image_banner
+
 				if ( ( 0 === $counter && false !== $this->featured_image ) || ( 1 === $counter && false !== $this->banner_image ) ) {
 					$counter++;
 
