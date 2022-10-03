@@ -178,17 +178,21 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 										   type="checkbox" name="content[]"
 										   value="continent"/> <?php esc_html_e( 'Set Continent', 'lsx-wetu-importer' ); ?></li>
 
-								<li>
-									<input class="content" checked="checked"
-										   type="checkbox" name="content[]"
-										   value="featured_image"/> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?>
-								</li>
-
-								<li>
-									<input class="content" checked="checked"
+								<?php if ( isset( $this->options ) && isset( $this->options['disable_destination_image_featured'] ) && 'on' !== $this->options['disable_destination_image_featured'] ) { ?>
+									<li>
+										<input class="content" checked="checked"
 											type="checkbox" name="content[]"
-											value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?>
-								</li>
+											value="featured_image"/> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?>
+									</li>
+								<?php } ?>
+
+								<?php if ( isset( $this->options ) && isset( $this->options['disable_destination_image_banner'] ) && 'on' !== $this->options['disable_destination_image_banner'] ) { ?>
+									<li>
+										<input class="content" checked="checked"
+												type="checkbox" name="content[]"
+												value="banner_image"/> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?>
+									</li>
+								<?php } ?>
 								<?php
 								/*
 								<li>

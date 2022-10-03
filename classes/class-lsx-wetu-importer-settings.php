@@ -55,6 +55,8 @@ class LSX_WETU_Importer_Settings {
 			'disable_accommodation_excerpts'     => '',
 			'disable_destination_title'          => '',
 			'disable_destination_descriptions'   => '',
+			'disable_destination_image_featured' => '',
+			'disable_destination_image_banner'   => '',
 			'image_replacing'                    => 'on',
 			'image_limit'                        => '15',
 			'image_scaling'                      => 'on',
@@ -305,6 +307,36 @@ class LSX_WETU_Importer_Settings {
 								?>
 								name="disable_destination_descriptions" />
 								<small><?php esc_html_e( 'If you are going to edit the destination descriptions on this site then enable this setting.', 'lsx-wetu-importer' ); ?></small>
+							</td>
+						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="disable_destination_image_featured"><?php esc_html_e( 'Disable Featured Image', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['disable_destination_image_featured'] ) && '' !== $options['disable_destination_image_featured'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="disable_destination_image_featured" />
+								<small><?php esc_html_e( 'If you are going to manage the featured images manually.', 'lsx-wetu-importer' ); ?></small>
+							</td>
+						</tr>
+						<tr class="form-field -wrap">
+							<th scope="row">
+								<label for="disable_destination_image_banner"><?php esc_html_e( 'Disable Banner Image', 'lsx-wetu-importer' ); ?></label>
+							</th>
+							<td>
+								<input type="checkbox"
+								<?php
+								if ( isset( $options['disable_destination_image_banner'] ) && '' !== $options['disable_destination_image_banner'] ) {
+									echo esc_attr( 'checked="checked"' );
+								}
+								?>
+								name="disable_destination_image_banner" />
+								<small><?php esc_html_e( 'If you are going to manage the banner images manually.', 'lsx-wetu-importer' ); ?></small>
 							</td>
 						</tr>
 					</tbody>

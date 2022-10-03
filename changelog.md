@@ -2,6 +2,9 @@
 
 ## [[1.3.9]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.9) - In Development
 
+### Added
+- Added in the option to disable the tours featured image and banner image, to allow for manually assigned images on the site.
+
 ### Updated
 - Passing the `lsx_wetu_importer_tour_travel_styles` filter with the current tour ID and WETU Importer object.
 
