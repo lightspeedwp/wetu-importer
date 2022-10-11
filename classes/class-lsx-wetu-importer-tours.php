@@ -661,7 +661,6 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 
 					// If its a mobile safari, we need to get the destination and accommodation data from the stops.
 					if ( 'Mobile' === $leg['type'] ) {
-						var_dump($leg['type']);
 						$current_destination   = $this->get_mobile_destination( $day, $leg, $id );
 						//$current_accommodation = $this->get_mobile_accommodation( $day, $leg, $id );
 
