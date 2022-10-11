@@ -661,22 +661,31 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 
 					// If its a mobile safari, we need to get the destination and accommodation data from the stops.
 					if ( 'Mobile' === $leg['type'] ) {
+						var_dump($leg['type']);
 						$current_destination   = $this->get_mobile_destination( $day, $leg, $id );
-						$current_accommodation = $this->get_mobile_accommodation( $day, $leg, $id );
-					}
+						//$current_accommodation = $this->get_mobile_accommodation( $day, $leg, $id );
 
-					// Accommodation.
-					if ( false !== $current_accommodation ) {
-						$current_day['accommodation_to_tour'] = array( $current_accommodation );
-					} else {
-						$current_day['accommodation_to_tour'] = array();
-					}
+						// Destination.
+						if ( false !== $current_destination ) {
+							$current_day['destination_to_tour'] = $current_destination;
+						} else {
+							$current_day['destination_to_tour'] = array();
+						}
 
-					// Destination.
-					if ( false !== $current_destination ) {
-						$current_day['destination_to_tour'] = array( $current_destination );
 					} else {
-						$current_day['destination_to_tour'] = array();
+						// Accommodation.
+						if ( false !== $current_accommodation ) {
+							$current_day['accommodation_to_tour'] = array( $current_accommodation );
+						} else {
+							$current_day['accommodation_to_tour'] = array();
+						}
+
+						// Destination.
+						if ( false !== $current_destination ) {
+							$current_day['destination_to_tour'] = array( $current_destination );
+						} else {
+							$current_day['destination_to_tour'] = array();
+						}
 					}
 
 					// Included.
@@ -853,7 +862,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			foreach ( $leg['stops'] as $stop ) {
 				$arrival_day   = (int) $stop['arrival_day'];
 				$departure_day = (int) $stop['departure_day'];
-				if ( $arrival_day <= $current_day && $current_day < $departure_day ) {
+				if ( $arrival_day <= $current_day && $current_day <= $departure_day ) {
 					$current_destination = $this->set_destination( $stop, $id, 0 );
 				}
 			}
