@@ -1369,10 +1369,13 @@ class LSX_WETU_Importer {
 		} else {
 			$options[]                       = 'sample';
 			$this->current_importer->url_qs .= '&type=sample';
-		}
+		} 
 
 		$url  = str_replace( 'Pins', 'Itinerary', $this->current_importer->url . '/V8/List?' . $this->current_importer->url_qs );
 		$url .= '&results=2000';
+
+		$url = apply_filters( 'lsx_wetu_tour_refresh_url', $url );
+
 		add_option( 'lsx_ti_tours_api_options', $options );
 		$data  = wp_remote_get( $url );
 		$tours = json_decode( wp_remote_retrieve_body( $data ), true );

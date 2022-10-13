@@ -4,6 +4,7 @@
 
 ### Added
 - Added in the option to disable the tours featured image and banner image, to allow for manually assigned images on the site.
+- A filter to allow the altering of the tours list from the API `lsx_wetu_tour_refresh_url`
 
 ### Updated
 - Passing the `lsx_wetu_importer_tour_travel_styles` filter with the current tour ID and WETU Importer object.
