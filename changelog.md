@@ -1,13 +1,19 @@
 # Change log
 
-## [[1.3.9]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.9) - In Development
+## [[1.4.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.0) - In Development
 
-### Added
+### New Features
+- Allowing the import of "mobile" tours and their associated accommodation and destinations.
+
+### Minor Feature Additions
 - Added in the option to disable the tours featured image and banner image, to allow for manually assigned images on the site.
 - A filter to allow the altering of the tours list from the API `lsx_wetu_tour_refresh_url`
 
 ### Updated
 - Passing the `lsx_wetu_importer_tour_travel_styles` filter with the current tour ID and WETU Importer object.
+
+### Security
+- General testing to ensure compatibility with latest WordPress version (6.0.2).
 
 ## [[1.3.8]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.8) - 2022-02-02
 
