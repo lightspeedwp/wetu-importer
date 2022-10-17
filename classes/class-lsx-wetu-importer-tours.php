@@ -620,10 +620,12 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			// Itinerary Accommodation.
 			$current_accommodation = false;
 			$current_destination   = false;
+			
+			if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
+				$current_accommodation = $this->set_accommodation( $leg, $id );
+			}
+
 			if ( 'Mobile' !== $leg['type'] ) {
-				if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
-					$current_accommodation = $this->set_accommodation( $leg, $id );
-				}
 				if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
 					$current_destination = $this->set_destination( $leg, $id, $leg_counter );
 				}
@@ -659,32 +661,23 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 						$current_day['featured_image'] = '';
 					}
 
+					// Accommodation.
+					if ( false !== $current_accommodation ) {
+						$current_day['accommodation_to_tour'] = array( $current_accommodation );
+					} else {
+						$current_day['accommodation_to_tour'] = array();
+					}
+
 					// If its a mobile safari, we need to get the destination and accommodation data from the stops.
 					if ( 'Mobile' === $leg['type'] ) {
 						$current_destination   = $this->get_mobile_destination( $day, $leg, $id );
-						//$current_accommodation = $this->get_mobile_accommodation( $day, $leg, $id );
+					}
 
-						// Destination.
-						if ( false !== $current_destination ) {
-							$current_day['destination_to_tour'] = $current_destination;
-						} else {
-							$current_day['destination_to_tour'] = array();
-						}
-
+					// Destination.
+					if ( false !== $current_destination ) {
+						$current_day['destination_to_tour'] = array( $current_destination );
 					} else {
-						// Accommodation.
-						if ( false !== $current_accommodation ) {
-							$current_day['accommodation_to_tour'] = array( $current_accommodation );
-						} else {
-							$current_day['accommodation_to_tour'] = array();
-						}
-
-						// Destination.
-						if ( false !== $current_destination ) {
-							$current_day['destination_to_tour'] = array( $current_destination );
-						} else {
-							$current_day['destination_to_tour'] = array();
-						}
+						$current_day['destination_to_tour'] = array();
 					}
 
 					// Included.
@@ -750,6 +743,11 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 					$current_day['accommodation_to_tour'] = array( $current_accommodation );
 				} else {
 					$current_day['accommodation_to_tour'] = array();
+				}
+
+				// If its a mobile safari, we need to get the destination and accommodation data from the stops.
+				if ( 'Mobile' === $leg['type'] ) {
+					$current_destination   = $this->get_mobile_destination( $day, $leg, $id );
 				}
 
 				// Destination.
