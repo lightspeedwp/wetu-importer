@@ -235,6 +235,21 @@ class LSX_WETU_Importer {
 	}
 
 	/**
+	 * Return an instance of this class.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return    object \tsp_child\classes\WETU_Automation()    A single instance of this class.
+	 */
+	public static function get_instance() {
+		// If the single instance hasn't been set, set it now.
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
 	 * Load the plugin text domain for translation.
 	 *
 	 * @since 1.0.0
@@ -1417,4 +1432,4 @@ class LSX_WETU_Importer {
 	}
 }
 
-$lsx_wetu_importer = new LSX_WETU_Importer();
+$lsx_wetu_importer = LSX_WETU_Importer::get_instance();
