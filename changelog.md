@@ -1,6 +1,6 @@
 # Change log
 
-## [[1.4.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.0) - In Development
+## [[1.4.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.0) - 2022-12-23
 
 ### New Features
 - Allowing the import of "mobile" tours and their associated accommodation and destinations.
@@ -13,7 +13,7 @@
 - Passing the `lsx_wetu_importer_tour_travel_styles` filter with the current tour ID and WETU Importer object.
 
 ### Security
-- General testing to ensure compatibility with latest WordPress version (6.0.2).
+- General testing to ensure compatibility with latest WordPress version (6.1.1).
 
 ## [[1.3.8]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.3.8) - 2022-02-02
 
