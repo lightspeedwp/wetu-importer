@@ -6,6 +6,9 @@
 - Allowing the itineraries to retain any custom images set
 - Added in an option to replace any custom itierary images during import.
 
+### Update
+- Adding in a verbose error message for failed tours.
+
 ## [[1.4.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.0) - 2022-12-23
 
 ### New Features

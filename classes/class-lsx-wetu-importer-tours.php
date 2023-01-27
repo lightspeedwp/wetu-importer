@@ -481,7 +481,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 				$this->attach_destination_images( $content );
 				$this->clean_attached_destinations( $return );
 			} else {
-				$this->format_error( esc_html__( 'There was a problem importing your tour, please try again.', 'lsx-wetu-importer' ) );
+				$this->format_error( esc_html__( 'There was a problem importing ', 'lsx-wetu-importer' ) . get_the_title( $post_id ) . esc_html__( ', please try again.', 'lsx-wetu-importer' ) );
 			}
 		}
 	}
