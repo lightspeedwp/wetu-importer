@@ -181,6 +181,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="itinerary_excluded" /> <?php esc_html_e( 'Excluded', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="room_basis" /> <?php esc_html_e( 'Room Basis', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="drinks_basis" /> <?php esc_html_e( 'Drink Bases', 'lsx-wetu-importer' ); ?></li>
+								<li><input class="content" type="checkbox" name="content[]" value="replace_itinerary_images" /> <?php esc_html_e( 'Replace Custom Images', 'lsx-wetu-importer' ); ?></li>
 							</ul>
 
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
@@ -609,6 +610,11 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 		$day_counter = 1;
 		$leg_counter = 0;
 
+		// Change this to check for a parameter
+		if ( true ) {
+			$current_featured_images = $this->get_current_itinerary_images( $id );
+		}
+
 		delete_post_meta( $id, 'itinerary' );
 
 		if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
@@ -655,10 +661,10 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 					}
 
 					// Itinerary Gallery.
-					if ( false !== $importable_content && in_array( 'itinerary_gallery', $importable_content ) && isset( $day['images'] ) ) {
+					if ( false !== $importable_content && in_array( 'replace_itinerary_images', $importable_content ) ) {
 						$current_day['featured_image'] = '';
-					} else {
-						$current_day['featured_image'] = '';
+					} else if ( isset( $current_featured_images[ $day_counter ] ) ) {
+						$current_day['featured_image'] = $current_featured_images[ $day_counter ];
 					}
 
 					// Accommodation.
@@ -757,6 +763,13 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 					$current_day['destination_to_tour'] = array();
 				}
 
+				// Itinerary Gallery.
+				if ( false !== $importable_content && in_array( 'replace_itinerary_images', $importable_content ) ) {
+					$current_day['featured_image'] = '';
+				} else if ( isset( $current_featured_images[ $day_counter ] ) ) {
+					$current_day['featured_image'] = $current_featured_images[ $day_counter ];
+				} 
+
 				// Included.
 				if ( false !== $importable_content && in_array( 'itinerary_included', $importable_content ) && isset( $leg['included'] ) && '' !== $leg['included'] ) {
 					$current_day['included'] = $leg['included'];
@@ -790,6 +803,29 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			}
 			$leg_counter++;
 		}
+	}
+
+	/**
+	 * Grabs the current itinerary images set, and logs them against an entry counter.
+	 *
+	 * @param integer $id
+	 * @return array
+	 */
+	public function get_current_itinerary_images( $id = 0 ) {
+		$current_featured_images = array();
+		if ( 0 !== $id ) {
+			$itineraries = get_post_meta( $id, 'itinerary', false );
+			if ( ! empty( $itineraries ) ) {
+				$counter = 1;
+				foreach ( $itineraries as $itinerary ) {
+					if ( isset( $itinerary['featured_image'] ) && '' !== $itinerary['featured_image'] ) {
+						$current_featured_images[ $counter ] = $itinerary['featured_image'];
+					}
+					$counter++;
+				}
+			}
+		}
+		return $current_featured_images;
 	}
 
 	/**

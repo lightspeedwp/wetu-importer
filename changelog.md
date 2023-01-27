@@ -1,5 +1,11 @@
 # Change log
 
+## [[1.4.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.1) - In Development
+
+### Added
+- Allowing the itineraries to retain any custom images set
+- Added in an option to replace any custom itierary images during import.
+
 ## [[1.4.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.0) - 2022-12-23
 
 ### New Features
