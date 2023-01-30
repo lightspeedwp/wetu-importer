@@ -216,7 +216,7 @@ class LSX_WETU_Importer {
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-destination.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-tours.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-settings.php';
-		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-cron.php';
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-automation.php';
 
 		if ( isset( $this->options ) && isset( $this->options['enable_tour_ref_column'] ) && '' !== $this->options['enable_tour_ref_column'] ) {
 			require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-post-columns.php';
