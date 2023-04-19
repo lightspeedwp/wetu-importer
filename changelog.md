@@ -1,6 +1,6 @@
 # Change log
 
-## [[1.4.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.1) - In Development
+## [[1.4.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.1) - 2023-04-20
 
 ### Added
 - Allowing the itineraries to retain any custom images set
@@ -8,6 +8,9 @@
 
 ### Update
 - Adding in a verbose error message for failed tours.
+
+### Security
+- General testing to ensure compatibility with latest WordPress version (6.2).
 
 ## [[1.4.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.0) - 2022-12-23
 
