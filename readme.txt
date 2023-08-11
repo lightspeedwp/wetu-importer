@@ -3,9 +3,9 @@ Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, jacquesvdh, ignusver
 Donate link: https://lsdev.biz/lsx/donate/
 Tags: lsx, tour operator, tours, destination, accommodation
 Requires at least: 5.0
-Tested up to: 6.2
-Requires PHP: 7.2
-Stable tag: 1.4.1
+Tested up to: 6.3
+Requires PHP: 7.4
+Stable tag: 1.4.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
