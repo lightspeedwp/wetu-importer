@@ -297,7 +297,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			} else {
 				$key_string_search = implode( '+', $keyphrases );
 				$search_data       = wp_remote_get( $this->url . '/Search/' . $key_string_search );
-				if ( ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
+				if ( ! is_wp_error( $search_data ) && ! empty( $search_data ) && isset( $search_data['response'] ) && isset( $search_data['response']['code'] ) && 200 === $search_data['response']['code'] ) {
 
 					$search_data = json_decode( $search_data['body'], true );
 					foreach ( $search_data as $sdata_key => $sdata ) {
@@ -316,6 +316,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						}
 						$searched_items[ sanitize_title( $sdata['name'] ) . '-' . $sdata['id'] ] = $this->format_row( $sdata, $sdata_key );
 					}
+				} else if ( is_wp_error( $search_data ) ) {
+					$searched_items[ 'error' ] = '<tr><td colspan="4">' . $search_data->get_error_message() . '</td></tr>';
 				}
 			}
 
