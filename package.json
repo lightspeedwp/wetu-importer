@@ -21,7 +21,7 @@
   },
   "homepage": "https://www.lsdev.biz/product/lsx-wetu-importer/#readme",
   "devDependencies": {
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.0",
     "gulp-rtlcss": "^2.0.0",
     "gulp-autoprefixer": "^9.0.0",
     "gulp-concat": "^2.6.1",
