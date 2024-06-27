@@ -35,6 +35,9 @@ function lsx_wetu_register_meta() {
 
 
 function lsx_wetu_register_block_bindings() {
+	if ( ! function_exists( 'register_block_bindings_source' ) ) {
+		return;
+	}
 	register_block_bindings_source(
 		'lsx/post-connection',
 		array(
