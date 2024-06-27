@@ -218,6 +218,8 @@ class LSX_WETU_Importer {
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-settings.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-automation.php';
 
+		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-block-compatability.php';
+
 		if ( isset( $this->options ) && isset( $this->options['enable_tour_ref_column'] ) && '' !== $this->options['enable_tour_ref_column'] ) {
 			require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-post-columns.php';
 			$this->post_columns = LSX_WETU_Importer_Post_Columns::get_instance();
@@ -426,7 +428,11 @@ class LSX_WETU_Importer {
 	 * Registers the admin page which will house the importer form.
 	 */
 	public function register_importer_page() {
-		add_submenu_page( 'tour-operator', esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
+		if ( function_exists( 'tour_operator' ) ) {
+			add_submenu_page( 'tour-operator', esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
+		} else {
+			add_management_page( esc_html__( 'WETU Importer', 'tour-operator' ), esc_html__( 'WETU Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
+		}
 	}
 
 	/**

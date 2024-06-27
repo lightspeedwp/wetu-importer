@@ -4,7 +4,7 @@ var WETU_IMPORTER = {
 
 	init : function() {
 
-		if (jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer')) {
+		if (jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer') || jQuery('body').hasClass('tools_page_lsx-wetu-importer')) {
 			this.myAccommodationSearch();
 			this.watchSearch();
 			this.watchAdvancedSearch();
