@@ -4,6 +4,8 @@ add_action( 'init', 'lsx_wetu_register_meta' );
 
 function lsx_wetu_register_meta() {
 
+	add_filter('acf/settings/remove_wp_meta_box', '__return_false');
+
 	$fields = array(
 		//Not needed
 		'included'     => array(),
@@ -89,4 +91,99 @@ function lsx_wetu_render_block( $block_content, $parsed_block, $block_obj ) {
 	}
 
 	return $block_content;
+}
+
+
+
+add_action( 'cmb2_admin_init', 'lsx_wetu_tour_metaboxes' );
+function lsx_wetu_tour_metaboxes() {
+	/**
+	 * Initiate the metabox
+	 */
+	$cmb = new_cmb2_box( array(
+		'id'            => 'lsx_to_metabox',
+		'title'         => __( 'LSX Tour Operator Plugin', 'cmb2' ),
+		'object_types'  => array( 'tour', 'post' ), // Post type
+		'context'       => 'normal',
+		'priority'      => 'high',
+		'show_names'    => true,
+	) );
+
+	$cmb->add_field( array(
+		'name' => esc_html__( 'Featured', 'tour-operator' ),
+		'id'   => 'featured',
+		'type' => 'checkbox',
+	) );
+
+	$cmb->add_field( array(
+		'id'   => 'duration',
+		'name' => esc_html__( 'Duration', 'tour-operator' ),
+		'type' => 'text',
+	) );
+
+	$cmb->add_field( array(
+		'id'   => 'duration',
+		'name' => esc_html__( 'Price', 'tour-operator' ),
+		'type' => 'text',
+	) );
+
+	$cmb->add_field( array(
+		'id'         => 'departs_from',
+		'name'       => esc_html__( 'Departs From', 'tour-operator' ),
+		'type'       => 'post_ajax_search',
+		'query_args'      => array(
+			'post_type'      => 'destination',
+			'nopagin'        => true,
+			'posts_per_page' => '-1',
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		),
+	) );
+
+	$cmb->add_field( array(
+		'id'         => 'ends_in',
+		'name'       => esc_html__( 'Ends In', 'tour-operator' ),
+		'type'       => 'post_ajax_search',
+		'query_args'      => array(
+			'post_type'      => 'destination',
+			'nopagin'        => true,
+			'posts_per_page' => '-1',
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		),
+	) );
+
+	$cmb->add_field( array(
+		'id'       => 'best_time_to_visit',
+		'name'     => esc_html__( 'Best months to visit', 'tour-operator' ),
+		'type'     => 'multicheck',
+		'options'  => array(
+			'january'   => 'January',
+			'february'  => 'February',
+			'march'     => 'March',
+			'april'     => 'April',
+			'may'       => 'May',
+			'june'      => 'June',
+			'july'      => 'July',
+			'august'    => 'August',
+			'september' => 'September',
+			'october'   => 'October',
+			'november'  => 'November',
+			'december'  => 'December',
+		),
+	));
+
+	/*$cmb->add_field();
+
+	$cmb->add_field();
+
+	$cmb->add_field();*/
+
+
+	/**
+	 * lsx_wetu_itinerary_complete
+	 */
+	function lsx_wetu_merge_itinerary() {
+		
+	}
 }
