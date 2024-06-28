@@ -803,6 +803,8 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			}
 			$leg_counter++;
 		}
+
+		apply_filters( 'lsx_wetu_itinerary_complete', $id );
 	}
 
 	/**
