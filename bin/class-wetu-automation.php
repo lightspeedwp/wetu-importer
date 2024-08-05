@@ -71,6 +71,20 @@ class WETU_Automation {
 			add_action( 'lsx_wetu_sync_que', array( $this, 'que_sync_action' ), 10 );
 			add_action( 'lsx_wetu_sync_pin', array( $this, 'pins_sync_action' ), 10, 2 );
 		}
+
+		$options          = lsx_wetu_get_options();
+
+		// Set the options.
+		$this->options = $options;
+		$this->api_key = false;
+
+		if ( ! defined( 'WETU_API_KEY' ) ) {
+			if ( isset( $options['api_key'] ) && '' !== $options['api_key'] ) {
+				$this->api_key = $options['api_key'];
+			}
+		} else {
+			$this->api_key = WETU_API_KEY;
+		}
 	}
 
 	/**
@@ -116,7 +130,7 @@ class WETU_Automation {
 	 */
 	public function run_main_actions() {
 		$tours      = $this->get_current_tours();
-		//$wetu_tours = $this->get_wetu_tours();
+		$wetu_tours = $this->get_wetu_tours();
 
 		if ( ! empty( $tours ) ) {
 
@@ -262,7 +276,7 @@ class WETU_Automation {
 		);
 
 		foreach ( $tags as $tag ) {
-			$data = wp_remote_get( 'https://wetu.com/API/Itinerary/ROARLEMOUP5IENOE/V8/List?type=Personal&own=true&tags=' . $tag );
+			$data = wp_remote_get( 'https://wetu.com/API/Itinerary/' . $this->api_key . '/V8/List?type=Personal&own=true&tags=' . $tag );
 
 			if ( ! is_wp_error( $data ) && ! empty( $data ) && isset( $data['response'] ) && isset( $data['response']['code'] ) && 200 === $data['response']['code'] ) {
 				$jdata  = json_decode( $data['body'], true );
@@ -376,7 +390,7 @@ class WETU_Automation {
 			$skip_import = false;
 			
 			if ( false !== $wetu_id && '' !== $wetu_id ) {
-				$jdata = wp_remote_get( 'https://wetu.com/API/Pins/ROARLEMOUP5IENOE/Get?ids=' . $wetu_id );
+				$jdata = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $wetu_id );
 
 				if ( ! is_wp_error( $jdata ) && ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 					$jata  = json_decode( $jdata['body'], true );

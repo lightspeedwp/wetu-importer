@@ -470,7 +470,9 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			} else {
 				$content = false;
 			}
-			$jdata = wp_remote_get( 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
+
+			$lang_path = apply_filters( 'lsx_wetu_language', 'https://wetu.com/API/Itinerary/V8/Get?id=' . $wetu_id );
+			$jdata = wp_remote_get( $lang_path );
 
 			if ( ! is_wp_error( $jdata ) && ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$jdata  = json_decode( $jdata['body'], true );
@@ -1409,8 +1411,9 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 				 WHERE meta_value = '%s'
 				 AND meta_key = 'lsx_wetu_id'
 				",
-				array( $value )
-			)
+				array( $v )
+			),
+			'ARRAY_A'
 		);
 		$attached_tours = array();
 		if ( ! empty( $results ) ) {

@@ -427,7 +427,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				$content = false;
 			}
 
-			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
+			$lang_path = apply_filters( 'lsx_wetu_language', $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
+			$jdata = wp_remote_get( $lang_path );
 
 			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$adata  = json_decode( $jdata['body'], true );
