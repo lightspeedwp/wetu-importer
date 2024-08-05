@@ -14,6 +14,8 @@ function lsx_wetu_register_meta() {
 		//Search.
 		'duration'     => array(),
 		'price'        => array(),
+
+		//Post Connections.
 	);
 	$defaults = array(
 		'default' => '',
@@ -47,21 +49,69 @@ function lsx_wetu_register_block_bindings() {
 			'get_value_callback' => 'lsx_wetu_bindings_callback'
 		)
 	);
+
+	register_block_bindings_source(
+		'lsx/tour-itinerary',
+		array(
+			'label' => __( 'Tour Itinerary', 'lsx-wetu-importer' ),
+			'get_value_callback' => 'lsx_wetu_bindings_itinerary_callback'
+		)
+	);
 }
 add_action( 'init', 'lsx_wetu_register_block_bindings' );
 
 function lsx_wetu_bindings_callback( $source_args, $block_instance ) {
 	if ( 'core/image' === $block_instance->parsed_block['blockName'] ) {
-
 		return 'test_image';
 	} elseif ( 'core/paragraph' === $block_instance->parsed_block['blockName'] ) {
-		$value = get_post_meta( get_the_ID(), $source_args['key'], true );
 
-		if ( '' !== $value ) {
-			$value = '<a href="' . get_permalink( $value ) . '">' . get_the_title( $value ) . '</a>';
+		// Gets the single
+		$single = true;
+		if ( isset( $source_args['single'] ) ) {
+			$single = (bool) $source_args['single'];
 		}
 
+		// Get the 
+		$only_parents = false;
+		if ( isset( $source_args['parents'] ) ) {
+			$only_parents = (bool) $source_args['parents'];
+		}
+		
+		$value = get_post_meta( get_the_ID(), $source_args['key'], $single );
+
+		if ( is_array( $value ) && ! empty( $value ) ) {
+			$values = array();
+			foreach( $value as $pid ) {
+				if ( true === $only_parents ) {
+					$pid_parent = get_post_parent( $pid );
+					if ( null !== $pid_parent ) {
+						continue;
+					}
+				}
+
+				$values[] = '<a href="' . get_permalink( $pid ) . '">' . get_the_title( $pid ) . '</a>';
+			}
+			$value = implode( ',', $values );
+		} else if ( ! is_array( $value ) && '' !== $value ) {
+			
+			switch ( $source_args['key'] ) {
+				case 'lsx_wetu_id':
+					$value = '<iframe width="100%" height="500" frameborder="0" allowfullscreen="" id="wetu_map" data-ll-status="loaded" src="https://wetu.com/Map/indexv2.html?itinerary=' . $value . '?m=b"></iframe>';
+					break;
+
+				default:
+					$value = '<a href="' . get_permalink( $value ) . '">' . get_the_title( $value ) . '</a>';
+				break;	
+			}
+		}
 		return $value;
+	}
+}
+
+
+function lsx_wetu_bindings_itinerary_callback( $source_args, $block_instance ) {
+	if ( 'core/paragraph' === $block_instance->parsed_block['blockName'] ) {
+		
 	}
 }
 
