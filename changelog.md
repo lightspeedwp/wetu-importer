@@ -1,5 +1,14 @@
 # Change log
 
+## [[1.5.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.0) - In Development
+
+### Added
+- A language filter for the content requests, to allow different languages to import.
+
+### Updated
+- Fixed the non associative array error
+- Fixed and error with the string and int operators in the tour import class.
+
 ## [[1.4.2]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.2) - 2023-08-09
 
 ### Security

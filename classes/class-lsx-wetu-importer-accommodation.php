@@ -348,6 +348,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	public function format_row( $row = false, $row_key = '' ) {
 		if ( false !== $row ) {
 
+			$row_key = (int) $row_key;
+
 			$status = 'import';
 			if ( 0 !== $row['post_id'] ) {
 				$status = '<a href="' . admin_url( '/post.php?post=' . $row['post_id'] . '&action=edit' ) . '" target="_blank">' . get_post_status( $row['post_id'] ) . '</a>';
