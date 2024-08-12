@@ -1302,6 +1302,7 @@ class LSX_WETU_Importer {
 
 			WHERE key1.meta_key = 'lsx_wetu_id'
 			AND key2.post_type = '{$post_type}'
+			AND key2.post_status IN ('publish','draft')
 
 			LIMIT 0,5000
 		");
