@@ -218,8 +218,6 @@ class LSX_WETU_Importer {
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-settings.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-wetu-automation.php';
 
-		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-block-compatability.php';
-
 		if ( isset( $this->options ) && isset( $this->options['enable_tour_ref_column'] ) && '' !== $this->options['enable_tour_ref_column'] ) {
 			require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-post-columns.php';
 			$this->post_columns = LSX_WETU_Importer_Post_Columns::get_instance();
