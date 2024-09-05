@@ -85,6 +85,13 @@ class LSX_WETU_Importer {
 	public $found_attachments = array();
 
 	/**
+	 * The previously attached images
+	 *
+	 * @var      array()
+	 */
+	public $attachment_urls = array();
+
+	/**
 	 * The gallery ids for the found attachements
 	 *
 	 * @var      array()
@@ -1036,9 +1043,10 @@ class LSX_WETU_Importer {
 	public function create_main_gallery( $data, $id ) {
 		if ( is_array( $data[0]['content']['images'] ) && ! empty( $data[0]['content']['images'] ) ) {
 			if ( isset( $this->options['image_replacing'] ) && 'on' === $this->options['image_replacing'] ) {
-				$current_gallery = get_post_meta( $id, 'gallery', false );
+				$current_gallery = get_post_meta( $id, 'gallery', true );
 
 				if ( false !== $current_gallery && ! empty( $current_gallery ) ) {
+					
 					foreach ( $current_gallery as $g ) {
 						delete_post_meta( $id, 'gallery', $g );
 
@@ -1052,8 +1060,6 @@ class LSX_WETU_Importer {
 			$counter = 0;
 
 			foreach ( $data[0]['content']['images'] as $image_data ) {
-				//disable_destination_image_featured
-				//disable_destination_image_banner
 
 				if ( ( 0 === $counter && false !== $this->featured_image ) || ( 1 === $counter && false !== $this->banner_image ) ) {
 					$counter++;
@@ -1069,19 +1075,20 @@ class LSX_WETU_Importer {
 					continue;
 				}
 
-				$this->gallery_meta[] = $this->attach_image( $image_data, $id );
+				$attach_id  = $this->attach_image( $image_data, $id );
+				$temp_image = wp_get_attachment_image_src( $attach_id, 'full' );
+				if ( false !== $temp_image && is_array( $temp_image ) ) {
+					$this->gallery_meta[ $attach_id ] = $temp_image[0];
+				}
+				
 				$counter++;
 			}
 
 			if ( ! empty( $this->gallery_meta ) ) {
 				delete_post_meta( $id, 'gallery' );
-				$this->gallery_meta = array_unique( $this->gallery_meta );
+				//$this->gallery_meta = array_unique( $this->gallery_meta );
 
-				foreach ( $this->gallery_meta as $gallery_id ) {
-					if ( false !== $gallery_id && '' !== $gallery_id && ! is_array( $gallery_id ) ) {
-						add_post_meta( $id, 'gallery', $gallery_id, false );
-					}
-				}
+				add_post_meta( $id, 'gallery', $this->gallery_meta, true );
 			}
 		}
 	}

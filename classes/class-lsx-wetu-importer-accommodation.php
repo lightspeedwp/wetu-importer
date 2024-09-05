@@ -696,9 +696,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				delete_post_meta( $id, 'units' );
 			}
 
-			foreach ( $rooms as $room ) {
-				add_post_meta( $id, 'units', $room, false );
-			}
+			add_post_meta( $id, 'units', $rooms, true );
 
 			if ( isset( $data[0]['features'] ) && isset( $data[0]['features']['rooms'] ) ) {
 				$room_count = $data[0]['features']['rooms'];

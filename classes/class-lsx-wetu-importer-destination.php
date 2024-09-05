@@ -509,7 +509,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 			$jdata = wp_remote_get( $this->url . '/Get?' . $this->url_qs . '&ids=' . $wetu_id );
 
-			if ( ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
+			if ( ! is_wp_error( $jdata ) && ! empty( $jdata ) && isset( $jdata['response'] ) && isset( $jdata['response']['code'] ) && 200 === $jdata['response']['code'] ) {
 				$adata  = json_decode( $jdata['body'], true );
 				$return = $this->import_row( $adata, $wetu_id, $post_id, $team_members, $content, $safari_brands );
 				$this->remove_from_queue( $return );
