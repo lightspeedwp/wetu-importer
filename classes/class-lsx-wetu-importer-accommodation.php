@@ -169,9 +169,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="special_interests" /> <?php esc_html_e( 'Special Interests', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="spoken_languages" /> <?php esc_html_e( 'Spoken Languages', 'lsx-wetu-importer' ); ?></li>
 
-								<?php if ( class_exists( 'LSX_TO_Videos' ) ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="videos" /> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
 							</ul>
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
 							<ul>

@@ -158,13 +158,10 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 											   value="location"/> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?>
 									</li>
 
-
-								<?php if ( class_exists( 'LSX_TO_Videos' ) ) { ?>
 									<li>
 										<input class="content" checked="checked"
 											   type="checkbox" name="content[]"
 											   value="videos"/> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
 
 							</ul>
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
@@ -320,7 +317,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	}
 
 	/**
-	 * Run through the accommodation grabbed from the DB.
+	 * Run through the accommodation grab	d from the DB.
 	 */
 	public function process_ajax_search() {
 		$return = false;
