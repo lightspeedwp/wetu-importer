@@ -784,11 +784,13 @@ class LSX_WETU_Importer {
 
 			foreach ( $this->cleanup_posts as $id => $key ) {
 				$prev_items = get_post_meta( $id, $key, false );
-				$new_items  = array_unique( $prev_items );
-				delete_post_meta( $id, $key );
-
-				foreach ( $new_items as $new_item ) {
-					add_post_meta( $id, $key, $new_item, false );
+				if ( is_array( $prev_items ) && ! empty( $prev_items ) ) {
+					$new_items  = array_unique( $prev_items );
+					delete_post_meta( $id, $key );
+	
+					foreach ( $new_items as $new_item ) {
+						add_post_meta( $id, $key, $new_item, false );
+					}
 				}
 			}
 		}
@@ -1348,9 +1350,7 @@ class LSX_WETU_Importer {
 				delete_post_meta( $id, 'videos' );
 			}
 
-			foreach ( $videos as $video ) {
-				add_post_meta( $id, 'videos', $video, false );
-			}
+			add_post_meta( $id, 'videos', $videos, true );
 		}
 	}
 

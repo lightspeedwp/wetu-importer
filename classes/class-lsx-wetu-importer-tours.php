@@ -251,13 +251,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				if ( in_array( 'personal', $form_options ) ) {
 					echo esc_attr( 'selected="selected"' ); }
 				?>
-value="personal"><?php esc_html_e( 'Personal', 'lsx-wetu-importer' ); ?></option>
+				value="personal"><?php esc_html_e( 'Personal', 'lsx-wetu-importer' ); ?></option>
 				<option 
 				<?php
 				if ( in_array( 'sample', $form_options ) ) {
 					echo esc_attr( 'selected="selected"' ); }
 				?>
-value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
+				value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			</select>
 			<input class="button submit" type="submit" value="<?php esc_attr_e( 'Refresh', 'lsx-wetu-importer' ); ?>" />
 		</form>
@@ -609,6 +609,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 	public function process_itineraries( $data, $id, $importable_content ) {
 		$day_counter = 1;
 		$leg_counter = 0;
+		$days        = array();
 
 		// Change this to check for a parameter
 		if ( true ) {
@@ -714,7 +715,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 						$current_day['drinks_basis'] = '';
 					}
 
-					$this->set_itinerary_day( $current_day, $id );
+					$days[] = $current_day;
 					$day_counter = $next_day_count;
 				}
 			} else {
@@ -798,10 +799,15 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 					$current_day['drinks_basis'] = '';
 				}
 
-				$this->set_itinerary_day( $current_day, $id );
+				$days[] = $current_day;
 				$day_counter = $next_day_count;
 			}
 			$leg_counter++;
+
+			if ( ! empty( $days ) ) {
+				$this->set_itinerary_day( $days, $id );
+			}
+			
 		}
 
 		apply_filters( 'lsx_wetu_itinerary_complete', $id );
@@ -964,7 +970,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 	 * Set the Itinerary Day.
 	 */
 	public function set_itinerary_day( $day, $id ) {
-		$this->save_custom_field( $day, 'itinerary', $id, false, false );
+		$this->save_custom_field( $day, 'itinerary', $id, false, true );
 	}
 
 	/**
