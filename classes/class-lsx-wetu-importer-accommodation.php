@@ -687,7 +687,21 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 				if ( ! empty( $room['images'] ) && is_array( $room['images'] ) ) {
 					$temp_room['gallery']   = array();
-					$temp_room['gallery'][] = $this->attach_image( $room['images'][0], $id );
+
+					$image_limit = 2;
+					foreach( $room['images'] as $image ) {
+						if ( 0 >= $image_limit ) {
+							continue;
+						}
+
+						$attach_id  = $this->attach_image( $image, $id );
+						$temp_image = wp_get_attachment_image_src( $attach_id, 'full' );
+						if ( false !== $temp_image && is_array( $temp_image ) ) {
+							$temp_room['gallery'][ $attach_id ] = $temp_image[0];
+						}
+
+						$image_limit--;
+					}
 				}
 				$rooms[] = $temp_room;
 			}
@@ -735,14 +749,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function set_spoken_languages( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['spoken_languages'] ) && ! empty( $data[0]['features']['spoken_languages'] ) ) {
-			$languages = false;
-
 			foreach ( $data[0]['features']['spoken_languages'] as $spoken_language ) {
-				$languages[] = sanitize_title( $spoken_language );
-			}
-
-			if ( false !== $languages ) {
-				$this->save_custom_field( $languages, 'spoken_languages', $id );
+				$this->save_custom_field( sanitize_title( $spoken_language ), 'spoken_languages', $id, false, false );
 			}
 		}
 	}
@@ -752,14 +760,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function set_friendly( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['suggested_visitor_types'] ) && ! empty( $data[0]['features']['suggested_visitor_types'] ) ) {
-			$friendly_options = false;
-
 			foreach ( $data[0]['features']['suggested_visitor_types'] as $visitor_type ) {
-				$friendly_options[] = sanitize_title( $visitor_type );
-			}
-
-			if ( false !== $friendly_options ) {
-				$this->save_custom_field( $friendly_options, 'suggested_visitor_types', $id );
+				$this->save_custom_field( sanitize_title( $visitor_type ), 'suggested_visitor_types', $id, false, false );
 			}
 		}
 	}
@@ -769,14 +771,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function set_special_interests( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['special_interests'] ) && ! empty( $data[0]['features']['special_interests'] ) ) {
-			$interests = false;
-
 			foreach ( $data[0]['features']['special_interests'] as $special_interest ) {
-				$interests[] = sanitize_title( $special_interest );
-			}
-
-			if ( false !== $interests ) {
-				$this->save_custom_field( $interests, 'special_interests', $id );
+				$this->save_custom_field( sanitize_title( $special_interest ), 'special_interests', $id, false, false );
 			}
 		}
 	}
