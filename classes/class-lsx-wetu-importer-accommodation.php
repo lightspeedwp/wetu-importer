@@ -608,34 +608,58 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function connect_destinations( $data, $id ) {
 		if ( isset( $data[0]['position'] ) ) {
-			$destinations = false;
+			$destinations = array();
 
 			if ( isset( $data[0]['position']['country'] ) ) {
-				$destinations['country'] = $data[0]['position']['country'];
+				$country = new WP_Query( array(
+					'title'     => ltrim( rtrim( $data[0]['position']['country'] ) ),
+					'post_status' => 'publish,draft',
+					'post_type' => 'destination',
+					'fields' => 'ids',
+				));
+				if ( $country->have_posts() ) {
+					$destinations['country'] = $country->posts[0];
+				}
 			}
 
 			if ( isset( $data[0]['position']['destination'] ) ) {
-				$destinations['destination'] = $data[0]['position']['destination'];
+				$destination = new WP_Query( array(
+					'title'     => ltrim( rtrim( $data[0]['position']['destination'] ) ),
+					'post_status' => 'publish,draft',
+					'post_type' => 'destination',
+					'fields' => 'ids',
+				));
+				if ( $destination->have_posts() ) {
+					$destinations['destination'] = $destination->posts[0];
+				}
 			}
 
-			if ( false !== $destinations ) {
-				$prev_values = get_post_meta( $id, 'destination_to_accommodation', false );
-
-				if ( false === $prev_values || ! is_array( $prev_values ) ) {
-					$prev_values = array();
-				}
-
-				delete_post_meta( $id, 'destination_to_accommodation', $prev_values );
+			if ( ! empty( $destinations ) ) {
+				delete_post_meta( $id, 'destination_to_accommodation' );
 				$destinations = array_unique( $destinations );
+				// Record the current accommodations destinations.
+				add_post_meta( $id, 'destination_to_accommodation', $destinations, true );
 
+				// Attach the accommodation to each destination.
 				foreach ( $destinations as $key => $value ) {
-					$destination = get_page_by_title( ltrim( rtrim( $value ) ), 'OBJECT', 'destination' );
-					if ( null !== $destination ) {
-						if ( ! in_array( $destination->ID, $prev_values ) ) {
-							add_post_meta( $id, 'destination_to_accommodation', $destination->ID, false );
-							add_post_meta( $destination->ID, 'accommodation_to_destination', $id, false );
-							$this->cleanup_posts[ $destination->ID ] = 'accommodation_to_destination';
+					$any_accommodation = get_post_meta( $value, 'accommodation_to_destination', true );
+
+					if ( defined( 'WETU_PURGE' ) ) {
+						$deleted = delete_post_meta( $value, 'destination_to_accommodation' );
+					}
+
+					// No Previous Accommodation detected.
+					if ( false === $any_accommodation ) {
+						add_post_meta( $value, 'accommodation_to_destination', $id, true );
+					} else {
+						if ( ! is_array( $any_accommodation ) ) {
+							$new_accommodation = array( $any_accommodation );
+						} else {
+							$new_accommodation = $any_accommodation;
 						}
+						$new_accommodation[] = $id;
+						$new_accommodation   = array_unique( $new_accommodation );
+						$updated = update_post_meta( $value, 'accommodation_to_destination', $new_accommodation, $any_accommodation );
 					}
 				}
 			}

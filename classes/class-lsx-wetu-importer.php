@@ -766,7 +766,7 @@ class LSX_WETU_Importer {
 	/**
 	 * Saves the room data
 	 */
-	public function save_custom_field( $value = false, $meta_key, $id, $decrease = false, $unique = true ) {
+	public function save_custom_field( $value = false, $meta_key = '', $id = 0, $decrease = false, $unique = true ) {
 		if ( false !== $value ) {
 			if ( false !== $decrease ) {
 				$value = intval( $value );
