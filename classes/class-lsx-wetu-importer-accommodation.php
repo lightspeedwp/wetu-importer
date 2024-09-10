@@ -643,24 +643,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				// Attach the accommodation to each destination.
 				foreach ( $destinations as $key => $value ) {
 					$any_accommodation = get_post_meta( $value, 'accommodation_to_destination', true );
-
-					if ( defined( 'WETU_PURGE' ) ) {
-						$deleted = delete_post_meta( $value, 'destination_to_accommodation' );
-					}
-
-					// No Previous Accommodation detected.
-					if ( false === $any_accommodation ) {
-						add_post_meta( $value, 'accommodation_to_destination', $id, true );
-					} else {
-						if ( ! is_array( $any_accommodation ) ) {
-							$new_accommodation = array( $any_accommodation );
-						} else {
-							$new_accommodation = $any_accommodation;
-						}
-						$new_accommodation[] = $id;
-						$new_accommodation   = array_unique( $new_accommodation );
-						$updated = update_post_meta( $value, 'accommodation_to_destination', $new_accommodation, $any_accommodation );
-					}
+					$this->save_merged_field( $id, 'accommodation_to_destination', $id, $any_accommodation );
 				}
 			}
 		}

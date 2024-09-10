@@ -617,6 +617,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		}
 
 		delete_post_meta( $id, 'itinerary' );
+		
+		if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
+			delete_post_meta( $id, 'destination_to_tour' );
+		}
 
 		if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
 			delete_post_meta( $id, 'accommodation_to_tour' );
@@ -1180,14 +1184,17 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			if ( '' !== $dest_id && false !== $dest_id ) {
-				$this->save_custom_field( $dest_id, 'destination_to_tour', $id, false, false );
-				$this->save_custom_field( $id, 'tour_to_destination', $dest_id, false, false );
+				// Attach the destination to the current tour.
+				$this->save_custom_field( $dest_id, 'destination_to_tour', $id, false, true );
+
+				// Attach the tour to the related destination.
+				$this->save_custom_field( $id, 'tour_to_destination', $dest_id, false, true );
 
 				// Save the item to display in the queue
 				$this->queue_item( $dest_id );
 
 				// Save the item to clean up the amount of connections.
-				$this->cleanup_posts[ $dest_id ] = 'tour_to_destination';
+				//$this->cleanup_posts[ $dest_id ] = 'tour_to_destination';
 
 				// Add this relation info so we can make sure certain items are set as countries.
 				if ( 0 !== $country_id && false !== $country_id ) {
@@ -1252,11 +1259,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		}
 
 		if ( '' !== $country_id && false !== $country_id ) {
-			$this->save_custom_field( $country_id, 'destination_to_tour', $id, false, false );
-			$this->save_custom_field( $id, 'tour_to_destination', $country_id, false, false );
-			$this->queue_item( $country_id );
-			$this->cleanup_posts[ $country_id ] = 'tour_to_destination';
+			// Attach the tour to the country.
+			$this->save_custom_field( $id, 'tour_to_destination', $country_id, false, true );
 
+			// Save the destination to the current tour.
+			$this->save_custom_field( $country_id, 'destination_to_tour', $id, false, true );
+
+			$this->queue_item( $country_id );
 			return $country_id;
 		}
 	}

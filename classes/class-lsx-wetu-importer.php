@@ -772,14 +772,35 @@ class LSX_WETU_Importer {
 				$value = intval( $value );
 				$value--;
 			}
-
 			$prev = get_post_meta( $id, $meta_key, true );
-
-			if ( false !== $id && '0' !== $id && false !== $prev && true === $unique ) {
-				update_post_meta( $id, $meta_key, $value, $prev );
-			} else {
-				add_post_meta( $id, $meta_key, $value, $unique );
+			if ( false !== $id && '0' !== $id && false !== $prev ) {
+				if ( true === $unique ) {
+					// if its a post connection then merge the current destinations
+					if ( in_array( $meta_key , tour_operator()->legacy->admin->connections ) ) {
+						$this->save_merged_field( $id, $meta_key, $value, $prev );
+					} else {
+						update_post_meta( $id, $meta_key, $value, $prev );
+					}
+				} else {
+					add_post_meta( $id, $meta_key, $value, $unique );
+				}
 			}
+		}
+	}
+
+	public function save_merged_field( $value, $meta_key, $id , $prev ) {
+		// No Previous Accommodation detected.
+		if ( false === $prev ) {
+			add_post_meta( $value, $meta_key, array( $id ), true );
+		} else {
+			if ( ! is_array( $prev ) ) {
+				$new = array( $prev );
+			} else {
+				$new = $prev;
+			}
+			$new[] = $id;
+			$new   = array_unique( $new );
+			$updated = update_post_meta( $value, $meta_key, $new, $prev );
 		}
 	}
 
