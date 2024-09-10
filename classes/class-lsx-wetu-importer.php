@@ -939,8 +939,8 @@ class LSX_WETU_Importer {
 		if ( false !== $longitude ) {
 			$location_data = array(
 				'address'   => (string) $address,
-				'lat'       => (string) $latitude,
-				'long'      => (string) $longitude,
+				'latitude'  => (string) $latitude,
+				'longitude' => (string) $longitude,
 				'zoom'      => (string) $zoom,
 				'elevation' => '',
 			);
