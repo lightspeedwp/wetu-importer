@@ -1073,8 +1073,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			}
 
 			if ( '' !== $ac_id && false !== $ac_id ) {
-				$this->save_custom_field( $ac_id, 'accommodation_to_tour', $id, false, false );
-				$this->save_custom_field( $id, 'tour_to_accommodation', $ac_id, false, false );
+				// Attach the current accommodation to the tour.
+				$this->save_custom_field( $ac_id, 'accommodation_to_tour', $id, false, true );
+
+				// Save the current tour to the accommodation.
+				$this->save_custom_field( $id, 'tour_to_accommodation', $ac_id, false, true );
 				$this->queue_item( $ac_id );
 			}
 		}
