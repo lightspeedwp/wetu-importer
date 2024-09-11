@@ -1150,7 +1150,7 @@ class LSX_WETU_Importer {
 	/**
 	 * Attaches 1 image
 	 */
-	public function attach_image( $v = false, $parent_id, $image_sizes = false, $banner = false ) {
+	public function attach_image( $v = false, $parent_id = 0, $image_sizes = false, $banner = false ) {
 		if ( false !== $v ) {
 			$temp_fragment = explode( '/', $v['url_fragment'] );
 			$url_filename  = $temp_fragment[ count( $temp_fragment ) - 1 ];
