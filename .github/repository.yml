@@ -1,6 +1,5 @@
 compliance:
   - GDPR
-  - WCAG 2.1
 
 data_sensitivity: public
 
@@ -8,22 +7,22 @@ project_type: wordpress-plugin
 
 development_status: active
 
-license: gpl-3.0
+license: gpl-2.0
 
 audience:
+  - travel-agencies
   - developers
-  - wordpress-users
-  - e-commerce-businesses
+  - tour-operators
 
 tech_stack:
   - PHP
-  - WordPress Block Editor
-  - WooCommerce
+  - WordPress
+  - Wetu API
 
-version: 1.4.2
+version: 1.0.0
 
-documentation_url: https://lsx.design/docs/
+documentation_url: https://lsx.design/docs/wetu-importer
 
-support_url: https://support.lightspeedwp.agency/
+support_url: https://lightspeedwp.agency/support
 
-project_priority: core
+project_priority: optional
