@@ -965,7 +965,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$this->save_custom_field( implode( ' ', $points ), 'wetu_map_points', $id, false, true );
 			}
 		}
-
 	}
 
 	// CLASS SPECIFIC FUNCTIONS.

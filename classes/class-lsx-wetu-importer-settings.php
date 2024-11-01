@@ -47,7 +47,7 @@ class LSX_WETU_Importer_Settings {
 			'api_key'                            => '',
 			'disable_tour_title'                 => '',
 			'disable_tour_descriptions'          => '',
-			'disable_tour_tags'                  => 'on',
+			'disable_tour_tags'                  => '',
 			'enable_tour_featured_random'        => '',
 			'disable_accommodation_title'        => '',
 			'disable_accommodation_descriptions' => '',
