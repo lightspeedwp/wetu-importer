@@ -343,7 +343,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 * @param boolean $row the current row to format.
 	 * @return void
 	 */
-	public function format_row( $row = false, $row_key = '' ) {
+	public function format_row( $row = false, $row_key = 0 ) {
 		if ( false !== $row ) {
 
 			$status = 'import';
@@ -358,7 +358,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
 				<td class="column-order">
-					' . ( $row_key + 1 ) . '
+					' . ( (int) $row_key + 1 ) . '
 				</td>
 				<td class="post-title page-title column-title">
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
