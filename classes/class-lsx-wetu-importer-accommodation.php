@@ -262,7 +262,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				$current_accommodation = $this->find_current_accommodation();
 				if ( ! empty( $current_accommodation ) ) {
 					foreach ( $current_accommodation as $cs_key => $ccs_id ) {
-						$accommodation[] = $this->prepare_row_attributes( $cs_key, $ccs_id->post_id );
+						$accommodation[] = $this->prepare_row_attributes( $cs_key, $ccs_id );
 					}
 				}
 
@@ -607,40 +607,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function connect_destinations( $data, $id ) {
 		if ( isset( $data[0]['position'] ) ) {
-			$destinations = array();
-
-			$this->current_destinations = $this->find_current_accommodation( 'destination' );
-
-			print_r('<pre>');
-			print_r($this->current_destinations);
-			print_r('</pre>');
-
-			if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) ) {
-				if ( isset( $data[0]['position']['country_content_entity_id'] ) && array_key_exists( $data[0]['position']['country_content_entity_id'], $this->current_destinations ) ) {
-					$destinations['country'] = $this->current_destinations[ $data[0]['position']['country_content_entity_id'] ]->post_id;
-				}
-
-				if ( isset( $data[0]['position']['destination_content_entity_id'] ) && array_key_exists( $data[0]['position']['destination_content_entity_id'], $this->current_destinations ) ) {
-					$destinations['destination'] = $this->current_destinations[ $data[0]['position']['destination_content_entity_id'] ]->post_id;
-				}
-			}
-
-			print_r('<pre>');
-			print_r($destinations);
-			print_r('</pre>');
-
-			if ( ! empty( $destinations ) ) {
-				delete_post_meta( $id, 'destination_to_accommodation' );
-				$destinations = array_unique( $destinations );
-				// Record the current accommodations destinations.
-				add_post_meta( $id, 'destination_to_accommodation', $destinations, true );
-
-				// Attach the accommodation to each destination.
-				foreach ( $destinations as $key => $value ) {
-					$any_accommodation = get_post_meta( $value, 'accommodation_to_destination', true );
-					$this->save_merged_field( $id, 'accommodation_to_destination', $id, $any_accommodation );
-				}
-			}
+			$this->set_destination( $data[0]['position']['destination_content_entity_id'], $id, 0 );
+			$this->set_country( $data[0]['position']['country_content_entity_id'], $id );
 		}
 	}
 

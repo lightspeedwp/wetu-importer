@@ -360,7 +360,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 				$current_accommodation = $this->find_current_accommodation( 'destination' );
 				if ( ! empty( $current_accommodation ) ) {
 					foreach ( $current_accommodation as $cs_key => $ccs_id ) {
-						$accommodation[] = $this->prepare_row_attributes( $cs_key, $ccs_id->post_id );
+						$accommodation[] = $this->prepare_row_attributes( $cs_key, $ccs_id );
 					}
 				}
 

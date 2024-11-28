@@ -1,25 +1,25 @@
 /** LSX Importer for Wetu Styles */
-body.settings_page_lsx-wetu-importer {
+body.tools_page_lsx-wetu-importer {
   /* Home Screen */
   /* Tour / Accommodation / Destinations */
 }
-body.settings_page_lsx-wetu-importer .tablenav.top {
+body.tools_page_lsx-wetu-importer .tablenav.top {
   height: auto;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .manage-column {
+body.tools_page_lsx-wetu-importer #posts-filter .manage-column {
   cursor: pointer;
 }
-body.settings_page_lsx-wetu-importer .image-settings td {
+body.tools_page_lsx-wetu-importer .image-settings td {
   line-height: 1.5;
 }
-body.settings_page_lsx-wetu-importer label[for=wetu_api_key] {
+body.tools_page_lsx-wetu-importer label[for=wetu_api_key] {
   display: flex;
   align-items: center;
 }
-body.settings_page_lsx-wetu-importer label[for=wetu_api_key] #doc-tooltip {
+body.tools_page_lsx-wetu-importer label[for=wetu_api_key] #doc-tooltip {
   width: 25px;
 }
-body.settings_page_lsx-wetu-importer .tooltip {
+body.tools_page_lsx-wetu-importer .tooltip {
   cursor: pointer;
   border: none;
   background: none;
@@ -28,26 +28,26 @@ body.settings_page_lsx-wetu-importer .tooltip {
   text-align: left;
   outline: none;
 }
-body.settings_page_lsx-wetu-importer .tooltip .tooltip-inner {
+body.tools_page_lsx-wetu-importer .tooltip .tooltip-inner {
   display: none;
 }
 @media (max-width: 782px) {
-  body.settings_page_lsx-wetu-importer .tooltip .tooltip-inner.clicked {
+  body.tools_page_lsx-wetu-importer .tooltip .tooltip-inner.clicked {
     display: block;
     outline: none;
     font-size: 14px;
   }
 }
-body.settings_page_lsx-wetu-importer #posts-filter, body.settings_page_lsx-wetu-importer #import-list {
+body.tools_page_lsx-wetu-importer #posts-filter, body.tools_page_lsx-wetu-importer #import-list {
   margin-top: 15px;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .column-order, body.settings_page_lsx-wetu-importer #import-list .column-order {
+body.tools_page_lsx-wetu-importer #posts-filter .column-order, body.tools_page_lsx-wetu-importer #import-list .column-order {
   display: none;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .check-column input, body.settings_page_lsx-wetu-importer #import-list .check-column input {
+body.tools_page_lsx-wetu-importer #posts-filter .check-column input, body.tools_page_lsx-wetu-importer #import-list .check-column input {
   margin: 0 0 0 8px;
 }
-body.settings_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, body.settings_page_lsx-wetu-importer #posts-filter thead .sorting_desc::after, body.settings_page_lsx-wetu-importer #posts-filter tfoot .sorting_asc::after, body.settings_page_lsx-wetu-importer #posts-filter tfoot .sorting_desc::after, body.settings_page_lsx-wetu-importer #import-list thead .sorting_asc::after, body.settings_page_lsx-wetu-importer #import-list thead .sorting_desc::after, body.settings_page_lsx-wetu-importer #import-list tfoot .sorting_asc::after, body.settings_page_lsx-wetu-importer #import-list tfoot .sorting_desc::after {
+body.tools_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, body.tools_page_lsx-wetu-importer #posts-filter thead .sorting_desc::after, body.tools_page_lsx-wetu-importer #posts-filter tfoot .sorting_asc::after, body.tools_page_lsx-wetu-importer #posts-filter tfoot .sorting_desc::after, body.tools_page_lsx-wetu-importer #import-list thead .sorting_asc::after, body.tools_page_lsx-wetu-importer #import-list thead .sorting_desc::after, body.tools_page_lsx-wetu-importer #import-list tfoot .sorting_asc::after, body.tools_page_lsx-wetu-importer #import-list tfoot .sorting_desc::after {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -63,27 +63,27 @@ body.settings_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, bo
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-body.settings_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, body.settings_page_lsx-wetu-importer #posts-filter tfoot .sorting_asc::after, body.settings_page_lsx-wetu-importer #import-list thead .sorting_asc::after, body.settings_page_lsx-wetu-importer #import-list tfoot .sorting_asc::after {
+body.tools_page_lsx-wetu-importer #posts-filter thead .sorting_asc::after, body.tools_page_lsx-wetu-importer #posts-filter tfoot .sorting_asc::after, body.tools_page_lsx-wetu-importer #import-list thead .sorting_asc::after, body.tools_page_lsx-wetu-importer #import-list tfoot .sorting_asc::after {
   content: "\f140";
 }
-body.settings_page_lsx-wetu-importer #posts-filter thead .sorting_desc::after, body.settings_page_lsx-wetu-importer #posts-filter tfoot .sorting_desc::after, body.settings_page_lsx-wetu-importer #import-list thead .sorting_desc::after, body.settings_page_lsx-wetu-importer #import-list tfoot .sorting_desc::after {
+body.tools_page_lsx-wetu-importer #posts-filter thead .sorting_desc::after, body.tools_page_lsx-wetu-importer #posts-filter tfoot .sorting_desc::after, body.tools_page_lsx-wetu-importer #import-list thead .sorting_desc::after, body.tools_page_lsx-wetu-importer #import-list tfoot .sorting_desc::after {
   content: "\f142";
 }
-body.settings_page_lsx-wetu-importer #posts-filter td.post-title, body.settings_page_lsx-wetu-importer #import-list td.post-title {
+body.tools_page_lsx-wetu-importer #posts-filter td.post-title, body.tools_page_lsx-wetu-importer #import-list td.post-title {
   font-weight: 600;
   font-size: 14px;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .dataTables_info, body.settings_page_lsx-wetu-importer #posts-filter .dataTables_length, body.settings_page_lsx-wetu-importer #import-list .dataTables_info, body.settings_page_lsx-wetu-importer #import-list .dataTables_length {
+body.tools_page_lsx-wetu-importer #posts-filter .dataTables_info, body.tools_page_lsx-wetu-importer #posts-filter .dataTables_length, body.tools_page_lsx-wetu-importer #import-list .dataTables_info, body.tools_page_lsx-wetu-importer #import-list .dataTables_length {
   display: inline-block;
   width: 50%;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .top, body.settings_page_lsx-wetu-importer #import-list .top {
+body.tools_page_lsx-wetu-importer #posts-filter .top, body.tools_page_lsx-wetu-importer #import-list .top {
   margin-bottom: 10px;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .bottom .dataTables_paginate, body.settings_page_lsx-wetu-importer #import-list .bottom .dataTables_paginate {
+body.tools_page_lsx-wetu-importer #posts-filter .bottom .dataTables_paginate, body.tools_page_lsx-wetu-importer #import-list .bottom .dataTables_paginate {
   margin-top: 10px;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .dataTables_paginate, body.settings_page_lsx-wetu-importer #import-list .dataTables_paginate {
+body.tools_page_lsx-wetu-importer #posts-filter .dataTables_paginate, body.tools_page_lsx-wetu-importer #import-list .dataTables_paginate {
   display: inline-block;
   width: 50%;
   height: 28px;
@@ -91,7 +91,7 @@ body.settings_page_lsx-wetu-importer #posts-filter .dataTables_paginate, body.se
   color: #555;
   text-align: right;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .paginate_button, body.settings_page_lsx-wetu-importer #import-list .paginate_button {
+body.tools_page_lsx-wetu-importer #posts-filter .paginate_button, body.tools_page_lsx-wetu-importer #import-list .paginate_button {
   height: 16px;
   display: inline-block;
   min-width: 17px;
@@ -106,52 +106,52 @@ body.settings_page_lsx-wetu-importer #posts-filter .paginate_button, body.settin
   color: #0073aa;
   cursor: pointer;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .paginate_button.disabled, body.settings_page_lsx-wetu-importer #import-list .paginate_button.disabled {
+body.tools_page_lsx-wetu-importer #posts-filter .paginate_button.disabled, body.tools_page_lsx-wetu-importer #import-list .paginate_button.disabled {
   pointer-events: none;
   border-color: #ddd;
   background: #f7f7f7;
   color: #a0a5aa;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .paginate_button:hover, body.settings_page_lsx-wetu-importer #posts-filter .paginate_button.current, body.settings_page_lsx-wetu-importer #import-list .paginate_button:hover, body.settings_page_lsx-wetu-importer #import-list .paginate_button.current {
+body.tools_page_lsx-wetu-importer #posts-filter .paginate_button:hover, body.tools_page_lsx-wetu-importer #posts-filter .paginate_button.current, body.tools_page_lsx-wetu-importer #import-list .paginate_button:hover, body.tools_page_lsx-wetu-importer #import-list .paginate_button.current {
   border-color: #5b9dd9;
   color: #fff;
   background: #00a0d2;
   box-shadow: none;
   outline: none;
 }
-body.settings_page_lsx-wetu-importer #posts-filter .paginate_button::last-child, body.settings_page_lsx-wetu-importer #import-list .paginate_button::last-child {
+body.tools_page_lsx-wetu-importer #posts-filter .paginate_button::last-child, body.tools_page_lsx-wetu-importer #import-list .paginate_button::last-child {
   margin-right: 0;
 }
-body.settings_page_lsx-wetu-importer .row.section {
+body.tools_page_lsx-wetu-importer .row.section {
   margin-bottom: 25px;
 }
-body.settings_page_lsx-wetu-importer .row.section h1 {
+body.tools_page_lsx-wetu-importer .row.section h1 {
   padding: 0px 0 4px 0;
 }
-body.settings_page_lsx-wetu-importer .welcome-block-header, body.settings_page_lsx-wetu-importer .welcome-block.postbox {
+body.tools_page_lsx-wetu-importer .welcome-block-header, body.tools_page_lsx-wetu-importer .welcome-block.postbox {
   margin-right: 1%;
   display: inline-block;
   vertical-align: top;
   min-width: unset;
   padding: 8px 12px;
 }
-body.settings_page_lsx-wetu-importer .welcome-block-header:last-child, body.settings_page_lsx-wetu-importer .welcome-block.postbox:last-child {
+body.tools_page_lsx-wetu-importer .welcome-block-header:last-child, body.tools_page_lsx-wetu-importer .welcome-block.postbox:last-child {
   margin-right: 0px;
 }
-body.settings_page_lsx-wetu-importer .welcome-block-header {
+body.tools_page_lsx-wetu-importer .welcome-block-header {
   color: #0073aa;
   text-align: center;
   width: calc(24% - 27px);
   position: relative;
   z-index: 2;
 }
-body.settings_page_lsx-wetu-importer .welcome-block-header a:focus {
+body.tools_page_lsx-wetu-importer .welcome-block-header a:focus {
   box-shadow: none;
 }
-body.settings_page_lsx-wetu-importer .welcome-block-header .heading a {
+body.tools_page_lsx-wetu-importer .welcome-block-header .heading a {
   text-decoration: none;
 }
-body.settings_page_lsx-wetu-importer .welcome-block-header .value span {
+body.tools_page_lsx-wetu-importer .welcome-block-header .value span {
   display: block;
   color: white;
   background-color: #0073aa;
@@ -161,10 +161,10 @@ body.settings_page_lsx-wetu-importer .welcome-block-header .value span {
   height: 20px;
   display: inline-block;
 }
-body.settings_page_lsx-wetu-importer .welcome-block-header .value a:hover span {
+body.tools_page_lsx-wetu-importer .welcome-block-header .value a:hover span {
   background-color: #00a0d2;
 }
-body.settings_page_lsx-wetu-importer .spacer {
+body.tools_page_lsx-wetu-importer .spacer {
   box-sizing: border-box;
   width: 98%;
   border-top: 1px solid #979797;
@@ -175,51 +175,51 @@ body.settings_page_lsx-wetu-importer .spacer {
   left: 1%;
   z-index: 1;
 }
-body.settings_page_lsx-wetu-importer .welcome-block.postbox {
+body.tools_page_lsx-wetu-importer .welcome-block.postbox {
   width: calc(24% - 25px);
 }
 @media (max-width: 1670px) {
-  body.settings_page_lsx-wetu-importer .welcome-block.postbox {
+  body.tools_page_lsx-wetu-importer .welcome-block.postbox {
     width: calc(24% - 26px);
   }
 }
 @media (max-width: 1272px) {
-  body.settings_page_lsx-wetu-importer .welcome-block.postbox {
+  body.tools_page_lsx-wetu-importer .welcome-block.postbox {
     width: calc(24% - 27px);
   }
 }
 @media (max-width: 690px) {
-  body.settings_page_lsx-wetu-importer .welcome-block.postbox {
+  body.tools_page_lsx-wetu-importer .welcome-block.postbox {
     width: calc(48% - 27px);
   }
 }
-body.settings_page_lsx-wetu-importer .welcome-block.postbox h2.title {
+body.tools_page_lsx-wetu-importer .welcome-block.postbox h2.title {
   height: 2em;
   line-height: 28px;
   margin: 0 0 2em 0;
 }
 @media (max-width: 910px) {
-  body.settings_page_lsx-wetu-importer .welcome-block.postbox h2.title {
+  body.tools_page_lsx-wetu-importer .welcome-block.postbox h2.title {
     height: 3em;
   }
 }
-body.settings_page_lsx-wetu-importer .welcome-block.postbox .excerpt {
+body.tools_page_lsx-wetu-importer .welcome-block.postbox .excerpt {
   min-height: 100px;
 }
-body.settings_page_lsx-wetu-importer .welcome-block.postbox .button {
+body.tools_page_lsx-wetu-importer .welcome-block.postbox .button {
   width: 100%;
   text-align: center;
 }
-body.settings_page_lsx-wetu-importer .welcome-block.postbox .link-list li a {
+body.tools_page_lsx-wetu-importer .welcome-block.postbox .link-list li a {
   font-size: 14px;
 }
-body.settings_page_lsx-wetu-importer .wetu-status h3 {
+body.tools_page_lsx-wetu-importer .wetu-status h3 {
   margin: 0px;
 }
-body.settings_page_lsx-wetu-importer .subsubsub {
+body.tools_page_lsx-wetu-importer .subsubsub {
   margin-bottom: 10px;
 }
-body.settings_page_lsx-wetu-importer .documentation {
+body.tools_page_lsx-wetu-importer .documentation {
   list-style: none;
   margin: 11px 0 0;
   padding: 0;
@@ -227,31 +227,31 @@ body.settings_page_lsx-wetu-importer .documentation {
   float: left;
   text-decoration: none;
 }
-body.settings_page_lsx-wetu-importer .documentation:before {
+body.tools_page_lsx-wetu-importer .documentation:before {
   content: "|";
   color: #666;
   margin-right: 6px;
   margin-left: 6px;
 }
-body.settings_page_lsx-wetu-importer #lsx-wetu-importer-search-form .normal-search {
+body.tools_page_lsx-wetu-importer #lsx-wetu-importer-search-form .normal-search {
   display: inline-block;
 }
-body.settings_page_lsx-wetu-importer #lsx-wetu-importer-search-form .normal-search input.keyword {
+body.tools_page_lsx-wetu-importer #lsx-wetu-importer-search-form .normal-search input.keyword {
   height: 30px;
 }
-body.settings_page_lsx-wetu-importer .advanced-search-toggle {
+body.tools_page_lsx-wetu-importer .advanced-search-toggle {
   display: inline-block;
   margin-top: 0;
 }
-body.settings_page_lsx-wetu-importer .widefat .check-column {
+body.tools_page_lsx-wetu-importer .widefat .check-column {
   padding: 6px 0 6px;
   vertical-align: middle;
 }
-body.settings_page_lsx-wetu-importer .widefat #the-list .check-column {
+body.tools_page_lsx-wetu-importer .widefat #the-list .check-column {
   vertical-align: top;
   padding: 10px 0 6px;
 }
-body.settings_page_lsx-wetu-importer #import-list .widefat .check-column {
+body.tools_page_lsx-wetu-importer #import-list .widefat .check-column {
   vertical-align: top;
   padding: 10px 0 6px;
 }
