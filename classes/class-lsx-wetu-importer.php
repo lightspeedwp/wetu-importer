@@ -216,7 +216,7 @@ class LSX_WETU_Importer {
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ), 11 );
-		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 20 );
+		add_action( 'admin_menu', array( $this, 'register_importer_page' ), 200 );
 
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-welcome.php';
 		require_once LSX_WETU_IMPORTER_PATH . 'classes/class-lsx-wetu-importer-accommodation.php';
@@ -433,11 +433,7 @@ class LSX_WETU_Importer {
 	 * Registers the admin page which will house the importer form.
 	 */
 	public function register_importer_page() {
-		if ( function_exists( 'tour_operator' ) ) {
-			add_submenu_page( 'tour-operator', esc_html__( 'Importer', 'tour-operator' ), esc_html__( 'Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
-		} else {
-			add_management_page( esc_html__( 'WETU Importer', 'tour-operator' ), esc_html__( 'WETU Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
-		}
+		add_options_page( esc_html__( 'WETU Importer', 'tour-operator' ), esc_html__( 'WETU Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
 	}
 
 	/**

@@ -157,7 +157,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="location" /> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?></li>
 
-								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Connect Destinations', 'lsx-wetu-importer' ); ?></li>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Connect Destinations', 'lsx-wetu-importer' ); ?> <small><?php esc_html_e( 'The destination will need to exist in WordPress', 'lsx-wetu-importer' ); ?></small></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="rating" /> <?php esc_html_e( 'Rating', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="rooms" /> <?php esc_html_e( 'Rooms', 'lsx-wetu-importer' ); ?></li>
 
@@ -609,29 +609,25 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		if ( isset( $data[0]['position'] ) ) {
 			$destinations = array();
 
-			if ( isset( $data[0]['position']['country'] ) ) {
-				$country = new WP_Query( array(
-					'title'     => ltrim( rtrim( $data[0]['position']['country'] ) ),
-					'post_status' => 'publish,draft',
-					'post_type' => 'destination',
-					'fields' => 'ids',
-				));
-				if ( $country->have_posts() ) {
-					$destinations['country'] = $country->posts[0];
+			$this->current_destinations = $this->find_current_accommodation( 'destination' );
+
+			print_r('<pre>');
+			print_r($this->current_destinations);
+			print_r('</pre>');
+
+			if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) ) {
+				if ( isset( $data[0]['position']['country_content_entity_id'] ) && array_key_exists( $data[0]['position']['country_content_entity_id'], $this->current_destinations ) ) {
+					$destinations['country'] = $this->current_destinations[ $data[0]['position']['country_content_entity_id'] ]->post_id;
+				}
+
+				if ( isset( $data[0]['position']['destination_content_entity_id'] ) && array_key_exists( $data[0]['position']['destination_content_entity_id'], $this->current_destinations ) ) {
+					$destinations['destination'] = $this->current_destinations[ $data[0]['position']['destination_content_entity_id'] ]->post_id;
 				}
 			}
 
-			if ( isset( $data[0]['position']['destination'] ) ) {
-				$destination = new WP_Query( array(
-					'title'     => ltrim( rtrim( $data[0]['position']['destination'] ) ),
-					'post_status' => 'publish,draft',
-					'post_type' => 'destination',
-					'fields' => 'ids',
-				));
-				if ( $destination->have_posts() ) {
-					$destinations['destination'] = $destination->posts[0];
-				}
-			}
+			print_r('<pre>');
+			print_r($destinations);
+			print_r('</pre>');
 
 			if ( ! empty( $destinations ) ) {
 				delete_post_meta( $id, 'destination_to_accommodation' );
