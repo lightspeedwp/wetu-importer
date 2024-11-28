@@ -1489,31 +1489,38 @@ class LSX_WETU_Importer {
 					}
 				}
 			}
+		}
 
-			if ( '' !== $dest_id && false !== $dest_id ) {
-				$post_type = get_post_type( $id );
+		// Lets double check for a country before proceeding.
+		if ( false === $country_id && isset( $day['country_content_entity_id'] ) ) {
+			$country_id = $this->set_country( $day['country_content_entity_id'], $id );
+		}
 
-				// Attach the destination to the current tour.
-				$this->save_custom_field( $dest_id, 'destination_to_' . $post_type, $id, false, true );
+		// If there is a region, then save it.
+		if ( '' !== $dest_id && false !== $dest_id ) {
+			$post_type = get_post_type( $id );
 
-				// Attach the tour to the related destination.
-				$this->save_custom_field( $id, $post_type . '_to_destination', $dest_id, false, true );
+			// Attach the destination to the current tour.
+			$this->save_custom_field( $dest_id, 'destination_to_' . $post_type, $id, false, true );
 
-				// Save the item to display in the queue
-				$this->queue_item( $dest_id );
+			// Attach the tour to the related destination.
+			$this->save_custom_field( $id, $post_type . '_to_destination', $dest_id, false, true );
 
-				// Save the item to clean up the amount of connections.
-				//$this->cleanup_posts[ $dest_id ] = 'tour_to_destination';
+			// Save the item to display in the queue
+			$this->queue_item( $dest_id );
 
-				// Add this relation info so we can make sure certain items are set as countries.
-				if ( 0 !== $country_id && false !== $country_id ) {
-					$this->relation_meta[ $dest_id ]    = $country_id;
-					$this->relation_meta[ $country_id ] = 0;
-				} else {
-					$this->relation_meta[ $dest_id ] = 0;
-				}
+			// Save the item to clean up the amount of connections.
+			//$this->cleanup_posts[ $dest_id ] = 'tour_to_destination';
+
+			// Add this relation info so we can make sure certain items are set as countries.
+			if ( 0 !== $country_id && false !== $country_id ) {
+				$this->relation_meta[ $dest_id ]    = $country_id;
+				$this->relation_meta[ $country_id ] = 0;
+			} else {
+				$this->relation_meta[ $dest_id ] = 0;
 			}
 		}
+
 		return $dest_id;
 	}
 

@@ -607,8 +607,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function connect_destinations( $data, $id ) {
 		if ( isset( $data[0]['position'] ) ) {
-			$this->set_destination( $data[0]['position']['destination_content_entity_id'], $id, 0 );
-			$this->set_country( $data[0]['position']['country_content_entity_id'], $id );
+			$this->set_destination( $data[0]['position'], $id, 0 );
 		}
 	}
 
