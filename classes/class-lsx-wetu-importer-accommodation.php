@@ -98,7 +98,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function display_page() {
 		?>
-		<div class="wrap">
+		<div class="wrap to-wrapper">
 
 			<div class="tablenav top">
 				<div class="actions">
@@ -210,7 +210,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?page=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
+				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?import=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>

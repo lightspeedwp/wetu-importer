@@ -433,7 +433,14 @@ class LSX_WETU_Importer {
 	 * Registers the admin page which will house the importer form.
 	 */
 	public function register_importer_page() {
-		add_submenu_page( 'tools.php', esc_html__( 'WETU Importer', 'tour-operator' ), esc_html__( 'WETU Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
+		//add_submenu_page( 'tools.php', esc_html__( 'WETU Importer', 'tour-operator' ), esc_html__( 'WETU Importer', 'tour-operator' ), 'manage_options', 'lsx-wetu-importer', array( $this, 'display_page' ) );
+
+		register_importer(
+			'lsx-wetu-importer', // A unique slug for your importer.
+			'TO WETU Importer', // The name of the importer as it appears on the Tools -> Import page.
+			'Import your tour itineraries from WETU and display them using the Tour Operator plugin.', // A brief description of the importer.
+			array( $this, 'display_page' ) // The callback function that handles the importing process.
+		);
 	}
 
 	/**
@@ -448,7 +455,7 @@ class LSX_WETU_Importer {
 
 		$min = '';
 
-		if ( is_admin() && isset( $_GET['page'] ) && $this->plugin_slug === $_GET['page'] ) {
+		if ( is_admin() && isset( $_GET['import'] ) && $this->plugin_slug === $_GET['import'] ) {
 
 			// wp_enqueue_style( 'datatables', LSX_WETU_IMPORTER_URL . 'assets/css/datatables' . $min . '.css', LSX_WETU_IMPORTER_VER, true );
 			wp_enqueue_style( 'lsx-wetu-importer-style', LSX_WETU_IMPORTER_URL . 'assets/css/lsx-wetu-importer.css', LSX_WETU_IMPORTER_VER, true );
@@ -474,7 +481,7 @@ class LSX_WETU_Importer {
 	 */
 	public function display_page() {
 		?>
-		<div class="wrap">
+		<div class="wrap to-wrapper">
 			<?php
 			$this->navigation( $this->tab_slug );
 			if ( 'default' !== $this->tab_slug && 'settings' !== $this->tab_slug ) {
@@ -596,13 +603,13 @@ class LSX_WETU_Importer {
 
 		echo wp_kses_post( '<div class="wp-filter">' );
 		echo wp_kses_post( '<ul class="filter-links">' );
-		echo wp_kses_post( '<li><a class="' . $this->itemd( $tab, 'default', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '">' . esc_attr__( 'Home', 'lsx-wetu-importer' ) . '</a></li>' );
+		echo wp_kses_post( '<li><a class="' . $this->itemd( $tab, 'default', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?import=' . $this->plugin_slug . '">' . esc_attr__( 'Home', 'lsx-wetu-importer' ) . '</a></li>' );
 
 		foreach ( $post_types as $post_type => $label ) {
-			echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, $post_type, 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=' . $post_type . '">' . $label . '</a></li>' );
+			echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, $post_type, 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?import=' . $this->plugin_slug . '&tab=' . $post_type . '">' . $label . '</a></li>' );
 		}
 
-		echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, 'settings', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?page=' . $this->plugin_slug . '&tab=settings">' . esc_attr__( 'Settings', 'lsx-wetu-importer' ) . '</a></li>' );
+		echo wp_kses_post( ' | <li><a class="' . $this->itemd( $tab, 'settings', 'current', false ) . '" href="' . admin_url( 'admin.php' ) . '?import=' . $this->plugin_slug . '&tab=settings">' . esc_attr__( 'Settings', 'lsx-wetu-importer' ) . '</a></li>' );
 		echo wp_kses_post( '</ul> </div>' );
 	}
 

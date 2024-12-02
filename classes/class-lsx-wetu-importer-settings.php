@@ -95,7 +95,7 @@ class LSX_WETU_Importer_Settings {
 		}
 		$options = wp_parse_args( $options, $this->defaults );
 		?>
-		<div class="wrap">
+		<div class="wrap to-wrapper">
 			<form method="post" class="">
 				<?php wp_nonce_field( 'lsx_wetu_importer_save', 'lsx_wetu_importer_save_options' ); ?>
 				<?php do_action( 'lsx_wetu_importer_settings_before' ); ?>

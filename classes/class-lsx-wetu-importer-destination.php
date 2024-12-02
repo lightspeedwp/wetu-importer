@@ -90,7 +90,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	 */
 	public function display_page() {
 		?>
-		<div class="wrap">
+		<div class="wrap to-wrapper">
 			<div class="tablenav top">
 				<div class="actions">
 					<?php $this->search_form(); ?>

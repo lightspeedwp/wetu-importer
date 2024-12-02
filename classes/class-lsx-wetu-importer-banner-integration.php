@@ -35,7 +35,7 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 	 */
 	public function display_page() {
 		?>
-		<div class="wrap">
+		<div class="wrap to-wrapper">
 			<h2><?php esc_html_e( 'Download new banners straight from WETU', 'lsx-wetu-importer' ); ?></h2>
 
 			<form method="get" action="" id="banners-filter">
