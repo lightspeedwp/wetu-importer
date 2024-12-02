@@ -1583,11 +1583,13 @@ class LSX_WETU_Importer {
 
 		if ( '' !== $country_id && false !== $country_id ) {
 			$post_type = get_post_type( $id );
-			// Attach the tour to the country.
-			$this->save_custom_field( $id, $post_type . '_to_destination', $country_id, false, true );
+			if ( 'destination' !== $post_type ) {
+				// Attach the tour to the country.
+				$this->save_custom_field( $id, $post_type . '_to_destination', $country_id, false, true );
 
-			// Save the destination to the current tour.
-			$this->save_custom_field( $country_id, 'destination_to_' . $post_type, $id, false, true );
+				// Save the destination to the current tour.
+				$this->save_custom_field( $country_id, 'destination_to_' . $post_type, $id, false, true );
+			}
 
 			$this->queue_item( $country_id );
 			return $country_id;

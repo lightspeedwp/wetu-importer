@@ -277,43 +277,12 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed' ); ?></h3>
+				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Please check the WETU queue for any countries that may have been created.', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Grab all the current destination posts via the lsx_wetu_id field.
-	 */
-	public function find_current_destination( $post_type = 'destination' ) {
-		global $wpdb;
-		$return = array();
-
-		// @codingStandardsIgnoreStart
-		$current_destination = $wpdb->get_results("
-			SELECT key1.post_id,key1.meta_value,key2.post_title as name,key2.post_date as last_modified
-			FROM {$wpdb->postmeta} key1
-
-			INNER JOIN  {$wpdb->posts} key2
-			ON key1.post_id = key2.ID
-
-			WHERE key1.meta_key = 'lsx_wetu_id'
-			AND key2.post_type = '{$post_type}'
-
-			LIMIT 0,1000
-		");
-		// @codingStandardsIgnoreEnd
-
-		if ( null !== $current_destination && ! empty( $current_destination ) ) {
-			foreach ( $current_destination as $accom ) {
-				$return[ $accom->meta_value ] = $accom;
-			}
-		}
-
-		return $return;
 	}
 
 	/**
@@ -550,8 +519,8 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			);
 
 			if ( ! empty( $importable_content ) && in_array( 'country', $importable_content ) ) {
-				$parent = $this->check_for_parent( $data );
-				if ( false !== $parent ) {
+				$parent = $this->check_for_parent( $data, $id );
+				if ( false !== $parent && 0 !== $parent ) {
 					$post['post_parent'] = $parent;
 				}
 			}
@@ -726,15 +695,12 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 	/**
 	 * Save the list of Accommodation into an option
 	 */
-	public function check_for_parent( $data = array() ) {
-		global $wpdb;
+	public function check_for_parent( $data = array(), $id ) {
+		$country_id = 0;
 
 		if ( $data[0]['position']['country_content_entity_id'] !== $data[0]['position']['destination_content_entity_id'] ) {
-			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'lsx_wetu_id' AND meta_value = '%s'", array( $data[0]['position']['country_content_entity_id'] ) ) );
-			if ( ! empty( $result ) && '' !== $result && false !== $result ) {
-				return $result;
-			}
+			$country_id = $this->set_country( $data[0]['position']['country_content_entity_id'], $id );
 		}
-		return false;
+		return $country_id;
 	}
 }
