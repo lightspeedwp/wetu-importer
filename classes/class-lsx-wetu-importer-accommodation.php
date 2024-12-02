@@ -157,7 +157,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="category" /> <?php esc_html_e( 'Category', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="location" /> <?php esc_html_e( 'Location', 'lsx-wetu-importer' ); ?></li>
 
-								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Connect Destinations', 'lsx-wetu-importer' ); ?> <small><?php esc_html_e( 'The destination will need to exist in WordPress', 'lsx-wetu-importer' ); ?></small></li>
+								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="destination" /> <?php esc_html_e( 'Connect Destinations', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="rating" /> <?php esc_html_e( 'Rating', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="rooms" /> <?php esc_html_e( 'Rooms', 'lsx-wetu-importer' ); ?></li>
 
