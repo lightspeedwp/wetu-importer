@@ -58,11 +58,11 @@ class LSX_WETU_Importer_Settings {
 			'disable_destination_image_featured' => '',
 			'disable_destination_image_banner'   => '',
 			'image_replacing'                    => 'on',
-			'image_limit'                        => '15',
+			'image_limit'                        => '12',
 			'image_scaling'                      => 'on',
-			'width'                              => '800',
-			'height'                             => '600',
-			'scaling'                            => 'h',
+			'width'                              => '1200',
+			'height'                             => '800',
+			'scaling'                            => 'raw',
 			'enable_tour_ref_column'             => '',
 			'cron_schedule'                      => 'daily',
 			'accommodation_images_cron'          => '',
@@ -107,13 +107,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="wetu_api_key"><span title="The API key can be found on your My Account page of your WETU account." id="doc-tooltip" class="dashicons dashicons-editor-help tooltip"></span> <?php esc_html_e( 'API Key', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input data-toggle="tooltip" data-placement="top" title="The API key can be found on your My Account page of your WETU account." type="text" value="
-								<?php
+								<input data-toggle="tooltip" data-placement="top" title="The API key can be found on your My Account page of your WETU account." type="text" value="<?php
 								if ( isset( $options['api_key'] ) ) {
 									echo esc_attr( $options['api_key'] );
 								}
-								?>
-								" name="api_key" />
+								?>" name="api_key" />
 							</td>
 						</tr>
 					</tbody>
@@ -351,13 +349,10 @@ class LSX_WETU_Importer_Settings {
 								<label for="image_replacing"><?php esc_html_e( 'Replace Images', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input type="checkbox"
-								<?php
+								<input type="checkbox" <?php
 								if ( isset( $options['image_replacing'] ) && '' !== $options['image_replacing'] ) {
 									echo esc_attr( 'checked="checked"' );
-								}
-								?>
-								name="image_replacing" />
+								} ?> name="image_replacing" />
 								<p><?php esc_html_e( 'Do you want your images to be replaced on each import.', 'lsx-wetu-importer' ); ?></p>
 							</td>
 						</tr>
@@ -366,14 +361,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="image_limit"> <?php esc_html_e( 'Limit the amount of images imported to the gallery', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input placeholder="" type="text" value="
-								<?php
+								<input placeholder="" type="text" value="<?php
 								if ( isset( $options['image_limit'] ) && '' !== $options['image_limit'] ) {
 									echo esc_attr( $options['image_limit'] );
 								}
-								?>
-								"
-								name="image_limit" />
+								?>" name="image_limit" />
 							</td>
 						</tr>
 
@@ -396,14 +388,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="width"> <?php esc_html_e( 'Width (px)', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input placeholder="800" type="text" value="
-								<?php
+								<input placeholder="1200" type="text" value="<?php
 								if ( isset( $options['width'] ) && '' !== $options['width'] ) {
 									echo esc_attr( $options['width'] );
 								}
-								?>
-								"
-								name="width" />
+								?>" name="width" />
 							</td>
 						</tr>
 						<tr class="form-field -wrap">
@@ -411,14 +400,11 @@ class LSX_WETU_Importer_Settings {
 								<label for="height"> <?php esc_html_e( 'Height (px)', 'lsx-wetu-importer' ); ?></label>
 							</th>
 							<td>
-								<input placeholder="600" type="text" value="
-								<?php
+								<input placeholder="800" type="text" value="<?php
 								if ( isset( $options['height'] ) && '' !== $options['height'] ) {
 									echo esc_attr( $options['height'] );
 								}
-								?>
-								"
-								name="height" />
+								?>" name="height" />
 							</td>
 						</tr>
 
