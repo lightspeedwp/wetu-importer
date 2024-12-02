@@ -277,7 +277,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Please check the WETU queue for any countries that may have been created.', 'lsx-wetu-importer' ); ?></small></h3>
+				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Please check the "draft" list for any countries that may have been created.', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>
