@@ -1,5 +1,8 @@
 # Change log
 
+## [[1.5.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.0) - IN Development
+- 
+
 ## [[1.4.2]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.2) - 2023-08-09
 
 ### Security
