@@ -11,31 +11,63 @@
 	<a href="https://travis-ci.org/github/lightspeeddevelopment/wetu-importer/"><img src="https://travis-ci.org/lightspeeddevelopment/wetu-importer.svg?branch=master" alt="Build Status"></a>
 </p>
 
-Welcome to the [LSX Importer for Wetu](https://www.lsdev.biz/lsx/extensions/wetu-importer/). This WordPress plugin allows destination, accommodation and tour content to be imported via the Wetu.com API.
+# LSX Importer for Wetu
 
-Building your [Tour Operator](https://www.lsdev.biz/lsx/extensions/tour-operator/) site but looking for content? The Wetu directory is packed with amazing content and images to use across your website!
+**Version:** 1.5  
+**Requires WordPress:** 6.7 or higher  
+**Requires PHP:** 8.0 or higher
 
-## Works with the LSX Theme
-Our  [theme](https://lsdev.biz/lsx/) works perfectly with the LSX Importer for Wetu Extension, improving internal linking, website SEO and user experience!
+The LSX Importer for Wetu plugin integrates the [Wetu Tour Operator](https://wetu.com/) system with the [LSX Tour Operators](https://wordpress.org/plugins/lsx-tour-operators/) plugin, enabling you to import destinations, accommodations, and tours directly into your WordPress site. This ensures a cohesive and enriched travel content experience.
 
-## It's free, and always will be.
-We’re firm believers in open source - that’s why the [LSX Importer for Wetu plugin](https://www.lsdev.biz/lsx/extensions/wetu-importer/) is free, and that won't change. We are constantly maintaining and updating our extension so you have the latest and greatest abilities on your LSX Theme powered site.
+## Features
 
-## LSX Importer for Wetu Documentation
+- **Seamless Integration:** Maps Wetu data to LSX Tour Operators fields, ensuring consistency and accuracy.
+- **Gutenberg-Ready:** Display imported itineraries using WordPress's block editor, improving layout flexibility.
+- **Performance-Focused:** Utilizes background processing to handle large imports without timeouts or slowdowns.
+- **Up-to-Date Compatibility:** Requires WP 6.7+ and PHP 8.0+, ensuring a modern, secure, and performant environment.
 
-We have created extensive documentation on all of the LSX Importer for Wetu Plugin functionality. This means a hassle free installation and setup with no code requirements. Go to the [LSX Importer for Wetu Documentation](https://www.lsdev.biz/lsx/documentation/lsx-tour-operator/lsx-wetu-content-importer/).
+## Requirements
 
-## LSX Importer for Wetu Help & Support
+- **WordPress:** 6.7 or higher
+- **PHP:** 8.0 or higher
+- **Required Plugin:** [LSX Tour Operators](https://wordpress.org/plugins/lsx-tour-operators/)
 
-We offer premium support for this plugin. Premium support that can be purchased [via our website](https://www.lsdev.biz/services/support/).
+## Installation
 
-If you are experiencing issues with the LSX Importer for Wetu Plugin & have experience with Github, please log any bug issues you are having on the [LSX Importer for Wetu Github Issues](https://github.com/lightspeeddevelopment/wetu-importer/issues/) page.
+1. Install and activate the [LSX Tour Operators](https://wordpress.org/plugins/lsx-tour-operators/) plugin.
+2. Download the LSX Importer for Wetu plugin and upload it to your `/wp-content/plugins/` directory, or install via the WordPress plugin repository.
+3. Activate the plugin through the 'Plugins' menu in WordPress.
+4. Configure your Wetu API settings under **Wetu Importer** in the WordPress admin panel.
+5. Run the importer to fetch and display Wetu content within the LSX Tour Operators format.
 
-## Contributing to the LSX Importer for Wetu Plugin
+## Frequently Asked Questions
 
-If you're a developer who's spotted a bug issue and have a fix, or simply have functionality you think would extend our core theme, we are always happy to accept your contribution! Visit the [LSX Importer for Wetu Plugin on Github](https://github.com/lightspeeddevelopment/wetu-importer/) and submit a Pull Request with your updates.
+**Do I need the LSX Tour Operators plugin?**  
+Yes. This plugin extends the LSX Tour Operators functionality, ensuring that imported Wetu data is properly structured and displayed.
 
+**Is there a minimum PHP version required?**  
+Yes, we require PHP 8.0 or newer. Running older PHP versions may result in errors or incompatibility.
 
+**How are large imports handled?**  
+The plugin utilizes background processes to manage large-scale imports efficiently, avoiding timeouts and ensuring a smoother experience.
+
+## Changelog
+
+See the [Changelog](#changelog) section below or the `CHANGELOG.md` file for a detailed history of updates.
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests. Please follow the [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/) when submitting changes.
+
+## License
+
+Licensed under the [GPLv3 or later](https://www.gnu.org/licenses/gpl-3.0.html).
+
+## Author
+
+**LightSpeed**  
+[https://lightspeedwp.agency/](https://lightspeedwp.agency/)  
+[https://lsx.design/](https://lsx.design/)
 
 ---
 <p align="center">
