@@ -1,7 +1,7 @@
 === LSX Content Importer for Wetu ===
 Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, jacquesvdh, ignusvermaak
 Donate link: https://lsdev.biz/lsx/donate/
-Tags: lsx, tour operator, tours, destination, accommodation
+Tags: lsx, tour operator, travel, tourism, itinerary
 Requires at least: 5.0
 Tested up to: 6.3
 Requires PHP: 7.4
