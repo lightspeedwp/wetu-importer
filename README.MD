@@ -1,6 +1,5 @@
 <p align="center"><a target="_blank" href="https://www.lsdev.biz/lsx/extensions/wetu-importer/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2020/09/lsx-importer-for-wetu-banner-1544x500-1.png" alt="LSX Importer for Wetu Extension"></a>
 </p>
-<h1 align="center">LSX Importer for Wetu</h1>
 
 # LSX Importer for Wetu
 
