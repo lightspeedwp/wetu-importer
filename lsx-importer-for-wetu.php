@@ -1,22 +1,23 @@
 <?php
 /*
- * Plugin Name: LSX Importer for Wetu
- * Plugin URI: https://lsx.design/products/wetu-importer/
- * Description: By integrating with the Wetu Tour Operator system, you are able to import your content into the LSX Tour Operators plugin format
- * Author: LightSpeed
- * Version: 1.5
+ * Plugin Name:			LSX Importer for Wetu
+ * Plugin URI:			https://lsx.design/products/wetu-importer/
+ * Description:			Integrate with the Wetu Tour Operator system to import destination, accommodation, and tour content into the LSX Tour Operators plugin format.
+ * Author:				LightSpeed
+ * Version:				1.5.0
  * Requires at least:	6.7
  * Tested up to:		6.7
  * Requires PHP:		8.0
  * Author URI:			https://lightspeedwp.agency/
- * License:			GPLv3 or later
- * License URI:		https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:		lsx-wetu-importer
- * Domain Path:		/languages/
+ * License:				GPLv3 or later
+ * License URI:			https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain:			lsx-wetu-importer
+ * Domain Path:			/languages/
  * Update URI:			https://lsx.design/products/tour-operator/wetu-importer/
  * Tags:				lsx, tour operator, wetu, importer
  * Requires Plugins:	tour-operator
  */
+
 
 
 define( 'LSX_WETU_IMPORTER_PATH', plugin_dir_path( __FILE__ ) );
