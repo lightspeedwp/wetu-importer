@@ -1,62 +1,72 @@
 === LSX Content Importer for Wetu ===
-Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, jacquesvdh, ignusvermaak
+Contributors: feedmymedia, lightspeedwp, eleshar, krugazul, 
+Tags: lsx, tour operator, tours, destination, accommodation, wetu, importer, travel, tourism
+Requires at least: 6.7
+Tested up to: 6.7
+Requires PHP: 8.0
+Stable tag: 1.5
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Plugin URI: https://lsx.design/products/wetu-importer/
 Donate link: https://lsdev.biz/lsx/donate/
-Tags: lsx, tour operator, tours, destination, accommodation
-Requires at least: 5.0
-Tested up to: 6.3
-Requires PHP: 7.4
-Stable tag: 1.4.2
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Author URI: https://lightspeedwp.agency/
 
 This plugin allows website owners to import destination, accommodation and tour content into the LSX Tour Operator plugin via the Wetu.com content API. 
 
+=== LSX Importer for Wetu ===
+Contributors: lightspeedwp
+Tags: lsx, tour operator, wetu, importer, travel, tourism
+Requires at least: 6.7
+Tested up to: 6.7
+Requires PHP: 8.0
+Stable tag: 1.5
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Plugin URI: https://lsx.design/products/wetu-importer/
+Author URI: https://lightspeedwp.agency/
+
 == Description ==
+LSX Importer for Wetu integrates with the Wetu Tour Operator system to import destinations, accommodations, and tour content directly into the LSX Tour Operators plugin format. This enables a seamless workflow for travel and tourism websites, ensuring rich itineraries and consistent data structures within your WordPress site.
 
-Building your [LSX Tour Operator](https://www.lsdev.biz/lsx/extensions/tour-operator/) site but looking for content? The Wetu directory is packed with amazing content and images to use across your website!
+**Key Features:**
+- Imports Wetu destinations, accommodations, and tours.
+- Aligns imported data to LSX Tour Operators plugin format.
+- Fully compatible with the Gutenberg (block) editor.
+- Supports background processing for large-scale imports.
+- Requires LSX Tour Operators plugin for optimal functionality.
 
-= Works with the LSX Theme & LSX Tour Operators plugin =
+**Minimum Requirements:**
+- WordPress 6.7 or higher
+- PHP 8.0 or higher
+- LSX Tour Operators plugin active
 
-The [LSX theme](https://www.lsdev.biz/lsx/) works perfectly with the LSX Importer for Wetu Extension, improving internal linking, website SEO and user experience! 
-
-= It's free, and always will be. =
-
-We’re firm believers in open source - that’s why the [LSX Importer for Wetu plugin](https://www.lsdev.biz/lsx/extensions/tour-operator/wetu-importer/) is free, and that won't change. We are constantly maintaining and updating our extension so you have the latest and greatest abilities on your LSX Theme powered site. 
-
-= Documentation =
-
-We have created extensive documentation on all of the LSX Importer for Wetu Plugin functionality. This means a hassle free installation and setup with no code requirements. Go to the [LSX Importer for Wetu Documentation](https://tour-operator.lsdev.biz/documentation/extension/lsx-wetu-importer/).
-
-= Support =
-
-Contact the [LightSpeed](https://lsdev.biz/) for assistance via the [LSX support form](https://www.lsdev.biz/lsx/support/).
-
-If you are experiencing issues with the LSX Importer for Wetu Plugin & have experience with Github, please log any bug issues you are having on the [LSX Importer for Wetu Github Issues](https://github.com/lightspeeddevelopment/lsx-wetu-importer/issues/) page.
-
-= Contributing =
-
-If you're a developer who's spotted a bug issue and have a fix, or simply have functionality you think would extend our core theme, we are always happy to accept your contribution! Visit the [LSX Importer for Wetu Plugin on Github](https://github.com/lightspeeddevelopment/lsx-wetu-importer/) and submit a Pull Request with your updates.
-
-== Screenshots ==
-
-
-
+== Installation ==
+1. Install and activate the [LSX Tour Operators](https://wordpress.org/plugins/lsx-tour-operators/) plugin.
+2. Download and install LSX Importer for Wetu from WordPress.org or upload it to `/wp-content/plugins/`.
+3. Activate the plugin through the 'Plugins' menu in WordPress.
+4. Configure your Wetu API credentials in the plugin’s settings page.
+5. Start importing Wetu data into your LSX Tour Operators environment.
 
 == Frequently Asked Questions ==
+= Do I need the LSX Tour Operators plugin? =
+Yes. The LSX Importer for Wetu relies on LSX Tour Operators to properly handle and display imported tour data.
 
-Take a look at all our [Frequently Asked Questions](https://www.lsdev.biz/lsx/documentation/lsx-theme/lsx-theme-faqs/), we are sure you'll find what you're looking for. 
+= What happens if I don’t meet the minimum requirements? =
+You must have WordPress 6.7 or newer and PHP 8.0 or newer. Without these, the plugin may not function as intended. Consider upgrading your environment before using this plugin.
 
-= First question? =
-First answer
+= How does it handle large imports? =
+The plugin uses background processing to manage large imports efficiently, preventing timeouts and performance bottlenecks.
 
-= Second question? =
-First answer
+== Screenshots ==
+1. **Wetu Import Settings:** Easily configure and manage your Wetu API credentials.
+2. **Imported Destinations:** View imported locations seamlessly integrated into LSX Tour Operators.
+3. **Itinerary Blocks:** Display your itineraries in beautiful, Gutenberg-compatible layouts.
 
-= Third question? =
-First answer
-
-== Changelog == 
-
-[Lastest changelogs can be found on GitHub](https://github.com/lightspeeddevelopment/wetu-importer/blob/master/changelog.md).
-
-== Upgrade Notice == 
+== Changelog ==
+= 1.5 =
+* Updated minimum WordPress requirement to 6.7 and PHP requirement to 8.0.
+* Added 'Requires Plugins:' header to ensure LSX Tour Operators dependency is clear.
+* Improved Gutenberg compatibility for displaying imported itineraries.
+* Enhanced Wetu API field mapping and data integrity checks.
+* Optimized background processing for large imports.
+* Updated plugin headers, URIs, and documentation for clarity and brand consistency.
