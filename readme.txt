@@ -13,18 +13,6 @@ Author URI: https://lightspeedwp.agency/
 
 This plugin allows website owners to import destination, accommodation and tour content into the LSX Tour Operator plugin via the Wetu.com content API. 
 
-=== LSX Importer for Wetu ===
-Contributors: lightspeedwp
-Tags: lsx, tour operator, wetu, importer, travel, tourism
-Requires at least: 6.7
-Tested up to: 6.7
-Requires PHP: 8.0
-Stable tag: 1.5
-License: GPLv3 or later
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Plugin URI: https://lsx.design/products/wetu-importer/
-Author URI: https://lightspeedwp.agency/
-
 == Description ==
 LSX Importer for Wetu integrates with the Wetu Tour Operator system to import destinations, accommodations, and tour content directly into the LSX Tour Operators plugin format. This enables a seamless workflow for travel and tourism websites, ensuring rich itineraries and consistent data structures within your WordPress site.
 
