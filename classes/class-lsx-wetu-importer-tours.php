@@ -240,7 +240,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		}
 		?>
 		<form method="get" class="tour-refresh-form">
-			<input type="hidden" name="page" value="<?php echo esc_attr( $this->plugin_slug ); ?>" />
+			<input type="hidden" name="import" value="<?php echo esc_attr( $this->plugin_slug ); ?>" />
 			<input type="hidden" name="tab" value="tour" />
 			<input type="hidden" name="refresh_tours" value="true" />
 			<input class="content" type="hidden" name="own" value="true" />
