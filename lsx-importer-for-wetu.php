@@ -13,7 +13,6 @@
  * License URI:			https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:			lsx-wetu-importer
  * Domain Path:			/languages/
- * Update URI:			https://lsx.design/products/tour-operator/wetu-importer/
  * Tags:				lsx, tour operator, wetu, importer
  * Requires Plugins:	lsx-tour-operator
  */
