@@ -14,7 +14,7 @@
  * Text Domain:			lsx-wetu-importer
  * Domain Path:			/languages/
  * Tags:				lsx, tour operator, wetu, importer
- * Requires Plugins:	lsx-tour-operator
+ * Requires Plugins:	tour-operator
  */
 
 
