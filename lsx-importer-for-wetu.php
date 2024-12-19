@@ -15,7 +15,7 @@
  * Domain Path:			/languages/
  * Update URI:			https://lsx.design/products/tour-operator/wetu-importer/
  * Tags:				lsx, tour operator, wetu, importer
- * Requires Plugins:	tour-operator
+ * Requires Plugins:	lsx-tour-operator
  */
 
 
