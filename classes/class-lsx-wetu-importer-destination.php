@@ -401,7 +401,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			'id'            => $cs_key,
 			'type'          => 'Destination',
 			'name'          => get_the_title( $ccs_id ),
-			'last_modified' => date( 'Y-m-d', strtotime( 'now' ) ),
+			'last_modified' => gmdate( 'Y-m-d', strtotime( 'now' ) ),
 			'post_id'       => $ccs_id,
 		);
 		return $row_item;
@@ -431,7 +431,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
-					<abbr title="' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
+					<abbr title="' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
 					' . $row['id'] . '
@@ -655,7 +655,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			$content = $data[0]['travel_information'][ $meta_key ];
 
 			if ( in_array( 'strip_tags', $importable ) ) {
-				$content = strip_tags( $content );
+				$content = wp_strip_all_tags( $content );
 			}
 
 			$this->save_custom_field( $content, $meta_key, $id );

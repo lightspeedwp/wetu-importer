@@ -331,7 +331,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			'id'            => $cs_key,
 			'type'          => 'Accommodation',
 			'name'          => get_the_title( $ccs_id ),
-			'last_modified' => date( 'Y-m-d', strtotime( 'now' ) ),
+			'last_modified' => gmdate( 'Y-m-d', strtotime( 'now' ) ),
 			'post_id'       => $ccs_id,
 		);
 		return $row_item;
@@ -364,7 +364,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
-					<abbr title="' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
+					<abbr title="' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
 					' . $row['id'] . '
@@ -648,7 +648,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				}
 
 				if ( isset( $room['description'] ) ) {
-					$temp_room['description'] = strip_tags( $room['description'] );
+					$temp_room['description'] = wp_strip_all_tags( $room['description'] );
 				}
 
 				$temp_room['price'] = 0;
@@ -752,13 +752,13 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	public function set_checkin_checkout( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['check_in_time'] ) ) {
 			$time = str_replace( 'h', ':', $data[0]['features']['check_in_time'] );
-			$time = date( 'h:ia', strtotime( $time ) );
+			$time = gmdate( 'h:ia', strtotime( $time ) );
 			$this->save_custom_field( $time, 'checkin_time', $id );
 		}
 
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['check_out_time'] ) ) {
 			$time = str_replace( 'h', ':', $data[0]['features']['check_out_time'] );
-			$time = date( 'h:ia', strtotime( $time ) );
+			$time = gmdate( 'h:ia', strtotime( $time ) );
 			$this->save_custom_field( $time, 'checkout_time', $id );
 		}
 	}

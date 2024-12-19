@@ -944,7 +944,7 @@ class LSX_WETU_Importer {
 
 		if ( isset( $data[0]['content'] ) && isset( $data[0]['content']['contact_information'] ) ) {
 			if ( isset( $data[0]['content']['contact_information']['address'] ) ) {
-				$address = strip_tags( $data[0]['content']['contact_information']['address'] );
+				$address = wp_strip_all_tags( $data[0]['content']['contact_information']['address'] );
 				$address = explode( "\n", $address );
 
 				foreach ( $address as $bitkey => $bit ) {
@@ -1233,7 +1233,7 @@ class LSX_WETU_Importer {
 				}
 
 				$new = $tmppath['dirname'] . '/' . $filename . '.' . $extension;
-				rename( $tmp, $new );                                                                 // renames temp file on server
+				WP_Filesystem::move( $tmp, $new );                                                                 // renames temp file on server
 				$tmp = $new;                                                                        // push new filename (in path) to be used in file array later
 			}
 
@@ -1264,7 +1264,7 @@ class LSX_WETU_Importer {
 
 			// If error storing permanently, unlink.
 			if ( is_wp_error( $att_id ) ) {
-				unlink( $file_array['tmp_name'] );
+				wp_delete_file( $file_array['tmp_name'] );
 				return false;
 			}
 		}
@@ -1336,7 +1336,7 @@ class LSX_WETU_Importer {
 					$temp_video['title'] = $video['label'];
 				}
 				if ( isset( $video['description'] ) ) {
-					$temp_video['description'] = strip_tags( $video['description'] );
+					$temp_video['description'] = wp_strip_all_tags( $video['description'] );
 				}
 				if ( isset( $video['url'] ) ) {
 					$temp_video['url'] = $video['url'];
