@@ -27,7 +27,7 @@ LSX Importer for Wetu integrates with the Wetu Tour Operator system to import de
 - LSX Tour Operators plugin active
 
 == Installation ==
-1. Install and activate the [LSX Tour Operators](https://wordpress.org/plugins/lsx-tour-operators/) plugin.
+1. Install and activate the [LSX Tour Operators](https://wordpress.org/plugins/tour-operator/) plugin.
 2. Download and install LSX Importer for Wetu from WordPress.org or upload it to `/wp-content/plugins/`.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 4. Configure your Wetu API credentials in the plugin’s settings page.
