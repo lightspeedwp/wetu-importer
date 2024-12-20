@@ -4,7 +4,7 @@ var WETU_IMPORTER = {
 
 	init : function() {
 
-		if (jQuery('body').hasClass('tour-operator_page_lsx-wetu-importer')) {
+		if ( 0 < jQuery('body').find('.wrap.to-wrapper').length ) {
 			this.myAccommodationSearch();
 			this.watchSearch();
 			this.watchAdvancedSearch();

@@ -112,7 +112,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 */
 	public function display_page() {
 		?>
-		<div class="wrap">
+		<div class="wrap to-wrapper">
 
 			<div class="tablenav top">
 				<div class="alignleft actions">
@@ -220,7 +220,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed', 'lsx-wetu-importer' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_attr( admin_url( 'admin.php' ) ); ?>?page=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=accommodation"><?php esc_html_e( 'accommodation' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
+				<h3><?php esc_html_e( 'Completed', 'lsx-wetu-importer' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_attr( admin_url( 'admin.php' ) ); ?>?import=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=accommodation"><?php esc_html_e( 'accommodation' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>
@@ -240,7 +240,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		}
 		?>
 		<form method="get" class="tour-refresh-form">
-			<input type="hidden" name="page" value="<?php echo esc_attr( $this->plugin_slug ); ?>" />
+			<input type="hidden" name="import" value="<?php echo esc_attr( $this->plugin_slug ); ?>" />
 			<input type="hidden" name="tab" value="tour" />
 			<input type="hidden" name="refresh_tours" value="true" />
 			<input class="content" type="hidden" name="own" value="true" />
@@ -251,13 +251,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				if ( in_array( 'personal', $form_options ) ) {
 					echo esc_attr( 'selected="selected"' ); }
 				?>
-value="personal"><?php esc_html_e( 'Personal', 'lsx-wetu-importer' ); ?></option>
+				value="personal"><?php esc_html_e( 'Personal', 'lsx-wetu-importer' ); ?></option>
 				<option 
 				<?php
 				if ( in_array( 'sample', $form_options ) ) {
 					echo esc_attr( 'selected="selected"' ); }
 				?>
-value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
+				value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			</select>
 			<input class="button submit" type="submit" value="<?php esc_attr_e( 'Refresh', 'lsx-wetu-importer' ); ?>" />
 		</form>
@@ -431,7 +431,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 					' . $row['reference_number'] . '
 				</td>
 				<td class="date column-date">
-					<abbr title="' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
+					<abbr title="' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
 					' . $row['identifier'] . '
@@ -611,6 +611,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 	public function process_itineraries( $data, $id, $importable_content ) {
 		$day_counter = 1;
 		$leg_counter = 0;
+		$days        = array();
 
 		// Change this to check for a parameter
 		if ( true ) {
@@ -618,6 +619,10 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 		}
 
 		delete_post_meta( $id, 'itinerary' );
+		
+		if ( false !== $importable_content && in_array( 'destination', $importable_content ) ) {
+			delete_post_meta( $id, 'destination_to_tour' );
+		}
 
 		if ( false !== $importable_content && in_array( 'accommodation', $importable_content ) ) {
 			delete_post_meta( $id, 'accommodation_to_tour' );
@@ -716,7 +721,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 						$current_day['drinks_basis'] = '';
 					}
 
-					$this->set_itinerary_day( $current_day, $id );
+					$days[] = $current_day;
 					$day_counter = $next_day_count;
 				}
 			} else {
@@ -800,11 +805,18 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 					$current_day['drinks_basis'] = '';
 				}
 
-				$this->set_itinerary_day( $current_day, $id );
+				$days[] = $current_day;
 				$day_counter = $next_day_count;
 			}
 			$leg_counter++;
+
+			if ( ! empty( $days ) ) {
+				$this->set_itinerary_day( $days, $id );
+			}
+			
 		}
+
+		apply_filters( 'lsx_wetu_itinerary_complete', $id );
 	}
 
 	/**
@@ -955,7 +967,6 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 				$this->save_custom_field( implode( ' ', $points ), 'wetu_map_points', $id, false, true );
 			}
 		}
-
 	}
 
 	// CLASS SPECIFIC FUNCTIONS.
@@ -964,7 +975,7 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 	 * Set the Itinerary Day.
 	 */
 	public function set_itinerary_day( $day, $id ) {
-		$this->save_custom_field( $day, 'itinerary', $id, false, false );
+		$this->save_custom_field( $day, 'itinerary', $id, false, true );
 	}
 
 	/**
@@ -1063,196 +1074,15 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			}
 
 			if ( '' !== $ac_id && false !== $ac_id ) {
-				$this->save_custom_field( $ac_id, 'accommodation_to_tour', $id, false, false );
-				$this->save_custom_field( $id, 'tour_to_accommodation', $ac_id, false, false );
+				// Attach the current accommodation to the tour.
+				$this->save_custom_field( $ac_id, 'accommodation_to_tour', $id, false, true );
+
+				// Save the current tour to the accommodation.
+				$this->save_custom_field( $id, 'tour_to_accommodation', $ac_id, false, true );
 				$this->queue_item( $ac_id );
 			}
 		}
 		return $ac_id;
-	}
-
-	/**
-	 * Grab all the current accommodation posts via the lsx_wetu_id field.
-	 *
-	 * @param $post_type string
-	 * @return boolean / array
-	 */
-	public function find_current_accommodation( $post_type = 'accommodation' ) {
-		global $wpdb;
-		$accommodation = parent::find_current_accommodation( $post_type );
-		$return        = false;
-
-		if ( ! empty( $accommodation ) ) {
-			foreach ( $accommodation as $key => $acc ) {
-				$return[ $acc->meta_value ] = $acc->post_id;
-			}
-		}
-
-		return $return;
-	}
-
-	/**
-	 * Grab all the current accommodation posts via the lsx_wetu_id field.
-	 *
-	 * @return boolean / array
-	 */
-	public function find_current_destinations() {
-		return $this->find_current_accommodation( 'destination' );
-	}
-
-	/**
-	 * Connects the destinations post type
-	 *
-	 * @param $day array
-	 * @param $id string
-	 * @return boolean / string
-	 */
-	public function set_destination( $day, $id, $leg_counter ) {
-		$dest_id    = false;
-		$country_id = false;
-
-		$this->current_destinations = $this->find_current_destinations();
-
-		if ( isset( $day['destination_content_entity_id'] ) && ! empty( $day['destination_content_entity_id'] ) ) {
-			if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) && array_key_exists( $day['destination_content_entity_id'], $this->current_destinations ) ) {
-				$dest_id = $this->current_destinations[ $day['destination_content_entity_id'] ];
-
-				// TODO Check for attachments here.
-				$this->destination_images[ $id ][] = array( $dest_id, $day['destination_content_entity_id'] );
-
-				// Check if there is a country asigned.
-				$potential_id    = wp_get_post_parent_id( $dest_id );
-				$country_wetu_id = get_post_meta( $potential_id, 'lsx_wetu_id', true );
-
-				if ( false !== $country_wetu_id ) {
-					$country_id = $this->set_country( $country_wetu_id, $id );
-					// $this->destination_images[ $id ][] = array( $id, $country_wetu_id );
-				}
-			} else {
-				$destination_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $day['destination_content_entity_id'] );
-
-				if ( ! is_wp_error( $destination_json ) && ! empty( $destination_json ) && isset( $destination_json['response'] ) && isset( $destination_json['response']['code'] ) && 200 === $destination_json['response']['code'] ) {
-
-					$destination_data = json_decode( $destination_json['body'], true );
-
-					if ( ! empty( $destination_data ) && ! isset( $destination_data['error'] ) ) {
-						$destination_title = $day['destination_content_entity_id'];
-
-						if ( isset( $destination_data[0]['name'] ) ) {
-							$destination_title = $destination_data[0]['name'];
-						}
-
-						if ( isset( $destination_data[0]['map_object_id'] ) && isset( $destination_data[0]['position']['country_content_entity_id'] )
-							&& $destination_data[0]['map_object_id'] !== $destination_data[0]['position']['country_content_entity_id'] ) {
-
-							$country_id = $this->set_country( $destination_data[0]['position']['country_content_entity_id'], $id );
-							// Save the destination so we can grab the tour featured image and banner from them.
-						}
-
-						$dest_post = array(
-							'post_type'   => 'destination',
-							'post_status' => 'draft',
-							'post_title'  => $destination_title,
-						);
-
-						if ( false !== $country_id ) {
-							$dest_post['post_parent'] = $country_id;
-						}
-						$dest_id = wp_insert_post( $dest_post );
-
-						// Make sure we register the.
-						$this->current_destinations[ $day['destination_content_entity_id'] ] = $dest_id;
-
-						// If there are images attached then use the destination.
-						if ( isset( $destination_data[0]['content']['images'] ) && ! empty( $destination_data[0]['content']['images'] ) ) {
-							$this->destination_images[ $id ][] = array( $dest_id, $day['destination_content_entity_id'] );
-						}
-
-						$this->save_custom_field( $day['destination_content_entity_id'], 'lsx_wetu_id', $dest_id );
-					}
-				}
-			}
-
-			if ( '' !== $dest_id && false !== $dest_id ) {
-				$this->save_custom_field( $dest_id, 'destination_to_tour', $id, false, false );
-				$this->save_custom_field( $id, 'tour_to_destination', $dest_id, false, false );
-
-				// Save the item to display in the queue
-				$this->queue_item( $dest_id );
-
-				// Save the item to clean up the amount of connections.
-				$this->cleanup_posts[ $dest_id ] = 'tour_to_destination';
-
-				// Add this relation info so we can make sure certain items are set as countries.
-				if ( 0 !== $country_id && false !== $country_id ) {
-					$this->relation_meta[ $dest_id ]    = $country_id;
-					$this->relation_meta[ $country_id ] = 0;
-				} else {
-					$this->relation_meta[ $dest_id ] = 0;
-				}
-			}
-		}
-		return $dest_id;
-	}
-
-	/**
-	 * Connects the destinations post type
-	 *
-	 * @param $dest_id string
-	 * @param $country_id array
-	 * @param $id string
-	 *
-	 * @return string
-	 */
-	public function set_country( $country_wetu_id, $id ) {
-		$country_id                 = false;
-		$this->current_destinations = $this->find_current_destinations();
-
-		if ( false !== $this->current_destinations && ! empty( $this->current_destinations ) && array_key_exists( $country_wetu_id, $this->current_destinations ) ) {
-			$country_id                        = $this->current_destinations[ $country_wetu_id ];
-			$this->destination_images[ $id ][] = array( $country_id, $country_wetu_id );
-		} else {
-			$country_json = wp_remote_get( 'https://wetu.com/API/Pins/' . $this->api_key . '/Get?ids=' . $country_wetu_id );
-
-			if ( ! is_wp_error( $country_json ) && ! empty( $country_json ) && isset( $country_json['response'] ) && isset( $country_json['response']['code'] ) && 200 === $country_json['response']['code'] ) {
-				$country_data = json_decode( $country_json['body'], true );
-
-				// Format the title of the destination if its available,  otherwise default to the WETU ID.
-				$country_title = $country_wetu_id;
-
-				if ( isset( $country_data[0]['name'] ) ) {
-					$country_title = $country_data[0]['name'];
-				}
-
-				$country_id = wp_insert_post(
-					array(
-						'post_type'   => 'destination',
-						'post_status' => 'draft',
-						'post_title'  => $country_title,
-					)
-				);
-
-				// add the country to the current destination stack
-				$this->current_destinations[ $country_wetu_id ] = $country_id;
-
-				// Check if there are images and save fore use later.
-				if ( isset( $country_data[0]['content']['images'] ) && ! empty( $country_data[0]['content']['images'] ) ) {
-					$this->destination_images[ $id ][] = array( $country_id, $country_wetu_id );
-				}
-
-				// Save the wetu field
-				$this->save_custom_field( $country_wetu_id, 'lsx_wetu_id', $country_id );
-			}
-		}
-
-		if ( '' !== $country_id && false !== $country_id ) {
-			$this->save_custom_field( $country_id, 'destination_to_tour', $id, false, false );
-			$this->save_custom_field( $id, 'tour_to_destination', $country_id, false, false );
-			$this->queue_item( $country_id );
-			$this->cleanup_posts[ $country_id ] = 'tour_to_destination';
-
-			return $country_id;
-		}
 	}
 
 	/**
@@ -1427,39 +1257,6 @@ value="sample"><?php esc_html_e( 'Sample', 'lsx-wetu-importer' ); ?></option>
 			$return = true;
 		}
 		return $return;
-	}
-
-	/**
-	 * Que an item to be saved.
-	 *
-	 * @param   $id     int
-	 */
-	public function queue_item( $id ) {
-		if ( is_array( $this->import_queue ) && ! in_array( $id, $this->import_queue ) ) {
-			$this->import_queue[] = $id;
-		} else {
-			$this->import_queue[] = $id;
-		}
-	}
-
-	/**
-	 * Saves the queue to the option.
-	 */
-	public function save_queue() {
-		if ( ! empty( $this->import_queue ) ) {
-			if ( ! empty( $this->queued_imports ) ) {
-				$saved_imports = array_merge( $this->queued_imports, $this->import_queue );
-			} else {
-				$saved_imports = $this->import_queue;
-			}
-
-			delete_option( 'lsx_wetu_importer_que' );
-
-			if ( ! empty( $saved_imports ) ) {
-				$saved_imports = array_unique( $saved_imports );
-				update_option( 'lsx_wetu_importer_que', $saved_imports );
-			}
-		}
 	}
 
 	/**

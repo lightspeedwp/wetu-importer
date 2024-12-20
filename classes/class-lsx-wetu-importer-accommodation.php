@@ -98,7 +98,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function display_page() {
 		?>
-		<div class="wrap">
+		<div class="wrap to-wrapper">
 
 			<div class="tablenav top">
 				<div class="actions">
@@ -169,9 +169,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="special_interests" /> <?php esc_html_e( 'Special Interests', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="spoken_languages" /> <?php esc_html_e( 'Spoken Languages', 'lsx-wetu-importer' ); ?></li>
 
-								<?php if ( class_exists( 'LSX_TO_Videos' ) ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="videos" /> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
-								<?php } ?>
 							</ul>
 							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
 							<ul>
@@ -212,7 +210,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?page=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
+				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?import=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>
@@ -264,7 +262,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				$current_accommodation = $this->find_current_accommodation();
 				if ( ! empty( $current_accommodation ) ) {
 					foreach ( $current_accommodation as $cs_key => $ccs_id ) {
-						$accommodation[] = $this->prepare_row_attributes( $cs_key, $ccs_id->post_id );
+						$accommodation[] = $this->prepare_row_attributes( $cs_key, $ccs_id );
 					}
 				}
 
@@ -333,7 +331,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			'id'            => $cs_key,
 			'type'          => 'Accommodation',
 			'name'          => get_the_title( $ccs_id ),
-			'last_modified' => date( 'Y-m-d', strtotime( 'now' ) ),
+			'last_modified' => gmdate( 'Y-m-d', strtotime( 'now' ) ),
 			'post_id'       => $ccs_id,
 		);
 		return $row_item;
@@ -345,7 +343,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 * @param boolean $row the current row to format.
 	 * @return void
 	 */
-	public function format_row( $row = false, $row_key = '' ) {
+	public function format_row( $row = false, $row_key = 0 ) {
 		if ( false !== $row ) {
 
 			$row_key = (int) $row_key;
@@ -362,13 +360,13 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 					<input type="checkbox" data-identifier="' . $row['id'] . '" value="' . $row['post_id'] . '" name="post[]" id="cb-select-' . $row['id'] . '">
 				</th>
 				<td class="column-order">
-					' . ( $row_key + 1 ) . '
+					' . ( (int) $row_key + 1 ) . '
 				</td>
 				<td class="post-title page-title column-title">
 					<strong>' . $row['post_title'] . '</strong> - ' . $status . '
 				</td>
 				<td class="date column-date">
-					<abbr title="' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . date( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
+					<abbr title="' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '">' . gmdate( 'Y/m/d', strtotime( $row['last_modified'] ) ) . '</abbr><br>Last Modified
 				</td>
 				<td class="ssid column-ssid">
 					' . $row['id'] . '
@@ -613,37 +611,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function connect_destinations( $data, $id ) {
 		if ( isset( $data[0]['position'] ) ) {
-			$destinations = false;
-
-			if ( isset( $data[0]['position']['country'] ) ) {
-				$destinations['country'] = $data[0]['position']['country'];
-			}
-
-			if ( isset( $data[0]['position']['destination'] ) ) {
-				$destinations['destination'] = $data[0]['position']['destination'];
-			}
-
-			if ( false !== $destinations ) {
-				$prev_values = get_post_meta( $id, 'destination_to_accommodation', false );
-
-				if ( false === $prev_values || ! is_array( $prev_values ) ) {
-					$prev_values = array();
-				}
-
-				delete_post_meta( $id, 'destination_to_accommodation', $prev_values );
-				$destinations = array_unique( $destinations );
-
-				foreach ( $destinations as $key => $value ) {
-					$destination = get_page_by_title( ltrim( rtrim( $value ) ), 'OBJECT', 'destination' );
-					if ( null !== $destination ) {
-						if ( ! in_array( $destination->ID, $prev_values ) ) {
-							add_post_meta( $id, 'destination_to_accommodation', $destination->ID, false );
-							add_post_meta( $destination->ID, 'accommodation_to_destination', $id, false );
-							$this->cleanup_posts[ $destination->ID ] = 'accommodation_to_destination';
-						}
-					}
-				}
-			}
+			$this->set_destination( $data[0]['position'], $id, 0 );
 		}
 	}
 
@@ -684,7 +652,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				}
 
 				if ( isset( $room['description'] ) ) {
-					$temp_room['description'] = strip_tags( $room['description'] );
+					$temp_room['description'] = wp_strip_all_tags( $room['description'] );
 				}
 
 				$temp_room['price'] = 0;
@@ -692,7 +660,21 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 				if ( ! empty( $room['images'] ) && is_array( $room['images'] ) ) {
 					$temp_room['gallery']   = array();
-					$temp_room['gallery'][] = $this->attach_image( $room['images'][0], $id );
+
+					$image_limit = 2;
+					foreach( $room['images'] as $image ) {
+						if ( 0 >= $image_limit ) {
+							continue;
+						}
+
+						$attach_id  = $this->attach_image( $image, $id );
+						$temp_image = wp_get_attachment_image_src( $attach_id, 'full' );
+						if ( false !== $temp_image && is_array( $temp_image ) ) {
+							$temp_room['gallery'][ $attach_id ] = $temp_image[0];
+						}
+
+						$image_limit--;
+					}
 				}
 				$rooms[] = $temp_room;
 			}
@@ -701,9 +683,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 				delete_post_meta( $id, 'units' );
 			}
 
-			foreach ( $rooms as $room ) {
-				add_post_meta( $id, 'units', $room, false );
-			}
+			add_post_meta( $id, 'units', $rooms, true );
 
 			if ( isset( $data[0]['features'] ) && isset( $data[0]['features']['rooms'] ) ) {
 				$room_count = $data[0]['features']['rooms'];
@@ -742,14 +722,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function set_spoken_languages( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['spoken_languages'] ) && ! empty( $data[0]['features']['spoken_languages'] ) ) {
-			$languages = false;
-
 			foreach ( $data[0]['features']['spoken_languages'] as $spoken_language ) {
-				$languages[] = sanitize_title( $spoken_language );
-			}
-
-			if ( false !== $languages ) {
-				$this->save_custom_field( $languages, 'spoken_languages', $id );
+				$this->save_custom_field( sanitize_title( $spoken_language ), 'spoken_languages', $id, false, false );
 			}
 		}
 	}
@@ -759,14 +733,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function set_friendly( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['suggested_visitor_types'] ) && ! empty( $data[0]['features']['suggested_visitor_types'] ) ) {
-			$friendly_options = false;
-
 			foreach ( $data[0]['features']['suggested_visitor_types'] as $visitor_type ) {
-				$friendly_options[] = sanitize_title( $visitor_type );
-			}
-
-			if ( false !== $friendly_options ) {
-				$this->save_custom_field( $friendly_options, 'suggested_visitor_types', $id );
+				$this->save_custom_field( sanitize_title( $visitor_type ), 'suggested_visitor_types', $id, false, false );
 			}
 		}
 	}
@@ -776,14 +744,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	 */
 	public function set_special_interests( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['special_interests'] ) && ! empty( $data[0]['features']['special_interests'] ) ) {
-			$interests = false;
-
 			foreach ( $data[0]['features']['special_interests'] as $special_interest ) {
-				$interests[] = sanitize_title( $special_interest );
-			}
-
-			if ( false !== $interests ) {
-				$this->save_custom_field( $interests, 'special_interests', $id );
+				$this->save_custom_field( sanitize_title( $special_interest ), 'special_interests', $id, false, false );
 			}
 		}
 	}
@@ -794,13 +756,13 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 	public function set_checkin_checkout( $data, $id ) {
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['check_in_time'] ) ) {
 			$time = str_replace( 'h', ':', $data[0]['features']['check_in_time'] );
-			$time = date( 'h:ia', strtotime( $time ) );
+			$time = gmdate( 'h:ia', strtotime( $time ) );
 			$this->save_custom_field( $time, 'checkin_time', $id );
 		}
 
 		if ( ! empty( $data[0]['features'] ) && isset( $data[0]['features']['check_out_time'] ) ) {
 			$time = str_replace( 'h', ':', $data[0]['features']['check_out_time'] );
-			$time = date( 'h:ia', strtotime( $time ) );
+			$time = gmdate( 'h:ia', strtotime( $time ) );
 			$this->save_custom_field( $time, 'checkout_time', $id );
 		}
 	}

@@ -4,10 +4,14 @@
 
 ### Added
 - A language filter for the content requests, to allow different languages to import.
+- Compatability enhancments for the Tour Operator Plugin 2.0.0
 
 ### Updated
 - Fixed the non associative array error
 - Fixed and error with the string and int operators in the tour import class.
+
+### Security
+- General testing to ensure compatibility with latest WordPress version (6.7).
 
 ## [[1.4.2]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.4.2) - 2023-08-09
 

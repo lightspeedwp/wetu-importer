@@ -185,7 +185,7 @@ class WETU_Automation {
 						'tour_id' => $tour,
 						'overrides' => array(),
 					),
-					'lsx_wetu_sync' // . date('dmy')
+					'lsx_wetu_sync' // . gmdate('dmy')
 				);
 				update_post_meta( $tour, 'lsx_wetu_sync_action_id', $action_id);
 			}
@@ -215,7 +215,7 @@ class WETU_Automation {
 						'item_id' => $item,
 						'gallery' => false
 					),
-					'lsx_wetu_sync' // . date('dmy')
+					'lsx_wetu_sync' // . gmdate('dmy')
 				);
 				update_post_meta( $tour, 'lsx_wetu_sync_action_id', $action_id);
 			}
@@ -372,7 +372,7 @@ class WETU_Automation {
 						'item_id' => $q,
 						'gallery' => true,
 					),
-					'lsx_wetu_sync' // . date('dmy')
+					'lsx_wetu_sync' // . gmdate('dmy')
 				);
 				update_post_meta( $q, 'lsx_wetu_sync_action_id', $action_id );
 			}
