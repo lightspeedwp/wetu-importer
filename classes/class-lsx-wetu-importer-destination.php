@@ -196,13 +196,14 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 									<input class="content"
 											type="checkbox" name="content[]"
 											value="unique_banner_image"/> <?php esc_html_e( 'Use the WETU banner field', 'lsx-wetu-importer' ); ?>
-								</li>*/
-								?>
+								</li>
 
 								<li>
 									<input class="content" checked="checked"
 										   type="checkbox" name="content[]"
 										   value="strip_tags"/> <?php esc_html_e( 'Strip HTML from the description', 'lsx-wetu-importer' ); ?></li>
+								*/
+								?>
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
