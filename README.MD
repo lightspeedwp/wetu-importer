@@ -1,13 +1,13 @@
-<p align="center"><a target="_blank" href="https://www.lsdev.biz/lsx/extensions/wetu-importer/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2020/09/lsx-importer-for-wetu-banner-1544x500-1.png" alt="LSX Importer for Wetu Extension"></a>
+<p align="center"><a target="_blank" href="https://www.lsdev.biz/lsx/extensions/wetu-importer/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2020/09/lsx-importer-for-wetu-banner-1544x500-1.png" alt="Wetu Content Importer Extension"></a>
 </p>
 
-# LSX Importer for Wetu
+# Wetu Content Importer
 
 **Version:** 1.5  
 **Requires WordPress:** 6.7 or higher  
 **Requires PHP:** 8.0 or higher
 
-The LSX Importer for Wetu plugin integrates the [Wetu Tour Operator](https://wetu.com/) system with the [LSX Tour Operator](https://wordpress.org/plugins/tour-operator/) plugin, enabling you to import destinations, accommodations, and tours directly into your WordPress site. This ensures a cohesive and enriched travel content experience.
+The Wetu Content Importer plugin integrates the [Wetu Tour Operator](https://wetu.com/) system with the [LSX Tour Operator](https://wordpress.org/plugins/tour-operator/) plugin, enabling you to import destinations, accommodations, and tours directly into your WordPress site. This ensures a cohesive and enriched travel content experience.
 
 ## Features
 
@@ -25,7 +25,7 @@ The LSX Importer for Wetu plugin integrates the [Wetu Tour Operator](https://wet
 ## Installation
 
 1. Install and activate the [LSX Tour Operator](https://wordpress.org/plugins/tour-operator/) plugin.
-2. Download the LSX Importer for Wetu plugin and upload it to your `/wp-content/plugins/` directory, or install via the WordPress plugin repository.
+2. Download the Wetu Content Importer plugin and upload it to your `/wp-content/plugins/` directory, or install via the WordPress plugin repository.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 4. Configure your Wetu API settings under **Wetu Importer** in the WordPress admin panel.
 5. Run the importer to fetch and display Wetu content within the LSX Tour Operator format.

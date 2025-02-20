@@ -395,7 +395,7 @@ msgid "WETU ID"
 msgstr ""
 
 #: classes/class-lsx-wetu-importer-welcome.php:53
-msgid "Welcome to the LSX Importer for Wetu"
+msgid "Welcome to the Wetu Content Importer"
 msgstr ""
 
 #: classes/class-lsx-wetu-importer-welcome.php:54
@@ -479,7 +479,7 @@ msgid "If you’ve updated your content on Wetu then you can return to these ste
 msgstr ""
 
 #: classes/class-lsx-wetu-importer.php:364, classes/class-lsx-wetu-importer.php:377
-msgid "LSX Importer for Wetu Plugin requires PHP 5.6 or higher."
+msgid "Wetu Content Importer Plugin requires PHP 5.6 or higher."
 msgstr ""
 
 #: classes/class-lsx-wetu-importer.php:471, classes/class-lsx-wetu-importer.php:496, classes/class-lsx-wetu-importer.php:501

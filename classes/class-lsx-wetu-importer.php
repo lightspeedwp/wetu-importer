@@ -383,7 +383,7 @@ class LSX_WETU_Importer {
 	 */
 	public function compatible_version_notice() {
 		$class   = 'notice notice-error';
-		$message = esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'lsx-wetu-importer' );
+		$message = esc_html__( 'Wetu Content Importer Plugin requires PHP 5.6 or higher.', 'lsx-wetu-importer' );
 		printf( '<div class="%1$s"><p>%2$s</p></div>', esc_html( $class ), esc_html( $message ) );
 	}
 
@@ -396,7 +396,7 @@ class LSX_WETU_Importer {
 	public static function compatible_version_check_on_activation() {
 		if ( ! self::compatible_version() ) {
 			deactivate_plugins( plugin_basename( LSX_WETU_IMPORTER_CORE ) );
-			wp_die( esc_html__( 'LSX Importer for Wetu Plugin requires PHP 5.6 or higher.', 'lsx-wetu-importer' ) );
+			wp_die( esc_html__( 'Wetu Content Importer Plugin requires PHP 5.6 or higher.', 'lsx-wetu-importer' ) );
 		}
 	}
 
@@ -437,7 +437,7 @@ class LSX_WETU_Importer {
 
 		register_importer(
 			'lsx-wetu-importer', // A unique slug for your importer.
-			'TO WETU Importer', // The name of the importer as it appears on the Tools -> Import page.
+			'Wetu Content Importer', // The name of the importer as it appears on the Tools -> Import page.
 			'Import your tour itineraries from WETU and display them using the Tour Operator plugin.', // A brief description of the importer.
 			array( $this, 'display_page' ) // The callback function that handles the importing process.
 		);
@@ -1205,10 +1205,15 @@ class LSX_WETU_Importer {
 			return new WP_Error( 'missing', 'Need a valid URL and post ID...' ); }
 		$att_id = false;
 
+		global $wp_filesystem;
+
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 		// Download file to temp location, returns full server path to temp file.
+
+		// Initialise the filesystem.
+		WP_Filesystem();
 
 		$tmp   = tempnam( '/tmp', 'FOO' );
 		$image = wp_remote_get( $url );
@@ -1233,7 +1238,7 @@ class LSX_WETU_Importer {
 				}
 
 				$new = $tmppath['dirname'] . '/' . $filename . '.' . $extension;
-				WP_Filesystem::move( $tmp, $new );                                                                 // renames temp file on server
+				$wp_filesystem->move( $tmp, $new );                                                                 // renames temp file on server
 				$tmp = $new;                                                                        // push new filename (in path) to be used in file array later
 			}
 

@@ -5,3 +5,5 @@ node_modules
 package-lock.json
 vendor
 wp-content
+.DS_Store
+.DS_Store

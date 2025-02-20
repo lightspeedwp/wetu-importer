@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 This plugin allows website owners to import destination, accommodation and tour content into the LSX Tour Operator plugin via the Wetu.com content API. 
 
 == Description ==
-LSX Importer for Wetu integrates with the Wetu Tour Operator system to import destinations, accommodations, and tour content directly into the LSX Tour Operator plugin format. This enables a seamless workflow for travel and tourism websites, ensuring rich itineraries and consistent data structures within your WordPress site.
+Wetu Content Importer integrates with the Wetu Tour Operator system to import destinations, accommodations, and tour content directly into the LSX Tour Operator plugin format. This enables a seamless workflow for travel and tourism websites, ensuring rich itineraries and consistent data structures within your WordPress site.
 
 **Key Features:**
 - Imports Wetu destinations, accommodations, and tours.
@@ -28,14 +28,14 @@ LSX Importer for Wetu integrates with the Wetu Tour Operator system to import de
 
 == Installation ==
 1. Install and activate the [LSX Tour Operator](https://wordpress.org/plugins/tour-operator/) plugin.
-2. Download and install LSX Importer for Wetu from WordPress.org or upload it to `/wp-content/plugins/`.
+2. Download and install Wetu Content Importer from WordPress.org or upload it to `/wp-content/plugins/`.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 4. Configure your Wetu API credentials in the plugin’s settings page.
 5. Start importing Wetu data into your LSX Tour Operator environment.
 
 == Frequently Asked Questions ==
 = Do I need the LSX Tour Operator plugin? =
-Yes. The LSX Importer for Wetu relies on LSX Tour Operator to properly handle and display imported tour data.
+Yes. The Wetu Content Importer relies on LSX Tour Operator to properly handle and display imported tour data.
 
 = What happens if I don’t meet the minimum requirements? =
 You must have WordPress 6.7 or newer and PHP 8.0 or newer. Without these, the plugin may not function as intended. Consider upgrading your environment before using this plugin.

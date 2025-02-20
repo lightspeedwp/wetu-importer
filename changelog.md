@@ -9,6 +9,7 @@
 ### Updated
 - Fixed the non associative array error
 - Fixed and error with the string and int operators in the tour import class.
+- Updated the WP_Filesystem call.
 
 ### Security
 - General testing to ensure compatibility with latest WordPress version (6.7).
