@@ -47,12 +47,3 @@ The plugin uses background processing to manage large imports efficiently, preve
 1. **Wetu Import Settings:** Easily configure and manage your Wetu API credentials.
 2. **Imported Destinations:** View imported locations seamlessly integrated into LSX Tour Operator.
 3. **Itinerary Blocks:** Display your itineraries in beautiful, Gutenberg-compatible layouts.
-
-== Changelog ==
-= 1.5 =
-* Updated minimum WordPress requirement to 6.7 and PHP requirement to 8.0.
-* Added 'Requires Plugins:' header to ensure LSX Tour Operator dependency is clear.
-* Improved Gutenberg compatibility for displaying imported itineraries.
-* Enhanced Wetu API field mapping and data integrity checks.
-* Optimized background processing for large imports.
-* Updated plugin headers, URIs, and documentation for clarity and brand consistency.

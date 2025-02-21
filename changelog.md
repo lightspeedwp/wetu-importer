@@ -1,15 +1,19 @@
 # Change log
 
-## [[1.5.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.0) - In Development
+## [[1.5.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.0) - 2025-02-21
 
 ### Added
-- A language filter for the content requests, to allow different languages to import.
-- Compatability enhancments for the Tour Operator Plugin 2.0.0
+- A language filter for the Accommodation and Destination content requests, to allow different languages to import.
+- Compatability enhancments for the Tour Operator Plugin 2.0.
+- Updated plugin headers, URIs, and documentation for clarity and brand consistency.
+- Added 'Requires Plugins:' header to ensure LSX Tour Operator dependency is clear.
 
 ### Updated
-- Fixed the non associative array error
-- Fixed and error with the string and int operators in the tour import class.
-- Updated the WP_Filesystem call.
+- Updated minimum WordPress requirement to 6.7 and PHP requirement to 8.0.
+- Fixed the non associative array errors (PHP)
+- Fixed and error with the string and int operators in the tour import class. (PHP)
+- Updated the WP_Filesystem call to the new classes.
+- Enhanced Wetu API field mapping and data integrity checks.
 
 ### Security
 - General testing to ensure compatibility with latest WordPress version (6.7).

@@ -17,8 +17,6 @@
  * Requires Plugins:	tour-operator
  */
 
-
-
 define( 'LSX_WETU_IMPORTER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LSX_WETU_IMPORTER_CORE', __FILE__ );
 define( 'LSX_WETU_IMPORTER_URL', plugin_dir_url( __FILE__ ) );
