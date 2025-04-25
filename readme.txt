@@ -9,7 +9,7 @@ Stable tag: 1.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-The plugin allows website owners to import destination, accommodation and tour content into the LSX Tour Operator plugin via the Wetu.com content API.
+The plugin allows website owners to import destination, accommodation and tour content into the LSX Tour Operator plugin via the Wetu.com content API
 
 == Description ==
 Wetu Content Importer integrates with the Wetu Tour Operator system to import destinations, accommodations, and tour content directly into the LSX Tour Operator plugin format. This enables a seamless workflow for travel and tourism websites, ensuring rich itineraries and consistent data structures within your WordPress site.
