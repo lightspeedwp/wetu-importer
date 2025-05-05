@@ -79,7 +79,7 @@ gulp.task('wordpress-pot', function() {
 		.pipe(wppot({
 			domain: 'lsx-wetu-importer',
 			package: 'lsx-wetu-importer',
-			team: 'LightSpeed <webmaster@lsdev.biz>'
+			team: 'LightSpeed <webmaster@lightspeedwp.agency>'
 		}))
 		.pipe(gulp.dest('languages/lsx-wetu-importer.pot'))
 });
@@ -90,7 +90,7 @@ gulp.task('wordpress-po', function() {
 		.pipe(wppot({
 			domain: 'lsx-wetu-importer',
 			package: 'lsx-wetu-importer',
-			team: 'LightSpeed <webmaster@lsdev.biz>'
+			team: 'LightSpeed <webmaster@lightspeedwp.agency>'
 		}))
 		.pipe(gulp.dest('languages/en_EN.po'))
 });

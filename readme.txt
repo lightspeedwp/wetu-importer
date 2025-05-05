@@ -1,6 +1,6 @@
 === Wetu Content Importer  ===
 Contributors: lightspeedwp, wetudev, feedmymedia , krugazul
-Donate link: https://lsdev.biz/lsx/donate/
+Donate link: https://lightspeedwp.agency/donate/
 Tags: lsx, tour operator, travel, tourism, itinerary
 Requires at least: 6.7
 Tested up to: 6.7

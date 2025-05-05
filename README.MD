@@ -1,4 +1,4 @@
-<p align="center"><a target="_blank" href="https://www.lsdev.biz/lsx/extensions/wetu-importer/"><img src="https://www.lsdev.biz/lsx/wp-content/uploads/2020/09/lsx-importer-for-wetu-banner-1544x500-1.png" alt="Wetu Content Importer Extension"></a>
+<p align="center"><a target="_blank" href="https://lightspeedwp.agency/solutions/tour-operators/"><img src="https://ps.w.org/lsx-importer-for-wetu/assets/banner-1544x500.png" alt="Wetu Content Importer Extension"></a>
 </p>
 
 # Wetu Content Importer
@@ -61,14 +61,14 @@ Licensed under the [GPLv3 or later](https://www.gnu.org/licenses/gpl-3.0.html).
 
 ---
 <p align="center">
-  <a href="https://www.lsdev.biz/contact/"><img src="https://www.lsdev.biz/wp-content/uploads/2020/02/work-with-lightspeed.png" width="850" alt="Work with us at LightSpeed"></a>
+  <a href="https://lightspeedwp.agency/contact/"><img src="https://lightspeedwp.agency/wp-content/uploads/2020/02/work-with-lightspeed.png" width="850" alt="Work with us at LightSpeed"></a>
 </p>
 <p align="center">
   Copyright © 2020 LightSpeed WordPress Development. All Rights Reserved.
 </p>
 <p align="center">
-  <a href="https://www.lsdev.biz">LightSpeed's Company Website</a> &nbsp;&middot;&nbsp;
-  <a href="https://www.lsdev.biz/lsx/">LSX Product Website</a>
+  <a href="https://lightspeedwp.agency/">LightSpeed's Company Website</a> &nbsp;&middot;&nbsp;
+  <a href="https://lsx.design/">LSX Design</a>
 </p>
 <p align="center">
   <a href="https://github.com/lightspeeddevelopment">GitHub</a> &nbsp;&middot;&nbsp;
