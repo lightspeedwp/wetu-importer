@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://www.lsdev.biz/product/lsx-wetu-importer/"
+    "url": "git+https://github.com/lightspeedwp/wetu-importer"
   },
   "keywords": [
     "lsx",
@@ -17,9 +17,9 @@
   "author": "LightSpeed",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://www.lsdev.biz/product/lsx-wetu-importer/issues"
+    "url": "https://lightspeedwp.agency/solutions/wetu-content-importer/"
   },
-  "homepage": "https://www.lsdev.biz/product/lsx-wetu-importer/#readme",
+  "homepage": "https://lightspeedwp.agency/solutions/wetu-content-importer/#readme",
   "devDependencies": {
     "gulp": "^5.0.0",
     "gulp-rtlcss": "^2.0.0",

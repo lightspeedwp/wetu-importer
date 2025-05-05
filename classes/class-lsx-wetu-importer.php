@@ -513,7 +513,7 @@ class LSX_WETU_Importer {
 				<li class="import"> | <a class="import search-toggle"  href="#import"><?php esc_attr_e( 'WETU Queue', 'lsx-wetu-importer' ); ?> <span class="count"> (<?php echo esc_attr( lsx_wetu_get_queue_count( $this->tab_slug ) ); ?>)</span></a></li>
 			<?php } ?>
 		</ul>
-		<a class="documentation" target="_blank"href="https://tour-operator.lsdev.biz/documentation/extension/wetu-importer/"><?php esc_attr_e( 'Documentation', 'lsx-wetu-importer' ); ?></a>
+		<a class="documentation" target="_blank"href="https://touroperator.solutions/docs-category/wetu-content-importer/"><?php esc_attr_e( 'Documentation', 'lsx-wetu-importer' ); ?></a>
 		<?php
 	}
 
