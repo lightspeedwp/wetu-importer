@@ -2,8 +2,15 @@
 
 ## [[1.5.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.1) - IN DEV
 
+### Fixed
+- The `Category` selection when selecting tour info to import.
+
 ### Updated
-- THe LSX Tour Operator references to Tour Operator.
+- `LSX Tour Operator` references to `Tour Operator`.
+- WordPress.org plugin assets and readme.txt
+
+### Security
+- General testing to ensure compatibility with latest WordPress version (6.8.1).
 
 ## [[1.5.0]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.0) - 2025-02-21
 
