@@ -3,7 +3,7 @@ Contributors: lightspeedwp, wetudev, feedmymedia , krugazul
 Donate link: https://lightspeedwp.agency/donate/
 Tags: lsx, tour operator, travel, tourism, itinerary
 Requires at least: 6.7
-Tested up to: 6.8.1
+Tested up to: 6.8
 Requires PHP: 8.0
 Stable tag: 1.5.2
 License: GPLv3
