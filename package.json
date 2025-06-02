@@ -21,7 +21,7 @@
   },
   "homepage": "https://lightspeedwp.agency/solutions/wetu-content-importer/#readme",
   "devDependencies": {
-    "gulp": "^5.0.0",
+    "gulp": "^5.0.1",
     "gulp-rtlcss": "^2.0.0",
     "gulp-autoprefixer": "^9.0.0",
     "gulp-concat": "^2.6.1",
