@@ -45,6 +45,7 @@ function lsx_wetu_get_post_count( $post_type = '', $post_status = '' ) {
 			if ( 'tour' === $post_type ) {
 				$wetu_tours = get_transient( 'lsx_ti_tours' );
 				if ( false !== $wetu_tours ) {
+
 					$results = $wpdb->get_results( $wpdb->prepare( "SELECT `ID` FROM $wpdb->posts WHERE `post_status` = '%s' AND `post_type` = '%s'", array( trim( $post_status ), $post_type ) ) );
 					$result_count = 0;
 					$tour_wetu_ids = array();
@@ -54,7 +55,9 @@ function lsx_wetu_get_post_count( $post_type = '', $post_status = '' ) {
 
 					if ( ! empty( $results ) ) {
 						foreach ( $results as $tour ) {
-							$current_wetu_id = get_post_meta( $tour->ID, 'lsx_wetu_id', true );
+							$current_wetu_id = strtolower( get_post_meta( $tour->ID, 'lsx_wetu_id', true ) );
+
+							// Check if the current Wetu ID is in the list of Wetu tour IDs.
 							if ( in_array( $current_wetu_id, $tour_wetu_ids ) ) {
 								$result_count++;
 							}

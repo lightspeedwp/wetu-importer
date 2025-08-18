@@ -289,7 +289,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 		if ( null !== $current_tours && ! empty( $current_tours ) ) {
 			foreach ( $current_tours as $tour ) {
-				$return[ $tour->meta_value ] = $tour;
+				$return[ strtolower( $tour->meta_value ) ] = $tour;
 			}
 		}
 
