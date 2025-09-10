@@ -615,22 +615,21 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		}
 	}
 
-	/**
-	 * Set the Travel Style
+	/ **
+	 * Assigns the accommodation "travel style" (accommodation-type) term from WETU data.
+	 *
+	 * If the provided WETU payload includes a category, the raw category string is
+	 * passed through the `lsx_wetu_importer_accommodation_type_term` filter and the
+	 * resulting term is assigned to the post's `accommodation-type` taxonomy via
+	 * $this->set_term().
+	 *
+	 * @param array $data WETU response data for the accommodation (expected shape: $data[0]['category']).
+	 * @param int   $id   WordPress post ID of the accommodation to update.
 	 */
 	public function set_taxonomy_style( $data, $id ) {
 		$terms = false;
 
 		if ( isset( $data[0]['category'] ) ) {
-			/**
-			 * Filter the accommodation type term before it is set.
-			 *
-			 * Allows third-party developers to modify the accommodation type term
-			 * imported from WETU before it is assigned to the post.
-			 *
-			 * @param string $term The accommodation type term (from $data[0]['category']).
-			 * @return string The filtered accommodation type term.
-			 */
 			$term = apply_filters( 'lsx_wetu_importer_accommodation_type_term', trim( $data[0]['category'] ) );
 			$this->set_term( $id, $term, 'accommodation-type' );
 		}
