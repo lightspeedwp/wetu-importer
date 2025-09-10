@@ -622,18 +622,17 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		$terms = false;
 
 		if ( isset( $data[0]['category'] ) ) {
-			$term = term_exists( trim( $data[0]['category'] ), 'accommodation-type' );
-			if ( ! $term ) {
-				$term = wp_insert_term( trim( $data[0]['category'] ), 'accommodation-type' );
-
-				if ( is_wp_error( $term ) ) {
-					echo wp_kses_post( $term->get_error_message() );
-				}
-			} else {
-				wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type', true );
-			}
-		} else {
-			wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type', true );
+			/**
+			 * Filter the accommodation type term before it is set.
+			 *
+			 * Allows third-party developers to modify the accommodation type term
+			 * imported from WETU before it is assigned to the post.
+			 *
+			 * @param string $term The accommodation type term (from $data[0]['category']).
+			 * @return string The filtered accommodation type term.
+			 */
+			$term = apply_filters( 'lsx_wetu_importer_accommodation_type_term', trim( $data[0]['category'] ) );
+			$this->set_term( $id, $term, 'accommodation-type' );
 		}
 	}
 
