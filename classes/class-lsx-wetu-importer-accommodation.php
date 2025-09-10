@@ -632,8 +632,6 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			} else {
 				wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type', true );
 			}
-		} else {
-			wp_set_object_terms( $id, intval( $term['term_id'] ), 'accommodation-type', true );
 		}
 	}
 
