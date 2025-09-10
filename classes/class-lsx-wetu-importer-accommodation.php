@@ -622,6 +622,15 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		$terms = false;
 
 		if ( isset( $data[0]['category'] ) ) {
+			/**
+			 * Filter the accommodation type term before it is set.
+			 *
+			 * Allows third-party developers to modify the accommodation type term
+			 * imported from WETU before it is assigned to the post.
+			 *
+			 * @param string $term The accommodation type term (from $data[0]['category']).
+			 * @return string The filtered accommodation type term.
+			 */
 			$term = apply_filters( 'lsx_wetu_importer_accommodation_type_term', trim( $data[0]['category'] ) );
 			$this->set_term( $id, $term, 'accommodation-type' );
 		}
