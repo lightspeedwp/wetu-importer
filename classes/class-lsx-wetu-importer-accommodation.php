@@ -615,7 +615,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		}
 	}
 
-	/ **
+	/**
 	 * Assigns the accommodation "travel style" (accommodation-type) term from WETU data.
 	 *
 	 * If the provided WETU payload includes a category, the raw category string is
