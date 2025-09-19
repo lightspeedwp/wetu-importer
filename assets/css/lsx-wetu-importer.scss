@@ -289,6 +289,15 @@ body .to-wrapper {
 				height: 30px;
 			}
 		}
+
+		.search-logic {
+			margin-top:5px;
+		}
+
+		&[data-type="accommodation"],
+		&[data-type="destination"] {
+			display: none;
+		}
 	}
 
 	.advanced-search-toggle {

@@ -314,6 +314,10 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					$keyphrases = array( 0 );
 				}
 
+				if ( isset( $_POST['logic'] ) ) {
+					$logic = sanitize_text_field( $_POST['logic'] );
+				}
+
 				if ( ! is_array( $keyphrases ) ) {
 					$keyphrases = array( $keyphrases );
 				}
@@ -375,21 +379,40 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 							}
 						} else {
+							// Search through the keyphrase.
+
 							// Search through each keyword.
 							foreach ( $keyphrases as $keyphrase ) {
 
-								// Make sure the keyphrase is turned into an array.
-								$keywords = explode( ' ', $keyphrase );
-								if ( ! is_array( $keywords ) ) {
-									$keywords = array( $keywords );
+								if ( '' === $keyphrase ) {
+									continue;
 								}
 
-								if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
-								} elseif ( $this->multineedle_stripos( ltrim( rtrim( $row['reference_number'] ) ), $keywords ) !== false ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
-								} elseif ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
-									$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+								if ( 'and' === $logic ) {
+
+									if ( stripos( ltrim( rtrim( $row['name'] ) ), $keyphrase ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									} elseif ( stripos( ltrim( rtrim( $row['reference_number'] ) ), $keyphrase ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									} elseif ( stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keyphrase ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									}
+
+								} else {
+
+									// Make sure the keyphrase is turned into an array.
+									$keywords = explode( ' ', $keyphrase );
+									if ( ! is_array( $keywords ) ) {
+										$keywords = array( $keywords );
+									}
+
+									if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									} elseif ( $this->multineedle_stripos( ltrim( rtrim( $row['reference_number'] ) ), $keywords ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									} elseif ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									}
 								}
 							}
 						}

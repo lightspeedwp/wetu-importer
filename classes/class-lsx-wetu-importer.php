@@ -545,6 +545,12 @@ class LSX_WETU_Importer {
 			</div>
 
 			<a class="button advanced-search-toggle" href="#"><?php esc_html_e( 'Bulk Search', 'lsx-wetu-importer' ); ?></a>
+
+			<br />
+			<div class="search-logic">
+				<label><input type="radio" name="search-logic" value="or" checked/> <?php esc_html_e( 'Match Any Keywords', 'lsx-wetu-importer' ); ?></label> &nbsp; &nbsp;
+				<label><input type="radio" name="search-logic" value="and" /> <?php esc_html_e( 'Match All Keywords', 'lsx-wetu-importer' ); ?></label>
+			</div>
 		</form>
 		<?php
 	}
