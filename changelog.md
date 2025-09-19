@@ -1,4 +1,20 @@
 # Change log
+#
+## [Unreleased]
+
+### Added
+- Checkbox/radio button option for "AND" search logic in Tour search (Match All Keywords).
+- UI and backend support for searching by full keyphrase or any keywords.
+
+### Updated
+- JS and PHP logic to support new search logic parameter.
+- Styles for search logic UI.
+
+### Fixed
+- Minor docblock and formatting fixes in related classes.
+
+### Security
+- General testing to ensure compatibility with latest WordPress version (6.8.1).
 
 ## [[1.5.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.1) - 2025-05-05
 
