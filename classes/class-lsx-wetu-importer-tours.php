@@ -375,6 +375,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 								$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 							}
 						} else {
+							// Search through the keyphrase.
+							
 							// Search through each keyword.
 							foreach ( $keyphrases as $keyphrase ) {
 
