@@ -1,25 +1,55 @@
 {
-    "name": "lightspeeddevelopment/wetu-importer",
-    "description": "Allows destination, accommodation and tour content to be imported via the wetu.com API to populate Accommodation. Destination and Tour post types from the Tour Operator Plugin.",
+    "name": "lightspeedwp/wetu-importer",
+    "description": "WETU Content Importer for Tour Operator Plugin - Import destinations, accommodations and tours from WETU.com API",
     "type": "wordpress-plugin",
+    "keywords": ["wordpress", "plugin", "wetu", "importer", "tour-operator", "travel"],
+    "homepage": "https://touroperator.solutions/plugins/wetu-content-importer/",
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.0",
         "composer/installers": "^2.0.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
-        "wp-coding-standards/wpcs": "^3.0",
+        "phpunit/phpunit": "^10.5",
+        "wp-coding-standards/wpcs": "^3.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
-        "wpackagist-plugin/tour-operator": "^1.4.1",
+        "wpackagist-plugin/tour-operator": "^2.0",
         "wpackagist-theme/lsx": "^3.0",
-        "phpcompatibility/phpcompatibility-wp": "^2.1.0"
+        "phpcompatibility/phpcompatibility-wp": "^2.1.0",
+        "yoast/phpunit-polyfills": "^2.0",
+        "brain/monkey": "^2.6"
     },
     "repositories":[{
         "type":"composer",
         "url":"https://wpackagist.org"
     }],
     "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "LightSpeed",
+            "email": "team@lightspeedwp.agency",
+            "homepage": "https://lightspeedwp.agency"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/lightspeedwp/wetu-importer/issues",
+        "source": "https://github.com/lightspeedwp/wetu-importer"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/installers": true
+        },
+        "optimize-autoloader": true,
+        "classmap-authoritative": true
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=./.github/linting/phpcs.xml",
+        "phpcbf": "phpcbf --standard=./.github/linting/phpcs.xml",
+        "phpcs:report": "phpcs --standard=./.github/linting/phpcs.xml --report=summary",
+        "test": "phpunit --configuration=./tests/php/phpunit.xml",
+        "test:coverage": "phpunit --configuration=./tests/php/phpunit.xml --coverage-html=./coverage"
+    },
     "prefer-stable": true,
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
 

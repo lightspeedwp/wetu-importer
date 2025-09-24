@@ -1,0 +1,30 @@
+{
+	"root": true,
+	"extends": [
+		"plugin:@wordpress/eslint-plugin/recommended"
+	],
+	"env": {
+		"browser": true,
+		"jquery": true,
+		"node": true
+	},
+	"globals": {
+		"wp": "readonly",
+		"wpApiSettings": "readonly",
+		"lsx_wetu_importer": "readonly"
+	},
+	"rules": {
+		"no-console": "warn",
+		"no-unused-vars": "error",
+		"prefer-const": "error"
+	},
+	"overrides": [
+		{
+			"files": [ "**/*.test.js", "**/*.spec.js" ],
+			"extends": [ "plugin:@wordpress/eslint-plugin/test-playwright" ],
+			"rules": {
+				"no-console": "off"
+			}
+		}
+	]
+}

@@ -15,10 +15,32 @@ indent_style = tab
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.txt]
-trim_trailing_whitespace = false
+# PHP files follow WordPress coding standards
+[*.php]
+indent_style = tab
+indent_size = 4
+tab_width = 4
 
-[{.jshintrc,*.md,*.json,*.yml}]
+# JavaScript and CSS use spaces for WordPress block development
+[*.{js,jsx,ts,tsx}]
+indent_style = space
+indent_size = 2
+
+[*.{css,scss,sass}]
+indent_style = space
+indent_size = 2
+
+# Configuration files
+[{*.json,*.yml,*.yaml}]
+indent_style = space
+indent_size = 2
+
+# Markdown files
+[*.md]
 trim_trailing_whitespace = false
 indent_style = space
 indent_size = 2
+
+# Text files
+[*.txt]
+trim_trailing_whitespace = false

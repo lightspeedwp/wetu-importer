@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: "en-ZA"
+early_access: false
+commands:
+  enabled: true
+linked_issues:
+  enabled: true
+reviews:
+  profile: "chill"
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - '.*'
+  path_filters:
+    - "!build/**"
+  path_instructions:
+    - path: '**/*.php'
+      instructions: |
+        - Follow WordPress coding standards (WPCS) strictly
+        - Use proper sanitization and validation for all inputs
+        - Escape all outputs using esc_html, esc_attr, wp_kses_post
+        - Use WordPress functions instead of native PHP where available
+        - Add proper DocBlocks with @param, @return, @since tags
+        - Use meaningful variable and function names with lsx_wetu_ prefix
+        - Follow WordPress naming conventions (snake_case for functions/variables)
+    - path: 'classes/*.php'
+      instructions: |
+        - WETU Importer specific: Focus on API integration patterns
+        - Validate WETU API responses before processing
+        - Use WordPress HTTP API (wp_remote_get, wp_remote_post) for API calls
+        - Implement proper error handling for API failures
+        - Cache API responses appropriately using WordPress transients
+        - Follow Tour Operator plugin integration patterns
+        - Ensure proper class naming with LSX_WETU_ prefix
+    - path: 'includes/*.php'
+      instructions: |
+        - Check for proper WordPress security measures (nonces, capability checks)
+        - Ensure functions are properly hooked to WordPress actions/filters
+        - Validate that imported content follows Tour Operator data structures
+        - Review image/media import for security and optimization
+        - Use lsx_wetu_ function prefix consistently
+    - path: 'assets/**/*.{js,ts}'
+      instructions: |
+        - Follow WordPress JavaScript coding standards
+        - Use WordPress script localization for strings and AJAX URLs
+        - Ensure jQuery compatibility and proper enqueueing
+        - Add proper error handling for AJAX requests
+        - Use modern ES6+ syntax where appropriate
+    - path: 'assets/**/*.{css,scss}'
+      instructions: |
+        - Follow WordPress CSS coding standards
+        - Use semantic class naming with lsx-wetu- prefix
+        - Ensure responsive design principles
+        - Check for accessibility compliance (WCAG 2.1)
+        - Use CSS custom properties for maintainable theming
+    - path: 'tests/**'
+      instructions: |
+        - Ensure test coverage for critical WETU import functions
+        - Mock external API calls in unit tests
+        - Test both success and failure scenarios
+        - Follow WordPress testing best practices
+        - Use PHPUnit for PHP tests and Playwright for E2E tests
+    - path: '**/*.md'
+      instructions: |
+        - Keep documentation updated with code changes
+        - Use clear examples for WETU API integration
+        - Document any breaking changes or migration steps
+        - Include proper installation and configuration steps
+        - Follow markdown linting rules
+chat:
+  auto_reply: true

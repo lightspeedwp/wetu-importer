@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         colors="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         cacheDirectory="../../coverage/.phpunit.cache">
+
+    <testsuites>
+        <testsuite name="WETU Importer Tests">
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">../../classes</directory>
+            <directory suffix=".php">../../includes</directory>
+        </include>
+        <exclude>
+            <directory>../../vendor</directory>
+            <directory>../../node_modules</directory>
+            <directory>../../tests</directory>
+        </exclude>
+    </source>
+
+    <coverage includeUncoveredFiles="true"
+              processUncoveredFiles="true"
+              ignoreDeprecatedCodeUnits="true">
+        <report>
+            <html outputDirectory="../../coverage/html" lowUpperBound="35" highLowerBound="70"/>
+            <text outputFile="../../coverage/coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+        </report>
+    </coverage>
+
+    <logging>
+        <junit outputFile="../../coverage/junit.xml"/>
+    </logging>
+</phpunit>

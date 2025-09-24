@@ -1,10 +1,41 @@
-node_modules
-.sass-cache
-.idea
+# Dependencies
+node_modules/
+vendor/
+
+# Build artifacts
+/build/
+/assets/dist/
+*.min.js
+*.min.css
+
+# IDE/Editor files
+.idea/
+.vscode/
 *.sublime-workspace
-package-lock.json
-vendor
-wp-content
+*.sublime-project
+
+# OS files
 .DS_Store
-.DS_Store
-.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+/test-results/
+/playwright-report/
+/coverage/
+
+# WordPress
+wp-content/
+
+# Legacy build files (remove after migration)
+.sass-cache/
+gulpfile.js
+build
+playwright-report
+test-results
+coverage
+.nyc_output
+*.log
