@@ -4,12 +4,7 @@
   "description": "Tour Operators add-on for LSX",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-readme": "node .github/scripts/update-readme.js",
-    "validate-collections": "node .github/scripts/validate-collections.js",
-    "create-collection": "node .github/scripts/create-collection.js create",
-    "list-collections": "node .github/scripts/create-collection.js list",
-    "validate": "node .github/scripts/validate-collections.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -27,17 +22,17 @@
   "homepage": "https://lightspeedwp.agency/solutions/wetu-content-importer/#readme",
   "devDependencies": {
     "gulp": "^5.0.1",
+    "gulp-rtlcss": "^2.0.0",
     "gulp-autoprefixer": "^10.0.0",
-    "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-gettext": "^0.3.0",
     "gulp-jshint": "^2.0.4",
+    "gulp-clean-css": "^4.3.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^2.1.0",
-    "gulp-rtlcss": "^2.0.0",
     "gulp-sass": "^6.0.1",
     "gulp-sort": "^2.0.0",
-    "gulp-sourcemaps": "^2.6.5",
+    "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-wp-pot": "^2.5.0",
     "jshint": "^2.13.6",
