@@ -1,44 +1,66 @@
+# Development directories
 /.wordpress-org
 /.git
 /.github
+/.vscode
+/.idea
 /tests
-/node_modules
-/src
+/test-results
+/playwright-report
+/coverage
 /bin
+/node_modules
+/vendor
+/src
+
+# Development files
 .distignore
 .gitattributes
-.editorconfig
 .gitignore
+.editorconfig
 .eslintrc
 .eslintrc.js
 .eslintrc.json
+.prettierrc.js
+.stylelintrc.json
 stylelint.config.js
 webpack.config.js
-package.json
-package-lock.json
 playwright.config.js
 composer.json
 composer.lock
-.phpcs.xml
-phpcs.xml
-gulpfile.js
-*.log
-*.md
-.coderabbit.yaml
-.gitlab-ci.yml
-.travis.yml
-.DS_Store
-Thumbs.db
-behat.yml
-circle.yml
+package.json
+package-lock.json
+
+# Testing and CI files
 phpunit.xml
 phpunit.xml.dist
 multisite.xml
 multisite.xml.dist
-README.md
+phpcs.xml
+phpcs.xml.dist
+behat.yml
+.gitlab-ci.yml
+.travis.yml
+circle.yml
 wp-cli.local.yml
-playwright-report
-test-results
+gulpfile.js
+
+# Documentation
+README.md
+*.md
+CHANGELOG
+AGENTS.md
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.coderabbit.yaml
+
+# Build artifacts
+*.map
+*.log
+
+# Archives
 *.sql
 *.tar.gz
 *.zip

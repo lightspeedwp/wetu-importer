@@ -13,6 +13,19 @@
 		"wpApiSettings": "readonly",
 		"lsx_wetu_importer": "readonly"
 	},
+	"ignorePatterns": [
+		"build/",
+		"assets/dist/",
+		"vendor/",
+		"node_modules/",
+		"tests/",
+		"test-results/",
+		"playwright-report/",
+		"coverage/",
+		"wp-content/",
+		"*.min.js",
+		"*.asset.php"
+	],
 	"rules": {
 		"no-console": "warn",
 		"no-unused-vars": "error",
