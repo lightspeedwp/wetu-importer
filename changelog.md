@@ -5,6 +5,7 @@
 ### Added
 - Checkbox/radio button option for "AND" search logic in Tour search (Match All Keywords).
 - UI and backend support for searching by full keyphrase or any keywords.
+- Allowing the tours to be searched by the WETU "Identifier".
 
 ### Updated
 - JS and PHP logic to support new search logic parameter.

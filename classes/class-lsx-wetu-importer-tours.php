@@ -392,11 +392,14 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 									if ( stripos( ltrim( rtrim( $row['name'] ) ), $keyphrase ) !== false ) {
 										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
-									} elseif ( stripos( ltrim( rtrim( $row['reference_number'] ) ), $keyphrase ) !== false ) {
+									} elseif ( stripos( ltrim( rtrim( strtolower( $row['reference_number'] ) ) ), $keyphrase ) !== false ) {
 										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
-									} elseif ( stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keyphrase ) !== false ) {
+									} elseif ( stripos( ltrim( rtrim( strtolower( $row['identifier_key'] ) ) ), $keyphrase ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									} elseif ( stripos( ltrim( rtrim( strtolower( $row['identifier'] ) ) ), $keyphrase ) !== false ) {
 										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 									}
+
 
 								} else {
 
@@ -406,11 +409,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 										$keywords = array( $keywords );
 									}
 
-									if ( $this->multineedle_stripos( ltrim( rtrim( $row['name'] ) ), $keywords ) !== false ) {
+									if ( $this->multineedle_stripos( ltrim( rtrim( strtolower( $row['name'] ) ) ), $keywords ) !== false ) {
 										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
-									} elseif ( $this->multineedle_stripos( ltrim( rtrim( $row['reference_number'] ) ), $keywords ) !== false ) {
+									} elseif ( $this->multineedle_stripos( ltrim( rtrim( strtolower( $row['reference_number'] ) ) ), $keywords ) !== false ) {
 										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
-									} elseif ( $this->multineedle_stripos( ltrim( rtrim( $row['identifier_key'] ) ), $keywords ) !== false ) {
+									} elseif ( $this->multineedle_stripos( ltrim( rtrim( strtolower( $row['identifier_key'] ) ) ), $keywords ) !== false ) {
+										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
+									} elseif ( $this->multineedle_stripos( ltrim( rtrim( strtolower( $row['identifier'] ) ) ), $keywords ) !== false ) {
 										$searched_items[ sanitize_title( $row['name'] ) . '-' . $row['identifier'] ] = $this->format_row( $row, $row_key );
 									}
 								}
