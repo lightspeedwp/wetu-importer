@@ -285,8 +285,6 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		"
 		);
 
-		do_action( 'qm/debug', $current_tours );
-
 		if ( null !== $current_tours && ! empty( $current_tours ) ) {
 			foreach ( $current_tours as $tour ) {
 				$return[ strtolower( $tour->meta_value ) ] = $tour;
@@ -343,9 +341,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					$current_tours = $this->find_current_tours();
 
 					foreach ( $tours as $row_key => $row ) {
-						if ( isset( $row['is_disabled'] ) && true === $row['is_disabled'] ) {
+						/*if ( isset( $row['is_disabled'] ) && true === $row['is_disabled'] ) {
 							continue;
-						}
+						}*/
 
 						// If this is a current tour, add its ID to the row.
 						$row['post_id']    = 0;
