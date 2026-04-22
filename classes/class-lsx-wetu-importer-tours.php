@@ -895,10 +895,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 			foreach ( $args['points'] as $point ) {
 				// If we are in the first leg,  and the destination was attached then save it as the departure field.
 				if ( $leg_counter === $args['start_index'] ) {
-					$departs_from_destination = $this->set_country( $point['destination_content_entity_id'], $id );
-					if ( false !== $departs_from_destination ) {
-						$departs_from = $departs_from_destination;
-					}
+					$departs_from = $point['destination_content_entity_id'];
 				}
 				// If its the last leg then save it as the ends in.
 				if ( $leg_counter === $args['end_index'] ) {
@@ -907,9 +904,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$leg_counter++;
 			}
 
-			$departs_from = apply_filters( 'lsx_wetu_departs_from_id', $departs_from, $data, $this );
 			if ( false !== $departs_from ) {
-				add_post_meta( $id, 'departs_from', $departs_from, true );
+				$departs_from = apply_filters( 'lsx_wetu_departs_from_id', $departs_from, $data, $this );
+				$departs_from_destination = $this->set_country( $departs_from, $id );
+				if ( false !== $departs_from_destination ) {
+					add_post_meta( $id, 'departs_from', $departs_from_destination, true );
+				}
 			}
 
 			if ( false !== $ends_in ) {

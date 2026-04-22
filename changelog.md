@@ -1,6 +1,6 @@
 # Change log
 #
-## [Unreleased]
+## [[1.5.2]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.2) - [WIP]
 
 ### Added
 - Checkbox/radio button option for "AND" search logic in Tour search (Match All Keywords).
@@ -13,6 +13,7 @@
 
 ### Fixed
 - Minor docblock and formatting fixes in related classes.
+- Logic for the `departs_from` field when the tours import, it will now reconnect the destination correctly.
 
 ### Security
 - General testing to ensure compatibility with latest WordPress version (6.8.1).
