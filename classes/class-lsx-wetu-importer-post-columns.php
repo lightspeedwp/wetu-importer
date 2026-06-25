@@ -101,7 +101,15 @@ class LSX_WETU_Importer_Post_Columns {
 	}
 
 	/**
-	 * Hooks in the posts_search filter when a tour admin search is running.
+	 * Post IDs found via lsx_wetu_ref meta lookup, passed to posts_search.
+	 *
+	 * @var int[]
+	 */
+	private $wetu_ref_post_ids = array();
+
+	/**
+	 * Looks up tour IDs matching the search term by lsx_wetu_ref, then hooks
+	 * posts_search so those IDs are ORed into the title/content search clause.
 	 *
 	 * @param object $query WP_Query()
 	 * @return void
@@ -115,39 +123,50 @@ class LSX_WETU_Importer_Post_Columns {
 			return;
 		}
 
-		if ( empty( $query->get( 's' ) ) ) {
+		$term = $query->get( 's' );
+		if ( empty( $term ) ) {
 			return;
 		}
 
-		add_filter( 'posts_search', array( $this, 'tour_wetu_ref_posts_search' ), 10, 2 );
+		global $wpdb;
+		$like = '%' . $wpdb->esc_like( $term ) . '%';
+		$ids  = $wpdb->get_col( $wpdb->prepare(
+			"SELECT DISTINCT post_id FROM {$wpdb->postmeta}
+			WHERE meta_key = 'lsx_wetu_ref' AND meta_value LIKE %s",
+			$like
+		) );
+
+		if ( ! empty( $ids ) ) {
+			$this->wetu_ref_post_ids = array_map( 'intval', $ids );
+			add_filter( 'posts_search', array( $this, 'tour_wetu_ref_posts_search' ), 10, 2 );
+		}
 	}
 
 	/**
-	 * Extends the SQL search clause to also match the lsx_wetu_ref meta value.
+	 * Extends the SQL search clause to include the pre-fetched lsx_wetu_ref post IDs.
 	 *
 	 * @param string   $search
-	 * @param WP_Query $query
+	 * @param WP_Query $_query
 	 * @return string
 	 */
-	public function tour_wetu_ref_posts_search( $search, $query ) {
+	public function tour_wetu_ref_posts_search( $search, $_query ) {
 		global $wpdb;
 
 		remove_filter( 'posts_search', array( $this, 'tour_wetu_ref_posts_search' ), 10 );
 
-		$term = $query->get( 's' );
-		if ( empty( $term ) ) {
+		if ( empty( $this->wetu_ref_post_ids ) ) {
 			return $search;
 		}
 
-		$like    = '%' . $wpdb->esc_like( $term ) . '%';
-		$search .= $wpdb->prepare(
-			" OR {$wpdb->posts}.ID IN (
-				SELECT post_id FROM {$wpdb->postmeta}
-				WHERE meta_key = 'lsx_wetu_ref'
-				AND meta_value LIKE %s
-			)",
-			$like
-		);
+		$id_list = implode( ',', $this->wetu_ref_post_ids );
+
+		// $search arrives as " AND (title/excerpt/content conditions)".
+		// Strip the leading AND and re-wrap so the OR stays inside the same
+		// AND block, keeping post_type/status conditions in the outer WHERE intact.
+		$inner  = preg_replace( '/^\s*AND\s*/i', '', $search );
+		$search = " AND ({$inner} OR {$wpdb->posts}.ID IN ({$id_list}))";
+
+		$this->wetu_ref_post_ids = array();
 
 		return $search;
 	}
