@@ -32,9 +32,7 @@ class LSX_WETU_Importer_Post_Columns {
 		add_filter( 'manage_tour_posts_columns', array( $this, 'register_tour_columns' ) );
 		add_action( 'manage_tour_posts_custom_column', array( $this, 'output_tour_ref_column' ), 10, 2 );
 
-		// Sortables Columns, sorting needs to be fixed
-		// add_filter( 'manage_edit-tour_sortable_columns', array( $this, 'register_sortable_columns' ) );
-		// add_action( 'pre_get_posts', array( $this, 'columns_posts_orderby' ) );
+		add_action( 'pre_get_posts', array( $this, 'tour_search_by_wetu_ref' ) );
 	}
 
 	/**
@@ -103,30 +101,54 @@ class LSX_WETU_Importer_Post_Columns {
 	}
 
 	/**
-	 * Sort the columns
+	 * Hooks in the posts_search filter when a tour admin search is running.
 	 *
 	 * @param object $query WP_Query()
 	 * @return void
 	 */
-	public function columns_posts_orderby( $query ) {
+	public function tour_search_by_wetu_ref( $query ) {
 		if ( ! is_admin() || ! $query->is_main_query() ) {
 			return;
 		}
-		if ( 'wetu_ref' === $query->get( 'orderby' ) ) {
-			$query->set( 'orderby', 'meta_value' );
-			$query->set( 'meta_key', 'lsx_wetu_reference' );
+
+		if ( 'tour' !== $query->get( 'post_type' ) ) {
+			return;
 		}
-		/*
-		if ( $query->is_search() && 'tour' === $query->get( 'post_type' ) ) {
-			$meta_query = array(
-				'relation' => 'OR',
-				array(
-					'key' => 'lsx_wetu_ref',
-					'value' => get_search_query(),
-					'compare' => 'LIKE',
-				),
-			);
-			$query->set( 'meta_query', $meta_query );
-		}*/
+
+		if ( empty( $query->get( 's' ) ) ) {
+			return;
+		}
+
+		add_filter( 'posts_search', array( $this, 'tour_wetu_ref_posts_search' ), 10, 2 );
+	}
+
+	/**
+	 * Extends the SQL search clause to also match the lsx_wetu_ref meta value.
+	 *
+	 * @param string   $search
+	 * @param WP_Query $query
+	 * @return string
+	 */
+	public function tour_wetu_ref_posts_search( $search, $query ) {
+		global $wpdb;
+
+		remove_filter( 'posts_search', array( $this, 'tour_wetu_ref_posts_search' ), 10 );
+
+		$term = $query->get( 's' );
+		if ( empty( $term ) ) {
+			return $search;
+		}
+
+		$like    = '%' . $wpdb->esc_like( $term ) . '%';
+		$search .= $wpdb->prepare(
+			" OR {$wpdb->posts}.ID IN (
+				SELECT post_id FROM {$wpdb->postmeta}
+				WHERE meta_key = 'lsx_wetu_ref'
+				AND meta_value LIKE %s
+			)",
+			$like
+		);
+
+		return $search;
 	}
 }
