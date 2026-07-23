@@ -158,6 +158,9 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 						<div class="settings-all" style="width:30%;display:block;float:left;">
 							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
 							<ul>
+								<?php if ( isset( $this->options ) && isset( $this->options['disable_tour_title'] ) && 'on' === $this->options['disable_tour_title'] ) { ?>
+									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="title" /> <?php esc_html_e( 'Title', 'lsx-wetu-importer' ); ?></li>
+								<?php } ?>
 								<?php if ( isset( $this->options ) && isset( $this->options['disable_tour_descriptions'] ) && 'on' !== $this->options['disable_tour_descriptions'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
@@ -562,7 +565,8 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID']          = $id;
 			$post['post_status'] = 'publish';
-			if ( isset( $this->options ) && 'on' !== $this->options['disable_tour_title'] ) {
+			$custom_titles_enabled = isset( $this->options ) && isset( $this->options['disable_tour_title'] ) && 'on' === $this->options['disable_tour_title'];
+			if ( ! $custom_titles_enabled || ( ! empty( $importable_content ) && in_array( 'title', $importable_content ) ) ) {
 				$post['post_title'] = $data['name'];
 			}
 			$id = wp_update_post( $post );
