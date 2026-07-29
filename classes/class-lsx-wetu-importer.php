@@ -8,6 +8,11 @@
  * @link
  * @copyright 2016 LightSpeed
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The Main plugin class.
  */
@@ -262,7 +267,7 @@ class LSX_WETU_Importer {
 	 * @since 1.0.0
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'lsx-wetu-importer', false, basename( LSX_WETU_IMPORTER_PATH ) . '/languages' );
+		load_plugin_textdomain( 'lsx-wetu-importer' );
 	}
 
 	/**
@@ -293,13 +298,13 @@ class LSX_WETU_Importer {
 		}
 
 		// Set the tab slug.
-		// @codingStandardsIgnoreLine
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Tab slug read on admin page load; no state change occurs.
 		if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && isset( $_POST['type'] ) ) ) {
 			if ( isset( $_GET['tab'] ) ) {
-				$this->tab_slug = sanitize_text_field( $_GET['tab'] );
+				$this->tab_slug = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
 			} else {
-				// @codingStandardsIgnoreLine
-				$this->tab_slug = sanitize_text_field( $_POST['type'] );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$this->tab_slug = sanitize_text_field( wp_unslash( $_POST['type'] ) );
 			}
 		}
 
@@ -756,7 +761,7 @@ class LSX_WETU_Importer {
 					'post_type'      => 'attachment',
 					'order'          => 'ASC',
 					'nopagin'        => 'true',
-					'posts_per_page' => '-1',
+					'posts_per_page' => -1,
 				);
 
 				$attachments = new WP_Query( $attachments_args );
@@ -1058,8 +1063,14 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$being_used = false;
 		if ( '' !== $image_id ) {
-			$sql     = "SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != {$post_id} AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE '{$image_id}'";
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery, WordPress.DB.PreparedSQL.NotPrepared
+			$sql     = $wpdb->prepare(
+				"SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != %d AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE %s",
+				(int) $post_id,
+				(string) $image_id
+			);
 			$results = $wpdb->query( $sql );
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery, WordPress.DB.PreparedSQL.NotPrepared
 			if ( false !== $results && ! empty( $results ) ) {
 				$being_used = true;
 			}
@@ -1224,8 +1235,8 @@ class LSX_WETU_Importer {
 		$tmp   = tempnam( '/tmp', 'FOO' );
 		$image = wp_remote_get( $url );
 		if ( ! is_wp_error( $image ) && ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
-			file_put_contents( $tmp, $image['body'] );
-			chmod( $tmp, '777' );
+			$wp_filesystem->put_contents( $tmp, $image['body'] );
+			$wp_filesystem->chmod( $tmp, FS_CHMOD_FILE );
 
 			preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );    // fix file filename for query strings
 			$url_filename = basename( $matches[0] );
@@ -1693,7 +1704,8 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$id = false;
 		if ( false !== $wetu_id && '' !== $wetu_id ) {
-			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM `$wpdb->postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '%s'", array( $wetu_id ) ) );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM `{$wpdb->postmeta}` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = %s", $wetu_id ) );
 			if ( false !== $result && ! empty( $result ) ) {
 				$id = $result;
 			}

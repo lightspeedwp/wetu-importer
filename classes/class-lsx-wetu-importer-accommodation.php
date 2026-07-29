@@ -144,8 +144,11 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 					<div class="row">
 						<div class="settings-all" style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
+							<h3><?php esc_html_e( 'What content to Sync from WETU', 'lsx-wetu-importer' ); ?></h3>
 							<ul>
+								<?php if ( isset( $this->options['disable_accommodation_title'] ) && 'on' === $this->options['disable_accommodation_title'] ) { ?>
+									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="title" /> <?php esc_html_e( 'Title', 'lsx-wetu-importer' ); ?></li>
+								<?php } ?>
 								<?php if ( isset( $this->options['disable_accommodation_descriptions'] ) && 'on' !== $this->options['disable_accommodation_descriptions'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="description" /> <?php esc_html_e( 'Description', 'lsx-wetu-importer' ); ?></li>
 								<?php } ?>
@@ -171,19 +174,19 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="videos" /> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
 							</ul>
-							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
+							<h4><?php esc_html_e( 'Additional Content', 'lsx-wetu-importer' ); ?></h4>
 							<ul>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="featured_image" /> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="banner_image" /> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?></li>
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'Assign a Team Member' ); ?></h3>
+							<h3><?php esc_html_e( 'Assign a Team Member', 'lsx-wetu-importer' ); ?></h3>
 							<?php $this->team_member_checkboxes( $this->accommodation_options ); ?>
 						</div>
 
 						<div style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'Assign a Safari Brand' ); ?></h3>
+							<h3><?php esc_html_e( 'Assign a Safari Brand', 'lsx-wetu-importer' ); ?></h3>
 							<?php
 								echo wp_kses_post( $this->taxonomy_checkboxes( 'accommodation-brand', $this->accommodation_options ) );
 							?>
@@ -192,7 +195,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						<br clear="both" />
 					</div>
 
-					<h3><?php esc_html_e( 'Your List' ); ?></h3>
+					<h3><?php esc_html_e( 'Your List', 'lsx-wetu-importer' ); ?></h3>
 					<p><input class="button button-primary" type="submit" value="<?php esc_attr_e( 'Sync', 'lsx-wetu-importer' ); ?>" /></p>
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>
@@ -210,7 +213,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?import=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
+				<h3><?php esc_html_e( 'Completed', 'lsx-wetu-importer' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?import=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations', 'lsx-wetu-importer' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>
@@ -320,6 +323,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			if ( false !== $searched_items ) {
 				$return = implode( $searched_items );
 			}
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r -- AJAX response output; no WP JSON API available for raw HTML rows.
 			print_r( $return );
 		}
 
@@ -487,7 +491,8 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 		if ( false !== $id && '0' !== $id ) {
 			$post['ID'] = $id;
 
-			if ( isset( $this->options ) && 'on' !== $this->options['disable_accommodation_title'] && isset( $data[0]['name'] ) ) {
+			$custom_titles_enabled = isset( $this->options ) && isset( $this->options['disable_accommodation_title'] ) && 'on' === $this->options['disable_accommodation_title'];
+			if ( ( ! $custom_titles_enabled || ( ! empty( $importable_content ) && in_array( 'title', $importable_content ) ) ) && isset( $data[0]['name'] ) ) {
 				$post['post_title'] = $data[0]['name'];
 				$post['post_name']  = wp_unique_post_slug( sanitize_title( $data[0]['name'] ), $id, 'draft', 'accommodation', 0 );
 			}

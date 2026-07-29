@@ -11,6 +11,10 @@
 
 namespace lsx\wetu_importer\classes;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use WP_Query;
 
 /**
@@ -38,7 +42,6 @@ class WETU_Automation {
 	 */
 	private function __construct() {
 		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'init', array( $this, 'tester_init' ) );
 	}
 
 	/**
@@ -70,28 +73,6 @@ class WETU_Automation {
 			add_action( 'lsx_wetu_sync_tour', array( $this, 'tour_sync_action' ), 10, 1 );
 			add_action( 'lsx_wetu_sync_que', array( $this, 'que_sync_action' ), 10 );
 			add_action( 'lsx_wetu_sync_pin', array( $this, 'pins_sync_action' ), 10, 2 );
-		}
-	}
-
-	/**
-	 * Register the test functions.
-	 *
-	 * @return void
-	 */
-	public function tester_init() {
-		if ( isset( $_GET['wetu_main_debug'] ) ) {
-			$this->run_main_actions();
-			die();
-		}
-
-		if ( isset( $_GET['wetu_tour_debug'] ) ) {
-			$this->tour_sync_action( $_GET['wetu_tour_debug'] );
-			die();
-		}
-
-		if ( isset( $_GET['wetu_pin_debug'] ) ) {
-			$this->pins_sync_action( $_GET['wetu_pin_debug'], false );
-			die();
 		}
 	}
 

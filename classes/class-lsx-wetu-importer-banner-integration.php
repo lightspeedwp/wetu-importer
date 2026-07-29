@@ -239,16 +239,20 @@ class LSX_WETU_Importer_Banner_Integration extends LSX_WETU_Importer {
 			return new WP_Error( 'missing', 'Need a valid URL' ); }
 		$att_id = false;
 
+		global $wp_filesystem;
+
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		WP_Filesystem();
 
 		$tmp   = tempnam( '/tmp', 'FOO' );
 		$image = wp_remote_get( $url );
 
 		if ( ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
-			file_put_contents( $tmp, $image['body'] );
-			chmod( $tmp, '777' );
+			$wp_filesystem->put_contents( $tmp, $image['body'] );
+			$wp_filesystem->chmod( $tmp, FS_CHMOD_FILE );
 
 			preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );
 			$url_filename = basename( $matches[0] );
