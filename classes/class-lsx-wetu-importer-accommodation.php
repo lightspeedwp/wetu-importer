@@ -144,7 +144,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 					<div class="row">
 						<div class="settings-all" style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
+							<h3><?php esc_html_e( 'What content to Sync from WETU', 'lsx-wetu-importer' ); ?></h3>
 							<ul>
 								<?php if ( isset( $this->options['disable_accommodation_title'] ) && 'on' === $this->options['disable_accommodation_title'] ) { ?>
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="title" /> <?php esc_html_e( 'Title', 'lsx-wetu-importer' ); ?></li>
@@ -174,7 +174,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 
 									<li><input class="content" checked="checked" type="checkbox" name="content[]" value="videos" /> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
 							</ul>
-							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
+							<h4><?php esc_html_e( 'Additional Content', 'lsx-wetu-importer' ); ?></h4>
 							<ul>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="featured_image" /> <?php esc_html_e( 'Set Featured Image', 'lsx-wetu-importer' ); ?></li>
 								<li><input class="content" checked="checked" type="checkbox" name="content[]" value="banner_image" /> <?php esc_html_e( 'Set Banner Image', 'lsx-wetu-importer' ); ?></li>
@@ -186,7 +186,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						</div>
 
 						<div style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'Assign a Safari Brand' ); ?></h3>
+							<h3><?php esc_html_e( 'Assign a Safari Brand', 'lsx-wetu-importer' ); ?></h3>
 							<?php
 								echo wp_kses_post( $this->taxonomy_checkboxes( 'accommodation-brand', $this->accommodation_options ) );
 							?>
@@ -213,7 +213,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?import=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
+				<h3><?php esc_html_e( 'Completed', 'lsx-wetu-importer' ); ?> - <small><?php esc_html_e( 'Import your', 'lsx-wetu-importer' ); ?> <a href="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>?import=<?php echo esc_attr( $this->plugin_slug ); ?>&tab=destination"><?php esc_html_e( 'destinations', 'lsx-wetu-importer' ); ?></a> <?php esc_html_e( 'next', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>

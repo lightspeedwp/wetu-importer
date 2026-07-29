@@ -1063,13 +1063,13 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$being_used = false;
 		if ( '' !== $image_id ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
 			$sql     = $wpdb->prepare(
 				"SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != %d AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE %s",
 				(int) $post_id,
 				(string) $image_id
 			);
-			$results = $wpdb->query( $sql );
+			$results = $wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			if ( false !== $results && ! empty( $results ) ) {
 				$being_used = true;
 			}
@@ -1703,7 +1703,8 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$id = false;
 		if ( false !== $wetu_id && '' !== $wetu_id ) {
-			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM `$wpdb->postmeta` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = '%s'", array( $wetu_id ) ) );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM `{$wpdb->postmeta}` WHERE `meta_key` = 'lsx_wetu_id' AND `meta_value` = %s", $wetu_id ) );
 			if ( false !== $result && ! empty( $result ) ) {
 				$id = $result;
 			}
