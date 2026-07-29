@@ -267,7 +267,7 @@ class LSX_WETU_Importer {
 	 * @since 1.0.0
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'lsx-wetu-importer', false, basename( LSX_WETU_IMPORTER_PATH ) . '/languages' );
+		load_plugin_textdomain( 'lsx-wetu-importer' );
 	}
 
 	/**
@@ -298,13 +298,13 @@ class LSX_WETU_Importer {
 		}
 
 		// Set the tab slug.
-		// @codingStandardsIgnoreLine
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Tab slug read on admin page load; no state change occurs.
 		if ( isset( $_GET['tab'] ) || ( defined( 'DOING_AJAX' ) && isset( $_POST['type'] ) ) ) {
 			if ( isset( $_GET['tab'] ) ) {
-				$this->tab_slug = sanitize_text_field( $_GET['tab'] );
+				$this->tab_slug = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
 			} else {
-				// @codingStandardsIgnoreLine
-				$this->tab_slug = sanitize_text_field( $_POST['type'] );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$this->tab_slug = sanitize_text_field( wp_unslash( $_POST['type'] ) );
 			}
 		}
 
@@ -761,7 +761,7 @@ class LSX_WETU_Importer {
 					'post_type'      => 'attachment',
 					'order'          => 'ASC',
 					'nopagin'        => 'true',
-					'posts_per_page' => '-1',
+					'posts_per_page' => -1,
 				);
 
 				$attachments = new WP_Query( $attachments_args );

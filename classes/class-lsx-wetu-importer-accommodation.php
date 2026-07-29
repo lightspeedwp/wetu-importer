@@ -323,6 +323,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 			if ( false !== $searched_items ) {
 				$return = implode( $searched_items );
 			}
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r -- AJAX response output; no WP JSON API available for raw HTML rows.
 			print_r( $return );
 		}
 

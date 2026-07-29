@@ -130,6 +130,7 @@ class LSX_WETU_Importer_Post_Columns {
 
 		global $wpdb;
 		$like = '%' . $wpdb->esc_like( $term ) . '%';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Targeted WETU ref search; result is not worth caching.
 		$ids  = $wpdb->get_col( $wpdb->prepare(
 			"SELECT DISTINCT post_id FROM {$wpdb->postmeta}
 			WHERE meta_key = 'lsx_wetu_ref' AND meta_value LIKE %s",
