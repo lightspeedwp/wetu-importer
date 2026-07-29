@@ -181,7 +181,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 							</ul>
 						</div>
 						<div style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'Assign a Team Member' ); ?></h3>
+							<h3><?php esc_html_e( 'Assign a Team Member', 'lsx-wetu-importer' ); ?></h3>
 							<?php $this->team_member_checkboxes( $this->accommodation_options ); ?>
 						</div>
 
@@ -195,7 +195,7 @@ class LSX_WETU_Importer_Accommodation extends LSX_WETU_Importer {
 						<br clear="both" />
 					</div>
 
-					<h3><?php esc_html_e( 'Your List' ); ?></h3>
+					<h3><?php esc_html_e( 'Your List', 'lsx-wetu-importer' ); ?></h3>
 					<p><input class="button button-primary" type="submit" value="<?php esc_attr_e( 'Sync', 'lsx-wetu-importer' ); ?>" /></p>
 					<table class="wp-list-table widefat fixed posts">
 						<?php $this->table_header(); ?>

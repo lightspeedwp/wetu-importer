@@ -138,7 +138,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 					<div class="row">
 						<div class="settings-all" style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'What content to Sync from WETU' ); ?></h3>
+							<h3><?php esc_html_e( 'What content to Sync from WETU', 'lsx-wetu-importer' ); ?></h3>
 							<ul>
 								<?php if ( isset( $this->options ) && isset( $this->options['disable_destination_title'] ) && 'on' === $this->options['disable_destination_title'] ) { ?>
 								<li>
@@ -170,7 +170,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 											   value="videos"/> <?php esc_html_e( 'Videos', 'lsx-wetu-importer' ); ?></li>
 
 							</ul>
-							<h4><?php esc_html_e( 'Additional Content' ); ?></h4>
+							<h4><?php esc_html_e( 'Additional Content', 'lsx-wetu-importer' ); ?></h4>
 							<ul>
 								<li>
 									<input class="content" checked="checked"
@@ -213,7 +213,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 							</ul>
 						</div>
 						<div class="settings-all" style="width:30%;display:block;float:left;">
-							<h3><?php esc_html_e( 'Travel Information' ); ?></h3>
+							<h3><?php esc_html_e( 'Travel Information', 'lsx-wetu-importer' ); ?></h3>
 							<ul>
 								<li>
 									<input class="content" checked="checked"
@@ -255,7 +255,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 
 						<?php if ( class_exists( 'LSX_TO_Team' ) ) { ?>
 							<div style="width:30%;display:block;float:left;">
-								<h3><?php esc_html_e( 'Assign a Team Member' ); ?></h3>
+								<h3><?php esc_html_e( 'Assign a Team Member', 'lsx-wetu-importer' ); ?></h3>
 								<?php $this->team_member_checkboxes( $this->destination_options ); ?>
 							</div>
 						<?php } ?>
@@ -264,7 +264,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 					</div>
 
 
-					<h3><?php esc_html_e( 'Your List' ); ?></h3>
+					<h3><?php esc_html_e( 'Your List', 'lsx-wetu-importer' ); ?></h3>
 					<p><input class="button button-primary" type="submit"
 							  value="<?php esc_html_e( 'Sync', 'lsx-wetu-importer' ); ?>"/></p>
 					<table class="wp-list-table widefat fixed posts">
@@ -284,7 +284,7 @@ class LSX_WETU_Importer_Destination extends LSX_WETU_Importer {
 			</div>
 
 			<div style="display:none;" class="completed-list-wrapper">
-				<h3><?php esc_html_e( 'Completed' ); ?> - <small><?php esc_html_e( 'Please check the "draft" list for any countries that may have been created.', 'lsx-wetu-importer' ); ?></small></h3>
+				<h3><?php esc_html_e( 'Completed', 'lsx-wetu-importer' ); ?> - <small><?php esc_html_e( 'Please check the "draft" list for any countries that may have been created.', 'lsx-wetu-importer' ); ?></small></h3>
 				<ul>
 				</ul>
 			</div>

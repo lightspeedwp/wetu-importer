@@ -1063,13 +1063,14 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$being_used = false;
 		if ( '' !== $image_id ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery, WordPress.DB.PreparedSQL.NotPrepared
 			$sql     = $wpdb->prepare(
 				"SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != %d AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE %s",
 				(int) $post_id,
 				(string) $image_id
 			);
-			$results = $wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$results = $wpdb->query( $sql );
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.LikeWildcardsInQuery, WordPress.DB.PreparedSQL.NotPrepared
 			if ( false !== $results && ! empty( $results ) ) {
 				$being_used = true;
 			}

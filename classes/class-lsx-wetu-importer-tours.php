@@ -690,7 +690,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 					} else {
 						$day_count_label = '';
 					}
-					$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter . $day_count_label;
+					$current_day['title'] = esc_attr__( 'Day ', 'lsx-wetu-importer' ) . $day_counter . $day_count_label;
 
 					// Description.
 					if ( false !== $importable_content && in_array( 'itinerary_description', $importable_content ) && isset( $day['notes'] ) ) {
@@ -763,7 +763,7 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$next_day_count  = $day_counter + (int) $leg['nights'];
 				$day_count_label = $next_day_count - 1;
 
-				$current_day['title'] = esc_attr( 'Day ', 'lsx-wetu-importer' ) . $day_counter;
+				$current_day['title'] = esc_attr__( 'Day ', 'lsx-wetu-importer' ) . $day_counter;
 
 				if ( 0 !== (int) $leg['nights'] ) {
 					$current_day['title'] .= ' - ' . $day_count_label;
@@ -1266,14 +1266,14 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 		global $wpdb;
 		$return = false;
 
-		$results        = $wpdb->get_results(
+		$results        = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prepare(
 				"SELECT post_id
 				 FROM {$wpdb->postmeta}
-				 WHERE meta_value = '%s'
+				 WHERE meta_value = %s
 				 AND meta_key = 'lsx_wetu_id'
 				",
-				array( $v )
+				$v
 			),
 			'ARRAY_A'
 		);

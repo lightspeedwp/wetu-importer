@@ -11,6 +11,10 @@
 
 namespace lsx\wetu_importer\classes;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use WP_Query;
 
 /**
