@@ -6,6 +6,7 @@
 - Checkbox/radio button option for "AND" search logic in Tour search (Match All Keywords).
 - UI and backend support for searching by full keyphrase or any keywords.
 - Allowing the tours to be searched by the WETU "Identifier".
+- "Title" now appears as a selectable sync option in the importer UI for accommodation, destinations, and tours when the corresponding "disable title" setting is enabled — allowing per-run opt-in to overwrite the post title even when auto-sync of titles is off.
 
 ### Updated
 - JS and PHP logic to support new search logic parameter.
@@ -14,6 +15,7 @@
 ### Fixed
 - Minor docblock and formatting fixes in related classes.
 - Logic for the `departs_from` field when the tours import, it will now reconnect the destination correctly.
+- Title-update guard for accommodation, destination, and tour imports now correctly checks for the presence of the `disable_*_title` option key before reading it, preventing a PHP notice when the option is not yet saved; the existing custom-title state is also respected when the "Title" checkbox is explicitly ticked during a manual sync run.
 
 ### Security
 - General testing to ensure compatibility with latest WordPress version (6.8.1).
