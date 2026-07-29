@@ -8,6 +8,11 @@
  * @link
  * @copyright 2016 LightSpeed
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The Main plugin class.
  */
@@ -1058,7 +1063,12 @@ class LSX_WETU_Importer {
 		global $wpdb;
 		$being_used = false;
 		if ( '' !== $image_id ) {
-			$sql     = "SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != {$post_id} AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE '{$image_id}'";
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$sql     = $wpdb->prepare(
+				"SELECT * FROM `{$wpdb->postmeta}` WHERE `post_id` != %d AND `meta_key` LIKE '_thumbnail_id' AND `meta_value` LIKE %s",
+				(int) $post_id,
+				(string) $image_id
+			);
 			$results = $wpdb->query( $sql );
 			if ( false !== $results && ! empty( $results ) ) {
 				$being_used = true;
@@ -1224,8 +1234,8 @@ class LSX_WETU_Importer {
 		$tmp   = tempnam( '/tmp', 'FOO' );
 		$image = wp_remote_get( $url );
 		if ( ! is_wp_error( $image ) && ! empty( $image ) && isset( $image['response'] ) && isset( $image['response']['code'] ) && 200 === $image['response']['code'] ) {
-			file_put_contents( $tmp, $image['body'] );
-			chmod( $tmp, '777' );
+			$wp_filesystem->put_contents( $tmp, $image['body'] );
+			$wp_filesystem->chmod( $tmp, FS_CHMOD_FILE );
 
 			preg_match( '/[^\?]+\.(tif|TIFF|jpg|JPG|jpe|JPE|jpeg|JPEG|gif|GIF|png|PNG|pdf|PDF|bmp|BMP)/', $url, $matches );    // fix file filename for query strings
 			$url_filename = basename( $matches[0] );
