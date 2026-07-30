@@ -6,7 +6,7 @@
  * Author:				lightspeedwp
  * Version:				1.5.2
  * Requires at least:	6.7
- * Tested up to:		6.8
+ * Tested up to:		7.0
  * Requires PHP:		8.0
  * Author URI:			https://lightspeedwp.agency/
  * License:				GPLv3 or later
