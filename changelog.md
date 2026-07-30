@@ -1,4 +1,33 @@
 # Change log
+#
+## [[1.5.2]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.2) - [WIP]
+
+### Added
+- Checkbox/radio button option for "AND" search logic in Tour search (Match All Keywords).
+- UI and backend support for searching by full keyphrase or any keywords.
+- Allowing the tours to be searched by the WETU "Identifier".
+- "Title" now appears as a selectable sync option in the importer UI for accommodation, destinations, and tours when the corresponding "disable title" setting is enabled — allowing per-run opt-in to overwrite the post title even when auto-sync of titles is off.
+- `README.md` added with plugin details, features, installation instructions, and FAQs.
+- English (`en_EN`/`en_US`) `.po`/`.mo` language files added, and `languages/lsx-wetu-importer.pot` regenerated to match current strings.
+
+### Updated
+- JS and PHP logic to support new search logic parameter.
+- Styles for search logic UI.
+- Text domain added/corrected on translation function calls across the accommodation, tours, banner-integration, and main importer classes for proper localisation; `load_plugin_textdomain()` simplified to use WordPress auto-discovery.
+- `.distignore` updated to exclude development-only files from the release package.
+
+### Fixed
+- Minor docblock and formatting fixes in related classes.
+- Logic for the `departs_from` field when the tours import, it will now reconnect the destination correctly.
+- Title-update guard for accommodation, destination, and tour imports now correctly checks for the presence of the `disable_*_title` option key before reading it, preventing a PHP notice when the option is not yet saved; the existing custom-title state is also respected when the "Title" checkbox is explicitly ticked during a manual sync run.
+- Removed the unused `tester_init` action and its associated debug methods from `WETU_Automation`.
+
+### Security
+- SQL injection: the "is image being used" lookup in `class-lsx-wetu-importer.php` now uses `$wpdb->prepare()` with placeholders instead of interpolating `$post_id`/`$image_id` directly into the query.
+- Added `ABSPATH` direct-access guard to `class-lsx-wetu-importer.php`.
+- Replaced direct `file_put_contents()`/`chmod( $tmp, '777' )` calls with `$wp_filesystem->put_contents()`/`chmod( $tmp, FS_CHMOD_FILE )` when downloading images.
+- `$_GET['tab']`/`$_POST['type']` now passed through `wp_unslash()` before sanitisation; added `phpcs:ignore` annotations (with rationale) for the remaining direct-DB and AJAX `print_r()` cases that can't be avoided.
+- General testing to ensure compatibility with latest WordPress version (6.8.1).
 
 ## [[1.5.1]](https://github.com/lightspeeddevelopment/wetu-importer/releases/tag/1.5.1) - 2025-05-05
 

@@ -9,7 +9,10 @@
     "validate-collections": "node .github/scripts/validate-collections.js",
     "create-collection": "node .github/scripts/create-collection.js create",
     "list-collections": "node .github/scripts/create-collection.js list",
-    "validate": "node .github/scripts/validate-collections.js"
+    "validate": "node .github/scripts/validate-collections.js",
+    "build-pot": "wp i18n make-pot . languages/lsx-wetu-importer.pot --exclude=node_modules,vendor,build",
+    "build-mopo": "rm -R languages/lsx-wetu-importer-en_EN.mo && cp languages/lsx-wetu-importer.pot languages/lsx-wetu-importer-en_EN.po && wp i18n make-mo languages",
+    "translate-US": "cp languages/lsx-wetu-importer-en_EN.po languages/lsx-wetu-importer-en_US.po && cp languages/lsx-wetu-importer-en_EN.mo languages/lsx-wetu-importer-en_US.mo"
   },
   "repository": {
     "type": "git",

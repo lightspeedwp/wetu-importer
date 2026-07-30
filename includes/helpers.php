@@ -9,6 +9,10 @@
  * @copyright 2019 LightSpeed
  **/
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Gets the settings
  *
@@ -40,12 +44,15 @@ function lsx_wetu_get_post_count( $post_type = '', $post_status = '' ) {
 	global $wpdb;
 	$count = '0';
 	if ( '' !== $post_type && '' !== $post_status ) {
-		$result = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(`ID`) FROM $wpdb->posts WHERE `post_status` = '%s' AND `post_type` = '%s'", array( trim( $post_status ), $post_type ) ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(`ID`) FROM {$wpdb->posts} WHERE `post_status` = %s AND `post_type` = %s", trim( $post_status ), $post_type ) );
 		if ( false !== $result && '' !== $result ) {
 			if ( 'tour' === $post_type ) {
 				$wetu_tours = get_transient( 'lsx_ti_tours' );
 				if ( false !== $wetu_tours ) {
-					$results = $wpdb->get_results( $wpdb->prepare( "SELECT `ID` FROM $wpdb->posts WHERE `post_status` = '%s' AND `post_type` = '%s'", array( trim( $post_status ), $post_type ) ) );
+
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$results = $wpdb->get_results( $wpdb->prepare( "SELECT `ID` FROM {$wpdb->posts} WHERE `post_status` = %s AND `post_type` = %s", trim( $post_status ), $post_type ) );
 					$result_count = 0;
 					$tour_wetu_ids = array();
 					foreach ( $wetu_tours as $wetu_tour ) {
@@ -54,7 +61,9 @@ function lsx_wetu_get_post_count( $post_type = '', $post_status = '' ) {
 
 					if ( ! empty( $results ) ) {
 						foreach ( $results as $tour ) {
-							$current_wetu_id = get_post_meta( $tour->ID, 'lsx_wetu_id', true );
+							$current_wetu_id = strtolower( get_post_meta( $tour->ID, 'lsx_wetu_id', true ) );
+
+							// Check if the current Wetu ID is in the list of Wetu tour IDs.
 							if ( in_array( $current_wetu_id, $tour_wetu_ids ) ) {
 								$result_count++;
 							}

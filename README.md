@@ -1,10 +1,22 @@
-# WordPress Plugin
+<p align="center"><a target="_blank" href="https://touroperator.solutions/plugins/wetu-content-importer/"><img src="https://ps.w.org/lsx-importer-for-wetu/assets/banner-1544x500.png" alt="Wetu Content Importer Extension"></a>
+</p>
 
 A WordPress plugin
 
-## Description
+The Wetu Content Importer plugin integrates the [Wetu Tour Operator](https://wetu.com/) system with the [Tour Operator](https://touroperator.solutions/) plugin, enabling you to import destinations, accommodations, and tours directly into your WordPress site. This ensures a cohesive and enriched travel content experience.
 
-A WordPress plugin
+## Features
+
+- **Seamless Integration:** Maps Wetu data to Tour Operator fields, ensuring consistency and accuracy.
+- **Gutenberg-Ready:** Display imported itineraries using WordPress's block editor, improving layout flexibility.
+- **Performance-Focused:** Utilizes background processing to handle large imports without timeouts or slowdowns.
+- **Up-to-Date Compatibility:** Requires WP 6.7+ and PHP 8.0+, ensuring a modern, secure, and performant environment.
+
+## Requirements
+
+- **WordPress:** 6.7 or higher
+- **PHP:** 8.0 or higher
+- **Required Plugin:** [Tour Operator](https://wordpress.org/plugins/tour-operator/)
 
 ## Installation
 
