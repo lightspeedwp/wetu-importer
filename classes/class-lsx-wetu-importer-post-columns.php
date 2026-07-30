@@ -32,9 +32,7 @@ class LSX_WETU_Importer_Post_Columns {
 		add_filter( 'manage_tour_posts_columns', array( $this, 'register_tour_columns' ) );
 		add_action( 'manage_tour_posts_custom_column', array( $this, 'output_tour_ref_column' ), 10, 2 );
 
-		// Sortables Columns, sorting needs to be fixed
-		// add_filter( 'manage_edit-tour_sortable_columns', array( $this, 'register_sortable_columns' ) );
-		// add_action( 'pre_get_posts', array( $this, 'columns_posts_orderby' ) );
+		add_action( 'pre_get_posts', array( $this, 'tour_search_by_wetu_ref' ) );
 	}
 
 	/**
@@ -103,30 +101,74 @@ class LSX_WETU_Importer_Post_Columns {
 	}
 
 	/**
-	 * Sort the columns
+	 * Post IDs found via lsx_wetu_ref meta lookup, passed to posts_search.
+	 *
+	 * @var int[]
+	 */
+	private $wetu_ref_post_ids = array();
+
+	/**
+	 * Looks up tour IDs matching the search term by lsx_wetu_ref, then hooks
+	 * posts_search so those IDs are ORed into the title/content search clause.
 	 *
 	 * @param object $query WP_Query()
 	 * @return void
 	 */
-	public function columns_posts_orderby( $query ) {
+	public function tour_search_by_wetu_ref( $query ) {
 		if ( ! is_admin() || ! $query->is_main_query() ) {
 			return;
 		}
-		if ( 'wetu_ref' === $query->get( 'orderby' ) ) {
-			$query->set( 'orderby', 'meta_value' );
-			$query->set( 'meta_key', 'lsx_wetu_reference' );
+
+		if ( 'tour' !== $query->get( 'post_type' ) ) {
+			return;
 		}
-		/*
-		if ( $query->is_search() && 'tour' === $query->get( 'post_type' ) ) {
-			$meta_query = array(
-				'relation' => 'OR',
-				array(
-					'key' => 'lsx_wetu_ref',
-					'value' => get_search_query(),
-					'compare' => 'LIKE',
-				),
-			);
-			$query->set( 'meta_query', $meta_query );
-		}*/
+
+		$term = $query->get( 's' );
+		if ( empty( $term ) ) {
+			return;
+		}
+
+		global $wpdb;
+		$like = '%' . $wpdb->esc_like( $term ) . '%';
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Targeted WETU ref search; result is not worth caching.
+		$ids  = $wpdb->get_col( $wpdb->prepare(
+			"SELECT DISTINCT post_id FROM {$wpdb->postmeta}
+			WHERE meta_key = 'lsx_wetu_ref' AND meta_value LIKE %s",
+			$like
+		) );
+
+		if ( ! empty( $ids ) ) {
+			$this->wetu_ref_post_ids = array_map( 'intval', $ids );
+			add_filter( 'posts_search', array( $this, 'tour_wetu_ref_posts_search' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Extends the SQL search clause to include the pre-fetched lsx_wetu_ref post IDs.
+	 *
+	 * @param string   $search
+	 * @param WP_Query $_query
+	 * @return string
+	 */
+	public function tour_wetu_ref_posts_search( $search, $_query ) {
+		global $wpdb;
+
+		remove_filter( 'posts_search', array( $this, 'tour_wetu_ref_posts_search' ), 10 );
+
+		if ( empty( $this->wetu_ref_post_ids ) ) {
+			return $search;
+		}
+
+		$id_list = implode( ',', $this->wetu_ref_post_ids );
+
+		// $search arrives as " AND (title/excerpt/content conditions)".
+		// Strip the leading AND and re-wrap so the OR stays inside the same
+		// AND block, keeping post_type/status conditions in the outer WHERE intact.
+		$inner  = preg_replace( '/^\s*AND\s*/i', '', $search );
+		$search = " AND ({$inner} OR {$wpdb->posts}.ID IN ({$id_list}))";
+
+		$this->wetu_ref_post_ids = array();
+
+		return $search;
 	}
 }

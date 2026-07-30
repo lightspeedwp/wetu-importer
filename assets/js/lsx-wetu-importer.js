@@ -86,12 +86,15 @@ var WETU_IMPORTER = {
 				}
 			}
 
+			let searchLogic = jQuery('#lsx-wetu-importer-search-form input[name="search-logic"]:checked').val();
+
 			jQuery.post(
 				lsx_tour_importer_params.ajax_url,
 				{
 					'action' 	: 			'lsx_tour_importer',
 					'type'		: 			type,
 					'keyword' 	: 			keywords,
+					'logic'		: 			searchLogic,
 					'security'  :			lsx_tour_importer_params.ajax_nonce
 				},
 				function(response) {

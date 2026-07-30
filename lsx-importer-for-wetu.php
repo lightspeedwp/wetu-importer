@@ -1,12 +1,12 @@
 <?php
 /*
  * Plugin Name:			Wetu Content Importer
- * Plugin URI:			https://lsx.design/products/wetu-importer/
+ * Plugin URI:			https://touroperator.solutions/plugins/wetu-content-importer/
  * Description:			Integrate with the Wetu Tour Operator system to import destination, accommodation, and tour content into the Tour Operator plugin format.
  * Author:				lightspeedwp
- * Version:				1.5.1
+ * Version:				1.5.2
  * Requires at least:	6.7
- * Tested up to:		6.8.1
+ * Tested up to:		6.8
  * Requires PHP:		8.0
  * Author URI:			https://lightspeedwp.agency/
  * License:				GPLv3 or later
@@ -17,10 +17,14 @@
  * Requires Plugins:	tour-operator
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 define( 'LSX_WETU_IMPORTER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LSX_WETU_IMPORTER_CORE', __FILE__ );
 define( 'LSX_WETU_IMPORTER_URL', plugin_dir_url( __FILE__ ) );
-define( 'LSX_WETU_IMPORTER_VER', '1.5.1' );
+define( 'LSX_WETU_IMPORTER_VER', '1.5.2' );
 
 register_activation_hook( LSX_WETU_IMPORTER_CORE, array( 'LSX_WETU_Importer', 'register_activation_hook' ) );
 

@@ -239,6 +239,9 @@ body .to-wrapper #lsx-wetu-importer-search-form .normal-search {
 body .to-wrapper #lsx-wetu-importer-search-form .normal-search input.keyword {
   height: 30px;
 }
+body .to-wrapper #lsx-wetu-importer-search-form .search-logic {
+  margin-top: 5px;
+}
 body .to-wrapper .advanced-search-toggle {
   display: inline-block;
   margin-top: 0;
