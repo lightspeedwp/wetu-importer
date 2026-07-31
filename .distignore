@@ -24,6 +24,7 @@ multisite.xml.dist
 phpcs.ruleset.xml
 README.md
 developer.txt
+docs
 bin
 wp-cli.local.yml
 tests
