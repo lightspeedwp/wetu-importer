@@ -915,16 +915,13 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	 * @return array{url: string, id: string}|null Null when the value cannot be
 	 *                       resolved to an attachment that still exists.
 	 */
-	protected function normalize_featured_image_value( string $value ) {
-		if ( ctype_digit( $value ) ) {
-			$attachment_id = (int) $value;
-		} elseif ( 0 === strpos( $value, 'https://' ) && ctype_digit( substr( $value, 8 ) ) ) {
-			$attachment_id = (int) substr( $value, 8 );
-		} elseif ( 0 === strpos( $value, 'http://' ) && ctype_digit( substr( $value, 7 ) ) ) {
-			$attachment_id = (int) substr( $value, 7 );
-		} else {
-			$attachment_id = null;
-		}
+	protected function normalize_featured_image_value( string $value ): ?array {
+		$attachment_id = match ( true ) {
+			ctype_digit( $value ) => (int) $value,
+			str_starts_with( $value, 'https://' ) && ctype_digit( substr( $value, 8 ) ) => (int) substr( $value, 8 ),
+			str_starts_with( $value, 'http://' ) && ctype_digit( substr( $value, 7 ) ) => (int) substr( $value, 7 ),
+			default => null,
+		};
 
 		if ( null !== $attachment_id ) {
 			$url = wp_get_attachment_url( $attachment_id );
