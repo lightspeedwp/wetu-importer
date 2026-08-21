@@ -16,8 +16,10 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        # 18.x and 20.x are EOL; 22.x (Maintenance LTS) and 24.x (Active LTS)
+        # are the two currently-supported lines. See
+        # https://nodejs.org/en/about/previous-releases for current status.
+        node-version: [22.x, 24.x]
 
     steps:
     - uses: actions/checkout@v7
@@ -25,7 +27,13 @@ jobs:
       uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
+        # No cache: 'npm' here -- setup-node's npm cache keys off a committed
+        # lockfile, and package-lock.json is (deliberately) gitignored in
+        # this repo. `npm ci` also hard-requires that lockfile to exist and
+        # was failing outright for the same reason; `npm install` does not.
+    - run: npm install
     - run: npm run build --if-present
-    - run: npm test
+    # package.json has no real test suite (its "test" script is npm's
+    # placeholder, which exits 1 unconditionally); validate-collections.js is
+    # this repo's actual meaningful check.
+    - run: npm run validate
