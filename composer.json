@@ -3,7 +3,7 @@
     "description": "Allows destination, accommodation and tour content to be imported via the wetu.com API to populate Accommodation. Destination and Tour post types from the Tour Operator Plugin.",
     "type": "wordpress-plugin",
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.2",
         "composer/installers": "^2.0.0"
     },
     "require-dev": {
