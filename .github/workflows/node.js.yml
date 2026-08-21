@@ -27,11 +27,8 @@ jobs:
       uses: actions/setup-node@v7
       with:
         node-version: ${{ matrix.node-version }}
-        # No cache: 'npm' here -- setup-node's npm cache keys off a committed
-        # lockfile, and package-lock.json is (deliberately) gitignored in
-        # this repo. `npm ci` also hard-requires that lockfile to exist and
-        # was failing outright for the same reason; `npm install` does not.
-    - run: npm install
+        cache: 'npm'
+    - run: npm ci
     - run: npm run build --if-present
     # package.json has no real test suite (its "test" script is npm's
     # placeholder, which exits 1 unconditionally); validate-collections.js is
