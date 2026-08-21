@@ -11,12 +11,14 @@
 - English (`en_EN`/`en_US`) `.po`/`.mo` language files added, and `languages/lsx-wetu-importer.pot` regenerated to match current strings.
 
 ### Updated
+- Minimum required PHP version raised to 8.2 (only non-EOL versions supported).
 - JS and PHP logic to support new search logic parameter.
 - Styles for search logic UI.
 - Text domain added/corrected on translation function calls across the accommodation, tours, banner-integration, and main importer classes for proper localisation; `load_plugin_textdomain()` simplified to use WordPress auto-discovery.
 - `.distignore` updated to exclude development-only files from the release package.
 
 ### Fixed
+- Itinerary `featured_image` values are now normalized to a real attachment URL and ID on every sync, self-healing entries corrupted by WordPress core's URL sanitizer and populating the `featured_image_id` field the itinerary renderer actually reads.
 - Minor docblock and formatting fixes in related classes.
 - Logic for the `departs_from` field when the tours import, it will now reconnect the destination correctly.
 - Title-update guard for accommodation, destination, and tour imports now correctly checks for the presence of the `disable_*_title` option key before reading it, preventing a PHP notice when the option is not yet saved; the existing custom-title state is also respected when the "Title" checkbox is explicitly ticked during a manual sync run.
