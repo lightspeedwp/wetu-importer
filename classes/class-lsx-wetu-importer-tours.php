@@ -701,9 +701,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 					// Itinerary Gallery.
 					if ( false !== $importable_content && in_array( 'replace_itinerary_images', $importable_content ) ) {
-						$current_day['featured_image'] = '';
+						$current_day['featured_image']    = '';
+						$current_day['featured_image_id'] = '';
 					} else if ( isset( $current_featured_images[ $day_counter ] ) ) {
-						$current_day['featured_image'] = $current_featured_images[ $day_counter ];
+						$current_day['featured_image']    = $current_featured_images[ $day_counter ]['url'];
+						$current_day['featured_image_id'] = $current_featured_images[ $day_counter ]['id'];
 					}
 
 					// Accommodation.
@@ -778,9 +780,11 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 				// Itinerary Gallery.
 				if ( false !== $importable_content && in_array( 'itinerary_gallery', $importable_content ) && isset( $leg['images'] ) ) {
-					$current_day['featured_image'] = '';
+					$current_day['featured_image']    = '';
+					$current_day['featured_image_id'] = '';
 				} else {
-					$current_day['featured_image'] = '';
+					$current_day['featured_image']    = '';
+					$current_day['featured_image_id'] = '';
 				}
 
 				// Accommodation.
@@ -804,10 +808,12 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 
 				// Itinerary Gallery.
 				if ( false !== $importable_content && in_array( 'replace_itinerary_images', $importable_content ) ) {
-					$current_day['featured_image'] = '';
+					$current_day['featured_image']    = '';
+					$current_day['featured_image_id'] = '';
 				} else if ( isset( $current_featured_images[ $day_counter ] ) ) {
-					$current_day['featured_image'] = $current_featured_images[ $day_counter ];
-				} 
+					$current_day['featured_image']    = $current_featured_images[ $day_counter ]['url'];
+					$current_day['featured_image_id'] = $current_featured_images[ $day_counter ]['id'];
+				}
 
 				// Included.
 				if ( false !== $importable_content && in_array( 'itinerary_included', $importable_content ) && isset( $leg['included'] ) && '' !== $leg['included'] ) {
@@ -854,8 +860,19 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 	/**
 	 * Grabs the current itinerary images set, and logs them against an entry counter.
 	 *
+	 * Historically this field has held values that are not valid URLs -- a bare
+	 * attachment ID, or "https://" followed by a bare attachment ID (see
+	 * normalize_featured_image_value() for exactly how the latter happens on
+	 * save). Carrying either shape forward unnormalized guarantees WordPress
+	 * core's own save-time URL sanitizer keeps re-corrupting it on every future
+	 * save of the tour, and leaves the itinerary renderer's actual read path --
+	 * the `featured_image_id` companion field -- permanently empty. Every value
+	 * is normalized to a real attachment URL plus its numeric ID before being
+	 * carried forward, so a sync self-heals previously corrupted or ID-only
+	 * entries instead of perpetuating them.
+	 *
 	 * @param integer $id
-	 * @return array
+	 * @return array<int, array{url: string, id: string}>
 	 */
 	public function get_current_itinerary_images( $id = 0 ) {
 		$current_featured_images = array();
@@ -865,13 +882,66 @@ class LSX_WETU_Importer_Tours extends LSX_WETU_Importer {
 				$counter = 1;
 				foreach ( $itineraries as $itinerary ) {
 					if ( isset( $itinerary['featured_image'] ) && '' !== $itinerary['featured_image'] ) {
-						$current_featured_images[ $counter ] = $itinerary['featured_image'];
+						$normalized = $this->normalize_featured_image_value( $itinerary['featured_image'] );
+
+						if ( null !== $normalized ) {
+							$current_featured_images[ $counter ] = $normalized;
+						}
 					}
 					$counter++;
 				}
 			}
 		}
 		return $current_featured_images;
+	}
+
+	/**
+	 * Normalizes a stored itinerary `featured_image` value into a real attachment
+	 * URL plus its numeric ID.
+	 *
+	 * This field is a CMB2 `file` type nested in a `group`, so CMB2 expects (and,
+	 * via CMB2_Sanitize::file() -> sanitize_and_secure_url(), re-sanitizes on
+	 * every save of the tour) its value as a URL. That sanitizer calls
+	 * WordPress core's esc_url_raw() and set_url_scheme(), which treat any
+	 * schemeless string as a bare domain missing its protocol and prefix it with
+	 * "https://" -- the same behaviour that turns "example.com" typed into a
+	 * user profile's Website field into "https://example.com". A bare attachment
+	 * ID such as "945" is not a domain, but core has no way to know that, so it
+	 * becomes the non-functional "https://945" the moment a human re-saves the
+	 * tour in wp-admin, even if they never touched this specific field.
+	 *
+	 * @param string $value The raw stored value: a real URL, a bare attachment
+	 *                       ID, or an already-corrupted "https://<id>" string.
+	 * @return array{url: string, id: string}|null Null when the value cannot be
+	 *                       resolved to an attachment that still exists.
+	 */
+	protected function normalize_featured_image_value( string $value ): ?array {
+		$attachment_id = match ( true ) {
+			ctype_digit( $value ) => (int) $value,
+			str_starts_with( $value, 'https://' ) && ctype_digit( substr( $value, 8 ) ) => (int) substr( $value, 8 ),
+			str_starts_with( $value, 'http://' ) && ctype_digit( substr( $value, 7 ) ) => (int) substr( $value, 7 ),
+			default => null,
+		};
+
+		if ( null !== $attachment_id ) {
+			$url = wp_get_attachment_url( $attachment_id );
+
+			return empty( $url ) ? null : array(
+				'url' => $url,
+				'id'  => (string) $attachment_id,
+			);
+		}
+
+		// Already a real URL -- the expected shape. Resolve its attachment ID so
+		// the `featured_image_id` companion field (what the itinerary renderer
+		// actually reads, see lsx_to_itinerary_thumbnail() in tour-operator) gets
+		// populated too, instead of staying permanently empty.
+		$attachment_id = attachment_url_to_postid( $value );
+
+		return array(
+			'url' => $value,
+			'id'  => $attachment_id > 0 ? (string) $attachment_id : '',
+		);
 	}
 
 	/**
