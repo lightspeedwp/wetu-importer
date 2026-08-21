@@ -1,8 +1,4 @@
 /** Wetu Content Importer Styles */
-body .to-wrapper {
-  /* Home Screen */
-  /* Tour / Accommodation / Destinations */
-}
 body .to-wrapper .tablenav.top {
   height: auto;
 }
@@ -122,6 +118,9 @@ body .to-wrapper #posts-filter .paginate_button:hover, body .to-wrapper #posts-f
 body .to-wrapper #posts-filter .paginate_button::last-child, body .to-wrapper #import-list .paginate_button::last-child {
   margin-right: 0;
 }
+body .to-wrapper {
+  /* Home Screen */
+}
 body .to-wrapper .row.section {
   margin-bottom: 25px;
 }
@@ -213,6 +212,9 @@ body .to-wrapper .welcome-block.postbox .button {
 body .to-wrapper .welcome-block.postbox .link-list li a {
   font-size: 14px;
 }
+body .to-wrapper {
+  /* Tour / Accommodation / Destinations */
+}
 body .to-wrapper .wetu-status h3 {
   margin: 0px;
 }
@@ -258,4 +260,5 @@ body .to-wrapper #import-list .widefat .check-column {
   vertical-align: top;
   padding: 10px 0 6px;
 }
+
 /*# sourceMappingURL=lsx-wetu-importer.css.map */
