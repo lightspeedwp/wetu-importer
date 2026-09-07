@@ -29,6 +29,6 @@
   },
   "homepage": "https://lightspeedwp.agency/solutions/wetu-content-importer/#readme",
   "devDependencies": {
-    "sass": "^1.103.1"
+    "sass": "^1.104.0"
   }
 }
