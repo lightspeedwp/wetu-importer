@@ -12,20 +12,23 @@
 |---|---|---|---|
 | `$instance` | `object`, unset by default | `private static` | Holds the singleton instance of the class, lazily created by `get_instance()`. |
 | `$defaults` | `array`, populated in constructor | `public` | The full set of default values for every settings field. See key list below. |
-| `$fields` | `array`, `array_keys( $this->defaults )` | `public` | Convenience list of all valid settings field keys, derived from `$defaults`; used implicitly by `save_options()` to know which POST keys to persist. |
+| `$fields` | `array`, `array_keys( $this->defaults )` | `public` | Convenience list of all valid settings field keys, derived from `$defaults`. `save_options()` does not read this property — it iterates `$this->defaults` directly to determine which POST keys to persist. |
 
 **`$defaults` keys** (all default to `''` empty string except where noted): `api_key`, `disable_tour_title`, `disable_tour_descriptions`, `disable_tour_tags`, `enable_tour_featured_random`, `disable_accommodation_title`, `disable_accommodation_descriptions`, `disable_accommodation_filtering`, `disable_accommodation_excerpts`, `disable_destination_title`, `disable_destination_descriptions`, `disable_destination_image_featured`, `disable_destination_image_banner`, `image_replacing` (default `'on'`), `image_limit` (default `'12'`), `image_scaling` (default `'on'`), `width` (default `'1200'`), `height` (default `'800'`), `scaling` (default `'raw'`), `enable_tour_ref_column`, `cron_schedule` (default `'daily'`), `accommodation_images_cron`, `accommodation_images_cron_featured`.
 
 ### Methods
 
 #### `__construct()`
+
 Initializes the `$defaults` array with all settings keys and their default values, derives `$fields` from it, and hooks the option-saving routine into WordPress's admin request lifecycle.
 - **Hooks:** Registers action `admin_init` → `save_options()` (so any POST of the settings form is processed on every admin page load, not just the settings screen itself).
 
 #### `get_instance()`
+
 Standard singleton accessor — lazily instantiates `LSX_WETU_Importer_Settings` on first call and returns the shared instance thereafter.
 
 #### `display_page()`
+
 Renders the full Settings admin page markup. Loads current settings via the `lsx_wetu_get_options()` global helper function, merges them over `$this->defaults` with `wp_parse_args()`, and outputs a single form (protected by a nonce, `lsx_wetu_importer_save`/`lsx_wetu_importer_save_options`) with six grouped sections:
 - **General**: API Key text field.
 - **Tours**: Enable Custom Titles, Disable Descriptions, Disable Tags/Travel Styles, Enable Reference Column, Randomize Featured Image (checkboxes).
@@ -37,9 +40,10 @@ Renders the full Settings admin page markup. Loads current settings via the `lsx
 - **Note:** The `foreach ( $options as $key => $value ) { $value = trim( $value ); }` loop is a no-op — see [Known Issues](known-issues.md).
 
 #### `save_options()`
+
 Handles submission of the settings form. Validates the nonce, then iterates over every key in `$this->defaults` and, for each, sanitizes the corresponding `$_POST` value (defaulting to an empty string for unchecked checkboxes/missing fields) before saving the complete settings array.
 - Executed on `admin_init` (registered in the constructor).
+- **Security gap:** Verifies the nonce via `wp_verify_nonce( $_POST['lsx_wetu_importer_save_options'], 'lsx_wetu_importer_save' )` and exits early if it is missing/invalid, but never calls `current_user_can()` before saving. A valid nonce proves the request came from the plugin's own form, not that the requesting user is authorized to change settings — a capability check (e.g. `manage_options`) should run before `update_option()` is reached. See [Known Issues](known-issues.md).
 - **Side effects:**
-  - Verifies nonce via `wp_verify_nonce( $_POST['lsx_wetu_importer_save_options'], 'lsx_wetu_importer_save' )`; exits early if missing/invalid.
   - Sanitizes each field with `sanitize_text_field()`.
   - `update_option( 'lsx_wetu_importer_settings', $data_to_save )` — persists the entire settings array as a single WordPress option (full overwrite each save, ensuring unchecked checkboxes are correctly cleared to `''`).

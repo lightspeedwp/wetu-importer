@@ -16,7 +16,7 @@
 
 ## Class map
 
-```
+```text
 LSX_WETU_Importer (base/bootstrap + shared helpers, singleton)
 ├── LSX_WETU_Importer_Welcome            (singleton, "Home" tab)
 ├── LSX_WETU_Importer_Accommodation      (extends LSX_WETU_Importer, "accommodation" tab)
@@ -32,7 +32,7 @@ LSX_WETU_Importer (base/bootstrap + shared helpers, singleton)
 
 ## Request lifecycle
 
-1. WordPress loads the plugin; `LSX_WETU_Importer::get_instance()` runs in the constructor:
+1. WordPress loads the plugin; loading the class file calls `LSX_WETU_Importer::get_instance()`, which in turn invokes `__construct()`:
    - Hooks `admin_init`, `init`, `admin_enqueue_scripts`, `admin_menu`.
    - `set_variables()` reads options and determines the current tab (`$_GET['tab']` / AJAX `$_POST['type']`) into `$tab_slug`.
    - Requires the other class files.
