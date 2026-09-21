@@ -32,4 +32,5 @@
 ## Notes
 
 - No clarification markers were needed. Reasonable defaults were assumed for scope (WPML only, not Polylang), config prerequisites (WPML already configured on target sites), and version support (current stable release lines only) — all documented in the spec's Assumptions section.
+- Revised 2026-09-17 after reviewing the actual `wetu-importer` codebase and the local WPML (sitepress-multilingual-cms v5.0.1) plugin: scope narrowed to the post types the importer actually creates today (`tour`, `destination`, `accommodation`, `team`), since TO Reviews and TO Specials have no existing import integration. Confirmed via user decision to narrow rather than expand scope. Spec also now calls out the existing language-blind `lsx_wetu_id` matching logic as a gap that must be addressed (FR-005).
 - Ready for `/speckit-clarify` (optional, given no markers) or directly for `/speckit-plan`.
