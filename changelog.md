@@ -11,6 +11,8 @@
 - English (`en_EN`/`en_US`) `.po`/`.mo` language files added, and `languages/lsx-wetu-importer.pot` regenerated to match current strings.
 
 ### Updated
+- Renovate now handles dependency updates, set by `renovate.json`: weekly on Monday mornings (Africa/Johannesburg) for npm, Composer and GitHub Actions, with a weekly lock-file refresh. Major updates and lock-file refreshes open as draft pull requests, and Mergify only merges a Renovate pull request once Node.js CI passes on Node 22 and 24.
+- Node.js CI runs on pull requests into `develop` as well as `master`. The `Cancel` workflow, which failed on every run because GitHub disabled the `set-env` command, is replaced by a `concurrency` group.
 - Minimum required PHP version raised to 8.2 (only non-EOL versions supported).
 - JS and PHP logic to support new search logic parameter.
 - Styles for search logic UI.
